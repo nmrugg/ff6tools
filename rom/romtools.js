@@ -376,9 +376,21 @@ ROMAssembly.prototype.assemble = function(data) {
 
     // encode the data if needed
     if (!this.lazyData) {
-        var encodedData = ROMAssembly.encode(this.data, this.format);
-        this.data = this.data.subarray(0, encodedData[1])
-        this.lazyData = encodedData[0];
+
+        // if the decoded data is back to exactly what we loaded, write the
+        // original bytes instead of re-encoding (this is what lets undo
+        // restore the file byte-for-byte)
+        if (this.pristineCache && compareTypedArrays(this.data, this.pristineCache.decoded)) {
+            this.lazyData = this.pristineCache.encoded.slice();
+            if (this.pristineCache.range.begin !== this.range.begin ||
+                this.pristineCache.range.end !== this.range.end) {
+                this.range = new ROMRange(this.pristineCache.range.begin, this.pristineCache.range.end);
+            }
+        } else {
+            var encodedData = ROMAssembly.encode(this.data, this.format);
+            this.data = this.data.subarray(0, encodedData[1])
+            this.lazyData = encodedData[0];
+        }
     }
 
     // return if just updating lazyData (no data parameter)
@@ -430,6 +442,18 @@ ROMAssembly.prototype.disassemble = function(data) {
     var decodedData = ROMAssembly.decode(this.lazyData, this.format);
     this.data = decodedData[0];
     this.isLoaded = true;
+
+    // Remember the original encoded bytes alongside a snapshot of the decoded
+    // data. If the decoded data ever comes back to exactly this state (e.g. via
+    // undo) we can write the original bytes back instead of re-encoding, which
+    // keeps the saved ROM byte-identical. Only worth doing for encoded data.
+    if (this.format) {
+        this.pristineCache = {
+            decoded: this.data.slice(),
+            encoded: this.lazyData.slice(),
+            range: new ROMRange(this.range.begin, this.range.end)
+        };
+    }
 
     // trim the raw data if needed
     this.range.length = decodedData[1];
@@ -1008,6 +1032,14 @@ ROMData.prototype.assemble = function(data) {
 
         // add to list of dirty assemblies
         dirtyAssemblies.push(assembly);
+
+        // If the assembled data is exactly as large as the space it already
+        // occupies there is no reason to move it, and moving it would rewrite
+        // pointers unnecessarily (and break byte-exact undo).
+        if (assembly.assembledLength === assembly.range.length) {
+            // no need to move it: keep the range exactly as it is
+            continue;
+        }
 
         // try to adjust the assembly's range (based on expand mode)
         this.addFreeSpace(assembly.range);

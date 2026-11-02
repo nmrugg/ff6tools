@@ -42,10 +42,12 @@ class ROMGraphicsView extends ROMEditor {
         };
 
         // painting (0 = Select, 1 = Pencil, 2 = Fill, 3 = Colour picker)
-        this.tool = 0;
+        this.tool = 1;       // pencil by default; V switches back to Select
         this.color = 1;      // palette index used by pencil/fill
         this.painting = false;
         this.paintStart = null;
+        this.rightHeld = false; // right button down -> show eyedropper
+        this.cursors = null; // generated lazily
 
         // off-screen canvas for graphics at 1x zoom
         this.graphicsCanvas = document.createElement('canvas');
@@ -72,7 +74,34 @@ class ROMGraphicsView extends ROMEditor {
         this.canvas.onmouseup = function(e) { self.mouseUp(e); };
         this.canvas.onmousemove = function(e) { self.mouseMove(e); };
         this.canvas.onmouseout = function(e) { self.mouseOut(e); };
-        this.canvas.oncontextmenu = function() { return false; };
+        this.canvas.oncontextmenu = function(e) {
+            // right click always picks up the colour under the cursor
+            self.rightClick(e);
+            return false;
+        };
+
+        // right-click picking and wheel zoom work anywhere in the editor pane,
+        // not just over the (possibly small) canvas
+        this.div.oncontextmenu = function(e) {
+            if (!self.editorMode || !self.object) return;
+            if (self.rightClick(e)) { e.preventDefault(); return false; }
+        };
+        this.div.addEventListener('wheel', function(e) { self.mouseWheel(e); }, {passive: false});
+        this.div.addEventListener('mousedown', function(e) {
+            if (e.button !== 2) return;
+            self.rightHeld = true;
+            self.updateCursor();
+        });
+        this.div.addEventListener('mouseup', function(e) {
+            if (e.button !== 2) return;
+            self.rightHeld = false;
+            self.updateCursor();
+        });
+        this.div.addEventListener('mouseleave', function() {
+            if (!self.rightHeld) return;
+            self.rightHeld = false;
+            self.updateCursor();
+        });
     }
 
     show() {
@@ -114,7 +143,7 @@ class ROMGraphicsView extends ROMEditor {
         // painting tools (only when a graphics object is selected directly)
         if (this.editorMode && this.object) {
             this.addList('changeTool','Tool',['Select','Pencil','Fill','Colour picker'],
-                function(t){ self.tool=t; self.redraw(); },
+                function(t){ self.tool=t; self.updateCursor(); self.redraw(); },
                 function(t){ return t===self.tool; });
         }
 
@@ -174,6 +203,8 @@ class ROMGraphicsView extends ROMEditor {
 
     mouseDown(e) {
         this.closeList();
+
+        if (e.button === 2) return;   // handled by the picker path
 
         // so the keyboard shortcuts below reach this view
         if (this.editorMode && this.div.focus) this.div.focus();
@@ -279,11 +310,121 @@ class ROMGraphicsView extends ROMEditor {
 
     // ---- painting -------------------------------------------------------
 
+    rightClick(e) {
+        if (!this.editorMode || !this.object) return false;
+        const p = this.pixelAt(e);
+        if (!p) return false;
+        this.pickColor(p.x, p.y);
+        return true;
+    }
+
+    mouseWheel(e) {
+        // this view is also used as a toolbox for map/tilemap editors
+        if (!this.editorMode) return;
+
+        if (e.shiftKey || e.altKey) return; // let the pane scroll normally
+
+        e.preventDefault();
+
+        // keep the pixel under the cursor anchored while zooming
+        const rect = this.canvas.getBoundingClientRect();
+        const mx = (e.clientX !== undefined ? e.clientX - rect.left : e.offsetX);
+        const my = (e.clientY !== undefined ? e.clientY - rect.top : e.offsetY);
+        const oldZoom = this.zoom;
+        const ax = mx / oldZoom, ay = my / oldZoom;
+        const dir = e.deltaY < 0 ? 1 : -1;
+        let z = Math.round(Math.log2(oldZoom)) + dir;
+        z = Math.max(-2, Math.min(4, z));
+        this.zoom = Math.pow(2, z);
+
+        const zoomControl = document.getElementById('zoom');
+        if (zoomControl) {
+            zoomControl.value = z;
+            const zoomValue = document.getElementById('zoom-value');
+            if (zoomValue) zoomValue.innerHTML = `${this.zoom * 100}%`;
+        }
+
+        this.resize();
+        this.redraw();
+
+        const div = this.canvasDiv;
+        if (div) {
+            div.scrollLeft = Math.max(0, ax * this.zoom - mx);
+            div.scrollTop  = Math.max(0, ay * this.zoom - my);
+        }
+        this.drawCursor();
+    }
+
+    // build cursor images (PNG via canvas, so it works everywhere)
+    makeCursors() {
+
+        if (this.cursors) return this.cursors;
+        const draw=(fn)=>{
+            const cv=document.createElement('canvas');
+            cv.width=cv.height=24;
+            const ctx=cv.getContext('2d');
+            ctx.lineWidth=1.5; ctx.lineJoin='round'; ctx.strokeStyle='black'; ctx.fillStyle='white';
+            fn(ctx);
+            return cv.toDataURL('image/png');
+        };
+        const outline=(ctx)=>{ ctx.stroke(); };
+
+        const pencil=draw(ctx=>{
+            ctx.fillStyle='#ffd83d';
+            ctx.beginPath(); ctx.moveTo(4,20); ctx.lineTo(6,15); ctx.lineTo(16,5); ctx.lineTo(20,9); ctx.lineTo(10,19); ctx.closePath();
+            ctx.fill(); outline(ctx);
+            ctx.fillStyle='#fff';
+            ctx.beginPath(); ctx.moveTo(4,20); ctx.lineTo(6,15); ctx.lineTo(10,19); ctx.closePath(); ctx.fill(); outline(ctx);
+        });
+        const bucket=draw(ctx=>{
+            ctx.fillStyle='#8fc7ff';
+            ctx.beginPath(); ctx.moveTo(5,10); ctx.lineTo(13,3); ctx.lineTo(20,11); ctx.lineTo(12,18); ctx.closePath();
+            ctx.fill(); outline(ctx);
+            ctx.fillStyle='#2f7de0';
+            ctx.beginPath(); ctx.moveTo(18,13); ctx.quadraticCurveTo(22,17,21,19); ctx.quadraticCurveTo(20,22,18,20); ctx.quadraticCurveTo(17,18,18,13); ctx.closePath();
+            ctx.fill(); outline(ctx);
+        });
+        const dropper=draw(ctx=>{
+            ctx.fillStyle='#fff';
+            ctx.beginPath(); ctx.moveTo(4,20); ctx.lineTo(7,13); ctx.lineTo(14,6); ctx.lineTo(17,9); ctx.lineTo(10,16); ctx.closePath();
+            ctx.fill(); outline(ctx);
+            ctx.beginPath(); ctx.moveTo(14,6); ctx.lineTo(17,3); ctx.lineTo(21,7); ctx.lineTo(18,10); ctx.closePath(); ctx.fill(); outline(ctx);
+        });
+
+        this.cursors = {
+            0: 'default',
+            1: `url("${pencil}") 3 20, crosshair`,
+            2: `url("${bucket}") 6 6, copy`,
+            3: `url("${dropper}") 4 20, crosshair`,
+        };
+        return this.cursors;
+    }
+
+    updateCursor() {
+        const cursors = this.makeCursors();
+        if (this.rightHeld) {
+            this.canvas.style.cursor = cursors[3]; // eyedropper while RMB is held
+            return;
+        }
+        this.canvas.style.cursor = (this.editorMode && this.object) ? (cursors[this.tool] || 'default') : 'default';
+    }
+
     // pixel coordinates under the mouse, in the graphics image
     pixelAt(e) {
         if (!this.graphics || !this.width) return null;
-        const x = Math.floor(e.offsetX / this.zoom);
-        const y = Math.floor(e.offsetY / this.zoom);
+
+        // Use the canvas' own offsets when the event came to the canvas; when it
+        // came from the surrounding pane, derive them from the canvas rect.
+        let x, y;
+        if (e.target === this.canvas && isNumber(e.offsetX)) {
+            x = Math.floor(e.offsetX / this.zoom);
+            y = Math.floor(e.offsetY / this.zoom);
+        } else {
+            const rect = this.canvas.getBoundingClientRect();
+            x = Math.floor((e.clientX - rect.left) / this.zoom);
+            y = Math.floor((e.clientY - rect.top) / this.zoom);
+        }
+
         const w = this.width * this.tileWidth;
         const h = this.height * this.tileHeight;
         if (x < 0 || y < 0 || x >= w || y >= h) return null;
@@ -658,6 +799,7 @@ class ROMGraphicsView extends ROMEditor {
             }
             e.preventDefault();
             this.resetControls();
+            this.updateCursor();
             this.redraw();
         };
         this.div.appendChild(this.canvasDiv);
@@ -712,12 +854,11 @@ class ROMGraphicsView extends ROMEditor {
         this.paletteView.redraw();
 
         this.resetControls();
+        this.updateCursor();
         this.updateTilemap();
         this.resize();
         this.redraw();
-    }
-
-    loadDefinition(definition) {
+    }    loadDefinition(definition) {
 
         // this is only valid in toolbox mode
         this.toolboxMode = true;

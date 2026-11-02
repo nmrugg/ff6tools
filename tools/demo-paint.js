@@ -106,6 +106,13 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
         r3.disassemble(new Uint8Array(rom.data));
         return ${hist('r3.monsterGraphicsProperties.item('+GID+').graphicsPointer.target')};
     })()`));
+    console.log('undo diagnostics:',await ev(c,sessionId,`(()=>{
+        const o=rom.monsterGraphicsProperties.item(${GID}).graphicsPointer.target;
+        return 'pristineMatch='+compareTypedArrays(o.data,o.pristineCache.decoded)+
+               ' range='+o.range.toString()+' pristineRange='+o.pristineCache.range.toString()+
+               ' dataLen='+o.data.length+' pristineEnc='+o.pristineCache.encoded.length+
+               ' lazyNull='+(o.lazyData===null);
+    })()`));
     ws.close();
   } finally { chrome.kill(); server.kill(); }
 })().catch(e=>{console.error('FAIL',e.message);process.exit(1);});

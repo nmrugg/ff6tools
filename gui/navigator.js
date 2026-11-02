@@ -30,6 +30,64 @@ class ROMNavigator {
         // reset the node and selection
         this.node = {};
         this.selectedNode = null;
+
+        // Up/Down move the selection between visible items instead of scrolling
+        if (leftPane.tabIndex === undefined || leftPane.tabIndex < 0) leftPane.tabIndex = 0;
+        const self = this;
+        leftPane.onkeydown = function(e) {
+            if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+            if (self.moveSelection(e.key === 'ArrowDown' ? 1 : -1)) e.preventDefault();
+        };
+        leftPane.addEventListener('mousedown', function() { leftPane.focus(); });
+
+        // Track the clicked row ourselves. romNavigator.selectObject() cannot do
+        // this for fragmented arrays (their items have generated keys such as
+        // "monsterGraphics_11", which are not in this.node), so without this the
+        // tree never shows or remembers a selection.
+        leftPane.addEventListener('click', function(e) {
+            const p = e.target && e.target.closest ? e.target.closest('p') : null;
+            if (!p) return;
+            const li = p.parentElement;
+            if (!li || li.tagName !== 'LI') return;
+            self.markSelected(li);
+        }, true);
+    }
+
+    markSelected(li) {
+        const leftPane = document.getElementById('left-pane');
+        if (!leftPane) return;
+        const prev = leftPane.querySelector('li.selected');
+        if (prev && prev !== li) prev.classList.remove('selected');
+        li.classList.add('selected');
+        this.selectedNode = li;
+    }
+
+    // move the navigator selection by delta items among the visible entries
+    moveSelection(delta) {
+
+        const leftPane = document.getElementById('left-pane');
+        if (!leftPane) return false;
+
+        // only rows that own a <p> directly and are currently visible
+        const visible = [...leftPane.querySelectorAll('li')].filter(li => {
+            const p = li.querySelector(':scope > p');
+            return p && li.offsetParent !== null;
+        });
+        if (!visible.length) return false;
+
+        let index = this.selectedNode ? visible.indexOf(this.selectedNode) : -1;
+        if (index < 0) index = delta > 0 ? -1 : visible.length;
+
+        const next = visible[index + delta];
+        if (!next) return false;
+
+        const p = next.querySelector(':scope > p');
+        if (!p) return false;
+
+        this.markSelected(next);
+        p.click();
+        next.scrollIntoView({block: 'nearest'});
+        return true;
     }
 
     liForCategory(definition) {
