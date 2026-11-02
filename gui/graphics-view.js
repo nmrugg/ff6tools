@@ -47,6 +47,12 @@ class ROMGraphicsView extends ROMEditor {
         this.painting = false;
         this.paintStart = null;
         this.rightHeld = false; // right button down -> show eyedropper
+        this.picking = false;   // eyedropper drag in progress
+        this.panning = null;    // middle-button pan state
+        this.panX = 0;          // image offset from centre (transform based, so
+        this.panY = 0;          // it works whether or not the pane can scroll)
+        this.showBounds = true; // shade the area outside the image data
+        this.showGrid = false;  // light tile grid lines
         this.cursors = null; // generated lazily
 
         // off-screen canvas for graphics at 1x zoom
@@ -62,8 +68,14 @@ class ROMGraphicsView extends ROMEditor {
         this.canvasDiv = document.createElement('div');
         this.canvasDiv.classList.add('graphics-canvas-div');
         this.canvasDiv.classList.add('background-gradient');
-        this.canvasDiv.appendChild(this.canvas);
-        this.canvasDiv.appendChild(this.cursorCanvas);
+
+        // wrapper sized exactly to the canvas, centred in the pane; the cursor
+        // overlay is positioned relative to this so the two always line up
+        this.canvasWrap = document.createElement('div');
+        this.canvasWrap.classList.add('graphics-canvas-wrap');
+        this.canvasWrap.appendChild(this.canvas);
+        this.canvasWrap.appendChild(this.cursorCanvas);
+        this.canvasDiv.appendChild(this.canvasWrap);
 
         // this.div = document.createElement('div');
         this.div.classList.add('graphics-div');
@@ -88,19 +100,44 @@ class ROMGraphicsView extends ROMEditor {
         };
         this.div.addEventListener('wheel', function(e) { self.mouseWheel(e); }, {passive: false});
         this.div.addEventListener('mousedown', function(e) {
-            if (e.button !== 2) return;
-            self.rightHeld = true;
-            self.updateCursor();
+            if (e.button === 2) {
+                self.rightHeld = true;
+                self.picking = true;
+                self.updateCursor();
+                return;
+            }
+            if (e.button === 1) {
+                // middle button pans the image
+                e.preventDefault();
+                self.panning = {x: e.clientX, y: e.clientY, panX: self.panX, panY: self.panY};
+                self.updateCursor();
+            }
         });
-        this.div.addEventListener('mouseup', function(e) {
-            if (e.button !== 2) return;
-            self.rightHeld = false;
-            self.updateCursor();
+        this.div.addEventListener('mousemove', function(e) {
+            if (self.panning) {
+                self.panX = self.panning.panX + (e.clientX - self.panning.x);
+                self.panY = self.panning.panY + (e.clientY - self.panning.y);
+                self.applyPan();
+                if (!self.panning.moved && (Math.abs(e.clientX-self.panning.x) > 2 || Math.abs(e.clientY-self.panning.y) > 2)) {
+                    self.panning.moved = true;
+                    self.updateCursor();
+                }
+                return;
+            }
+            if (self.picking && (self.rightHeld || self.tool === 3)) {
+                const p = self.pixelAt(e);
+                if (p) self.pickColor(p.x, p.y);
+            }
         });
-        this.div.addEventListener('mouseleave', function() {
-            if (!self.rightHeld) return;
-            self.rightHeld = false;
+        const endDrag = function(e) {
+            if (e.button === 2) { self.rightHeld = false; self.picking = false; }
+            if (e.button === 1 && self.panning) self.panning = null;
             self.updateCursor();
+        };
+        this.div.addEventListener('mouseup', endDrag);
+        this.div.addEventListener('mouseleave', function(e) {
+            endDrag(e);
+            self.panning = null;
         });
     }
 
@@ -133,6 +170,57 @@ class ROMGraphicsView extends ROMEditor {
         }
 
         this.toolbox.hide();
+    }
+
+    // shade the parts of the displayed grid that have no data behind them, and
+    // optionally draw light tile grid lines
+    drawOverlays() {
+
+        const ctx = this.cursorCanvas.getContext('2d');
+        const tw = this.tileWidth, th = this.tileHeight;
+        const bytesPerTile = this.bytesPerTile || (tw * th);
+        const tileCount = Math.floor(this.graphics.length / bytesPerTile);
+
+        const imgW = this.width * tw * this.zoom;
+        const imgH = this.height * th * this.zoom;
+
+        if (this.showBounds) {
+            ctx.fillStyle = 'rgba(20, 20, 25, 0.55)';
+            for (let row = 0; row < this.height; row++) {
+                for (let col = 0; col < this.width; col++) {
+                    if (row * this.width + col < tileCount) continue;
+                    ctx.fillRect(col * tw * this.zoom, row * th * this.zoom,
+                                 tw * this.zoom, th * this.zoom);
+                }
+            }
+            // also shade any partial tile at the end of the data
+            const extra = this.graphics.length % bytesPerTile;
+            if (extra && tileCount < this.width * this.height) {
+                const col = tileCount % this.width, row = Math.floor(tileCount / this.width);
+                ctx.fillRect(col * tw * this.zoom, row * th * this.zoom,
+                             tw * this.zoom, th * this.zoom);
+            }
+
+            // outline the editable image so its limits are visible
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+            ctx.strokeRect(0.5, 0.5, Math.round(imgW) - 1, Math.round(imgH) - 1);
+        }
+
+        if (this.showGrid && tileCount) {
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+            ctx.beginPath();
+            for (let col = 1; col < this.width; col++) {
+                const x = Math.round(col * tw * this.zoom) + 0.5;
+                ctx.moveTo(x, 0); ctx.lineTo(x, Math.round(imgH));
+            }
+            for (let row = 1; row < this.height; row++) {
+                const y = Math.round(row * th * this.zoom) + 0.5;
+                ctx.moveTo(0, y); ctx.lineTo(Math.round(imgW), y);
+            }
+            ctx.stroke();
+        }
     }
 
     resetControls() {
@@ -184,6 +272,17 @@ class ROMGraphicsView extends ROMEditor {
         this.addZoom(this.zoom, function() {
             self.changeZoom();
         }, 0, 4);
+
+        // overlay toggles
+        if (this.editorMode && this.object) {
+            this.addTwoState('graphics-show-bounds', function(checked) {
+                self.showBounds = checked; self.redraw();
+            }, 'Image bounds', this.showBounds);
+
+            this.addTwoState('graphics-show-grid', function(checked) {
+                self.showGrid = checked; self.redraw();
+            }, 'Tile grid', this.showGrid);
+        }
     }
 
     changeZoom() {
@@ -225,6 +324,7 @@ class ROMGraphicsView extends ROMEditor {
                     this.commitPaint();
                     break;
                 case 3: // colour picker
+                    this.picking = true;
                     this.pickColor(p.x, p.y);
                     break;
             }
@@ -318,6 +418,17 @@ class ROMGraphicsView extends ROMEditor {
         return true;
     }
 
+    applyPan() {
+        if (this.canvasWrap) {
+            this.canvasWrap.style.transform = `translate(${this.panX}px, ${this.panY}px)`;
+        }
+    }
+
+    resetPan() {
+        this.panX = 0; this.panY = 0;
+        this.applyPan();
+    }
+
     mouseWheel(e) {
         // this view is also used as a toolbox for map/tilemap editors
         if (!this.editorMode) return;
@@ -326,14 +437,13 @@ class ROMGraphicsView extends ROMEditor {
 
         e.preventDefault();
 
-        // keep the pixel under the cursor anchored while zooming
-        const rect = this.canvas.getBoundingClientRect();
-        const mx = (e.clientX !== undefined ? e.clientX - rect.left : e.offsetX);
-        const my = (e.clientY !== undefined ? e.clientY - rect.top : e.offsetY);
-        const oldZoom = this.zoom;
-        const ax = mx / oldZoom, ay = my / oldZoom;
+        // image point currently under the cursor, which we keep under it
+        const before = this.canvas.getBoundingClientRect();
+        const ax = (e.clientX - before.left) / this.zoom;
+        const ay = (e.clientY - before.top) / this.zoom;
+
         const dir = e.deltaY < 0 ? 1 : -1;
-        let z = Math.round(Math.log2(oldZoom)) + dir;
+        let z = Math.round(Math.log2(this.zoom)) + dir;
         z = Math.max(-2, Math.min(4, z));
         this.zoom = Math.pow(2, z);
 
@@ -347,11 +457,11 @@ class ROMGraphicsView extends ROMEditor {
         this.resize();
         this.redraw();
 
-        const div = this.canvasDiv;
-        if (div) {
-            div.scrollLeft = Math.max(0, ax * this.zoom - mx);
-            div.scrollTop  = Math.max(0, ay * this.zoom - my);
-        }
+        // after re-layout, nudge the pan so that point is back under the cursor
+        const after = this.canvas.getBoundingClientRect();
+        this.panX += e.clientX - (after.left + ax * this.zoom);
+        this.panY += e.clientY - (after.top  + ay * this.zoom);
+        this.applyPan();
         this.drawCursor();
     }
 
@@ -394,7 +504,8 @@ class ROMGraphicsView extends ROMEditor {
         this.cursors = {
             0: 'default',
             1: `url("${pencil}") 3 20, crosshair`,
-            2: `url("${bucket}") 6 6, copy`,
+            // the bucket pours from its lower-right, so that is the hotspot
+            2: `url("${bucket}") 20 20, copy`,
             3: `url("${dropper}") 4 20, crosshair`,
         };
         return this.cursors;
@@ -402,6 +513,10 @@ class ROMGraphicsView extends ROMEditor {
 
     updateCursor() {
         const cursors = this.makeCursors();
+        if (this.panning) {
+            this.canvas.style.cursor = this.panning.moved ? 'grabbing' : 'grab';
+            return;
+        }
         if (this.rightHeld) {
             this.canvas.style.cursor = cursors[3]; // eyedropper while RMB is held
             return;
@@ -686,12 +801,12 @@ class ROMGraphicsView extends ROMEditor {
 
         } else {
 
-            // update canvas div size
-            const w = Math.ceil(this.ppu.width * this.zoom);
-            const h = Math.ceil(this.ppu.height * this.zoom);
-            this.canvasDiv.style.overflowY = 'hidden';
-            this.canvasDiv.style.width = `${w}px`;
-            this.canvasDiv.style.height = `${h}px`;
+            // editor mode: let the CSS centre the canvas in the pane (the pane
+            // itself scrolls when the canvas is larger), so clear any inline
+            // sizing from previous toolbox use
+            this.canvasDiv.style.overflowY = '';
+            this.canvasDiv.style.width = '';
+            this.canvasDiv.style.height = '';
         }
     }
 
@@ -721,6 +836,13 @@ class ROMGraphicsView extends ROMEditor {
         this.canvas.width = w;
         this.canvas.height = h;
 
+        // the wrapper is what gets centred/panned, so size it to the canvas
+        if (this.canvasWrap) {
+            this.canvasWrap.style.width = `${w}px`;
+            this.canvasWrap.style.height = `${h}px`;
+            this.applyPan();
+        }
+
         // scale image to zoom setting
         context = this.canvas.getContext('2d');
         context.imageSmoothingEnabled = false;
@@ -737,6 +859,9 @@ class ROMGraphicsView extends ROMEditor {
 
         // clear the cursor canvas
         var ctx = this.cursorCanvas.getContext('2d');
+
+        // image bounds shading and tile grid (drawn even with no selection)
+        this.drawOverlays();
 
         // return if trigger layer is selected
         if (!this.selection.tilemap.length) return;
@@ -805,7 +930,21 @@ class ROMGraphicsView extends ROMEditor {
         this.div.appendChild(this.canvasDiv);
 
         // select an object with this view as the editor
-        if (!(object instanceof ROMGraphics)) return;
+        if (!(object instanceof ROMGraphics)) {
+
+            // a standalone palette object: show it in the palette panel and keep
+            // the last graphics displayed for reference
+            if (ROMPaletteView.isPaletteFormat(object.format)) {
+                this.object = object;
+                this.paletteView.loadDefinition(object.path);
+                this.paletteView.updateToolbox();
+                this.paletteView.resize();
+                this.paletteView.redraw();
+                this.resetControls();
+                this.updateCursor();
+            }
+            return;
+        }
 
         // start observing the graphics object
         this.observer.stopObservingAll();
@@ -855,6 +994,7 @@ class ROMGraphicsView extends ROMEditor {
 
         this.resetControls();
         this.updateCursor();
+        this.resetPan();
         this.updateTilemap();
         this.resize();
         this.redraw();

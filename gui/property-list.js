@@ -1465,6 +1465,9 @@ class ROMPropertyList {
             editor = this.getEditor('ROMGraphicsView');
         } else if (object instanceof ROMTilemap) {
             editor = this.getEditor('ROMTilemapView');
+        } else if (ROMPaletteView.isPaletteFormat(object.format)) {
+            // a standalone palette object (e.g. a Monster Palette entry)
+            editor = this.getEditor('ROMGraphicsView');
         }
         if (!editor) return;
 

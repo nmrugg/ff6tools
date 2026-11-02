@@ -83,23 +83,113 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
                ' vs edit-div '+Math.round(e.width)+'x'+Math.round(e.height)+
                ' | canvas only '+Math.round(r.width)+'x'+Math.round(r.height);})()`));
 
+    console.log('centering:',await ev(c,sessionId,`(()=>{
+        const v=propertyList.getEditor('ROMGraphicsView');
+        v.zoom=1; v.resetPan(); v.resize(); v.redraw();
+        const d=v.div.getBoundingClientRect(), r=v.canvas.getBoundingClientRect();
+        const leftGap=r.left-d.left, rightGap=d.right-r.right;
+        const topGap=r.top-d.top, botGap=d.bottom-r.bottom;
+        return 'canvas '+Math.round(r.width)+'x'+Math.round(r.height)+' in pane '+Math.round(d.width)+'x'+Math.round(d.height)+
+               ' | h gaps '+Math.round(leftGap)+'/'+Math.round(rightGap)+' v gaps '+Math.round(topGap)+'/'+Math.round(botGap)+
+               (Math.abs(leftGap-rightGap)<3 && Math.abs(topGap-botGap)<3 ? ' CENTERED':' NOT centred');})()`));
+
+    console.log('overlays:',await ev(c,sessionId,`(()=>{
+        const v=propertyList.getEditor('ROMGraphicsView');
+        return 'showBounds='+v.showBounds+' showGrid='+v.showGrid+
+               ' | bounds checkbox='+!!document.getElementById('graphics-show-bounds')+
+               ' grid checkbox='+!!document.getElementById('graphics-show-grid');})()`));
+
+    console.log('zoom anchor:',await ev(c,sessionId,`(()=>{
+        const v=propertyList.getEditor('ROMGraphicsView');
+        v.zoom=2; v.resize(); v.redraw();
+        const r=v.canvas.getBoundingClientRect();
+        const cx=r.left+20, cy=r.top+14;              // image point (10,7) at zoom 2
+        const mk=(dy)=>new WheelEvent('wheel',{deltaY:dy,bubbles:true,cancelable:true,clientX:cx,clientY:cy});
+        v.div.dispatchEvent(mk(-100));
+        const r2=v.canvas.getBoundingClientRect();
+        const imgX=(cx-r2.left)/v.zoom, imgY=(cy-r2.top)/v.zoom;
+        return 'zoom '+v.zoom+' -> image point under cursor is ('+imgX.toFixed(1)+','+imgY.toFixed(1)+') expected (10,7)';})()`));
+
+    console.log('middle pan:',await ev(c,sessionId,`(()=>{
+        const v=propertyList.getEditor('ROMGraphicsView');
+        v.zoom=16; v.resize(); v.redraw(); v.resetPan();
+        const before={x:v.panX,y:v.panY};
+        const d=v.div.getBoundingClientRect();
+        const x=d.left+50,y=d.top+50;
+        v.div.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,button:1,buttons:4,clientX:x,clientY:y}));
+        const cur=v.canvas.style.cursor;
+        v.div.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,buttons:4,clientX:x-40,clientY:y-25}));
+        const moved=v.canvasWrap.style.transform;
+        v.div.dispatchEvent(new MouseEvent('mouseup',{bubbles:true,button:1,clientX:x-40,clientY:y-25}));
+        return 'cursor: '+cur+' | pan moved '+(v.panX-before.x)+','+(v.panY-before.y)+' | transform: '+moved;})()`));
+
+    console.log('picker drag:',await ev(c,sessionId,`(()=>{
+        const v=propertyList.getEditor('ROMGraphicsView');
+        v.zoom=8; v.resize(); v.redraw();
+        const o=rom.monsterGraphicsProperties.item(11).graphicsPointer.target;
+        v.tool=3; v.color=-1; v.picking=true;
+        const r=v.canvas.getBoundingClientRect();
+        const seen=[];
+        for(let i=0;i<24;i++){
+            v.div.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,buttons:1,clientX:r.left+i,clientY:r.top+3}));
+            seen.push(v.color);
+        }
+        v.picking=false;
+        return 'colours seen during drag: '+[...new Set(seen)].join(',');})()`));
+
+    console.log('overlay pixels:',await ev(c,sessionId,`(()=>{
+        const v=propertyList.getEditor('ROMGraphicsView');
+        v.zoom=8; v.showBounds=true; v.showGrid=false; v.resize(); v.redraw();
+        const px=v.cursorCanvas.getContext('2d').getImageData(0,0,v.cursorCanvas.width,v.cursorCanvas.height).data;
+        let opaque=0; for(let i=3;i<px.length;i+=4) if(px[i]) opaque++;
+        const outline=(()=>{ // sample the top edge of the image outline
+            const y=Math.round(v.height*v.tileHeight*v.zoom)-1, x=Math.round(v.width*v.tileWidth*v.zoom/2);
+            return px[(y*v.cursorCanvas.width+x)*4+3];})();
+        v.showGrid=true; v.redraw();
+        const px2=v.cursorCanvas.getContext('2d').getImageData(0,0,v.cursorCanvas.width,v.cursorCanvas.height).data;
+        let grid=0; for(let i=3;i<px2.length;i+=4) if(px2[i]) grid++;
+        return 'bounds on: marked px='+opaque+' outline alpha='+outline+' | grid on: marked px='+grid;})()`));
+
+    console.log('palette node:',await ev(c,sessionId,`(()=>{
+        const cat=[...document.querySelectorAll('.nav-category > p')].find(p=>p.textContent.trim()==='Battle');
+        if(!cat.parentElement.classList.contains('shown')) cat.click();
+        const p=[...document.querySelectorAll('.nav-array > p')].find(x=>x.textContent.trim()==='Monster Palettes');
+        if(!p) return 'Monster Palettes row not found';
+        if(!p.parentElement.classList.contains('shown')) p.click();
+        const li=[...p.parentElement.querySelectorAll('li')].find(l=>l.querySelector(':scope > p'));
+        if(!li) return 'no palette entries';
+        li.querySelector('p').click();
+        const v=propertyList.getEditor('ROMGraphicsView');
+        const sel=v.paletteView.definition && rom.parsePath(v.paletteView.definition);
+        return 'selected row: '+li.textContent.trim()+' | palette panel shows: '+(sel?sel.path+' at '+sel.range:'nothing')+
+               ' | first colour 0x'+(v.paletteView.palette[0]>>>0).toString(16);})()`));
+
     console.log('navigator arrows:',await ev(c,sessionId,`(()=>{
-        // make sure Battle -> Monster Graphics is expanded and one entry selected
-        [...document.querySelectorAll('.nav-category > p')].find(p=>p.textContent.trim()==='Battle').click();
-        const mg=[...document.querySelectorAll('.nav-array > p')].find(p=>p.textContent.trim()==='Monster Graphics');
-        if(!mg.closest('.nav-array').classList.contains('shown')) mg.click();
-        const items=[...mg.closest('.nav-array').querySelectorAll('li')];
-        items[3].querySelector('p').click();
+        const cat=[...document.querySelectorAll('.nav-category > p')].find(p=>p.textContent.trim()==='Battle');
+        if(!cat.parentElement.classList.contains('shown')) cat.click();
+        const mg=[...document.querySelectorAll('.nav-array > p')].find(x=>x.textContent.trim()==='Monster Graphics');
+        if(!mg.parentElement.classList.contains('shown')) mg.click();
+        const list=mg.parentElement;
+        const rows=[...list.querySelectorAll(':scope > ul > li')];
+        rows[3].querySelector(':scope > p').click();
         const pane=document.getElementById('left-pane');
         pane.focus();
-        const name=()=>{const s=document.querySelector('#left-pane li.selected');return s?s.textContent.trim():'(none)';};
-        const before=name();
+        const name=()=>{const s=list.querySelector('li.selected > p');return s?s.textContent.trim():'(none)';};
         const k=(key)=>pane.dispatchEvent(new KeyboardEvent('keydown',{key,bubbles:true,cancelable:true}));
+        const before=name();
         k('ArrowDown'); const one=name();
         k('ArrowDown'); const two=name();
         k('ArrowUp');   const back=name();
         return before+' -> '+one+' -> '+two+' -> up: '+back+
-               ' | editor object now: '+(propertyList.getEditor('ROMGraphicsView').object||{path:'?'}).path;})()`));
+               ' | editor shows: '+(propertyList.getEditor('ROMGraphicsView').object||{}).path;})()`));
+
+    console.log('graphics view in map mode:',await ev(c,sessionId,`(()=>{
+        propertyList.select(rom.mapProperties.item(0));
+        const gv=propertyList.editors['ROMGraphicsView'];
+        const d=gv.div.getBoundingClientRect(), c2=gv.canvas.getBoundingClientRect();
+        return 'mode: toolbox='+gv.toolboxMode+' editor='+gv.editorMode+' zoom '+gv.zoom.toFixed(2)+
+               ' | canvas '+Math.round(c2.width)+'x'+Math.round(c2.height)+' in '+Math.round(d.width)+'x'+Math.round(d.height)+
+               ' | cursor='+gv.canvas.style.cursor;})()`));
 
     fs.writeFileSync('/tmp/ff5e-demo/paint-ui.png',
       Buffer.from((await c.send('Page.captureScreenshot',{format:'png'},sessionId)).data,'base64'));

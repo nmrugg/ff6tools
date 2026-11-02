@@ -762,9 +762,21 @@ body {
 }
 
 .graphics-canvas-div {
-    flex: 0 0 auto;
-    overflow: hidden;
+    /* fills the pane so the canvas can be centred in it; the pane itself
+       (.map-edit) scrolls when the canvas grows beyond this */
+    display: flex;
+    align-items: safe center;
+    justify-content: safe center;
     position: relative;
+    min-width: 100%;
+    min-height: 100%;
+    overflow: visible;
+}
+
+/* sized in JS to exactly the canvas; centred by the flex rules above */
+.graphics-canvas-wrap {
+    position: relative;
+    flex: 0 0 auto;
 }
 
 .graphics-controls {

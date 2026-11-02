@@ -39,6 +39,12 @@ class ROMPaletteView {
         this.canvas.onmousedown = function(e) { self.mouseDown(e); };
     }
 
+    static isPaletteFormat(format) {
+        if (!format) return false;
+        const names = Array.isArray(format) ? format : [format];
+        return names.some(f => typeof f === 'string' && f.startsWith('bgr555'));
+    }
+
     show() {}
 
     hide() {
