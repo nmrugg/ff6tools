@@ -82,15 +82,13 @@ class ROMGraphicsView extends ROMEditor {
         // overlay is positioned relative to this so the two always line up
         this.canvasWrap = document.createElement('div');
         this.canvasWrap.classList.add('graphics-canvas-wrap');
-        // opaque background behind the image: without it the bounds dimming
-        // shows through the sprite's transparent pixels and darkens everything
-        this.canvasWrap.classList.add('background-gradient');
         this.canvasWrap.appendChild(this.canvas);
         this.canvasWrap.appendChild(this.cursorCanvas);
         this.canvasDiv.appendChild(this.canvasWrap);
 
         // this.div = document.createElement('div');
         this.div.classList.add('graphics-div');
+        this.div.classList.add('graphics-edit-pane');
 
         // add message handlers
         const self = this;
@@ -111,6 +109,7 @@ class ROMGraphicsView extends ROMEditor {
             if (self.rightClick(e)) { e.preventDefault(); return false; }
         };
         this.div.addEventListener('wheel', function(e) { self.mouseWheel(e); }, {passive: false});
+        // capture phase, so Chrome's middle-click autoscroll never starts
         this.div.addEventListener('mousedown', function(e) {
             if (e.button === 2) {
                 self.rightHeld = true;
@@ -119,28 +118,35 @@ class ROMGraphicsView extends ROMEditor {
                 return;
             }
             if (e.button === 1) {
-                // middle button pans the image
                 e.preventDefault();
+                e.stopImmediatePropagation();
                 self.panning = {x: e.clientX, y: e.clientY, panX: self.panX, panY: self.panY};
                 self.updateCursor();
             }
-        });
+        }, true);
+        this.div.addEventListener('auxclick', function(e) { if (e.button === 1) e.preventDefault(); }, true);
         this.div.addEventListener('mousemove', function(e) {
-            if (self.panning) {
-                self.panX = self.panning.panX + (e.clientX - self.panning.x);
-                self.panY = self.panning.panY + (e.clientY - self.panning.y);
-                self.applyPan();
-                if (!self.panning.moved && (Math.abs(e.clientX-self.panning.x) > 2 || Math.abs(e.clientY-self.panning.y) > 2)) {
-                    self.panning.moved = true;
-                    self.updateCursor();
-                }
-                return;
-            }
+            if (self.panning) return;   // handled by the document listener
             if (self.picking && (self.rightHeld || self.tool === 3)) {
                 const p = self.pixelAt(e);
                 if (p) self.pickColor(p.x, p.y);
             }
         });
+        // panning continues even when the pointer leaves the pane
+        document.addEventListener('mousemove', function(e) {
+            if (!self.panning) return;
+            self.panX = self.panning.panX + (e.clientX - self.panning.x);
+            self.panY = self.panning.panY + (e.clientY - self.panning.y);
+            self.applyPan();
+            if (!self.panning.moved && (Math.abs(e.clientX-self.panning.x) > 2 || Math.abs(e.clientY-self.panning.y) > 2)) {
+                self.panning.moved = true;
+                self.updateCursor();
+            }
+        });
+        document.addEventListener('mouseup', function(e) {
+            if (e.button === 1 && self.panning) { self.panning = null; self.updateCursor(); }
+        });
+
         const endDrag = function(e) {
             if (e.button === 2) { self.rightHeld = false; self.picking = false; }
             if (e.button === 1 && self.panning) self.panning = null;
@@ -196,6 +202,10 @@ class ROMGraphicsView extends ROMEditor {
         // dim the pane outside the image itself
         if (this.canvasDiv) {
             this.canvasDiv.classList.toggle('show-bounds', !!this.showBounds);
+            // the image needs an opaque backdrop so the dim does not show
+            // through transparent pixels - but only when dimming is active,
+            // otherwise its checkerboard would not line up with the pane's
+            this.canvasWrap.classList.toggle('background-gradient', !!this.showBounds);
         }
 
         const imgW = this.width * tw * this.zoom;
@@ -607,7 +617,9 @@ class ROMGraphicsView extends ROMEditor {
     }
 
     mouseWheel(e) {
-        // zoom works in both editor and toolbox mode (map tilesets included)
+        // toolbox views (map tilesets) auto-fit their own zoom; leave them alone
+        if (!this.editorMode) return;
+
         if (e.shiftKey || e.altKey) return; // let the pane scroll normally
 
         e.preventDefault();
@@ -621,7 +633,6 @@ class ROMGraphicsView extends ROMEditor {
         let z = Math.round(Math.log2(this.zoom)) + dir;
         z = Math.max(-2, Math.min(4, z));
         this.zoom = Math.pow(2, z);
-        this.userZoom = this.zoom;
 
         const zoomControl = document.getElementById('zoom');
         if (zoomControl) {
@@ -988,13 +999,8 @@ class ROMGraphicsView extends ROMEditor {
             // calculate zoom assuming no scroll bar
             this.canvasDiv.style.overflowY = 'hidden';
             this.canvasDiv.style.width = `${clientWidth}px`;
-            if (!this.userZoom) {
-                this.zoom = this.canvasDiv.clientWidth / this.ppu.width;
-                if (this.zoom > 4.0) this.zoom = 4.0;
-            } else {
-                // the user has zoomed with the wheel: honour it
-                this.zoom = this.userZoom;
-            }
+            this.zoom = this.canvasDiv.clientWidth / this.ppu.width;
+            if (this.zoom > 4.0) this.zoom = 4.0;
             this.canvasDiv.style.height = `${this.ppu.height * this.zoom}px`;
 
             if (!isNumber(clientHeight)) {
@@ -1012,10 +1018,8 @@ class ROMGraphicsView extends ROMEditor {
                 this.canvasDiv.style.overflowY = 'scroll';
 
                 // recalculate zoom based on client width (max 4)
-                if (!this.userZoom) {
-                    this.zoom = this.canvasDiv.clientWidth / this.ppu.width;
-                    if (this.zoom > 4.0) this.zoom = 4.0;
-                }
+                this.zoom = this.canvasDiv.clientWidth / this.ppu.width;
+                if (this.zoom > 4.0) this.zoom = 4.0;
             }
 
         } else {
@@ -1246,6 +1250,7 @@ class ROMGraphicsView extends ROMEditor {
         // this is only valid in toolbox mode
         this.toolboxMode = true;
         this.editorMode = false;
+        this.tool = 0;          // tile picking stays the default in a toolbox
         this.graphicsObject = null;
         this.userZoom = null;   // auto-fit the new definition again
 

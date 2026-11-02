@@ -762,15 +762,15 @@ body {
 }
 
 .graphics-canvas-div {
-    /* fills the pane so the canvas can be centred in it; the pane itself
-       (.map-edit) scrolls when the canvas grows beyond this */
+    /* exactly fills the (non-scrolling) pane, so the bounds dim always covers
+       the visible area; the image itself is moved with a transform */
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
     display: flex;
     align-items: safe center;
     justify-content: safe center;
-    position: relative;
-    min-width: 100%;
-    min-height: 100%;
-    overflow: visible;
 }
 
 /* sized in JS to exactly the canvas; centred by the flex rules above */
@@ -782,6 +782,12 @@ body {
 /* when image bounds are shown, dim everything outside the editable image */
 .graphics-canvas-div.show-bounds {
     background-image: linear-gradient(rgba(12, 12, 16, 0.55), rgba(12, 12, 16, 0.55));
+}
+
+/* the graphics editor pans with the middle mouse button instead of scrolling,
+   so it never grows scrollbars (which would break the bounds dimming) */
+.graphics-edit-pane {
+    overflow: hidden;
 }
 
 .graphics-controls {

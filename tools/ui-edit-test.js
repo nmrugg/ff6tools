@@ -157,24 +157,16 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
         const bgOff=getComputedStyle(v.canvasDiv).backgroundImage;
         return 'on='+on+' off='+off+' | bg on: '+bgOn.slice(0,34)+' | bg off: '+bgOff.slice(0,20);})()`));
 
-    console.log('10. map tileset toolbox: controls + pan + zoom:',await ev(c,sessionId,`(()=>{
+    console.log('10. map tileset toolbox left untouched (deliberate):',await ev(c,sessionId,`(()=>{
         propertyList.select(rom.mapTilesets.item(0));
         const tm=propertyList.getEditor('ROMTilemapView');
         const gv=tm.graphicsView;
-        const hasTool=!!document.getElementById('changeTool');
-        const before={zoom:gv.zoom,x:gv.panX,y:gv.panY};
         const d=gv.div.getBoundingClientRect();
+        const before={zoom:gv.zoom,x:gv.panX,y:gv.panY};
         gv.div.dispatchEvent(new WheelEvent('wheel',{deltaY:-100,bubbles:true,cancelable:true,clientX:d.left+30,clientY:d.top+30}));
-        gv.div.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,button:1,buttons:4,clientX:d.left+30,clientY:d.top+30}));
-        gv.div.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,buttons:4,clientX:d.left+5,clientY:d.top+12}));
-        gv.div.dispatchEvent(new MouseEvent('mouseup',{bubbles:true,button:1,clientX:d.left+5,clientY:d.top+12}));
-        // paint a pixel in the tileset with the pencil
-        gv.tool=1; gv.color=5;
-        const r=gv.canvas.getBoundingClientRect();
-        gv.canvas.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,button:0,buttons:1,clientX:r.left+2,clientY:r.top+2}));
-        gv.canvas.dispatchEvent(new MouseEvent('mouseup',{bubbles:true,button:0,clientX:r.left+2,clientY:r.top+2}));
-        return 'toolMenu='+hasTool+' zoom '+before.zoom+'->'+gv.zoom+' pan '+gv.panX.toFixed(0)+','+gv.panY.toFixed(0)+
-               ' paintTarget='+(gv.paintTarget()?gv.paintTarget().path:'none');})()`));
+        return 'toolMenu='+!!document.getElementById('changeTool')+
+               ' autoFitZoom='+before.zoom.toFixed(2)+' afterWheel='+gv.zoom.toFixed(2)+
+               ' (unchanged: '+(before.zoom===gv.zoom)+')';})()`));
 
     console.log('11. palette colour edit via double click:',await ev(c,sessionId,`(()=>{
         const pal=rom.monsterPalettes.item(0);
@@ -212,6 +204,37 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
         const section=sel?sel.closest('.nav-array').querySelector(':scope > p').textContent.trim():'(none)';
         return 'closed Monster Palettes, left Character Graphics open -> landed in: '+section+
                ' (expect Monster Palettes); palettesNowOpen='+mp.parentElement.classList.contains('shown');})()`));
+
+    console.log('9b. dimming is outside the image only:',await ev(c,sessionId,`(()=>{
+        const v=propertyList.getEditor('ROMGraphicsView');
+        propertyList.select(rom.monsterGraphics.item(11));
+        v.zoom=4; v.showBounds=true; v.resize(); v.redraw();
+        const wrapBg=getComputedStyle(v.canvasWrap).backgroundColor;
+        const r=v.canvas.getBoundingClientRect(), d=v.canvasDiv.getBoundingClientRect();
+        const inside=getComputedStyle(v.canvasWrap).backgroundImage.includes('45deg');
+        const dimOnDiv=getComputedStyle(v.canvasDiv).backgroundImage;
+        return 'wrapper has gradient='+inside+' wrapperBg='+wrapBg+
+               ' | pane dim layer='+dimOnDiv.slice(0,30)+' | image size '+Math.round(r.width)+'x'+Math.round(r.height)+
+               ' pane '+Math.round(d.width)+'x'+Math.round(d.height);})()`));
+
+    console.log('13. zoomed image: no scrollbars, panning works, dim stays:',await ev(c,sessionId,`(()=>{
+        const v=propertyList.getEditor('ROMGraphicsView');
+        propertyList.select(rom.monsterGraphics.item(11));
+        v.showBounds=true; v.zoom=16; v.resetPan(); v.resize(); v.redraw();
+        const pane=v.div, cd=v.canvasDiv;
+        const scrollable = pane.scrollWidth > pane.clientWidth || pane.scrollHeight > pane.clientHeight;
+        const d=pane.getBoundingClientRect();
+        pane.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,button:1,buttons:4,clientX:d.left+50,clientY:d.top+50}));
+        document.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,buttons:4,clientX:d.left-40,clientY:d.top-60}));
+        document.dispatchEvent(new MouseEvent('mouseup',{bubbles:true,button:1,clientX:d.left-40,clientY:d.top-60}));
+        const r=v.canvas.getBoundingClientRect();
+        const moved=(v.panX!==0||v.panY!==0);
+        // checker alignment when bounds are OFF
+        v.showBounds=false; v.redraw();
+        const wrapBgOff=getComputedStyle(v.canvasWrap).backgroundImage;
+        return 'canvas '+(v.canvas.width)+'x'+v.canvas.height+' pane '+pane.clientWidth+'x'+pane.clientHeight+
+               ' scrollbars='+scrollable+' panMoved='+moved+' ('+v.panX+','+v.panY+')'+
+               ' canvasStillVisible='+(r.width>0)+' wrapBgWhenOff='+wrapBgOff.slice(0,12);})()`));
 
     fs.writeFileSync('/tmp/ff5e-demo/edit-ui.png',Buffer.from((await c.send('Page.captureScreenshot',{format:'png'},sessionId)).data,'base64'));
     console.log('wrote /tmp/ff5e-demo/edit-ui.png');
