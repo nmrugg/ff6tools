@@ -2,6 +2,42 @@
 | ff6tools todo/wish list |
 +-------------------------+
 
+recently added
+--------------
+ * in-app graphics painting: pencil, flood fill, eyedropper (tool menu, keys
+   V/B/G/I, right-click is always the eyedropper), copy/paste with a movable
+   floating layer, Delete to clear a selection, middle-click pan, wheel zoom
+   anchored at the cursor, image-bounds and tile-grid overlays
+ * in-app palette colour editing (double-click / right-click a swatch)
+ * ff5 advance (u/e): monster graphics and monster palettes are now editable
+   (Battle -> Monster Graphics / Monster Palettes), named per monster
+ * ff3 nes (j): monster graphics are editable - six fixed-size classes (4x4,
+   4x6, 6x6, 6x6, 6x12, 12x6) selected by bits 5-7 (size) and bits 0-4 (index)
+   of $2E:$8B00, plus the monster graphics properties table, the 256 battle
+   palettes (new nesFixedPalette format: colour 0 is always black), battle
+   character graphics for all 24 jobs and the toad/mini graphics
+ * ff3 nes (j): every monster graphic is named after the monsters that use it,
+   every battle palette after the battle groups that use it, and every
+   character block after its job - names generated from the ROM itself
+ * ff3 nes (j): battle background, summon, battle sprite, map sprite and attack
+   graphics are now visible as raw 2bpp banks
+ * ff3 nes (j): fixed worldPalette, which pointed into the world tileset data
+   (world maps use mapPaletteBase, see 3A/9091)
+ * ff3 nes (u): the English translation got the same battle graphics (its
+   graphics data is byte-identical to the Japanese dump - only the text banks
+   differ), labelled with the ROM's own English monster and job names
+ * ff3 nes (u): added patches/ff3u-nes-fix-dump.ips for the mislabelled
+   English dump (header-only difference, mapper 132 vs 4)
+ * byte-exact undo: re-encoding is skipped when decoded data matches what was
+   loaded, and unchanged-size assemblies are no longer relocated
+ * navigator: Up/Down move the selection and expand the next section; fixed
+   leaf rows never highlighting because selectObject() indexed into a row's
+   child nodes
+ * new tests: ff3-nes-xcheck.js (range overlaps, decode parity, palette round
+   trip, edit lands on the right bytes, byte-exact undo), ff3-nes-shots.js,
+   ff3-nes-dump.py (render any region straight from the ROM),
+   ff3-nes-names.py / ff3-nes-add-graphics.py
+
 general
 -------
  * patch/asm support
@@ -42,6 +78,21 @@ gui
 
 game specific
 -------------
+ * ff3 nes (j): boss graphics need a per-game editor class - $2E9068 holds 24
+   2-byte pointers (bbs---tt tttttttt: tile offset, "load summon from bank $0C
+   and flip" flag, bank id x2) and $2A8000 holds 12x18 tile tilemaps; the
+   tilemap's graphics path has to be computed per boss, like the battle bg
+   editors do. See HANDOFF.md.
+ * ff3 nes (j): ff3-map.js dereferences this.rom.mapPalette, which the
+   definition does not define (only reachable from the unwired showRooms
+   control)
+ * ff3 nes (j): the monster/battle-screen palette ($009100, three interleaved
+   256-byte tables) is still only used by the map editor in JS; the graphics
+   view cannot select palettes from it
+ * map tileset painting: needs per-game *MapTileset class support and an
+   explicit warning that tilesets are shared between maps (reverted for now)
+ * in-app palette colour editing works, but only via the system colour picker;
+   consider a native 15-bit RGB control
  * add english string tables for ff6 steam version
  * world of ruin gets corrupted in roms expanded by ff3usme
  * ff5 monster ai

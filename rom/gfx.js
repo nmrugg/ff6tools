@@ -651,6 +651,53 @@ var GFX = {
                 return [new Uint32Array(dest.buffer, dest.byteOffset, Math.ceil(dest.byteLength / 4)), data.length];
             }
         },
+        // NES palette where the first colour is fixed (always black on screen)
+        // and only the remaining colours are stored - FF3 (NES) battle palettes
+        // are 3 bytes per palette, see 2E/9E28.
+        nesFixedPalette: {
+            key: "nesFixedPalette",
+            name: "NES Palette (Fixed Colour 0)",
+            encode: function(data) {
+                // 32-bit source, 8-bit destination; colour 0 is not stored
+                var src = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+                var colors = Math.ceil(data.byteLength / 4);
+                if (colors < 2) return [new Uint8Array(0), colors];
+                var dest = new Uint8Array(colors - 1);
+
+                var s = 4;  // skip the fixed colour
+                var d = 0;
+                var r, g, b;
+
+                while (d < dest.length) {
+                    b = src[s++];
+                    g = src[s++];
+                    r = src[s++];
+                    s++;
+                    dest[d++] = GFX.closestNESColor(r, g, b);
+                }
+                return [dest, colors];
+            },
+            decode: function(data) {
+                // 8-bit source, 32-bit destination; insert the fixed colour first
+                var src = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+                var dest = new Uint8Array((src.length + 1) * 4);
+
+                var s = 0;
+                var d = 0;
+                var c;
+
+                dest[d++] = 0x00; dest[d++] = 0x00; dest[d++] = 0x00; dest[d++] = 0xFF;
+                while (s < src.length) {
+                    c = src[s++] & 0x3F;
+                    dest[d++] = GFX.colorsNES[c][0];
+                    dest[d++] = GFX.colorsNES[c][1];
+                    dest[d++] = GFX.colorsNES[c][2];
+                    dest[d++] = 0xFF;
+                }
+                return [new Uint32Array(dest.buffer, dest.byteOffset, dest.byteLength / 4),
+                        src.length];
+            }
+        },
         rgb444: {
             key: "rgb444",
             name: "RGB444",
@@ -715,6 +762,21 @@ var GFX = {
             pal[i] = c | (c << 8) | (c << 16) | 0xFF000000;
         }
         return pal;
+    },
+
+    // index of the NES colour closest to an RGB value
+    closestNESColor: function(r, g, b) {
+        var bestColor = 0x0F;
+        var bestDiff = b * b + g * g + r * r;
+        for (var c = 0; c < GFX.colorsNES.length; c++) {
+            var color = GFX.colorsNES[c];
+            var diff = (b - color[0]) * (b - color[0]) +
+                       (g - color[1]) * (g - color[1]) +
+                       (r - color[2]) * (r - color[2]);
+            if (diff < bestDiff) { bestColor = c; bestDiff = diff; }
+            if (diff === 0) break;
+        }
+        return bestColor;
     },
 
     gammaCorrectedPaletteSNES: function(data) {

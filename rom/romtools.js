@@ -2011,6 +2011,7 @@ ROM.dataFormat = {
     "rgb444": GFX.paletteFormat.rgb444,
     "bgr555": GFX.paletteFormat.bgr555,
     "nesPalette": GFX.paletteFormat.nesPalette,
+    "nesFixedPalette": GFX.paletteFormat.nesFixedPalette,
 
     // tile formats
     "defaultTile": GFX.tileFormat.defaultTile,
@@ -3770,6 +3771,12 @@ function ROMArray(rom, definition, parent) {
     // {"arrayPath": "monsterGraphicsProperties", "pointerPath": "graphicsPointer",
     //  "sizeArrayPath": "monsterSize", "width": "width", "height": "height"}
     this.sizeFrom = definition.sizeFrom;
+
+    // per-item palette overrides, indexed by array item, e.g.
+    // "itemPalettes": ["battlePalettes[5]", [{"path": "battlePalettes[9]"}, "battlePalettes"]]
+    // (FF3 NES: a monster's palette comes from its battle group, so each graphic
+    //  gets its own default palette instead of sharing the array prototype's)
+    this.itemPalettes = definition.itemPalettes;
 }
 
 /*
@@ -3868,6 +3875,7 @@ Object.defineProperty(ROMArray.prototype, "definition", { get: function() {
     }
 
     if (this.sizeFrom) definition.sizeFrom = this.sizeFrom;
+    if (this.itemPalettes) definition.itemPalettes = this.itemPalettes;
 
     return definition;
 }});
@@ -4161,6 +4169,15 @@ ROMArray.prototype.disassemble = function(data) {
         }
     }
     this.arrayLength = this.array.length;
+
+    // per-item palette overrides (see the itemPalettes note in the constructor)
+    if (this.itemPalettes) {
+        for (var i = 0; i < this.array.length; i++) {
+            var pal = this.itemPalettes[i];
+            if (pal === undefined || pal === null) continue;
+            this.array[i].palette = pal;
+        }
+    }
 
     // initialize external pointer targets
     if (this.pointerObject) {

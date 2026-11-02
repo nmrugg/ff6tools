@@ -1310,11 +1310,32 @@ class ROMGraphicsView extends ROMEditor {
         var object = this.rom.parsePath(path, this.rom, index);
 
         // load ROMArray objects as multiple choice
-        if (object instanceof ROMArray) {
+        if (object instanceof ROMArray && !definition.whole) {
             this.graphicsArray.push(definition);
 
             // load the first array item as a placeholder
             object = object.item(0);
+
+        } else if (object instanceof ROMArray) {
+            // "whole": use every item's decoded graphics as one contiguous
+            // tile pool. Needed by tilemaps whose tiles index across several
+            // array items (FF3 NES boss tilemaps index the shared monster
+            // tile pool, which is stored as size-class arrays).
+            this.graphicsArray.push(definition);
+            const parts = [];
+            let total = 0;
+            for (let i = 0; i < object.arrayLength; i++) {
+                const item = object.item(i);
+                if (!item || !item.data) continue;
+                parts.push(item.data);
+                total += item.data.length;
+            }
+            const pool = new Uint8Array(total);
+            let at = 0;
+            for (const part of parts) { pool.set(part, at); at += part.length; }
+            object = { data: pool,
+                       tileWidth: object.assembly ? object.assembly.tileWidth : undefined,
+                       tileHeight: object.assembly ? object.assembly.tileHeight : undefined };
         }
 
         // get object data

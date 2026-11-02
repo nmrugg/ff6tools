@@ -47,6 +47,35 @@ https://www.patreon.com/everything8215
 - Final Fantasy VI Advance (J)
 - Final Fantasy VI Advance (E)
 
+### Modified and Mislabelled ROMs
+
+If a ROM's CRC32 does not match a built-in definition, FF6Tools asks you to
+choose one. Sometimes the difference is only in the header or in a patch that
+has been applied to the ROM, and the data itself is fine. The `patches/`
+directory contains IPS patches that restore two such dumps to the reference
+versions FF6Tools expects:
+
+- `ff5e-europe-strip-boot-patch.ips` — removes a boot-hook patch from a
+  *Final Fantasy V Advance (Europe)* ROM (reset vector redirected to injected
+  code at `0x08FB0000`, plus two trampolined game routines).
+- `ff3j-nes-fix-dump.ips` — fixes the iNES header of a *Final Fantasy III
+  (Japan)* ROM that declares mapper 132 instead of mapper 4. The 512 KiB of
+  program data in that dump is already byte-identical to the reference; only
+  five header bytes differ.
+- `ff3u-nes-fix-dump.ips` — the same five header bytes for a
+  *Final Fantasy III (English translation)* dump.
+
+All three patches were verified by applying them and confirming the result is
+byte-identical to the reference dump.
+
+### NES definition addresses
+
+Ranges in NES definition files are **not** file offsets. They are in the tool's
+mapper-mapped address space, converted by `ROM.MapMode` in `rom/romtools.js`
+(for example, for `mmc3`: `file = ((addr & 0xFF0000) >> 3) + (addr & 0x1FFF) + 0x10`,
+which includes the 16-byte iNES header). GBA definitions use real GBA addresses
+(`0x08000000`-based). If a graphics dump renders as noise, check this first.
+
 ## How to Use FF6Tools
 
 Although FF6Tools is a browser-based application, it runs entirely on your
@@ -116,7 +145,7 @@ monster graphics will be stored in the system's video memory.
 
 #### Graphics and Tilemap Editor
 
-FF6Tools does not have any built-in graphics editing capabilities. Instead,
+FF6Tools can view graphics and, for graphics objects, edit them directly.
 FF6Tools can import and export graphics in several different formats, which
 are compatible with widely available graphics editing programs. In order
 to preserve color palette data, it is recommended to use indexed png files
@@ -131,6 +160,66 @@ correct order for use with the ROM.
 The tilemap editor allows you to edit tile data which is used to assemble
 tile-based graphics into larger images. The graphics tiles which are available
 are displayed in the toolbox in the right pane and can be imported and exported
+just as described above. Some tilemaps allow you to flip tiles and change a
+tile's layering priority and palette index. Controls for these will be shown
+above the tilemap editor when they are available. Helpful masks can be enabled
+using the menu above the tilemap editor.
+
+Note that map tilesets are shared by many maps, so painting a tileset changes
+every map that uses it. Map tileset graphics are therefore not editable with
+the painting tools; use import/export for those.
+
+#### Painting Graphics
+
+When a graphics object is selected you can edit it directly, without leaving
+the app. A **Tool** menu appears above the editor:
+
+| tool | key | what it does |
+|---|---|---|
+| Select | `V` | drag a rectangle (used for partial imports) |
+| Pencil | `B` | paint single pixels; a stroke continues if the pointer leaves the image and returns |
+| Fill | `G` | flood-fill the contiguous region under the click |
+| Colour picker | `I` | pick up the palette index under the cursor |
+
+Other controls:
+
+- **Right-click is always the eyedropper**, anywhere in the editor pane, and it
+  tracks while the button is held. The cursor shows an eyedropper while held,
+  and the picker's bulb is tinted with the currently selected colour.
+- Click a colour in the **Palette** panel to choose the paint colour.
+  **Double-click or right-click a palette colour** to change that colour's RGB
+  value with the system colour picker.
+- The **Clipboard** menu (or `Ctrl+C` / `Ctrl+V`) copies and pastes a pixel
+  rectangle. A pasted layer "floats": drag it to position it, then press
+  `Enter` or click outside it to place it, or `Esc` to cancel. Transparent
+  pixels never overwrite, and the layer is kept inside the image.
+- `Delete` or `Backspace` clears the selected area to transparent.
+- **Middle-click (drag) pans** the image; the mouse wheel **zooms at the
+  cursor**, anywhere in the pane. `Shift`+wheel or `Alt`+wheel scrolls instead.
+- **Image bounds** dims the area outside the editable image and shades grid
+  cells that have no data behind them. **Tile grid** draws light tile
+  boundaries. Both are off by default.
+
+Painting, paste and delete are ordinary ROM actions, so `Ctrl+Z` undoes them.
+Undo restores the original compressed bytes exactly when the decoded data
+returns to the state that was loaded, so undoing all the way back leaves the ROM
+byte-identical.
+
+Each graphics object is linked to the palette it actually uses. In Final
+Fantasy III (J) and (U) on the NES, monster graphics are grouped by sprite
+size (4x4, 4x6, 6x6, 6x6, 6x12 and 12x6 tiles), every entry is labelled with
+the monsters that use it, and it opens with the palette those monsters fight
+with. Because a monster's tiles can use two palettes at once, the Palette
+panel also gets a dropdown listing every battle palette by name, so you can
+preview the same graphic against the other one.
+
+Bosses in that game are tilemaps (18x12 tile ids) that index the same shared
+monster tile pool, so they appear under **Boss Graphics** as editable tile
+layouts whose tiles you repaint through the monster graphics.
+
+In the navigator, `Up`/`Down` move the selection between entries instead of
+scrolling; running off the end of a section expands the next one and steps into
+it. The graphics tiles which are availableare displayed in the toolbox in the right pane and can be imported and exported
 just as described above. Some tilemaps allow you to flip tiles and change a
 tile's layering priority and palette index. Controls for these will be shown
 above the toolbox when they are available. Helpful masks can be enabled using

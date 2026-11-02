@@ -87,7 +87,10 @@ class ROMPaletteView {
     static isPaletteFormat(format) {
         if (!format) return false;
         const names = Array.isArray(format) ? format : [format];
-        return names.some(f => typeof f === 'string' && f.startsWith('bgr555'));
+        const paletteFormats = ['bgr555', 'rgb888', 'rgb444',
+                                'nesPalette', 'nesFixedPalette'];
+        return names.some(f => typeof f === 'string' &&
+            paletteFormats.some(p => f.startsWith(p)));
     }
 
     show() {}
@@ -225,6 +228,15 @@ class ROMPaletteView {
         this.definition = definition;
         this.paletteArray = [];
         this.observer.stopObservingAll();
+
+        // A *different* object was selected: start from that object's default
+        // palette instead of whatever palette the previous object had selected
+        // (the dropdown selection is otherwise sticky across objects).
+        const definitionJson = JSON.stringify(definition);
+        if (definitionJson !== this.definitionJson) {
+            this.selectedValue = null;
+            this.definitionJson = definitionJson;
+        }
 
         // recalculate number of rows per palette
         if (this.graphicsView.format) {
