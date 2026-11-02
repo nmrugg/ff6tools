@@ -2663,7 +2663,7 @@ ROM.dataFormat = {
             var mode = header[0]; // always 1
             if (mode !== 1) console.log("Invalid TOSE graphics format " + mode);
             var count = header[1]; // tile count
-            var dest = data.slice(8);
+            var dest = data.slice(8, 8 + count * 32);
             return [dest, data.length];
         }
     },
@@ -2709,7 +2709,7 @@ ROM.dataFormat = {
             var mode = header[0]; // always 3
             if (mode !== 3) console.log("Invalid TOSE palette format " + mode);
             var count = header[1]; // number of 16-bit colors
-            var dest = data.slice(8);
+            var dest = data.slice(8, 8 + count * 2);
             return [dest, 8 + count << 1];
         }
     },
@@ -3733,6 +3733,11 @@ function ROMArray(rom, definition, parent) {
     } else if (definition.itemRanges) {
         this.itemRanges = definition.itemRanges;
     }
+
+    // copy the display size (in tiles) from a record that points at this array:
+    // {"arrayPath": "monsterGraphicsProperties", "pointerPath": "graphicsPointer",
+    //  "sizeArrayPath": "monsterSize", "width": "width", "height": "height"}
+    this.sizeFrom = definition.sizeFrom;
 }
 
 /*
@@ -3829,6 +3834,8 @@ Object.defineProperty(ROMArray.prototype, "definition", { get: function() {
     } else if (this.itemRanges) {
         definition.itemRanges = this.itemRanges;
     }
+
+    if (this.sizeFrom) definition.sizeFrom = this.sizeFrom;
 
     return definition;
 }});
@@ -4147,6 +4154,43 @@ ROMArray.prototype.disassemble = function(data) {
                 isMapped: this.isMapped
             }, assembly);
             assembly.reference.push(pointerReference);
+        }
+    }
+
+    // copy the display size (in tiles) from the record that points here
+    if (this.sizeFrom) {
+        var sizeArray = this.parsePath(this.sizeFrom.arrayPath);
+        if (sizeArray && sizeArray instanceof ROMArray) {
+            for (var s = 0; s < sizeArray.arrayLength; s++) {
+                var record = sizeArray.item(s);
+                if (!record) continue;
+                var ptr = this.parsePath(this.sizeFrom.pointerPath, record);
+                if (!ptr || !ptr.target) continue;
+                var target = ptr.target;
+                if (target.width && target.height) continue; // first one wins
+                var wProp = record[this.sizeFrom.width];
+                var hProp = record[this.sizeFrom.height];
+                if ((!wProp || !hProp) && this.sizeFrom.sizeArrayPath) {
+                    var sizeArr = this.parsePath(this.sizeFrom.sizeArrayPath);
+                    var sizeRecord = sizeArr && sizeArr.item ? sizeArr.item(s) : null;
+                    if (sizeRecord) { wProp = sizeRecord[this.sizeFrom.width]; hProp = sizeRecord[this.sizeFrom.height]; }
+                }
+                if (!wProp || !hProp) continue;
+                var tw = target.tileWidth || 8;
+                var th = target.tileHeight || 8;
+                target.width = Math.max(1, Math.round(wProp.value / tw));
+                target.height = Math.max(1, Math.round(hProp.value / th));
+
+                // optionally pin this object's palette to the exact palette
+                // object referenced by the same record:
+                // "linkPalette": {"pointerPath": "palettePointer", "arrayKey": "monsterPalettes"}
+                if (this.sizeFrom.linkPalette) {
+                    var palProp = record[this.sizeFrom.linkPalette.pointerPath];
+                    if (palProp && palProp.target) {
+                        target.palette = `${this.sizeFrom.linkPalette.arrayKey}[${palProp.target.i}]`;
+                    }
+                }
+            }
         }
     }
 }

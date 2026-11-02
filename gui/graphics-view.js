@@ -523,7 +523,10 @@ class ROMGraphicsView extends ROMEditor {
         this.observer.stopObservingAll();
 
         this.object = object;
-        this.graphics = object.data;
+        // Work on a copy: if this aliased object.data, importGraphics() would
+        // mutate the decoded data in place and replaceData() would then compare
+        // equal and silently drop the edit (nothing would ever be saved).
+        this.graphics = object.data.slice();
         this.definition = null;
         this.width = object.width || 16;
         this.height = object.height || 16;
@@ -697,8 +700,12 @@ class ROMGraphicsView extends ROMEditor {
         this.observer.sleep();
         if (isArray(this.definition)) {
             if (this.definition.length === 1) this.saveGraphics(this.definition[0]);
-        } else {
+        } else if (this.definition) {
             this.saveGraphics(this.definition);
+        } else if (this.object) {
+            // editor mode: there is no definition, so write back to the object
+            // that is currently selected (otherwise the import is discarded)
+            this.object.replaceData(this.graphics, 0);
         }
 
         const graphicsSelectControl = document.getElementById('graphics-select-control');

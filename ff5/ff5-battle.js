@@ -341,23 +341,17 @@ class FF5Battle extends ROMEditor {
             monster.tiles = new Uint16Array(monster.w * monster.h / 64);
             for (var t = 0; t < monster.tiles.length; t++) monster.tiles[t] = t;
 
-            // load the graphics
-            const g = monster.id * 2;
-            const graphicsObject = this.rom.monsterGraphics.item(g);
-            if (!graphicsObject.format) {
-                graphicsObject.format = ['linear4bpp', 'tose-graphics', 'gba-lzss'];
-                graphicsObject.disassemble(graphicsObject.parent.data);
-            }
+            // load the graphics and palette through this monster's pointer record
+            monster.gfxProperties = this.rom.monsterGraphicsProperties.item(monster.id);
+            this.observer.startObservingSub(monster.gfxProperties, this.loadBattle);
+
+            const graphicsObject = monster.gfxProperties.graphicsPointer.target;
+            const paletteObject = monster.gfxProperties.palettePointer.target;
+            if (!graphicsObject || !paletteObject) return monster;
+
             monster.graphics = graphicsObject.data;
             this.observer.startObserving(graphicsObject, this.loadBattle);
 
-            // load palette
-            const p = monster.id * 2 + 1;
-            const paletteObject = this.rom.monsterGraphics.item(p);
-            if (!paletteObject.format) {
-                paletteObject.format = ['bgr555', 'tose-palette'];
-                paletteObject.disassemble(paletteObject.parent.data);
-            }
             monster.palette = paletteObject.data;
             this.observer.startObserving(paletteObject, this.loadBattle);
         }
