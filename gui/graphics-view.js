@@ -59,6 +59,7 @@ class ROMGraphicsView extends ROMEditor {
         this.panning = null;    // middle-button pan state
         this.panX = 0;          // image offset from centre (transform based, so
         this.panY = 0;          // it works whether or not the pane can scroll)
+        this.panObject = null;  // object the current pan belongs to
         this.showBounds = false; // shade the area outside the image data
         this.showGrid = false;  // light tile grid lines
         this.cursors = null; // generated lazily
@@ -81,6 +82,9 @@ class ROMGraphicsView extends ROMEditor {
         // overlay is positioned relative to this so the two always line up
         this.canvasWrap = document.createElement('div');
         this.canvasWrap.classList.add('graphics-canvas-wrap');
+        // opaque background behind the image: without it the bounds dimming
+        // shows through the sprite's transparent pixels and darkens everything
+        this.canvasWrap.classList.add('background-gradient');
         this.canvasWrap.appendChild(this.canvas);
         this.canvasWrap.appendChild(this.cursorCanvas);
         this.canvasDiv.appendChild(this.canvasWrap);
@@ -189,6 +193,11 @@ class ROMGraphicsView extends ROMEditor {
         const bytesPerTile = this.bytesPerTile || (tw * th);
         const tileCount = Math.floor(this.graphics.length / bytesPerTile);
 
+        // dim the pane outside the image itself
+        if (this.canvasDiv) {
+            this.canvasDiv.classList.toggle('show-bounds', !!this.showBounds);
+        }
+
         const imgW = this.width * tw * this.zoom;
         const imgH = this.height * th * this.zoom;
 
@@ -255,7 +264,8 @@ class ROMGraphicsView extends ROMEditor {
 
         const self = this;
 
-        // painting tools (only when a graphics object is selected directly)
+        // painting tools (only for a directly selected graphics object; the
+        // tileset toolbox is deliberately left alone - see notes)
         if (this.editorMode && this.object) {
             this.addList('changeTool','Tool',['Select','Pencil','Fill','Colour picker'],
                 function(t){ self.tool=t; self.updateCursor(); self.redraw(); },
@@ -341,13 +351,17 @@ class ROMGraphicsView extends ROMEditor {
         this.closeList();
 
         if (e.button === 2) return;   // handled by the picker path
-        if (e.button === 1) return;   // handled by the pan path
+        if (e.button === 1) {
+            // stop Chrome's middle-click autoscroll so we can pan instead
+            e.preventDefault();
+            return;
+        }
 
         // so the keyboard shortcuts below reach this view
         if (this.editorMode && this.div.focus) this.div.focus();
 
         // painting tools take priority over tile selection
-        if (this.editorMode && !this.toolboxMode && this.object && this.tool !== 0) {
+        if (this.paintTarget() && this.tool !== 0) {
             const p = this.pixelAt(e);
             if (!p) return;
             switch (this.tool) {
@@ -371,7 +385,7 @@ class ROMGraphicsView extends ROMEditor {
 
         // a floating pasted layer is moved by dragging, and set by clicking
         // outside it (or pressing Enter)
-        if (this.tool === 0 && this.float && this.editorMode && this.object) {
+        if (this.tool === 0 && this.float && this.paintTarget()) {
             if (this.floatContains(e)) {
                 const p = this.pixelAt(e);
                 this.floatDrag = {dx: p.x - this.float.x, dy: p.y - this.float.y};
@@ -428,7 +442,7 @@ class ROMGraphicsView extends ROMEditor {
         }
 
         // pencil drag
-        if (this.tool === 1 && (e.buttons & 1) && this.editorMode && this.object && !this.panning) {
+        if (this.tool === 1 && (e.buttons & 1) && this.paintTarget() && !this.panning) {
             const p = this.pixelAt(e);
             if (p) {
                 if (!this.painting) {           // resumed after leaving the canvas
@@ -495,7 +509,7 @@ class ROMGraphicsView extends ROMEditor {
 
     copySelection() {
         const r = this.selectionPixelRect();
-        if (!r || !this.object) return false;
+        if (!r || !this.paintTarget()) return false;
         const pixels = new Uint8Array(r.w * r.h);
         for (let y = 0; y < r.h; y++) {
             for (let x = 0; x < r.w; x++) {
@@ -509,7 +523,7 @@ class ROMGraphicsView extends ROMEditor {
     }
 
     pasteClipboard(x, y) {
-        if (!this.clipboard || !this.object) return false;
+        if (!this.clipboard || !this.paintTarget()) return false;
         if (!isNumber(x)) x = this.selection ? this.selection.x * this.tileWidth : 0;
         if (!isNumber(y)) y = this.selection ? this.selection.y * this.tileHeight : 0;
         this.float = {
@@ -545,7 +559,8 @@ class ROMGraphicsView extends ROMEditor {
             }
         }
         if (compareTypedArrays(before, this.graphics)) { this.redraw(); return false; }
-        this.object.replaceData(this.graphics.subarray(0, this.object.data.length), 0);
+        const target = this.paintTarget();
+        target.replaceData(this.graphics.subarray(0, target.data.length), 0);
         this.redraw();
         return true;
     }
@@ -563,6 +578,11 @@ class ROMGraphicsView extends ROMEditor {
         if (!p) return false;
         const f = this.float;
         return p.x >= f.x && p.x < f.x + f.w && p.y >= f.y && p.y < f.y + f.h;
+    }
+
+    // the object the paint tools write to (editor mode only)
+    paintTarget() {
+        return (this.editorMode && this.object) ? this.object : null;
     }
 
     // ---- painting -------------------------------------------------------
@@ -587,9 +607,7 @@ class ROMGraphicsView extends ROMEditor {
     }
 
     mouseWheel(e) {
-        // this view is also used as a toolbox for map/tilemap editors
-        if (!this.editorMode) return;
-
+        // zoom works in both editor and toolbox mode (map tilesets included)
         if (e.shiftKey || e.altKey) return; // let the pane scroll normally
 
         e.preventDefault();
@@ -603,6 +621,7 @@ class ROMGraphicsView extends ROMEditor {
         let z = Math.round(Math.log2(this.zoom)) + dir;
         z = Math.max(-2, Math.min(4, z));
         this.zoom = Math.pow(2, z);
+        this.userZoom = this.zoom;
 
         const zoomControl = document.getElementById('zoom');
         if (zoomControl) {
@@ -778,10 +797,28 @@ class ROMGraphicsView extends ROMEditor {
 
     // write the edited pixels back to the ROM object (creates an undo action)
     commitPaint() {
-        if (!this.object || !this.paintStart) return;
+        const target = this.paintTarget();
+        if (!target || !this.paintStart) return;
         if (compareTypedArrays(this.paintStart, this.graphics)) { this.paintStart = null; return; }
-        this.object.replaceData(this.graphics.subarray(0, this.object.data.length), 0);
+        target.replaceData(this.graphics.subarray(0, target.data.length), 0);
         this.paintStart = null;
+    }
+
+    // clear the selected area to transparent (colour 0)
+    deleteSelection() {
+        const r = this.selectionPixelRect();
+        const target = this.paintTarget();
+        if (!r || !target) return false;
+        this.paintStart = this.graphics.slice();
+        for (let y = 0; y < r.h; y++) {
+            for (let x = 0; x < r.w; x++) {
+                const off = this.tileOffset(r.x + x, r.y + y);
+                if (off >= 0 && off < this.graphics.length) this.graphics[off] = 0;
+            }
+        }
+        this.commitPaint();
+        this.redraw();
+        return true;
     }
 
     selectTile(tile) {
@@ -951,8 +988,13 @@ class ROMGraphicsView extends ROMEditor {
             // calculate zoom assuming no scroll bar
             this.canvasDiv.style.overflowY = 'hidden';
             this.canvasDiv.style.width = `${clientWidth}px`;
-            this.zoom = this.canvasDiv.clientWidth / this.ppu.width;
-            if (this.zoom > 4.0) this.zoom = 4.0;
+            if (!this.userZoom) {
+                this.zoom = this.canvasDiv.clientWidth / this.ppu.width;
+                if (this.zoom > 4.0) this.zoom = 4.0;
+            } else {
+                // the user has zoomed with the wheel: honour it
+                this.zoom = this.userZoom;
+            }
             this.canvasDiv.style.height = `${this.ppu.height * this.zoom}px`;
 
             if (!isNumber(clientHeight)) {
@@ -970,8 +1012,10 @@ class ROMGraphicsView extends ROMEditor {
                 this.canvasDiv.style.overflowY = 'scroll';
 
                 // recalculate zoom based on client width (max 4)
-                this.zoom = this.canvasDiv.clientWidth / this.ppu.width;
-                if (this.zoom > 4.0) this.zoom = 4.0;
+                if (!this.userZoom) {
+                    this.zoom = this.canvasDiv.clientWidth / this.ppu.width;
+                    if (this.zoom > 4.0) this.zoom = 4.0;
+                }
             }
 
         } else {
@@ -1089,6 +1133,10 @@ class ROMGraphicsView extends ROMEditor {
             if (ctrl && e.key.toLowerCase() === 'v') { if (this.pasteClipboard()) e.preventDefault(); return; }
             if (e.key === 'Enter') { if (this.commitFloat()) e.preventDefault(); return; }
             if (e.key === 'Escape') { if (this.cancelFloat()) e.preventDefault(); return; }
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                if (this.deleteSelection()) e.preventDefault();
+                return;
+            }
 
             // V select, B pencil, G fill, I picker; 1-9 and 0 pick a palette colour
             switch (e.key.toLowerCase()) {
@@ -1183,7 +1231,13 @@ class ROMGraphicsView extends ROMEditor {
 
         this.resetControls();
         this.updateCursor();
-        this.resetPan();
+        // only re-centre when a different object is opened; re-selecting the same
+        // object happens after every edit (the observer fires) and must not
+        // throw away where the user had panned to
+        if (this.panObject !== object) {
+            this.panObject = object;
+            this.resetPan();
+        }
         this.updateTilemap();
         this.resize();
         this.redraw();
@@ -1192,6 +1246,8 @@ class ROMGraphicsView extends ROMEditor {
         // this is only valid in toolbox mode
         this.toolboxMode = true;
         this.editorMode = false;
+        this.graphicsObject = null;
+        this.userZoom = null;   // auto-fit the new definition again
 
         // load graphics from a definition (via ROMTilemapView)
         this.definition = definition;
@@ -1258,6 +1314,10 @@ class ROMGraphicsView extends ROMEditor {
 
         // get object data
         if (!object || !object.data) return;
+
+        // remember which object the toolbox is showing, so the paint tools can
+        // edit map tileset graphics too
+        this.graphicsObject = object;
         let data = object.data;
 
         if (object.width) this.width = object.width;

@@ -779,6 +779,11 @@ body {
     flex: 0 0 auto;
 }
 
+/* when image bounds are shown, dim everything outside the editable image */
+.graphics-canvas-div.show-bounds {
+    background-image: linear-gradient(rgba(12, 12, 16, 0.55), rgba(12, 12, 16, 0.55));
+}
+
 .graphics-controls {
     align-items: center;
     /* background: linear-gradient(#fff,#ddd); */

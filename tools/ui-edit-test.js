@@ -120,6 +120,99 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
                ' image='+objB.width+'x'+objB.height+' tiles dragTo='+movedFloat.x+
                ' clampedTo='+clampedX+' (tile '+tile+') pastedMatchesClipboard='+match;})()`));
 
+    console.log('7. pan survives a fill / pencil commit:',await ev(c,sessionId,`(()=>{
+        const v=propertyList.getEditor('ROMGraphicsView');
+        propertyList.select(rom.monsterGraphics.item(11));
+        v.zoom=8; v.resize(); v.redraw(); v.resetPan();
+        v.panX=17; v.panY=-9; v.applyPan();
+        v.tool=2; v.color=4;
+        const p=PT(4,4);
+        v.canvas.dispatchEvent(new MouseEvent('mousedown',Object.assign({bubbles:true,button:0,buttons:1},p)));
+        v.canvas.dispatchEvent(new MouseEvent('mouseup',Object.assign({bubbles:true,button:0},p)));
+        const afterFill={x:v.panX,y:v.panY};
+        v.tool=1;
+        const q=PT(6,6);
+        v.canvas.dispatchEvent(new MouseEvent('mousedown',Object.assign({bubbles:true,button:0,buttons:1},q)));
+        v.canvas.dispatchEvent(new MouseEvent('mouseup',Object.assign({bubbles:true,button:0},q)));
+        return 'after fill '+afterFill.x+','+afterFill.y+' after pencil '+v.panX+','+v.panY+
+               (afterFill.x===17&&v.panX===17?' STAYS':' JUMPED');})()`));
+
+    console.log('8. Delete clears the selection:',await ev(c,sessionId,`(()=>{
+        const v=propertyList.getEditor('ROMGraphicsView');
+        v.tool=0; v.zoom=6; v.resize(); v.redraw();
+        const before=Array.from(v.graphics.slice(0,16));
+        v.selection={x:0,y:0,w:2,h:1,tilemap:new Uint32Array(2)};
+        const ok=v.deleteSelection();
+        const after=Array.from(rom.monsterGraphics.item(11).data.slice(0,16));
+        return 'deleteSelection='+ok+' nonZeroBefore='+before.filter(x=>x).length+
+               ' nonZeroAfter='+after.filter(x=>x).length;})()`));
+
+    console.log('9. bounds dims outside the image:',await ev(c,sessionId,`(()=>{
+        const v=propertyList.getEditor('ROMGraphicsView');
+        v.showBounds=true; v.redraw();
+        const on=v.canvasDiv.classList.contains('show-bounds');
+        const bgOn=getComputedStyle(v.canvasDiv).backgroundImage;
+        v.showBounds=false; v.redraw();
+        const off=v.canvasDiv.classList.contains('show-bounds');
+        const bgOff=getComputedStyle(v.canvasDiv).backgroundImage;
+        return 'on='+on+' off='+off+' | bg on: '+bgOn.slice(0,34)+' | bg off: '+bgOff.slice(0,20);})()`));
+
+    console.log('10. map tileset toolbox: controls + pan + zoom:',await ev(c,sessionId,`(()=>{
+        propertyList.select(rom.mapTilesets.item(0));
+        const tm=propertyList.getEditor('ROMTilemapView');
+        const gv=tm.graphicsView;
+        const hasTool=!!document.getElementById('changeTool');
+        const before={zoom:gv.zoom,x:gv.panX,y:gv.panY};
+        const d=gv.div.getBoundingClientRect();
+        gv.div.dispatchEvent(new WheelEvent('wheel',{deltaY:-100,bubbles:true,cancelable:true,clientX:d.left+30,clientY:d.top+30}));
+        gv.div.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,button:1,buttons:4,clientX:d.left+30,clientY:d.top+30}));
+        gv.div.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,buttons:4,clientX:d.left+5,clientY:d.top+12}));
+        gv.div.dispatchEvent(new MouseEvent('mouseup',{bubbles:true,button:1,clientX:d.left+5,clientY:d.top+12}));
+        // paint a pixel in the tileset with the pencil
+        gv.tool=1; gv.color=5;
+        const r=gv.canvas.getBoundingClientRect();
+        gv.canvas.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,button:0,buttons:1,clientX:r.left+2,clientY:r.top+2}));
+        gv.canvas.dispatchEvent(new MouseEvent('mouseup',{bubbles:true,button:0,clientX:r.left+2,clientY:r.top+2}));
+        return 'toolMenu='+hasTool+' zoom '+before.zoom+'->'+gv.zoom+' pan '+gv.panX.toFixed(0)+','+gv.panY.toFixed(0)+
+               ' paintTarget='+(gv.paintTarget()?gv.paintTarget().path:'none');})()`));
+
+    console.log('11. palette colour edit via double click:',await ev(c,sessionId,`(()=>{
+        const pal=rom.monsterPalettes.item(0);
+        propertyList.select(pal);
+        const pv=propertyList.getEditor('ROMGraphicsView').paletteView;
+        const obj=pv.paletteObject;
+        const before=obj.data[3]>>>0;
+        // point at colour index 3 (first row, 4th swatch)
+        const e=new MouseEvent('dblclick',{bubbles:true,cancelable:true});
+        Object.defineProperty(e,'offsetX',{value:3.5*pv.colorWidth});
+        Object.defineProperty(e,'offsetY',{value:0.5*pv.colorHeight});
+        pv.editColor(e);
+        const input=[...document.querySelectorAll('input[type=color]')].pop();
+        if(!input) return 'no colour input created';
+        input.value='#302010';
+        input.dispatchEvent(new Event('input'));
+        const after=rom.monsterPalettes.item(0).data[3]>>>0;
+        return 'before 0x'+before.toString(16)+' -> after 0x'+after.toString(16)+
+               ' (want ff102030) changed='+(before!==after);})()`));
+
+    console.log('12. arrows enter the NEXT section, not a later open one:',await ev(c,sessionId,`(()=>{
+        const cat=[...document.querySelectorAll('.nav-category > p')].find(p=>p.textContent.trim()==='Battle');
+        if(!cat.parentElement.classList.contains('shown')) cat.click();
+        const rowsOf=(name)=>[...document.querySelectorAll('.nav-array > p')].find(x=>x.textContent.trim()===name);
+        const mg=rowsOf('Monster Graphics'), mp=rowsOf('Monster Palettes'), cg=rowsOf('Battle Backgrounds');
+        if(!mg||!mp||!cg) return 'sections not found: '+[!!mg,!!mp,!!cg];
+        if(!mg.parentElement.classList.contains('shown')) mg.click();
+        if(mp.parentElement.classList.contains('shown')) mp.click();     // close Monster Palettes
+        if(!cg.parentElement.classList.contains('shown')) cg.click();    // leave a later one OPEN
+        const mrows=[...mg.parentElement.querySelectorAll('li.nav-object')].filter(l=>l.offsetParent!==null);
+        mrows[mrows.length-1].querySelector(':scope > p').click();
+        const pane=document.getElementById('left-pane'); pane.focus();
+        pane.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));
+        const sel=document.querySelector('#left-pane li.selected');
+        const section=sel?sel.closest('.nav-array').querySelector(':scope > p').textContent.trim():'(none)';
+        return 'closed Monster Palettes, left Character Graphics open -> landed in: '+section+
+               ' (expect Monster Palettes); palettesNowOpen='+mp.parentElement.classList.contains('shown');})()`));
+
     fs.writeFileSync('/tmp/ff5e-demo/edit-ui.png',Buffer.from((await c.send('Page.captureScreenshot',{format:'png'},sessionId)).data,'base64'));
     console.log('wrote /tmp/ff5e-demo/edit-ui.png');
     ws.close();

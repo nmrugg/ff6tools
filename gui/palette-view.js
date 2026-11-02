@@ -37,6 +37,51 @@ class ROMPaletteView {
         // add event handlers
         const self = this;
         this.canvas.onmousedown = function(e) { self.mouseDown(e); };
+        // double click (or right click) a swatch to edit that colour
+        this.canvas.ondblclick = function(e) { self.editColor(e); };
+        this.canvas.oncontextmenu = function(e) { self.editColor(e); return false; };
+    }
+
+    // index of the colour under the mouse
+    colorIndexAt(e) {
+        const row = Math.floor(e.offsetY / this.colorHeight);
+        const col = Math.floor(e.offsetX / this.colorWidth);
+        if (row < 0 || col < 0 || row >= this.rows) return -1;
+        const p = Math.floor(row / this.rowsPerPalette);
+        const index = (row % this.rowsPerPalette) * this.colorsPerRow + col;
+        if (col < 0 || col >= this.colorsPerRow || index >= this.colorsPerPalette) return -1;
+        return p * this.colorsPerPalette + index;
+    }
+
+    editColor(e) {
+        const index = this.colorIndexAt(e);
+        const object = this.paletteObject;
+        if (index < 0 || !object || !object.data) return;
+
+        const cur = object.data[index] >>> 0;
+        const hex = (n) => n.toString(16).padStart(2, '0');
+        const input = document.createElement('input');
+        input.type = 'color';
+        input.value = '#' + hex(cur & 0xFF) + hex((cur >> 8) & 0xFF) + hex((cur >> 16) & 0xFF);
+        input.style.position = 'absolute';
+        input.style.left = '-9999px';
+        document.body.appendChild(input);
+
+        const self = this;
+        input.oninput = function() {
+            const v = input.value;                 // #rrggbb
+            const r = parseInt(v.substr(1, 2), 16);
+            const g = parseInt(v.substr(3, 2), 16);
+            const b = parseInt(v.substr(5, 2), 16);
+            const next = Uint32Array.from(object.data);
+            next[index] = (0xFF << 24) | (b << 16) | (g << 8) | r;
+            // pass a copy: replaceData bails out if it is handed the same buffer
+            object.replaceData(next, 0);
+            self.redraw();
+            if (self.graphicsView) self.graphicsView.redraw();
+        };
+        input.onchange = function() { document.body.removeChild(input); };
+        input.click();
     }
 
     static isPaletteFormat(format) {
@@ -260,6 +305,7 @@ class ROMPaletteView {
 
         // get object data (must be 32-bit)
         if (!object || !object.data) return;
+        this.paletteObject = object;   // used by the colour editor
         let data = new Uint32Array(object.data.buffer);
 
         // observe the palette object

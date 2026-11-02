@@ -165,6 +165,20 @@ class ROMTilemapView extends ROMEditor {
             self.changeZoom();
         }, 0, 4);
 
+        // graphics editing tools for the tileset shown in the toolbox
+        const gv = this.graphicsView;
+        this.addList('changeTool','Tool',['Select','Pencil','Fill','Colour picker'],
+            function(t){ gv.tool=t; gv.updateCursor(); gv.redraw(); },
+            function(t){ return t===gv.tool; });
+
+        this.addTwoState('graphics-show-bounds', function(checked) {
+            gv.showBounds = checked; gv.redraw();
+        }, 'Image bounds', gv.showBounds);
+
+        this.addTwoState('graphics-show-grid', function(checked) {
+            gv.showGrid = checked; gv.redraw();
+        }, 'Tile grid', gv.showGrid);
+
         // this.updateToolbox();
         this.toolbox.show(false);
         this.div.focus();

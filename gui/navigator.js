@@ -114,8 +114,30 @@ class ROMNavigator {
         return true;
     }
 
+    // the expandable section (li.nav-array) that owns a row, if any
+    sectionOf(node) {
+        if (!node) return null;
+        if (node.classList && node.classList.contains('nav-array')) return node;
+        return node.closest ? node.closest('li.nav-array') : null;
+    }
+
     // move the navigator selection by delta items among the visible entries
     moveSelection(delta) {
+
+        const section = this.sectionOf(this.selectedNode);
+
+        // stay inside the current section first, so a closed section between two
+        // open ones is not skipped over
+        if (section) {
+            const rows = [...section.querySelectorAll('li.nav-object')]
+                .filter(li => li.querySelector(':scope > p') && li.offsetParent !== null);
+            const index = rows.indexOf(this.selectedNode);
+            if (index >= 0) {
+                const next = rows[index + delta];
+                if (next) return this.selectRow(next);
+                return this.openAdjacentSection(section, delta);
+            }
+        }
 
         const rows = this.visibleRows();
         if (!rows.length) return false;
@@ -126,7 +148,6 @@ class ROMNavigator {
         const next = rows[index + delta];
         if (next) return this.selectRow(next);
 
-        // ran off the end of the visible rows: open the next section and step in
         return this.openAdjacentSection(this.selectedNode, delta);
     }
 
