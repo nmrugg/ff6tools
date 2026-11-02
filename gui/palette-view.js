@@ -23,6 +23,7 @@ class ROMPaletteView {
         this.definition = null;
         this.palette = new Uint32Array(16);
         this.p = 0; // selected palette index
+        this.c = 0; // selected colour index within the palette
         this.colorsPerPalette = 16; // number of colors per palette
         this.rowsPerPalette = 1; // number of rows per palette
         this.colorsPerRow = 16; // number of colors per row
@@ -48,6 +49,13 @@ class ROMPaletteView {
         let row = Math.floor(e.offsetY / this.colorHeight);
         row = Math.min(Math.max(row, 0), this.rows - 1);
         this.p = Math.floor(row / this.rowsPerPalette);
+
+        // also pick the colour within the palette (used as the paint colour)
+        const col = Math.min(Math.max(Math.floor(e.offsetX / this.colorWidth), 0), this.colorsPerRow - 1);
+        const rowInPalette = row % this.rowsPerPalette;
+        const colorIndex = rowInPalette * this.colorsPerRow + col;
+        if (colorIndex < this.colorsPerPalette) this.setColor(colorIndex);
+
         this.redraw();
         this.graphicsView.updateTilemap();
         this.graphicsView.redraw();
@@ -108,6 +116,14 @@ class ROMPaletteView {
         }
     }
 
+    setColor(colorIndex) {
+        this.c = colorIndex;
+        // the graphics buffer stores the raw colour index; the selected palette
+        // row only affects how that index is displayed
+        if (this.graphicsView) this.graphicsView.color = colorIndex;
+        this.redraw();
+    }
+
     drawCursor() {
         if (!this.showCursor) return;
 
@@ -132,6 +148,20 @@ class ROMPaletteView {
         x++; y++; w -= 2; h -= 2;
         ctx.strokeStyle = 'black';
         ctx.strokeRect(x, y, w, h);
+
+        // highlight the currently selected colour
+        if (isNumber(this.c) && this.c >= 0 && this.c < this.colorsPerPalette) {
+            const rowInPalette = Math.floor(this.c / this.colorsPerRow);
+            const col = this.c % this.colorsPerRow;
+            let cx = col * this.colorWidth;
+            let cy = (this.p * this.rowsPerPalette + rowInPalette) * this.colorHeight;
+            let cw = this.colorWidth, chh = this.colorHeight;
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'white';
+            ctx.strokeRect(cx + 1.5, cy + 1.5, cw - 3, chh - 3);
+            ctx.strokeStyle = 'black';
+            ctx.strokeRect(cx + 0.5, cy + 0.5, cw - 1, chh - 1);
+        }
     }
 
     loadDefinition(definition) {

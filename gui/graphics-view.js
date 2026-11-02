@@ -41,6 +41,12 @@ class ROMGraphicsView extends ROMEditor {
             tilemap: new Uint32Array()
         };
 
+        // painting (0 = Select, 1 = Pencil, 2 = Fill, 3 = Colour picker)
+        this.tool = 0;
+        this.color = 1;      // palette index used by pencil/fill
+        this.painting = false;
+        this.paintStart = null;
+
         // off-screen canvas for graphics at 1x zoom
         this.graphicsCanvas = document.createElement('canvas');
         this.ppu = new GFX.PPU();
@@ -105,6 +111,13 @@ class ROMGraphicsView extends ROMEditor {
 
         const self = this;
 
+        // painting tools (only when a graphics object is selected directly)
+        if (this.editorMode && this.object) {
+            this.addList('changeTool','Tool',['Select','Pencil','Fill','Colour picker'],
+                function(t){ self.tool=t; self.redraw(); },
+                function(t){ return t===self.tool; });
+        }
+
         // add a control to select the sprite sheet
         if (this.object && this.object.spriteSheet) {
             function onChangeSpriteSheet(ss) {
@@ -161,6 +174,32 @@ class ROMGraphicsView extends ROMEditor {
 
     mouseDown(e) {
         this.closeList();
+
+        // so the keyboard shortcuts below reach this view
+        if (this.editorMode && this.div.focus) this.div.focus();
+
+        // painting tools take priority over tile selection
+        if (this.editorMode && !this.toolboxMode && this.object && this.tool !== 0) {
+            const p = this.pixelAt(e);
+            if (!p) return;
+            switch (this.tool) {
+                case 1: // pencil
+                    this.painting = true;
+                    this.paintStart = this.graphics.slice();
+                    this.paintPixel(p.x, p.y);
+                    break;
+                case 2: // fill
+                    this.paintStart = this.graphics.slice();
+                    this.floodFill(p.x, p.y);
+                    this.commitPaint();
+                    break;
+                case 3: // colour picker
+                    this.pickColor(p.x, p.y);
+                    break;
+            }
+            return;
+        }
+
         let x = Math.floor(e.offsetX / this.zoom / this.tileWidth);
         let y = Math.floor(e.offsetY / this.zoom / this.tileHeight);
         x = Math.min(Math.max(x, 0), this.width - 1);
@@ -175,6 +214,11 @@ class ROMGraphicsView extends ROMEditor {
     }
 
     mouseUp(e) {
+        if (this.painting) {
+            this.painting = false;
+            this.commitPaint();
+            return;
+        }
         this.clickPoint = null;
     }
 
@@ -183,6 +227,13 @@ class ROMGraphicsView extends ROMEditor {
     }
 
     mouseMove(e) {
+
+        // pencil drag
+        if (this.painting && this.tool === 1) {
+            const p = this.pixelAt(e);
+            if (p) this.paintPixel(p.x, p.y);
+            return;
+        }
 
         let x = Math.floor(e.offsetX / this.zoom / this.tileWidth);
         let y = Math.floor(e.offsetY / this.zoom / this.tileHeight);
@@ -224,6 +275,82 @@ class ROMGraphicsView extends ROMEditor {
                 tilemap: new Uint32Array(this.selection.tilemap)
             };
         }
+    }
+
+    // ---- painting -------------------------------------------------------
+
+    // pixel coordinates under the mouse, in the graphics image
+    pixelAt(e) {
+        if (!this.graphics || !this.width) return null;
+        const x = Math.floor(e.offsetX / this.zoom);
+        const y = Math.floor(e.offsetY / this.zoom);
+        const w = this.width * this.tileWidth;
+        const h = this.height * this.tileHeight;
+        if (x < 0 || y < 0 || x >= w || y >= h) return null;
+        const off = this.tileOffset(x, y);
+        if (off < 0 || off >= this.graphics.length) return null;
+        return {x, y};
+    }
+
+    // byte offset of a pixel in the decoded graphics buffer, or -1 if the
+    // pixel falls in a tile that does not exist in the data
+    tileOffset(x, y) {
+        const tw = this.tileWidth, th = this.tileHeight;
+        const col = Math.floor(x / tw), row = Math.floor(y / th);
+        const t = row * this.width + col;
+        if (col < 0 || row < 0 || col >= this.width || row >= this.height) return -1;
+        const off = t * this.bytesPerTile + (y % th) * tw + (x % tw);
+        if (off >= this.graphics.length) return -1;
+        return off;
+    }
+
+    paintPixel(x, y) {
+        const off = this.tileOffset(x, y);
+        if (off < 0 || this.graphics[off] === this.color) return;
+        this.graphics[off] = this.color;
+        this.redraw();
+    }
+
+    floodFill(x, y) {
+        const start = this.tileOffset(x, y);
+        if (start < 0) return;
+        const target = this.graphics[start];
+        if (target === this.color) return;
+
+        const tw = this.tileWidth, th = this.tileHeight;
+        const W = this.width * tw, H = this.height * th;
+        const stack = [[x, y]];
+        const seen = new Set();
+        while (stack.length) {
+            const [cx, cy] = stack.pop();
+            const off = this.tileOffset(cx, cy);
+            if (off < 0 || this.graphics[off] !== target) continue;
+            const key = off;
+            if (seen.has(key)) continue;
+            seen.add(key);
+            this.graphics[off] = this.color;
+            if (cx > 0)      stack.push([cx-1, cy]);
+            if (cx < W-1)    stack.push([cx+1, cy]);
+            if (cy > 0)      stack.push([cx, cy-1]);
+            if (cy < H-1)    stack.push([cx, cy+1]);
+        }
+        this.redraw();
+    }
+
+    pickColor(x, y) {
+        const off = this.tileOffset(x, y);
+        if (off < 0) return;
+        this.color = this.graphics[off];
+        this.paletteView.setColor(this.color);
+        this.redraw();
+    }
+
+    // write the edited pixels back to the ROM object (creates an undo action)
+    commitPaint() {
+        if (!this.object || !this.paintStart) return;
+        if (compareTypedArrays(this.paintStart, this.graphics)) { this.paintStart = null; return; }
+        this.object.replaceData(this.graphics.subarray(0, this.object.data.length), 0);
+        this.paintStart = null;
     }
 
     selectTile(tile) {
@@ -508,12 +635,31 @@ class ROMGraphicsView extends ROMEditor {
 
         // this is only valid in editor mode
         this.editorMode = true;
+        this.toolboxMode = false;
 
         this.div.innerHTML = '';
         this.div.classList.add('map-edit');
         // this.div.id = 'map-edit';
         this.div.tabIndex = 0;
         this.div.style.outline = 'none';
+        this.div.onkeydown = (e) => {
+            // V select, B pencil, G fill, I picker; 1-9 and 0 pick a palette colour
+            switch (e.key.toLowerCase()) {
+                case 'v': this.tool = 0; break;
+                case 'b': this.tool = 1; break;
+                case 'g': this.tool = 2; break;
+                case 'i': this.tool = 3; break;
+                default:
+                    if (e.key >= '0' && e.key <= '9') {
+                        const idx = e.key === '0' ? 10 : Number(e.key);
+                        this.color = idx;
+                        this.paletteView.setColor(idx);
+                    } else return;
+            }
+            e.preventDefault();
+            this.resetControls();
+            this.redraw();
+        };
         this.div.appendChild(this.canvasDiv);
 
         // select an object with this view as the editor
@@ -575,6 +721,7 @@ class ROMGraphicsView extends ROMEditor {
 
         // this is only valid in toolbox mode
         this.toolboxMode = true;
+        this.editorMode = false;
 
         // load graphics from a definition (via ROMTilemapView)
         this.definition = definition;
