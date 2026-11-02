@@ -49,45 +49,85 @@ class ROMNavigator {
             if (!p) return;
             const li = p.parentElement;
             if (!li || li.tagName !== 'LI') return;
+            // only leaf rows anchor the arrow-key selection; headers just expand
+            if (!li.classList.contains('nav-object')) return;
             self.markSelected(li);
-        }, true);
+        });
     }
 
     markSelected(li) {
         const leftPane = document.getElementById('left-pane');
         if (!leftPane) return;
-        const prev = leftPane.querySelector('li.selected');
-        if (prev && prev !== li) prev.classList.remove('selected');
+        // clear everywhere: selectObject() can put the class on a child span
+        for (const el of leftPane.querySelectorAll('.selected')) el.classList.remove('selected');
         li.classList.add('selected');
         this.selectedNode = li;
+    }
+
+    // selectable rows that are currently visible (leaf entries only: array and
+    // category headers are not selectable, they just expand/collapse)
+    visibleRows() {
+        const leftPane = document.getElementById('left-pane');
+        if (!leftPane) return [];
+        return [...leftPane.querySelectorAll('li.nav-object')]
+            .filter(li => li.querySelector(':scope > p') && li.offsetParent !== null);
+    }
+
+    isExpanded(li) {
+        return li.classList.contains('shown');
+    }
+
+    // find the next/previous expandable section after a node and open it
+    openAdjacentSection(fromNode, delta) {
+        const leftPane = document.getElementById('left-pane');
+        if (!leftPane) return false;
+
+        const arrays = [...leftPane.querySelectorAll('li.nav-array')];
+        let index = arrays.findIndex(a => a === fromNode || a.contains(fromNode));
+        if (index < 0) index = delta > 0 ? -1 : arrays.length;
+
+        for (let i = index + delta; i >= 0 && i < arrays.length; i += delta) {
+            const array = arrays[i];
+            if (array.contains(fromNode)) continue;
+            if (!this.isExpanded(array)) {
+                const p = array.querySelector(':scope > p');
+                if (p) p.click();           // expands the section
+            }
+            const first = [...array.querySelectorAll('li.nav-object')]
+                .filter(li => li.querySelector(':scope > p') && li.offsetParent !== null);
+            if (!first.length) continue;
+            const target = delta > 0 ? first[0] : first[first.length - 1];
+            this.selectRow(target);
+            return true;
+        }
+        return false;
+    }
+
+    selectRow(li) {
+        const p = li ? li.querySelector(':scope > p') : null;
+        if (!p) return false;
+        p.click();
+        // mark after the click: the app's own selectObject() adds the class to a
+        // child span for leaf rows, which would otherwise win
+        this.markSelected(li);
+        li.scrollIntoView({block: 'nearest'});
+        return true;
     }
 
     // move the navigator selection by delta items among the visible entries
     moveSelection(delta) {
 
-        const leftPane = document.getElementById('left-pane');
-        if (!leftPane) return false;
+        const rows = this.visibleRows();
+        if (!rows.length) return false;
 
-        // only rows that own a <p> directly and are currently visible
-        const visible = [...leftPane.querySelectorAll('li')].filter(li => {
-            const p = li.querySelector(':scope > p');
-            return p && li.offsetParent !== null;
-        });
-        if (!visible.length) return false;
+        let index = this.selectedNode ? rows.indexOf(this.selectedNode) : -1;
+        if (index < 0) index = delta > 0 ? -1 : rows.length;
 
-        let index = this.selectedNode ? visible.indexOf(this.selectedNode) : -1;
-        if (index < 0) index = delta > 0 ? -1 : visible.length;
+        const next = rows[index + delta];
+        if (next) return this.selectRow(next);
 
-        const next = visible[index + delta];
-        if (!next) return false;
-
-        const p = next.querySelector(':scope > p');
-        if (!p) return false;
-
-        this.markSelected(next);
-        p.click();
-        next.scrollIntoView({block: 'nearest'});
-        return true;
+        // ran off the end of the visible rows: open the next section and step in
+        return this.openAdjacentSection(this.selectedNode, delta);
     }
 
     liForCategory(definition) {
@@ -286,7 +326,7 @@ class ROMNavigator {
         if (!li) return;
 
         let newSelection = null;
-        if (isNumber(object.i)) {
+        if (isNumber(object.i) && li.tagName === 'UL') {
             // select an array element
             newSelection = li.childNodes[object.i];
         } else {

@@ -126,7 +126,10 @@ class ROMPaletteView {
         this.c = colorIndex;
         // the graphics buffer stores the raw colour index; the selected palette
         // row only affects how that index is displayed
-        if (this.graphicsView) this.graphicsView.color = colorIndex;
+        if (this.graphicsView) {
+            this.graphicsView.color = colorIndex;
+            if (this.graphicsView.updateCursor) this.graphicsView.updateCursor();
+        }
         this.redraw();
     }
 

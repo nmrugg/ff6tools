@@ -27,6 +27,8 @@ class ROMGraphicsView extends ROMEditor {
         this.tilemap = new Uint32Array();
         this.spriteSheet = null;
         this.ss = 0; // sprite sheet index
+        this.float = null;      // pasted but not yet committed layer
+        this.floatDrag = null;  // drag offset while moving that layer
         this.object = null;
         this.definition = null;
         this.format = GFX.graphicsFormat.linear8bpp;
@@ -40,6 +42,12 @@ class ROMGraphicsView extends ROMEditor {
             x: 0, y: 0, w: 0, h: 0,
             tilemap: new Uint32Array()
         };
+        this.float = null;
+        this.floatDrag = null;
+        this.painting = false;
+        this.picking = false;
+        this.panning = null;
+        this.rightHeld = false;
 
         // painting (0 = Select, 1 = Pencil, 2 = Fill, 3 = Colour picker)
         this.tool = 1;       // pencil by default; V switches back to Select
@@ -51,7 +59,7 @@ class ROMGraphicsView extends ROMEditor {
         this.panning = null;    // middle-button pan state
         this.panX = 0;          // image offset from centre (transform based, so
         this.panY = 0;          // it works whether or not the pane can scroll)
-        this.showBounds = true; // shade the area outside the image data
+        this.showBounds = false; // shade the area outside the image data
         this.showGrid = false;  // light tile grid lines
         this.cursors = null; // generated lazily
 
@@ -207,8 +215,7 @@ class ROMGraphicsView extends ROMEditor {
             ctx.strokeRect(0.5, 0.5, Math.round(imgW) - 1, Math.round(imgH) - 1);
         }
 
-        if (this.showGrid && tileCount) {
-            ctx.lineWidth = 1;
+        if (this.showGrid && tileCount) {            ctx.lineWidth = 1;
             ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
             ctx.beginPath();
             for (let col = 1; col < this.width; col++) {
@@ -220,6 +227,26 @@ class ROMGraphicsView extends ROMEditor {
                 ctx.moveTo(0, y); ctx.lineTo(Math.round(imgW), y);
             }
             ctx.stroke();
+        }
+
+        // the floating pasted layer, drawn semi-transparent over the image
+        if (this.float) {
+            const f = this.float;
+            const z = this.zoom;
+            ctx.globalAlpha = 0.75;
+            for (let y = 0; y < f.h; y++) {
+                for (let x = 0; x < f.w; x++) {
+                    const c = f.pixels[y * f.w + x];
+                    if (!c) continue;                    // transparent
+                    const col = this.paletteView.palette[c] >>> 0;
+                    ctx.fillStyle = `rgb(${col & 0xFF},${(col >> 8) & 0xFF},${(col >> 16) & 0xFF})`;
+                    ctx.fillRect((f.x + x) * z, (f.y + y) * z, z, z);
+                }
+            }
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = 'rgba(80, 170, 255, 0.95)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(f.x * z + 1, f.y * z + 1, f.w * z - 2, f.h * z - 2);
         }
     }
 
@@ -282,6 +309,16 @@ class ROMGraphicsView extends ROMEditor {
             this.addTwoState('graphics-show-grid', function(checked) {
                 self.showGrid = checked; self.redraw();
             }, 'Tile grid', this.showGrid);
+
+            // clipboard: opens a small menu with Copy / Paste / Set / Cancel
+            this.addList('changeClipboard','Clipboard',['Copy','Paste','Set layer','Cancel layer'],
+                function(i){
+                    if (i === 0) self.copySelection();
+                    else if (i === 1) self.pasteClipboard();
+                    else if (i === 2) self.commitFloat();
+                    else self.cancelFloat();
+                },
+                function(){ return false; });
         }
     }
 
@@ -304,6 +341,7 @@ class ROMGraphicsView extends ROMEditor {
         this.closeList();
 
         if (e.button === 2) return;   // handled by the picker path
+        if (e.button === 1) return;   // handled by the pan path
 
         // so the keyboard shortcuts below reach this view
         if (this.editorMode && this.div.focus) this.div.focus();
@@ -331,20 +369,42 @@ class ROMGraphicsView extends ROMEditor {
             return;
         }
 
+        // a floating pasted layer is moved by dragging, and set by clicking
+        // outside it (or pressing Enter)
+        if (this.tool === 0 && this.float && this.editorMode && this.object) {
+            if (this.floatContains(e)) {
+                const p = this.pixelAt(e);
+                this.floatDrag = {dx: p.x - this.float.x, dy: p.y - this.float.y};
+            } else {
+                this.commitFloat();
+            }
+            return;
+        }
+
         let x = Math.floor(e.offsetX / this.zoom / this.tileWidth);
         let y = Math.floor(e.offsetY / this.zoom / this.tileHeight);
         x = Math.min(Math.max(x, 0), this.width - 1);
         y = Math.min(Math.max(y, 0), this.height - 1);
-        this.clickPoint = { x: x, y: y };
+        this.clickPoint = {x: x, y: y};
         this.mouseMove(e);
 
         // select the graphics object in editor mode
-        if (this.editorMode && this.object) {
+        if (this.editorMode && this.object && propertyList.selection.current !== this.object) {
             propertyList.select(this.object);
         }
     }
 
+    mouseOut(e) {
+        // keep an in-progress stroke alive when the pointer leaves the canvas,
+        // as long as the button is still held down
+        if (this.painting && (e.buttons & 1)) return;
+        if (this.clickPoint && (e.buttons & 1)) return;
+        this.mouseUp(e);
+    }
+
     mouseUp(e) {
+        if (e.button !== undefined && e.button !== 0) return;
+        this.floatDrag = null;
         if (this.painting) {
             this.painting = false;
             this.commitPaint();
@@ -353,18 +413,33 @@ class ROMGraphicsView extends ROMEditor {
         this.clickPoint = null;
     }
 
-    mouseOut(e) {
-        this.mouseUp(e);
-    }
-
     mouseMove(e) {
 
-        // pencil drag
-        if (this.painting && this.tool === 1) {
+        // dragging a floating pasted layer
+        if (this.floatDrag && this.float) {
             const p = this.pixelAt(e);
-            if (p) this.paintPixel(p.x, p.y);
+            if (p) {
+                this.float.x = p.x - this.floatDrag.dx;
+                this.float.y = p.y - this.floatDrag.dy;
+                this.clampFloat();
+                this.redraw();
+            }
             return;
         }
+
+        // pencil drag
+        if (this.tool === 1 && (e.buttons & 1) && this.editorMode && this.object && !this.panning) {
+            const p = this.pixelAt(e);
+            if (p) {
+                if (!this.painting) {           // resumed after leaving the canvas
+                    this.painting = true;
+                    this.paintStart = this.graphics.slice();
+                }
+                this.paintPixel(p.x, p.y);
+                return;
+            }
+        }
+        if (this.painting && this.tool === 1) return;   // pointer is outside the image
 
         let x = Math.floor(e.offsetX / this.zoom / this.tileWidth);
         let y = Math.floor(e.offsetY / this.zoom / this.tileHeight);
@@ -406,6 +481,88 @@ class ROMGraphicsView extends ROMEditor {
                 tilemap: new Uint32Array(this.selection.tilemap)
             };
         }
+    }
+
+    // ---- copy / paste (floating layer) ---------------------------------
+
+    // pixel rectangle of the current tile selection, or null
+    selectionPixelRect() {
+        if (!this.selection || !this.selection.w || !this.selection.h) return null;
+        const x = this.selection.x * this.tileWidth;
+        const y = this.selection.y * this.tileHeight;
+        return {x, y, w: this.selection.w * this.tileWidth, h: this.selection.h * this.tileHeight};
+    }
+
+    copySelection() {
+        const r = this.selectionPixelRect();
+        if (!r || !this.object) return false;
+        const pixels = new Uint8Array(r.w * r.h);
+        for (let y = 0; y < r.h; y++) {
+            for (let x = 0; x < r.w; x++) {
+                const off = this.tileOffset(r.x + x, r.y + y);
+                pixels[y * r.w + x] = off < 0 ? 0 : this.graphics[off];
+            }
+        }
+        this.clipboard = pixels;
+        this.clipboardSize = {w: r.w, h: r.h};
+        return true;
+    }
+
+    pasteClipboard(x, y) {
+        if (!this.clipboard || !this.object) return false;
+        if (!isNumber(x)) x = this.selection ? this.selection.x * this.tileWidth : 0;
+        if (!isNumber(y)) y = this.selection ? this.selection.y * this.tileHeight : 0;
+        this.float = {
+            x, y,
+            w: this.clipboardSize.w, h: this.clipboardSize.h,
+            pixels: Uint8Array.from(this.clipboard),
+        };
+        this.redraw();
+        return true;
+    }
+
+    // keep the floating layer inside the editable image
+    clampFloat() {
+        if (!this.float) return;
+        const maxX = this.width * this.tileWidth - this.float.w;
+        const maxY = this.height * this.tileHeight - this.float.h;
+        this.float.x = Math.max(0, Math.min(this.float.x, Math.max(0, maxX)));
+        this.float.y = Math.max(0, Math.min(this.float.y, Math.max(0, maxY)));
+    }
+
+    commitFloat() {
+        if (!this.float) return false;
+        this.clampFloat();
+        const f = this.float;
+        this.float = null;
+        const before = this.graphics.slice();
+        for (let y = 0; y < f.h; y++) {
+            for (let x = 0; x < f.w; x++) {
+                const c = f.pixels[y * f.w + x];
+                if (!c) continue;                    // colour 0 is transparent
+                const off = this.tileOffset(f.x + x, f.y + y);
+                if (off >= 0 && off < this.graphics.length) this.graphics[off] = c;
+            }
+        }
+        if (compareTypedArrays(before, this.graphics)) { this.redraw(); return false; }
+        this.object.replaceData(this.graphics.subarray(0, this.object.data.length), 0);
+        this.redraw();
+        return true;
+    }
+
+    cancelFloat() {
+        if (!this.float) return false;
+        this.float = null;
+        this.redraw();
+        return true;
+    }
+
+    floatContains(e) {
+        if (!this.float) return false;
+        const p = this.pixelAt(e);
+        if (!p) return false;
+        const f = this.float;
+        return p.x >= f.x && p.x < f.x + f.w && p.y >= f.y && p.y < f.y + f.h;
     }
 
     // ---- painting -------------------------------------------------------
@@ -495,10 +652,14 @@ class ROMGraphicsView extends ROMEditor {
             ctx.fill(); outline(ctx);
         });
         const dropper=draw(ctx=>{
+            const rgb=this.colourRGB(this.color);
             ctx.fillStyle='#fff';
             ctx.beginPath(); ctx.moveTo(4,20); ctx.lineTo(7,13); ctx.lineTo(14,6); ctx.lineTo(17,9); ctx.lineTo(10,16); ctx.closePath();
             ctx.fill(); outline(ctx);
             ctx.beginPath(); ctx.moveTo(14,6); ctx.lineTo(17,3); ctx.lineTo(21,7); ctx.lineTo(18,10); ctx.closePath(); ctx.fill(); outline(ctx);
+            // bulb shows the colour currently selected
+            ctx.fillStyle=rgb;
+            ctx.beginPath(); ctx.arc(18.5,5.5,2.6,0,Math.PI*2); ctx.closePath(); ctx.fill(); outline(ctx);
         });
 
         this.cursors = {
@@ -508,10 +669,22 @@ class ROMGraphicsView extends ROMEditor {
             2: `url("${bucket}") 20 20, copy`,
             3: `url("${dropper}") 4 20, crosshair`,
         };
+        this.cursorColor = this.color;
         return this.cursors;
     }
 
+    // css colour string for a palette index of the object being edited
+    colourRGB(index) {
+        const pal = this.paletteView && this.paletteView.palette;
+        if (!pal || !pal.length || !isNumber(index)) return '#ffffff';
+        const c = pal[Math.min(index, pal.length - 1)] >>> 0;
+        const r = c & 0xFF, g = (c >> 8) & 0xFF, b = (c >> 16) & 0xFF;
+        return `rgb(${r},${g},${b})`;
+    }
+
     updateCursor() {
+        // rebuild the cursor art when the selected colour changes
+        if (this.cursors && this.cursorColor !== this.color) this.cursors = null;
         const cursors = this.makeCursors();
         if (this.panning) {
             this.canvas.style.cursor = this.panning.moved ? 'grabbing' : 'grab';
@@ -596,8 +769,10 @@ class ROMGraphicsView extends ROMEditor {
     pickColor(x, y) {
         const off = this.tileOffset(x, y);
         if (off < 0) return;
+        if (this.color === this.graphics[off]) return;
         this.color = this.graphics[off];
         this.paletteView.setColor(this.color);
+        this.updateCursor();
         this.redraw();
     }
 
@@ -909,6 +1084,12 @@ class ROMGraphicsView extends ROMEditor {
         this.div.tabIndex = 0;
         this.div.style.outline = 'none';
         this.div.onkeydown = (e) => {
+            const ctrl = e.ctrlKey || e.metaKey;
+            if (ctrl && e.key.toLowerCase() === 'c') { if (this.copySelection()) e.preventDefault(); return; }
+            if (ctrl && e.key.toLowerCase() === 'v') { if (this.pasteClipboard()) e.preventDefault(); return; }
+            if (e.key === 'Enter') { if (this.commitFloat()) e.preventDefault(); return; }
+            if (e.key === 'Escape') { if (this.cancelFloat()) e.preventDefault(); return; }
+
             // V select, B pencil, G fill, I picker; 1-9 and 0 pick a palette colour
             switch (e.key.toLowerCase()) {
                 case 'v': this.tool = 0; break;
@@ -933,15 +1114,17 @@ class ROMGraphicsView extends ROMEditor {
         if (!(object instanceof ROMGraphics)) {
 
             // a standalone palette object: show it in the palette panel and keep
-            // the last graphics displayed for reference
+            // the last graphics displayed for reference. Deliberately does NOT
+            // change this.object, so painting still targets the graphics.
             if (ROMPaletteView.isPaletteFormat(object.format)) {
-                this.object = object;
+                this.paletteObject = object;
                 this.paletteView.loadDefinition(object.path);
                 this.paletteView.updateToolbox();
                 this.paletteView.resize();
                 this.paletteView.redraw();
                 this.resetControls();
                 this.updateCursor();
+                return;
             }
             return;
         }
@@ -965,6 +1148,12 @@ class ROMGraphicsView extends ROMEditor {
             x: 0, y: 0, w: 0, h: 0,
             tilemap: new Uint32Array()
         };
+        this.float = null;
+        this.floatDrag = null;
+        this.painting = false;
+        this.picking = false;
+        this.panning = null;
+        this.rightHeld = false;
         this.spriteSheet = null;
 
         // get the graphics format
