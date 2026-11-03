@@ -24,13 +24,20 @@
         }, {
             "name": "Battle",
             "list": [
-                {"path": "monsterGraphics4x4"}, {"path": "monsterGraphics4x6"}, {"path": "monsterGraphics6x6"}, {"path": "monsterGraphics6x6b"}, {"path": "monsterGraphics6x12"}, {"path": "monsterGraphics12x6"}, {"path": "monsterGraphicsProperties"}, {"path": "battlePalettes"}, {"path": "battleCharacterGraphics"}, {"path": "battleCharacterGraphicsStatus"}, {"path": "battleBackgroundGraphics"}, {"path": "summonGraphics"}, {"path": "battleSpriteGraphics"}, {"path": "attackGraphics"}, {"path": "mapSpriteGraphics"}
+                {"path": "monsterGraphics4x4"}, {"path": "monsterGraphics4x6"}, {"path": "monsterGraphics6x6"}, {"path": "monsterGraphics6x6b"}, {"path": "monsterGraphics6x12"}, {"path": "monsterGraphics12x6"}, {"path": "monsterGraphicsProperties"}, {"path": "battlePalettes"}, {"path": "battleCharacterGraphics"}, {"path": "battleCharacterGraphicsStatus"}, {"path": "battleBackgroundGraphics"}, {"path": "battleSpriteGraphics"}, {"path": "attackGraphics"}, {"path": "mapSpriteGraphics"}
             ]
         }, {
             "name": "Boss Graphics",
             "list": [
                 {"path": "bossGraphicsPointers"},
                 {"path": "bossTilemap0"}, {"path": "bossTilemap1"}, {"path": "bossTilemap2"}, {"path": "bossTilemap3"}, {"path": "bossTilemap4"}, {"path": "bossTilemap5"}, {"path": "bossTilemap6"}, {"path": "bossTilemap7"}, {"path": "bossTilemap8"}, {"path": "bossTilemap9"}, {"path": "bossTilemap10"}, {"path": "bossTilemap11"}, {"path": "bossTilemap12"}, {"path": "bossTilemap13"}, {"path": "bossTilemap14"}, {"path": "bossTilemap15"}, {"path": "bossTilemap16"}, {"path": "bossTilemap17"}, {"path": "bossTilemap18"}, {"path": "bossTilemap19"}, {"path": "bossTilemap20"}, {"path": "bossTilemap21"}, {"path": "bossTilemap22"}, {"path": "bossTilemap23"}
+            ]
+        }, {
+            "name": "Summon Graphics",
+            "list": [
+                {"path": "summonProperties"},
+                {"path": "summonGraphics"},
+                {"path": "summonTilemap0"}, {"path": "summonTilemap1"}, {"path": "summonTilemap2"}, {"path": "summonTilemap3"}, {"path": "summonTilemap4"}, {"path": "summonTilemap5"}, {"path": "summonTilemap6"}, {"path": "summonTilemap7"}
             ]
         }, {
             "name": "Text",
@@ -58,84 +65,86 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
+            "itemAttributes": ["0000", "0001", "0011", "0000", "0000", "0000", "0000", "0011", "0011", "0000", "0000", "0011", "0011", "0000", "0011", "0011"],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[137]"},
-                            {"path": "battlePalettes[160]"},
+                            {"path": "battlePalettes[91]", "name": "RedCap (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[133]", "name": "Knocker (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[63]"},
-                            {"path": "battlePalettes[64]"},
+                            {"path": "battlePalettes[63]", "name": "KillerBee (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[64]", "name": "KillerBee (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[89]"},
-                            {"path": "battlePalettes[107]"},
+                            {"path": "battlePalettes[72]", "name": "Icefry (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[89]", "name": "Firefry (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[53]"},
-                            {"path": "battlePalettes[94]"},
+                            {"path": "battlePalettes[53]", "name": "Carbuncle (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[94]", "name": "Carbuncle (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[1]"},
-                            {"path": "battlePalettes[104]"},
+                            {"path": "battlePalettes[1]", "name": "Were-Rat (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[104]", "name": "Were-Rat (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[189]"},
-                            {"path": "battlePalettes[63]"},
+                            {"path": "battlePalettes[45]", "name": "SeaDevil (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[63]", "name": "KillerFish (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[6]"},
-                            {"path": "battlePalettes[2]"},
+                            {"path": "battlePalettes[2]", "name": "Leprecaun (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[6]", "name": "Leprecaun (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[132]"},
-                            {"path": "battlePalettes[104]"},
+                            {"path": "battlePalettes[104]", "name": "Liliput (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[209]", "name": "Pygman (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[217]"},
+                            {"path": "battlePalettes[83]", "name": "BloodBat (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[217]", "name": "PoisonBat (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[53]"},
-                            {"path": "battlePalettes[94]"},
+                            {"path": "battlePalettes[53]", "name": "BlueWisp (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[94]", "name": "BlueWisp (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[109]"},
-                            {"path": "battlePalettes[45]"},
+                            {"path": "battlePalettes[109]", "name": "Balloon, Bomb (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[186]", "name": "Balloon (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[13]"},
-                            {"path": "battlePalettes[14]"},
+                            {"path": "battlePalettes[13]", "name": "DiveEagle (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[14]", "name": "DiveEagle (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[180]"},
-                            {"path": "battlePalettes[187]"},
+                            {"path": "battlePalettes[74]", "name": "Pudding (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[75]", "name": "Pudding (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[194]"},
-                            {"path": "battlePalettes[52]"},
+                            {"path": "battlePalettes[167]", "name": "GoldCoin (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[52]", "name": "CurseCoin (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[194]"},
-                            {"path": "battlePalettes[52]"},
+                            {"path": "battlePalettes[80]", "name": "Lemwraith (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[98]", "name": "Lemwraith (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[189]"},
-                            {"path": "battlePalettes[63]"},
+                            {"path": "battlePalettes[45]", "name": "RuinWave (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[63]", "name": "SeaElmntl (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -143,7 +152,7 @@
                 "length": 16,
                 "default": "Monster Graphics %i",
                 "string": {
-                    "0": "Goblin, Knocker, RedCap +11", "1": "KillerBee, Hornet", "2": "Firefry, Icefry", "3": "Carbuncle, Boulder", "4": "Were-Rat", "5": "KillerFish, SeaDevil", "6": "Leprecaun, Farjalug", "7": "Liliput, Pygman", "8": "PoisonBat, BloodBat", "9": "BlueWisp, RedWisp", "10": "Bomb, Balloon, Grenade", "11": "DiveEagle, GoldEagle", "12": "Slime, RedMallow, Pudding", "13": "CurseCoin, GoldCoin", "14": "Laruwai, Lemwraith", "15": "SeaElmntl, RuinWave"
+                    "0": "*Bahamut, *Chocobo, *Hobgoblin, *Ifrit +10", "1": "Hornet, KillerBee", "2": "Firefry, Icefry", "3": "Boulder, Carbuncle", "4": "Were-Rat", "5": "KillerFish, SeaDevil", "6": "Farjalug, Leprecaun", "7": "Liliput, Pygman", "8": "BloodBat, PoisonBat", "9": "BlueWisp, RedWisp", "10": "*Grenade, Balloon, Bomb", "11": "DiveEagle, GoldEagle", "12": "Pudding, RedMallow, Slime", "13": "CurseCoin, GoldCoin", "14": "Laruwai, Lemwraith", "15": "RuinWave, SeaElmntl"
                 }
             }
         },
@@ -162,124 +171,125 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
+            "itemAttributes": ["001100", "110000", "110000", "000100", "110000", "001111", "111100", "101000", "110000", "000000", "000011", "000000", "000000", "000000", "110010", "100000", "000000", "100000", "001001", "100000", "000011", "100000", "001000", "000000"],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[132]"},
-                            {"path": "battlePalettes[217]"},
+                            {"path": "battlePalettes[83]", "name": "PutiMage (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[132]", "name": "Puti (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[53]"},
-                            {"path": "battlePalettes[94]"},
+                            {"path": "battlePalettes[53]", "name": "EyeFang (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[94]", "name": "EyeFang (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[204]"},
-                            {"path": "battlePalettes[206]"},
+                            {"path": "battlePalettes[57]", "name": "Cocktrice (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[70]", "name": "Cocktrice (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[109]"},
-                            {"path": "battlePalettes[90]"},
+                            {"path": "battlePalettes[61]", "name": "Shadow (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[62]", "name": "Shadow (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[141]"},
-                            {"path": "battlePalettes[142]"},
+                            {"path": "battlePalettes[61]", "name": "Revenant (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[62]", "name": "Revenant (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[124]"},
-                            {"path": "battlePalettes[125]"},
+                            {"path": "battlePalettes[23]", "name": "M.Helcan (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[24]", "name": "M.Helcan (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[48]"},
-                            {"path": "battlePalettes[51]"},
+                            {"path": "battlePalettes[48]", "name": "Sahuagin (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[51]", "name": "Sahuagin (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[109]"},
-                            {"path": "battlePalettes[90]"},
+                            {"path": "battlePalettes[80]", "name": "Pharaoh (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[98]", "name": "Pharaoh (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[74]"},
-                            {"path": "battlePalettes[75]"},
+                            {"path": "battlePalettes[23]", "name": "Sorcerer (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[24]", "name": "Sorcerer (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[93]"},
-                            {"path": "battlePalettes[168]"},
+                            {"path": "battlePalettes[93]", "name": "Qumqum (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[168]", "name": "Qumqum (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[180]"},
-                            {"path": "battlePalettes[187]"},
+                            {"path": "battlePalettes[70]", "name": "DarkFoot (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[72]", "name": "DarkFoot (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[125]"},
-                            {"path": "battlePalettes[118]"},
+                            {"path": "battlePalettes[118]", "name": "Bugbear (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[125]", "name": "Bugbear (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[171]"},
-                            {"path": "battlePalettes[167]"},
+                            {"path": "battlePalettes[167]", "name": "GoldKngt. (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[171]", "name": "GoldKngt. (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[1]"},
-                            {"path": "battlePalettes[104]"},
+                            {"path": "battlePalettes[104]", "name": "BloodWorm (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[1]", "name": "BloodWorm (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[111]"},
-                            {"path": "battlePalettes[41]"},
+                            {"path": "battlePalettes[41]", "name": "FlameDevil (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[111]", "name": "FlameDevil (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[122]"},
-                            {"path": "battlePalettes[75]"},
+                            {"path": "battlePalettes[75]", "name": "Flyer, MageFlyer (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[122]", "name": "Flyer (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[77]"},
-                            {"path": "battlePalettes[73]"},
+                            {"path": "battlePalettes[73]", "name": "Needler (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[77]", "name": "Needler (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[236]"},
-                            {"path": "battlePalettes[107]"},
+                            {"path": "battlePalettes[59]", "name": "Kage (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[107]", "name": "Shinobi (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[59]"},
+                            {"path": "battlePalettes[59]", "name": "Leader (1)", "offset": 0},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[143]"},
-                            {"path": "battlePalettes[152]"},
+                            {"path": "battlePalettes[143]", "name": "Werewolf (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[152]", "name": "Werewolf (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[6]"},
-                            {"path": "battlePalettes[2]"},
+                            {"path": "battlePalettes[2]", "name": "DarkFace (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[6]", "name": "DarkFace (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[195]"},
-                            {"path": "battlePalettes[32]"},
+                            {"path": "battlePalettes[195]", "name": "Ouroboros (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[32]", "name": "Ouroboros (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[122]"},
-                            {"path": "battlePalettes[75]"},
+                            {"path": "battlePalettes[75]", "name": "Gorgone (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[112]", "name": "Cafjel (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[132]"},
-                            {"path": "battlePalettes[134]"},
+                            {"path": "battlePalettes[70]", "name": "GiganToad (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[72]", "name": "GiganToad (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -287,7 +297,7 @@
                 "length": 24,
                 "default": "Monster Graphics %i",
                 "string": {
-                    "0": "Puti, PutiMage", "1": "EyeFang, DarkEye", "2": "Basilisk, Cocktrice", "3": "Skeleton, Shadow", "4": "Zombie, Revenant", "5": "Helcan, M.Helcan", "6": "Sahuagin, Merman", "7": "Mummy, Pharaoh", "8": "Magician, Sorcerer", "9": "Qumqum", "10": "Tarantula, DarkFoot", "11": "Bugbear, GoldBear", "12": "GoldKngt., DarkKngt.", "13": "BloodWorm, SandWorm", "14": "FlameDevil", "15": "Flyer, MageFlyer", "16": "Needler, DthNeedle", "17": "Shinobi, Kage", "18": "Leader", "19": "Werewolf, Lynx", "20": "DarkFace, Ohishuki", "21": "Ouroboros, Gt.Boros", "22": "Gorgone, Cafjel", "23": "VenomToad, GiganToad"
+                    "0": "Puti, PutiMage", "1": "DarkEye, EyeFang", "2": "Basilisk, Cocktrice", "3": "Shadow, Skeleton", "4": "Revenant, Zombie", "5": "Helcan, M.Helcan", "6": "Merman, Sahuagin", "7": "Mummy, Pharaoh", "8": "Magician, Sorcerer", "9": "*Qumqum", "10": "DarkFoot, Tarantula", "11": "Bugbear, GoldBear", "12": "DarkKngt., GoldKngt.", "13": "BloodWorm, SandWorm", "14": "*FlameDevil", "15": "Flyer, MageFlyer", "16": "*DthNeedle, Needler", "17": "*Kage, *Shinobi", "18": "*Leader", "19": "Lynx, Werewolf", "20": "DarkFace, Ohishuki", "21": "*Gt.Boros, *Ouroboros", "22": "Cafjel, Gorgone", "23": "GiganToad, VenomToad"
                 }
             }
         },
@@ -306,125 +316,126 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
+            "itemAttributes": ["110000000", "000011000", "000000100", "110010111", "000000111", "001001001", "000011001", "001000100", "000000011", "110111111", "111101000", "111011000", "011100010", "000001000", "111000001", "100110111", "000000111", "100111000", "000011111", "000100111", "000100000", "000100100", "010110100", "110100101"],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[161]"},
-                            {"path": "battlePalettes[159]"},
+                            {"path": "battlePalettes[159]", "name": "Ion (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[161]", "name": "Ion (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[213]"},
-                            {"path": "battlePalettes[130]"},
+                            {"path": "battlePalettes[130]", "name": "D.General (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[213]", "name": "D.General (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[125]"},
-                            {"path": "battlePalettes[118]"},
+                            {"path": "battlePalettes[118]", "name": "Mandrake (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[125]", "name": "Mandrake (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[221]"},
-                            {"path": "battlePalettes[223]"},
+                            {"path": "battlePalettes[158]", "name": "LizardMan (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[159]", "name": "LizardMan (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[225]"},
-                            {"path": "battlePalettes[220]"},
+                            {"path": "battlePalettes[1]", "name": "Margoyle (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[9]", "name": "Margoyle (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[87]"},
-                            {"path": "battlePalettes[88]"},
+                            {"path": "battlePalettes[87]", "name": "Hermit (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[88]", "name": "Hermit (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[190]"},
-                            {"path": "battlePalettes[191]"},
+                            {"path": "battlePalettes[190]", "name": "DorgaCln. (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[191]", "name": "DorgaCln. (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[48]"},
-                            {"path": "battlePalettes[51]"},
+                            {"path": "battlePalettes[48]", "name": "Tangi (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[51]", "name": "Tangi (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[89]"},
-                            {"path": "battlePalettes[107]"},
+                            {"path": "battlePalettes[89]", "name": "RustBird (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[107]", "name": "RustBird (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[138]"},
-                            {"path": "battlePalettes[119]"},
+                            {"path": "battlePalettes[12]", "name": "Dosmea (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[40]", "name": "Dosmea (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[27]"},
-                            {"path": "battlePalettes[42]"},
+                            {"path": "battlePalettes[27]", "name": "Chimera (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[42]", "name": "Chimera (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[209]"},
-                            {"path": "battlePalettes[204]"},
+                            {"path": "battlePalettes[37]", "name": "Abuto (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[39]", "name": "Abuto (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[155]"},
-                            {"path": "battlePalettes[156]"},
+                            {"path": "battlePalettes[69]", "name": "DevilHorse (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[72]", "name": "DevilHorse (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[183]"},
-                            {"path": "battlePalettes[179]"},
+                            {"path": "battlePalettes[179]", "name": "Crocotta (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[183]", "name": "Crocotta (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[143]"},
-                            {"path": "battlePalettes[152]"},
+                            {"path": "battlePalettes[143]", "name": "Berserker (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[152]", "name": "Berserker (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[117]"},
-                            {"path": "battlePalettes[99]"},
+                            {"path": "battlePalettes[67]", "name": "SeaWitch (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[99]", "name": "Mermaid (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[132]"},
-                            {"path": "battlePalettes[134]"},
+                            {"path": "battlePalettes[132]", "name": "Roper (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[134]", "name": "Roper (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[198]"},
-                            {"path": "battlePalettes[199]"},
+                            {"path": "battlePalettes[165]", "name": "Thor (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[166]", "name": "Thor (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[131]"},
-                            {"path": "battlePalettes[133]"},
+                            {"path": "battlePalettes[131]", "name": "Garb (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[133]", "name": "Garb (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[103]"},
-                            {"path": "battlePalettes[18]"},
+                            {"path": "battlePalettes[18]", "name": "Catoblpas (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[103]", "name": "Catoblpas (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[51]"},
-                            {"path": "battlePalettes[52]"},
+                            {"path": "battlePalettes[198]", "name": "Haniel (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[199]", "name": "Haniel (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[161]"},
-                            {"path": "battlePalettes[164]"},
+                            {"path": "battlePalettes[161]", "name": "Manticore (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[164]", "name": "Manticore (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[79]"},
-                            {"path": "battlePalettes[72]"},
+                            {"path": "battlePalettes[72]", "name": "Rukh (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[79]", "name": "Rukh (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[233]"},
-                            {"path": "battlePalettes[218]"},
+                            {"path": "battlePalettes[218]", "name": "Kenkos (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[233]", "name": "Kenkos (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -432,7 +443,7 @@
                 "length": 24,
                 "default": "Monster Graphics %i",
                 "string": {
-                    "0": "Ion", "1": "D.General", "2": "Mandrake, Barometz", "3": "LizardMan, K.Lizard", "4": "Gargoyle, Margoyle", "5": "Hermit, KillerSnail", "6": "DorgaCln., Dorga", "7": "Tangi, Neegle", "8": "RustBird, Phoenix", "9": "Griffon, Dosmea", "10": "Chimera, M.Chimera", "11": "Anetto, Abuto", "12": "Nightmare, DevilHorse", "13": "Crocotta, Leucrotta", "14": "Berserker, GoldWarr.", "15": "Mermaid, SeaWitch", "16": "Roper, Storoper", "17": "Balfrey, Haokah, Thor", "18": "Garb, Bluk", "19": "Catoblpas, Humbaba", "20": "Azrael, Haniel", "21": "Manticore, Milmecoreo", "22": "Rukh, Simurgh", "23": "Kenkos"
+                    "0": "*Ion", "1": "*D.General", "2": "Barometz, Mandrake", "3": "K.Lizard, LizardMan", "4": "Gargoyle, Margoyle", "5": "*KillerSnail, Hermit", "6": "*Dorga, *DorgaCln.", "7": "Neegle, Tangi", "8": "Phoenix, RustBird", "9": "*Dosmea, Griffon", "10": "Chimera, M.Chimera", "11": "Abuto, Anetto", "12": "DevilHorse, Nightmare", "13": "Crocotta, Leucrotta", "14": "Berserker, GoldWarr.", "15": "*SeaWitch, Mermaid", "16": "Roper, Storoper", "17": "*Balfrey, *Haokah, *Thor", "18": "*Bluk, *Garb", "19": "*Humbaba, Catoblpas", "20": "*Azrael, *Haniel", "21": "Manticore, Milmecoreo", "22": "Rukh, Simurgh", "23": "*Kenkos"
                 }
             }
         },
@@ -451,125 +462,126 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
+            "itemAttributes": ["110100000", "110110111", "000000111", "111000000", "111111000", "001011111", "101111111", "011110010", "111111000", "101101000", "000011111", "010000101", "000101111", "101101110", "000110111", "000110000", "111101011", "010000001", "100111111", "111001001", "110000000", "111001111", "100000000", "110000000"],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[51]"},
-                            {"path": "battlePalettes[46]"},
+                            {"path": "battlePalettes[21]", "name": "Eater (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[22]", "name": "Eater (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[221]"},
-                            {"path": "battlePalettes[214]"},
+                            {"path": "battlePalettes[30]", "name": "Planktae (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[105]", "name": "Planktae (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[221]"},
-                            {"path": "battlePalettes[214]"},
+                            {"path": "battlePalettes[10]", "name": "SeaLion (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[11]", "name": "SeaLion (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[209]"},
-                            {"path": "battlePalettes[204]"},
+                            {"path": "battlePalettes[167]", "name": "SeaKing (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[170]", "name": "SeaKing (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[219]"},
-                            {"path": "battlePalettes[221]"},
+                            {"path": "battlePalettes[163]", "name": "Liger S. (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[167]", "name": "Liger S. (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[132]"},
-                            {"path": "battlePalettes[134]"},
+                            {"path": "battlePalettes[132]", "name": "TwinHead (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[134]", "name": "TwinHead (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[7]"},
-                            {"path": "battlePalettes[175]"},
+                            {"path": "battlePalettes[125]", "name": "Aegil (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[7]", "name": "Agaria (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[65]"},
-                            {"path": "battlePalettes[66]"},
+                            {"path": "battlePalettes[65]", "name": "Wyvern (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[66]", "name": "Wyvern (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[185]"},
-                            {"path": "battlePalettes[115]"},
+                            {"path": "battlePalettes[115]", "name": "Paralyma (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[185]", "name": "Paralyma (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[234]"},
-                            {"path": "battlePalettes[192]"},
+                            {"path": "battlePalettes[17]", "name": "Nepto (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[226]", "name": "Nepto (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[98]"},
-                            {"path": "battlePalettes[80]"},
+                            {"path": "battlePalettes[80]", "name": "Lamia (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[98]", "name": "Lamia (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[1]"},
-                            {"path": "battlePalettes[9]"},
+                            {"path": "battlePalettes[1]", "name": "BullMan (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[9]", "name": "BullMan (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[186]"},
-                            {"path": "battlePalettes[127]"},
+                            {"path": "battlePalettes[127]", "name": "Adamantai (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[186]", "name": "Adamantai (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[205]"},
-                            {"path": "battlePalettes[201]"},
+                            {"path": "battlePalettes[0]", "name": "Abai (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[1]", "name": "Abai (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[198]"},
-                            {"path": "battlePalettes[199]"},
+                            {"path": "battlePalettes[198]", "name": "DeathClaw (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[199]", "name": "DeathClaw (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[28]"},
-                            {"path": "battlePalettes[31]"},
+                            {"path": "battlePalettes[28]", "name": "Unne Cln. (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[31]", "name": "Unne Cln. (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[205]"},
-                            {"path": "battlePalettes[203]"},
+                            {"path": "battlePalettes[25]", "name": "Remora (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[36]", "name": "Remora (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[17]"},
-                            {"path": "battlePalettes[15]"},
+                            {"path": "battlePalettes[15]", "name": "Daemon (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[17]", "name": "Daemon (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[3]"},
-                            {"path": "battlePalettes[2]"},
+                            {"path": "battlePalettes[2]", "name": "BossTroll (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[3]", "name": "BossTroll (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[4]"},
-                            {"path": "battlePalettes[1]"},
+                            {"path": "battlePalettes[219]", "name": "Pterosaur (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[221]", "name": "Pterosaur (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[231]"},
-                            {"path": "battlePalettes[232]"},
+                            {"path": "battlePalettes[148]", "name": "Cyclops (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[154]", "name": "Cyclops (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[131]"},
-                            {"path": "battlePalettes[133]"},
+                            {"path": "battlePalettes[201]", "name": "Cronos (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[205]", "name": "Cronos (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[205]"},
-                            {"path": "battlePalettes[201]"},
+                            {"path": "battlePalettes[0]", "name": "Sleipnir (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[1]", "name": "Sleipnir (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[166]"},
-                            {"path": "battlePalettes[165]"},
+                            {"path": "battlePalettes[165]", "name": "Garm (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[166]", "name": "Garm (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -577,7 +589,7 @@
                 "length": 24,
                 "default": "Monster Graphics %i",
                 "string": {
-                    "0": "Valar, Eater", "1": "Olog-Hai, Planktae", "2": "Kelpie, SeaLion", "3": "Seahorse, Khargra, SeaKing", "4": "Liger, Liger S.", "5": "TwinHead, TwinLiger", "6": "Agaria, Aegil", "7": "Wyvern, Peryton", "8": "Paralyma, Nemesis", "9": "SeaSerpnt, Nepto", "10": "Lamia, Q.Lamia", "11": "BullMan, Minotaur", "12": "Adamantai", "13": "Vassago, Abai", "14": "DeathClaw, IronClaw", "15": "Unne Cln., Unne", "16": "Charybdis, Remora", "17": "Daemon, Gt.Daemon", "18": "BossTroll, Fahan, Ogre +1", "19": "Pteragon, Pterosaur", "20": "Kyklops, Cyclops", "21": "Sirenos, Cronos", "22": "HellHorse, Sleipnir", "23": "Garm"
+                    "0": "*Eater, *Valar", "1": "*Olog-Hai, *Planktae", "2": "*Kelpie, *SeaLion", "3": "Khargra, SeaKing, Seahorse", "4": "*Liger, *Liger S.", "5": "TwinHead, TwinLiger", "6": "*Aegil, Agaria", "7": "*Peryton, Wyvern", "8": "*Nemesis, Paralyma", "9": "Nepto, SeaSerpnt", "10": "*Q.Lamia, Lamia", "11": "*Minotaur, BullMan", "12": "Adamantai", "13": "*Abai, *Vassago", "14": "*DeathClaw, *IronClaw", "15": "*Unne, Unne Cln.", "16": "*Remora, Charybdis", "17": "*Gt.Daemon, Daemon", "18": "*Ogre, *Spriggan, BossTroll, Fahan", "19": "*Pterosaur, Pteragon", "20": "*Cyclops, Kyklops", "21": "*Cronos, *Sirenos", "22": "*HellHorse, *Sleipnir", "23": "*Garm"
                 }
             }
         },
@@ -596,25 +608,26 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
+            "itemAttributes": ["111101011111001001", "110100101001111111", "111001001000101111", "001001111110011111"],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[140]"},
-                            {"path": "battlePalettes[210]"},
+                            {"path": "battlePalettes[212]", "name": "Hekaton (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[81]", "name": "Titan (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[100]"},
-                            {"path": "battlePalettes[80]"},
+                            {"path": "battlePalettes[58]", "name": "Hyne (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[80]", "name": "Amon (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[73]"},
-                            {"path": "battlePalettes[60]"},
+                            {"path": "battlePalettes[60]", "name": "Hydra (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[73]", "name": "Hydra (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[121]"},
-                            {"path": "battlePalettes[120]"},
+                            {"path": "battlePalettes[120]", "name": "Grashara (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[121]", "name": "Grashara (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -622,7 +635,7 @@
                 "length": 4,
                 "default": "Monster Graphics %i",
                 "string": {
-                    "0": "Acheron, Hekaton, Titan", "1": "Amon, Hyne", "2": "Hydra, Echidna", "3": "Grashara, Guardian"
+                    "0": "*Acheron, *Hekaton, *Titan", "1": "*Amon, *Hyne", "2": "*Echidna, *Hydra", "3": "*Grashara, *Guardian"
                 }
             }
         },
@@ -641,25 +654,26 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
+            "itemAttributes": ["111111111111111111", "111111001111111111", "111111111111111111", "111110001111111111"],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[35]"},
-                            {"path": "battlePalettes[38]"},
+                            {"path": "battlePalettes[19]", "name": "KBehemoth (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[20]", "name": "KBehemoth (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[215]"},
-                            {"path": "battlePalettes[211]"},
+                            {"path": "battlePalettes[147]", "name": "2-Head D. (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[153]", "name": "2-Head D. (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[182]"},
-                            {"path": "battlePalettes[186]"},
+                            {"path": "battlePalettes[106]", "name": "Jormungnd (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[112]", "name": "Jormungnd (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[174]"},
-                            {"path": "battlePalettes[101]"},
+                            {"path": "battlePalettes[8]", "name": "Bone D. (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[101]", "name": "D.Zombie (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -667,7 +681,7 @@
                 "length": 4,
                 "default": "Monster Graphics %i",
                 "string": {
-                    "0": "Behemoth, KBehemoth", "1": "Double D., 2-Head D.", "2": "Oceanos, Jormungnd", "3": "D.Zombie, Bone D."
+                    "0": "*KBehemoth, Behemoth", "1": "*2-Head D., *Double D.", "2": "*Jormungnd, *Oceanos", "3": "*Bone D., *D.Zombie"
                 }
             }
         },
@@ -901,7 +915,7 @@
                         "type": "property",
                         "name": "Graphics Bank",
                         "begin": 1,
-                        "mask": "0x03",
+                        "mask": "0xC0",
                         "stringTable": {
                             "length": 4,
                             "default": "Bank %i",
@@ -913,7 +927,7 @@
                         "type": "property",
                         "name": "Use Summon Graphics",
                         "begin": 1,
-                        "mask": "0x04",
+                        "mask": "0x20",
                         "bool": true
                     }
                 }
@@ -930,18 +944,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 0 (Gomoree, Medusa)",
             "range": "0x2A8000-0x2A80D8",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
-                "whole": true
+                "path": "monsterGraphicsSpare4",
+                "whole": true,
+                "range": "0-9216"
             },
-            "tileOffset": -48,
             "palette": [
-                    {"path": "battlePalettes[185]"},
-                    {"path": "battlePalettes[181]"},
+                    {"path": "battlePalettes[28]", "name": "Medusa (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[29]", "name": "Medusa (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -949,18 +963,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 1 (Vulcan, Pyralis, Salamandr)",
             "range": "0x2A80D8-0x2A81B0",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare3",
+                "whole": true,
+                "range": "4736-13952"
             },
-            "tileOffset": 26,
             "palette": [
-                    {"path": "battlePalettes[126]"},
-                    {"path": "battlePalettes[123]"},
+                    {"path": "battlePalettes[54]", "name": "Pyralis (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[64]", "name": "Salamandr (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -968,18 +982,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 2 (Garuda)",
             "range": "0x2A81B0-0x2A8288",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare3",
+                "whole": true,
+                "range": "0-9216"
             },
-            "tileOffset": -48,
             "palette": [
-                    {"path": "battlePalettes[229]"},
-                    {"path": "battlePalettes[230]"},
+                    {"path": "battlePalettes[229]", "name": "Garuda (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[230]", "name": "Garuda (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -987,18 +1001,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 3 (Q.Scylla, Scylla)",
             "range": "0x2A8288-0x2A8360",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
-                "whole": true
+                "path": "monsterGraphicsSpare4",
+                "whole": true,
+                "range": "4096-13312"
             },
-            "tileOffset": 16,
             "palette": [
-                    {"path": "battlePalettes[241]"},
-                    {"path": "battlePalettes[209]"},
+                    {"path": "battlePalettes[108]", "name": "Scylla (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[158]", "name": "Scylla (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1006,18 +1020,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 4 (Ahriman)",
             "range": "0x2A8360-0x2A8438",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
-                "whole": true
+                "path": "monsterGraphicsSpare4",
+                "whole": true,
+                "range": "8704-17920"
             },
-            "tileOffset": 88,
             "palette": [
-                    {"path": "battlePalettes[242]"},
-                    {"path": "battlePalettes[82]"},
+                    {"path": "battlePalettes[82]", "name": "Ahriman (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[242]", "name": "Ahriman (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1025,18 +1039,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 5 (Dragon)",
             "range": "0x2A8438-0x2A8510",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare2",
+                "whole": true,
+                "range": "0-9216"
             },
-            "tileOffset": -48,
             "palette": [
-                    {"path": "battlePalettes[52]"},
-                    {"path": "battlePalettes[51]"},
+                    {"path": "battlePalettes[51]", "name": "Dragon (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[52]", "name": "Dragon (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1044,18 +1058,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 6 (Green D., Terror D., Yellow D., Red D.)",
             "range": "0x2A8510-0x2A85E8",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare2",
+                "whole": true,
+                "range": "5056-14272"
             },
-            "tileOffset": 31,
             "palette": [
-                    {"path": "battlePalettes[182]"},
-                    {"path": "battlePalettes[181]"},
+                    {"path": "battlePalettes[106]", "name": "Red D. (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[109]", "name": "Red D. (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1063,18 +1077,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 7 (ZandeCln., Zande)",
             "range": "0x2A85E8-0x2A86C0",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x12",
-                "whole": true
+                "path": "monsterGraphicsSpare4",
+                "whole": true,
+                "range": "12288-21504"
             },
-            "tileOffset": 144,
             "palette": [
-                    {"path": "battlePalettes[101]"},
-                    {"path": "battlePalettes[207]"},
+                    {"path": "battlePalettes[101]", "name": "ZandeCln. (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[160]", "name": "Zande (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1082,18 +1096,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 8 (DarkCloud)",
             "range": "0x2A86C0-0x2A8798",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare4",
+                "whole": true,
+                "range": "19392-28608"
             },
-            "tileOffset": -33,
             "palette": [
-                    {"path": "battlePalettes[202]"},
-                    {"path": "battlePalettes[27]"},
+                    {"path": "battlePalettes[27]", "name": "DarkCloud (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[78]", "name": "DarkCloud (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1101,16 +1115,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 9 (FuryEye, Harpy, Dirai)",
             "range": "0x2A8798-0x2A8870",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare1",
+                "whole": true,
+                "range": "0-9216"
             },
-            "tileOffset": -80,
             "palette": [
+                    {"path": "battlePalettes[145]", "name": "Harpy (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[149]", "name": "Harpy (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1118,18 +1134,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 10 (Dullahan, Thanatos)",
             "range": "0x2A8870-0x2A8948",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare1",
+                "whole": true,
+                "range": "2752-11968"
             },
-            "tileOffset": -37,
             "palette": [
-                    {"path": "battlePalettes[116]"},
-                    {"path": "battlePalettes[188]"},
+                    {"path": "battlePalettes[90]", "name": "Thanatos (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[116]", "name": "Dullahan (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1137,18 +1153,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 11 (Platinal, Goldor)",
             "range": "0x2A8948-0x2A8A20",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare1",
+                "whole": true,
+                "range": "8320-17536"
             },
-            "tileOffset": 50,
             "palette": [
-                    {"path": "battlePalettes[73]"},
-                    {"path": "battlePalettes[69]"},
+                    {"path": "battlePalettes[69]", "name": "Platinal (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[73]", "name": "Platinal (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1156,18 +1172,17 @@
             "type": "tilemap",
             "name": "Boss Tilemap 12 (Big Rat)",
             "range": "0x2A8A20-0x2A8AF8",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
                 "path": "monsterGraphics4x4",
-                "whole": true
+                "whole": true,
+                "range": "4096-13312"
             },
-            "tileOffset": -48,
             "palette": [
-                    {"path": "battlePalettes[69]"},
-                    {"path": "battlePalettes[69]"},
+                    {"path": "battlePalettes[69]", "name": "Big Rat (1)", "offset": 0},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1175,18 +1190,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 13 (Jinn)",
             "range": "0x2A8AF8-0x2A8BD0",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
-                "whole": true
+                "path": "monsterGraphics4x6",
+                "whole": true,
+                "range": "21504-30720"
             },
-            "tileOffset": -32,
             "palette": [
-                    {"path": "battlePalettes[109]"},
-                    {"path": "battlePalettes[106]"},
+                    {"path": "battlePalettes[106]", "name": "Jinn (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[109]", "name": "Jinn (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1194,18 +1209,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 14 (Ninja)",
             "range": "0x2A8BD0-0x2A8CA8",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
-                "whole": true
+                "path": "monsterGraphics4x6",
+                "whole": true,
+                "range": "26112-35328"
             },
-            "tileOffset": 40,
             "palette": [
-                    {"path": "battlePalettes[53]"},
-                    {"path": "battlePalettes[48]"},
+                    {"path": "battlePalettes[48]", "name": "Ninja (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[53]", "name": "Ninja (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1213,18 +1228,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 15 (Kunoichi)",
             "range": "0x2A8CA8-0x2A8D80",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
-                "whole": true
+                "path": "monsterGraphics4x6",
+                "whole": true,
+                "range": "27648-36864"
             },
-            "tileOffset": 64,
             "palette": [
-                    {"path": "battlePalettes[227]"},
-                    {"path": "battlePalettes[228]"},
+                    {"path": "battlePalettes[227]", "name": "Kunoichi (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[228]", "name": "Kunoichi (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1232,18 +1247,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 16 (Guzco)",
             "range": "0x2A8D80-0x2A8E58",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics4x4",
-                "whole": true
+                "path": "monsterGraphics6x6",
+                "whole": true,
+                "range": "0-9216"
             },
-            "tileOffset": -112,
             "palette": [
-                    {"path": "battlePalettes[1]"},
-                    {"path": "battlePalettes[5]"},
+                    {"path": "battlePalettes[1]", "name": "Guzco (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[5]", "name": "Guzco (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1251,18 +1266,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 17 (General)",
             "range": "0x2A8E58-0x2A8F30",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics4x4",
-                "whole": true
+                "path": "monsterGraphics6x6",
+                "whole": true,
+                "range": "2304-11520"
             },
-            "tileOffset": -76,
             "palette": [
-                    {"path": "battlePalettes[60]"},
-                    {"path": "battlePalettes[27]"},
+                    {"path": "battlePalettes[27]", "name": "General (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[60]", "name": "General (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1270,18 +1285,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 18 (Bahamut)",
             "range": "0x2A8F30-0x2A9008",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare2",
+                "whole": true,
+                "range": "0-9216"
             },
-            "tileOffset": -48,
             "palette": [
-                    {"path": "battlePalettes[9]"},
-                    {"path": "battlePalettes[4]"},
+                    {"path": "battlePalettes[4]", "name": "Bahamut, Bahamut (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[9]", "name": "Bahamut, Bahamut (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1289,18 +1304,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 19 (Kraken)",
             "range": "0x2A9008-0x2A90E0",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphics6x6",
+                "whole": true,
+                "range": "52992-62208"
             },
-            "tileOffset": -84,
             "palette": [
-                    {"path": "battlePalettes[235]"},
-                    {"path": "battlePalettes[72]"},
+                    {"path": "battlePalettes[72]", "name": "Kraken (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[235]", "name": "Kraken (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1308,18 +1323,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 20 (LandTurtl)",
             "range": "0x2A90E0-0x2A91B8",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6",
-                "whole": true
+                "path": "monsterGraphics6x6b",
+                "whole": true,
+                "range": "27648-36864"
             },
-            "tileOffset": 320,
             "palette": [
-                    {"path": "battlePalettes[34]"},
-                    {"path": "battlePalettes[71]"},
+                    {"path": "battlePalettes[34]", "name": "LandTurtl (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[71]", "name": "LandTurtl (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1327,18 +1342,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 21 (Cerberus)",
             "range": "0x2A91B8-0x2A9290",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphics6x6b",
+                "whole": true,
+                "range": "52992-62208"
             },
-            "tileOffset": -84,
             "palette": [
-                    {"path": "battlePalettes[46]"},
-                    {"path": "battlePalettes[53]"},
+                    {"path": "battlePalettes[46]", "name": "Cerberus (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[53]", "name": "Cerberus (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1346,18 +1361,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 22 (Odin)",
             "range": "0x2A9290-0x2A9368",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6",
-                "whole": true
+                "path": "summonGraphics",
+                "whole": true,
+                "range": "6464-15680"
             },
-            "tileOffset": 373,
             "palette": [
-                    {"path": "battlePalettes[248]"},
-                    {"path": "battlePalettes[249]"},
+                    {"path": "battlePalettes[248]", "name": "Odin (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[249]", "name": "Odin (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1365,18 +1380,287 @@
             "type": "tilemap",
             "name": "Boss Tilemap 23 (Leviathan)",
             "range": "0x2A9368-0x2A9440",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
+                "path": "summonGraphics",
+                "whole": true,
+                "range": "9984-19200"
+            },
+            "palette": [
+                    {"path": "battlePalettes[208]", "name": "Leviathan (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[247]", "name": "Leviathan (2)", "offset": 4, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonProperties": {
+            "type": "array",
+            "name": "Summon Graphics Properties",
+            "range": "0x2A9440-0x2A9480",
+            "arrayLength": 8,
+            "assembly": {
+                "type": "data",
+                "length": 8,
+                "assembly": {
+                    "graphicsIndex": {
+                        "type": "property",
+                        "name": "Graphics Index",
+                        "begin": 0,
+                        "mask": "0xFF"
+                    },
+                    "paletteID": {
+                        "type": "property",
+                        "name": "First Sprite Palette",
+                        "begin": 1,
+                        "mask": "0xFF"
+                    },
+                    "unknown2": {
+                        "type": "property",
+                        "name": "Unknown 2",
+                        "begin": 2,
+                        "mask": "0xFF"
+                    },
+                    "unknown3": {
+                        "type": "property",
+                        "name": "Unknown 3",
+                        "begin": 3,
+                        "mask": "0xFF"
+                    },
+                    "width": {
+                        "type": "property",
+                        "name": "Width",
+                        "begin": 4,
+                        "mask": "0xF0"
+                    },
+                    "height": {
+                        "type": "property",
+                        "name": "Height",
+                        "begin": 4,
+                        "mask": "0x0F"
+                    },
+                    "startX": {
+                        "type": "property",
+                        "name": "Start X",
+                        "begin": 5,
+                        "mask": "0xF0"
+                    },
+                    "startY": {
+                        "type": "property",
+                        "name": "Start Y",
+                        "begin": 5,
+                        "mask": "0x0F"
+                    },
+                    "tilemapPointer": {
+                        "type": "property",
+                        "name": "Tilemap Pointer",
+                        "begin": 6,
+                        "mask": "0xFFFF"
+                    }
+                }
+            },
+            "stringTable": {
+                "length": 8,
+                "default": "Summon %i",
+                "string": {
+                    "0": "Chocobo", "1": "Shiva", "2": "Ramuh", "3": "Ifrit", "4": "Titan", "5": "Odin", "6": "Leviathan", "7": "Bahamut"
+                }
+            }
+        },
+        "monsterGraphicsSpare1": {
+            "type": "graphics",
+            "name": "Monster Graphics (spare tile pool, file 43410-44010)",
+            "range": "0x21B400-0x228000",
+            "format": "nes2bpp",
+            "width": 12,
+            "backColor": true,
+            "palette": "battlePalettes"
+        },
+        "monsterGraphicsSpare2": {
+            "type": "graphics",
+            "name": "Monster Graphics (spare tile pool, file 47610-48010)",
+            "range": "0x23B600-0x248000",
+            "format": "nes2bpp",
+            "width": 12,
+            "backColor": true,
+            "palette": "battlePalettes"
+        },
+        "monsterGraphicsSpare3": {
+            "type": "graphics",
+            "name": "Monster Graphics (spare tile pool, file 4B610-4C010)",
+            "range": "0x25B600-0x268000",
+            "format": "nes2bpp",
+            "width": 12,
+            "backColor": true,
+            "palette": "battlePalettes"
+        },
+        "monsterGraphicsSpare4": {
+            "type": "graphics",
+            "name": "Monster Graphics (spare tile pool, file 4E410-50010)",
+            "range": "0x27A400-0x288000",
+            "format": "nes2bpp",
+            "width": 12,
+            "backColor": true,
+            "palette": "battlePalettes"
+        },
+        "summonTilemap0": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 0 (Chocobo)",
+            "range": "0x2A9480-0x2A9489",
+            "format": "ff3SummonTilemap",
+            "width": 3,
+            "height": 3,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
                 "whole": true
             },
-            "tileOffset": -84,
+            "tileOffset": 0,
             "palette": [
-                    {"path": "battlePalettes[208]"},
-                    {"path": "battlePalettes[247]"},
+                    {"path": "battlePalettes[191]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[192]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[193]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap1": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 1 (Shiva)",
+            "range": "0x2A9489-0x2A949D",
+            "format": "ff3SummonTilemap",
+            "width": 4,
+            "height": 5,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 9,
+            "palette": [
+                    {"path": "battlePalettes[192]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[193]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[194]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap2": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 2 (Ramuh)",
+            "range": "0x2A949D-0x2A94B1",
+            "format": "ff3SummonTilemap",
+            "width": 4,
+            "height": 5,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 25,
+            "palette": [
+                    {"path": "battlePalettes[194]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[195]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[196]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap3": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 3 (Ifrit)",
+            "range": "0x2A94B1-0x2A94DB",
+            "format": "ff3SummonTilemap",
+            "width": 6,
+            "height": 7,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 41,
+            "palette": [
+                    {"path": "battlePalettes[196]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[197]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[198]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap4": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 4 (Titan)",
+            "range": "0x2A94DB-0x2A94FE",
+            "format": "ff3SummonTilemap",
+            "width": 5,
+            "height": 7,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 71,
+            "palette": [
+                    {"path": "battlePalettes[199]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[200]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[201]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap5": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 5 (Odin)",
+            "range": "0x2A94FE-0x2A9546",
+            "format": "ff3SummonTilemap",
+            "width": 8,
+            "height": 9,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 101,
+            "palette": [
+                    {"path": "battlePalettes[202]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[203]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[204]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap6": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 6 (Leviathan)",
+            "range": "0x2A9546-0x2A958E",
+            "format": "ff3SummonTilemap",
+            "width": 8,
+            "height": 9,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 156,
+            "palette": [
+                    {"path": "battlePalettes[205]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[206]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[207]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap7": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 7 (Bahamut)",
+            "range": "0x2A958E-0x2A95D4",
+            "format": "ff3SummonTilemap",
+            "width": 7,
+            "height": 10,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 205,
+            "palette": [
+                    {"path": "battlePalettes[208]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[209]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[210]", "name": "Sprite palette 3", "offset": 8, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1384,13 +1668,6 @@
             "type": "graphics",
             "name": "Battle Background Graphics",
             "range": "0x0C8000-0x0C9800",
-            "format": "nes2bpp",
-            "backColor": true
-        },
-        "summonGraphics": {
-            "type": "graphics",
-            "name": "Summon Graphics",
-            "range": "0x0C9800-0x0DA800",
             "format": "nes2bpp",
             "backColor": true
         },
@@ -1414,6 +1691,21 @@
             "range": "0x2A9600-0x2C8000",
             "format": "nes2bpp",
             "backColor": true
+        },
+        "summonGraphics": {
+            "type": "graphics",
+            "name": "Summon Graphics (tile pool - see the summon tilemaps)",
+            "range": "0x0C9800-0x0DA800",
+            "format": "nes2bpp",
+            "width": 8,
+            "height": 32,
+            "backColor": true,
+            "palette": [
+                    {"path": "battlePalettes[191]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[192]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[193]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
         },
         "mapGraphics": {
             "type": "graphics",

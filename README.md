@@ -205,17 +205,27 @@ Undo restores the original compressed bytes exactly when the decoded data
 returns to the state that was loaded, so undoing all the way back leaves the ROM
 byte-identical.
 
-Each graphics object is linked to the palette it actually uses. In Final
+Each graphics object is linked to the palettes it actually uses. In Final
 Fantasy III (J) and (U) on the NES, monster graphics are grouped by sprite
-size (4x4, 4x6, 6x6, 6x6, 6x12 and 12x6 tiles), every entry is labelled with
-the monsters that use it, and it opens with the palette those monsters fight
-with. Because a monster's tiles can use two palettes at once, the Palette
-panel also gets a dropdown listing every battle palette by name, so you can
-preview the same graphic against the other one.
+size (4x4, 4x6, 6x6, 6x6, 6x12 and 12x6 tiles) and every entry is labelled with
+the monsters that use it - boss monsters first, marked with `*`. Most monsters
+are drawn with **two** palettes of three colours plus black, and the game picks
+one per 2x2 tile block; FF6Tools reads that choice from the ROM, so a monster
+appears with both palettes at once (Mandrake's brown body and green leaves, for
+example) rather than one or the other. The Palette panel's dropdown leads with
+the palettes belonging to the selected graphic, named after its monsters.
 
-Bosses in that game are tilemaps (18x12 tile ids) that index the same shared
-monster tile pool, so they appear under **Boss Graphics** as editable tile
-layouts whose tiles you repaint through the monster graphics.
+Note that colour 0 is opaque black: it is the sprite outline as well as the
+filler inside the tile rectangle, so the black around a monster is in the ROM,
+not an artefact.
+
+Summon and boss graphics are tilemaps over shared tile pools, so they appear
+under **Summon Graphics** and **Boss Graphics** as editable tile layouts - the
+summons' tilemaps also carry a per-tile palette selection, so they render with
+all three of their sprite palettes. The tiles themselves are repainted through
+the graphics each tilemap points at. Most bosses are ordinary-sized monsters and
+are found under Monster Graphics; only 32 of the 127 boss monsters use the
+tilemap mechanism.
 
 In the navigator, `Up`/`Down` move the selection between entries instead of
 scrolling; running off the end of a section expands the next one and steps into

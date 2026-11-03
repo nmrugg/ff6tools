@@ -2022,6 +2022,8 @@ ROM.dataFormat = {
     "gba4bppTile": GFX.tileFormat.gba4bppTile,
     "gba2bppTile": GFX.tileFormat.gba2bppTile,
     "nesNameTable": GFX.tileFormat.nesNameTable,
+    "ff3BossTilemap": GFX.tileFormat.ff3BossTilemap,
+    "ff3SummonTilemap": GFX.tileFormat.ff3SummonTilemap,
     "snes4bppTile": GFX.tileFormat.snes4bppTile,
     "snes3bppTile": GFX.tileFormat.snes3bppTile,
     "snes2bppTile": GFX.tileFormat.snes2bppTile,
@@ -3777,6 +3779,12 @@ function ROMArray(rom, definition, parent) {
     // (FF3 NES: a monster's palette comes from its battle group, so each graphic
     //  gets its own default palette instead of sharing the array prototype's)
     this.itemPalettes = definition.itemPalettes;
+
+    // per-item palette cells, indexed by array item: one character per 2x2 tile
+    // cell, '0' = first palette, '1' = second (see itemPalettes). FF3 NES stores
+    // this in the ROM at $2E:$8F20; the graphics view expands it to a palette
+    // offset per tile so a monster shows both palettes at once.
+    this.itemAttributes = definition.itemAttributes;
 }
 
 /*
@@ -3876,6 +3884,7 @@ Object.defineProperty(ROMArray.prototype, "definition", { get: function() {
 
     if (this.sizeFrom) definition.sizeFrom = this.sizeFrom;
     if (this.itemPalettes) definition.itemPalettes = this.itemPalettes;
+    if (this.itemAttributes) definition.itemAttributes = this.itemAttributes;
 
     return definition;
 }});
@@ -4176,6 +4185,15 @@ ROMArray.prototype.disassemble = function(data) {
             var pal = this.itemPalettes[i];
             if (pal === undefined || pal === null) continue;
             this.array[i].palette = pal;
+        }
+    }
+
+    // per-item palette cells (see the itemAttributes note in the constructor)
+    if (this.itemAttributes) {
+        for (var i = 0; i < this.array.length; i++) {
+            var attr = this.itemAttributes[i];
+            if (attr === undefined || attr === null) continue;
+            this.array[i].attributeCells = attr;
         }
     }
 

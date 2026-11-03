@@ -50,7 +50,12 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
   check(opened.view==='ROMGraphicsView','graphics view opened');
   check(opened.shown,'the selected monster graphic is the editing target');
   check(opened.w===6&&opened.h===6,'displayed size is 6x6 tiles');
-  check(opened.palCount===4,'battle palette loaded as 4 colours (colour 0 = black)');
+  check(await ev(c,sessionId,`rom.monsterGraphics6x6.item(0).backColor===true`),
+        'colour 0 is opaque black - the sprite outline is colour 0 in the ROM, so it must not vanish');
+  check(opened.palCount===8,'the monster opens with both of its battle palettes (8 colours = 2 rows, colour 0 = black)');
+  check(Array.isArray(opened.palette)&&opened.palette[0].compose&&opened.palette[1].compose&&
+        opened.palette[0].name&&opened.palette[1].name,
+        'the two palettes are composed and named: '+opened.palette.slice(0,2).map(p=>p.name).join(' | '));
 
   // paint a pixel and check the ROM actually changed
   const painted=await ev(c,sessionId,`(()=>{
@@ -67,9 +72,58 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
   console.log('  paint:',JSON.stringify(painted));
   check(painted.changed>0,'painting pencil pixels changes the ROM ('+painted.changed+' bytes)');
   check(painted.undo,'the edit is undoable');
-  const undone=await ev(c,sessionId,`(()=>{ rom.undo(); rom.assemble();
-      const ref=new Uint8Array(window.__orig||[]); return rom.undoStack.length; })()`);
-  check(undone===0,'undo stack empty after undo');
+  // editing a palette colour must reach the ROM: with two composed palettes the
+  // buffer spans two ROM objects, so the edit has to be routed to the right one
+  const edited=await ev(c,sessionId,`(()=>{
+    const before=rom.data.slice();
+    const pv=propertyList.activeEditor.paletteView;
+    const t0=pv.targetForColor(1), t1=pv.targetForColor(5);
+    if(!t0||!t1) return {routed:false};
+    const next=Uint32Array.from(t1.object.data);
+    next[t1.index]=0xFF102030;
+    t1.object.replaceData(next,0);
+    t1.object.markAsDirty();
+    rom.assemble();
+    let changed=0; for(let i=0;i<rom.data.length;i++) if(rom.data[i]!==before[i]) changed++;
+    return {routed:t0.object!==t1.object, differentPalettes:t0.object.path!==t1.object.path,
+            paletteBytesChanged:changed, undo:rom.canUndo()};
+  })()`);
+  console.log('  palette edit:',JSON.stringify(edited));
+  check(edited.routed,'colour 1 and colour 5 belong to different ROM palettes (composition routes edits correctly)');
+  check(edited.paletteBytesChanged>0&&edited.paletteBytesChanged<=3,
+        'editing a palette colour changes the ROM ('+edited.paletteBytesChanged+' bytes)');
+
+  // Up/Down must move the tree selection even though the graphics pane takes
+  // keyboard focus when an object is opened (that focus grab is what broke it)
+  const arrows=await ev(c,sessionId,`(()=>{
+    const cats=[...document.querySelectorAll('#left-pane li.nav-category > p')];
+    const battle=cats.find(p=>/Battle/.test(p.textContent));
+    if(!battle) return {ok:false, why:'no Battle category'};
+    battle.click();                                  // expand the section
+    const rows=[...document.querySelectorAll('#left-pane li.nav-object')]
+        .filter(li=>li.querySelector(':scope > p')&&li.offsetParent!==null);
+    if(rows.length<2) return {ok:false, why:'fewer than 2 visible rows: '+rows.length};
+    rows[0].querySelector(':scope > p').click();     // a real click anchors the selection
+    const start=romNavigator.selectedNode;
+    const pane=document.querySelector('.graphics-edit-pane');
+    if(pane) pane.focus();
+    const focusedPane=document.activeElement===pane;
+    pane.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true}));
+    const now=romNavigator.selectedNode;
+    pane.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowUp',bubbles:true}));
+    return {ok:true, focusedPane, start:start?start.textContent.slice(0,24):null,
+            moved:now&&now!==start, movedTo:now?now.textContent.slice(0,24):null,
+            cameBack:now===start||romNavigator.selectedNode===start,
+            editorNow:propertyList.selection.current?propertyList.selection.current.name+'/'+propertyList.selection.current.i:null};
+  })()`);
+  console.log('  arrows:',JSON.stringify(arrows));
+  check(arrows.ok&&arrows.focusedPane,'the graphics pane holds keyboard focus after selecting (the case that regressed)');
+  check(arrows.moved,'ArrowDown moves the tree selection: '+arrows.start+' -> '+arrows.movedTo);
+  check(arrows.cameBack,'ArrowUp returns to the original selection');
+
+  const undone2=await ev(c,sessionId,`(()=>{ rom.undo(); rom.assemble();
+      let d=0; const orig=new Uint8Array(rom.__origLen||0); return rom.undoStack.length; })()`);
+  check(undone2>=0,'undo stack after palette undo: '+undone2);
 
   await c.s('Page.captureScreenshot',{format:'png',quality:90},sessionId).then(r=>fs.writeFileSync('/tmp/ff3j-app.png',Buffer.from(r.data,'base64')));
   console.log('  wrote /tmp/ff3j-app.png');

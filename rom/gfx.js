@@ -854,6 +854,74 @@ var GFX = {
                 // return [dest, data.byteLength];
             }
         },
+        // FF3 (NES) boss tilemaps: one byte per cell holding a PPU pattern
+        // index. The boss's 144 tiles are copied to PPU $0700 (2F/A3FC-2F/A408),
+        // so 0x70-0xff are the boss's own tiles (0-143) and anything below is a
+        // background/empty cell.
+        ff3BossTilemap: {
+            key: "ff3BossTilemap",
+            name: "FF3 Boss Tilemap",
+            maxTiles: 144,
+            colorsPerPalette: 4,
+            maxZ: 0,
+            hFlip: false,
+            vFlip: false,
+            encode: function(data) {
+                // 32-bit source, 8-bit destination
+                var src = new Uint32Array(data.buffer, data.byteOffset, data.byteLength >> 2);
+                var dest = new Uint8Array(src.length);
+                for (var i = 0; i < src.length; i++) {
+                    var t = src[i] & 0xFFFF;
+                    dest[i] = (t >= 0xFE00) ? 0x00 : ((t + 0x70) & 0xFF);
+                }
+                return [dest, data.byteLength];
+            },
+            decode: function(data) {
+                // 8-bit source, 32-bit destination
+                var src = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+                var dest = new Uint32Array(src.length);
+                for (var i = 0; i < src.length; i++)
+                    dest[i] = (src[i] >= 0x70) ? (src[i] - 0x70) : 0xFF00;
+                return [dest, data.byteLength];
+            }
+        },
+        // FF3 (NES) summon tilemaps: one byte per cell, `ffpccccc` -
+        // low 6 bits = tile index within the summon's graphics block,
+        // bits 6-7 = priority/palette flag (32/8DDA, 32/8DE7), 0xff = empty.
+        ff3SummonTilemap: {
+            key: "ff3SummonTilemap",
+            name: "FF3 Summon Tilemap",
+            maxTiles: 64,
+            colorsPerPalette: 4,
+            maxZ: 0,
+            hFlip: false,
+            vFlip: false,
+            blank: 0xFF00,   // stays out of range after the tile offset is added
+            encode: function(data) {
+                // 32-bit source, 8-bit destination
+                var src = new Uint32Array(data.buffer, data.byteOffset, data.byteLength >> 2);
+                var dest = new Uint8Array(src.length);
+                for (var i = 0; i < src.length; i++) {
+                    var t = src[i] & 0xFFFF;
+                    if (t >= 0xFE00) { dest[i] = 0xFF; continue; }
+                    // bits 6-7 come back from the word's palette bits (colour
+                    // offset 0/4/8 -> palette index 0/1/2)
+                    var p = (src[i] & 0x00FF0000) >> 16;
+                    dest[i] = (t & 0x3F) | ((p >> 2) << 6);
+                }
+                return [dest, data.byteLength];
+            },
+            decode: function(data) {
+                // 8-bit source, 32-bit destination
+                var src = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+                var dest = new Uint32Array(src.length);
+                for (var i = 0; i < src.length; i++) {
+                    if (src[i] === 0xFF) { dest[i] = 0xFF00; continue; }
+                    dest[i] = (src[i] & 0x3F) | ((((src[i] >> 6) & 3) * 4) << 16);
+                }
+                return [dest, data.byteLength];
+            }
+        },
         generic8bppTile: {
             //                            tttttttt
             // -------- -------- -------- tttttttt

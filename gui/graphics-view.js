@@ -875,6 +875,21 @@ class ROMGraphicsView extends ROMEditor {
         }
     }
 
+    // palette bits for one tile: FF3 NES monsters pick one of two battle
+    // palettes per 2x2 tile cell (attributeCells, expanded from the ROM's
+    // $2E:$8F20). Only applies when the loaded palette actually holds both.
+    paletteBitsForTile(t) {
+        const cells = this.object && this.object.attributeCells;
+        if (!cells || !cells.length) return 0;
+        const perPalette = this.paletteView.colorsPerPalette || 4;
+        if (this.paletteView.palette.length < perPalette * 2) return 0;
+        const col = t % this.width, row = Math.floor(t / this.width);
+        const cols = Math.ceil(this.width * this.tileWidth / (2 * this.tileWidth));
+        const cell = Math.floor(row / 2) * cols + Math.floor(col / 2);
+        const bit = cells[cell];
+        return (bit === undefined ? 0 : Number(bit)) * perPalette;
+    }
+
     updateTilemap() {
         if (this.object && this.object.spriteSheet) {
             let spriteSheetArray = this.object.spriteSheet;
@@ -893,7 +908,8 @@ class ROMGraphicsView extends ROMEditor {
             this.tilemap = new Uint32Array(this.height * this.width);
             this.tilemap.fill(0xFFFFFFFF);
 
-            for (let t = 0; t < tileCount; t++) this.tilemap[t] = t | p;
+            for (let t = 0; t < tileCount; t++)
+                this.tilemap[t] = t | ((p >> 16 | this.paletteBitsForTile(t)) << 16);
 
         } else if (this.spriteSheet) {
             // use a sprite sheet
@@ -915,7 +931,8 @@ class ROMGraphicsView extends ROMEditor {
             tileCount = this.height * this.width;
             this.tilemap = new Uint32Array(tileCount);
             this.tilemap.fill(0xFFFFFFFF);
-            for (let t = 0; t < this.tilemap.length; t++) this.tilemap[t] = t | p;
+            for (let t = 0; t < this.tilemap.length; t++)
+                this.tilemap[t] = t | ((p >> 16 | this.paletteBitsForTile(t)) << 16);
         }
 
         // apply v-flip
@@ -1132,6 +1149,16 @@ class ROMGraphicsView extends ROMEditor {
         this.div.tabIndex = 0;
         this.div.style.outline = 'none';
         this.div.onkeydown = (e) => {
+            // Up/Down move the navigator selection. The graphics pane takes
+            // keyboard focus when an object is opened, so without this the
+            // arrows would only scroll the pane and the tree selection would
+            // never move.
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                if (this.float) return;         // arrow keys are free while a pasted layer floats
+                const nav = (typeof romNavigator !== 'undefined') ? romNavigator : null;
+                if (nav && nav.moveSelection(e.key === 'ArrowDown' ? 1 : -1)) e.preventDefault();
+                return;
+            }
             const ctrl = e.ctrlKey || e.metaKey;
             if (ctrl && e.key.toLowerCase() === 'c') { if (this.copySelection()) e.preventDefault(); return; }
             if (ctrl && e.key.toLowerCase() === 'v') { if (this.pasteClipboard()) e.preventDefault(); return; }

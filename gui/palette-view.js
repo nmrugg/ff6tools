@@ -43,8 +43,7 @@ class ROMPaletteView {
     }
 
     // index of the colour under the mouse
-    colorIndexAt(e) {
-        const row = Math.floor(e.offsetY / this.colorHeight);
+    colorIndexAt(e) {        const row = Math.floor(e.offsetY / this.colorHeight);
         const col = Math.floor(e.offsetX / this.colorWidth);
         if (row < 0 || col < 0 || row >= this.rows) return -1;
         const p = Math.floor(row / this.rowsPerPalette);
@@ -55,10 +54,12 @@ class ROMPaletteView {
 
     editColor(e) {
         const index = this.colorIndexAt(e);
-        const object = this.paletteObject;
-        if (index < 0 || !object || !object.data) return;
+        const target = this.targetForColor(index);
+        if (index < 0 || !target || !target.object || !target.object.data) return;
+        const object = target.object;
+        const local = target.index;
 
-        const cur = object.data[index] >>> 0;
+        const cur = object.data[local] >>> 0;
         const hex = (n) => n.toString(16).padStart(2, '0');
         const input = document.createElement('input');
         input.type = 'color';
@@ -74,7 +75,7 @@ class ROMPaletteView {
             const g = parseInt(v.substr(3, 2), 16);
             const b = parseInt(v.substr(5, 2), 16);
             const next = Uint32Array.from(object.data);
-            next[index] = (0xFF << 24) | (b << 16) | (g << 8) | r;
+            next[local] = (0xFF << 24) | (b << 16) | (g << 8) | r;
             // pass a copy: replaceData bails out if it is handed the same buffer
             object.replaceData(next, 0);
             self.redraw();
@@ -227,6 +228,7 @@ class ROMPaletteView {
 
         this.definition = definition;
         this.paletteArray = [];
+        this.paletteSegments = [];
         this.observer.stopObservingAll();
 
         // A *different* object was selected: start from that object's default
@@ -280,6 +282,24 @@ class ROMPaletteView {
         // multiple choice of palettes (outer array)
         if (isArray(definition)) {
             if (definition.length === 0) return;
+
+            // Definitions flagged "compose" are loaded together into one
+            // palette buffer, so a monster that uses two battle palettes shows
+            // both at once (two rows in the panel; clicking a row switches the
+            // sprite between them).
+            const composing = definition.filter(d => d && typeof d === 'object' && d.compose);
+            if (composing.length > 1) {
+                const json = JSON.stringify(definition);
+                if (!this.paletteArray.some(p => JSON.stringify(p) === json))
+                    this.paletteArray.push(definition);
+                for (const def of composing) this.loadPalette(def);
+                for (const def of definition) {
+                    if (def && typeof def === 'object' && def.compose) continue;
+                    if (!this.paletteArray.includes(def)) this.paletteArray.push(def);
+                }
+                return;
+            }
+
             if (definition.length > 1) {
                 for (const def of definition) this.paletteArray.push(def);
             }
@@ -319,7 +339,6 @@ class ROMPaletteView {
         if (!object || !object.data) return;
         this.paletteObject = object;   // used by the colour editor
         let data = new Uint32Array(object.data.buffer);
-
         // observe the palette object
         const self = this;
         this.observer.startObserving(object, function() {
@@ -358,6 +377,27 @@ class ROMPaletteView {
             this.palette = newPalette;
         }
         this.palette.set(data, offset);
+
+        // remember which ROM object owns each part of the buffer, so editing a
+        // colour writes to the palette it came from (a composed palette spans
+        // several palette objects)
+        if (!this.paletteSegments) this.paletteSegments = [];
+        if (!(object instanceof ROMArray)) {
+            const segment = {object: object, begin: offset, end: offset + data.length,
+                              rangeBegin: range.begin};
+            const at = this.paletteSegments.findIndex(s => s.begin === segment.begin);
+            if (at >= 0) this.paletteSegments[at] = segment;
+            else this.paletteSegments.push(segment);
+        }
+    }
+
+    // the ROM palette object (and index within it) behind a buffer position
+    targetForColor(index) {
+        for (const s of (this.paletteSegments || [])) {
+            if (index >= s.begin && index < s.end)
+                return {object: s.object, index: index - s.begin + s.rangeBegin};
+        }
+        return this.paletteObject ? {object: this.paletteObject, index: index} : null;
     }
 
     importPalette(palette, offset = 0) {
@@ -515,6 +555,20 @@ class ROMPaletteView {
             for (let i = 0; i < this.paletteArray.length; i++) {
                 const paletteDefinition = this.paletteArray[i];
                 if (!paletteDefinition) continue;
+
+                // a composed palette (several palettes loaded together)
+                if (isArray(paletteDefinition)) {
+                    const names = paletteDefinition
+                        .map(d => (d && d.name) || (d && d.path) || d);
+                    option = document.createElement('option');
+                    option.value = JSON.stringify(paletteDefinition);
+                    option.innerHTML = names.join(' + ');
+                    if (!selectedValue) selectedValue = option.value;
+                    if (option.value === this.selectedValue) selectedValue = option.value;
+                    this.paletteSelectControl.appendChild(option);
+                    continue;
+                }
+
                 let palettePath = paletteDefinition.path || paletteDefinition;
                 if (!isString(palettePath)) continue;
                 palettePath = this.rom.parseIndex(palettePath, index);

@@ -40,6 +40,15 @@ MONSTER_CLASSES = [
 def mmc3_to_file(addr):
     return ((addr & 0xFF0000) >> 3) + (addr & 0x1FFF) + 0x10
 
+def file_to_def(file_addr):
+    """Inverse of mmc3_to_file: pick the $8000/$A000 window form for a bank.
+    Only $8000-$9FFF address a bank's 8 KiB, so a range that runs past $9FFF
+    has to be written as the next bank's $8000."""
+    a = file_addr - 0x10
+    bank = (a << 3) & 0xFF0000
+    off = a & 0x1FFF
+    return bank | off | (0xA000 if (bank & 0x10000) else 0x8000)
+
 def load_char_table(defn):
     """code -> character, from the definition's charTable.text.
 
@@ -79,6 +88,27 @@ def decode_text(data, charmap, start, end):
             break
         out.append(c)
     return ''.join(out).replace('　', ' ').strip()
+
+# The size-class arrays do not cover the whole 64 KiB monster graphics region:
+# the unused stretches between them hold most boss tile pools, so each gap needs
+# its own owner assembly (file offsets, header included).
+def spare_regions():
+    spans = sorted((mmc3_to_file(c[1]), mmc3_to_file(c[2])) for c in MONSTER_CLASSES)
+    lo, hi = mmc3_to_file(0x208000), mmc3_to_file(0x288000)
+    out, cursor = [], lo
+    n = 0
+    for start, end in spans:
+        if start > cursor:
+            n += 1
+            out.append(('monsterGraphicsSpare%d' % n, cursor, start))
+        cursor = max(cursor, end)
+    if cursor < hi:
+        n += 1
+        out.append(('monsterGraphicsSpare%d' % n, cursor, hi))
+    return out
+
+SPARE_REGIONS = None   # filled in by main(), once the ROM is known
+
 
 def main(rom=None, json_path=None):
     ap = argparse.ArgumentParser()
@@ -125,10 +155,17 @@ def main(rom=None, json_path=None):
             names = []
             for mid in users:
                 n = monster_name[mid] or ('Monster $%02X' % mid)
+                # mark boss monsters (ids $80-$FF) so they can be spotted in a
+                # long shared-graphics label - most bosses use these size
+                # classes, only 32 of them use the boss tilemaps
+                if mid >= 0x80:
+                    n = '*' + n
                 if n not in names:
                     names.append(n)
             if names:
-                shown = names[:3]
+                # bosses first: they are what someone hunting a boss is looking for
+                names.sort(key=lambda n: (not n.startswith('*'), n))
+                shown = names[:4]
                 extra = ' +%d' % (len(names) - len(shown)) if len(names) > len(shown) else ''
                 strings[str(i)] = ', '.join(shown) + extra
         tables[key] = {'length': count, 'default': 'Monster Graphics %i', 'string': strings}
@@ -207,16 +244,29 @@ def main(rom=None, json_path=None):
         entries = []
         for i in range(count):
             users = [mid for mid, v in enumerate(props) if (v >> 5) == cls and (v & 0x1F) == i]
-            # prefer a user that actually appears in a battle group
-            users.sort(key=lambda m: (not pal1[m], m))
-            picks = []
+            # A monster is drawn with TWO palettes (bg palette 0 = palette1 and
+            # bg palette 1 = palette2 of its battle group; $2E:$8F20 picks one
+            # per 2x2 cell). Rank the palettes used by every monster that shares
+            # this graphic so the relevant ones come first.
+            rank = Counter()
+            who = defaultdict(set)
             for m in users:
-                for p in (dominant(pal1, m), dominant(pal2, m)):
-                    if p is not None and p not in picks:
-                        picks.append(p)
-                if picks:
-                    break
-            entry = [{'path': 'battlePalettes[%d]' % p} for p in picks]
+                for slot, counter in ((0, pal1), (1, pal2)):
+                    for pid, n in counter[m].items():
+                        rank[pid] += n
+                        who[pid].add(m)
+            ordered = sorted(rank, key=lambda pid: (-rank[pid], pid))[:2]
+            entry = []
+            for n, pid in enumerate(ordered):
+                label = ', '.join(sorted((monster_name[m] or ('$%02X' % m)) for m in who[pid]))
+                entry.append({'path': 'battlePalettes[%d]' % pid,
+                              'name': '%s (%d)' % (label[:46], n + 1),
+                              'offset': n * 4})
+            if len(entry) == 2:
+                # compose both palettes into one 8-colour palette: the panel
+                # shows two rows and clicking a row switches the sprite over
+                entry[0]['compose'] = True
+                entry[1]['compose'] = True
             entry.append({'path': 'battlePalettes'})
             entries.append(entry)
         item_palettes[key] = entries
@@ -240,14 +290,22 @@ def main(rom=None, json_path=None):
 
     # --- bosses ----------------------------------------------------------
     boss_pointers = data[mmc3_to_file(0x2E9068):mmc3_to_file(0x2E9098)]
+    global SPARE_REGIONS
+    SPARE_REGIONS = spare_regions()
     CLASSES_BY_KEY = {c[0]: c for c in MONSTER_CLASSES}
     bosses = []
     for i in range(24):
         lo, hi = boss_pointers[2 * i], boss_pointers[2 * i + 1]
+        # the disassembly comment spells it out: bbs---tt tttttttt
+        #   bits 7-6 = bank id, bit 5 = "this boss is a summon: load from the
+        #   summon graphics bank and flip horizontally", bits 1-0 + byte 0 =
+        #   a 10-bit tile index inside a 16 KiB window (an MMC3 bank pair)
+        bank_id = (hi >> 6) & 3
+        summon = (hi >> 5) & 1
         tile = ((hi & 3) << 8) | lo
-        summon = (hi >> 2) & 1
-        bank = 0x0C if summon else (hi & 3) * 2 + 0x20
-        def_addr = bank * 0x10000 + 0x8000 + tile * 16
+        bank = 0x0C if summon else 0x20 + 2 * bank_id
+        pool_file = bank * 0x2000 + tile * 16 + 0x10
+        def_addr = None
         owner = None
         for mid, v in enumerate(props):
             if (v >> 5) == 6 and (v & 0x1F) == i:
@@ -259,31 +317,137 @@ def main(rom=None, json_path=None):
                 n = monster_name[mid] or ('Monster $%02X' % mid)
                 if n not in names_used:
                     names_used.append(n)
-        entry = [{'path': 'battlePalettes[%d]' % p} for p in
-                 (dominant(pal1, owner), dominant(pal2, owner))
-                 if owner is not None and p is not None]
+        # same two-palette model as ordinary monsters: rank the palettes used by
+        # every boss that shares this tilemap
+        rank = Counter()
+        who = defaultdict(set)
+        owner_ids = [mid for mid, v in enumerate(props)
+                     if (v >> 5) == 6 and (v & 0x1F) == i]
+        for m in owner_ids:
+            for counter in (pal1, pal2):
+                for pid, n in counter[m].items():
+                    rank[pid] += n
+                    who[pid].add(m)
+        ordered = sorted(rank, key=lambda pid: (-rank[pid], pid))[:2]
+        entry = []
+        for k, pid in enumerate(ordered):
+            label = ', '.join(sorted((monster_name[m] or ('$%02X' % m)) for m in who[pid]))
+            entry.append({'path': 'battlePalettes[%d]' % pid,
+                          'name': '%s (%d)' % (label[:46], k + 1),
+                          'offset': k * 4, 'compose': True})
+        if len(entry) < 2:
+            for e in entry:
+                e.pop('compose', None)
         entry.append({'path': 'battlePalettes'})
         # which class array physically contains this boss's tile pool, and at
         # what tile index. NOTE: the index must be computed in *file* space -
         # def-space addresses alias (only $8000-$9FFF address a bank's 8 KiB).
         # The tilemap bytes are PPU pattern indices with the pool at 0x70
         # (2F/A400 loads boss graphics at PPU $0700).
-        pool_file = mmc3_to_file(def_addr)
+        # which assembly physically contains this boss's tile pool, and at what
+        # tile index - always computed in *file* space, since def-space
+        # addresses alias (only $8000-$9FFF address a bank's 8 KiB). The tilemap
+        # bytes are PPU pattern indices with the pool at 0x70 (2F/A400 loads the
+        # boss's 144 tiles at PPU $0700).
+        # The size-class arrays do not tile the whole 64 KiB region: the unused
+        # stretches between them are owned by monsterGraphicsSpareN assemblies,
+        # and most boss pools live there.
+        regions = [(c[0], mmc3_to_file(c[1]), mmc3_to_file(c[2])) for c in MONSTER_CLASSES]
+        regions += SPARE_REGIONS
+        # the two summon-backed bosses (bit 5 set) draw from the summon pool
+        regions.append(('summonGraphics', 0x19810, 0x1A810))
         container = None
-        for c in MONSTER_CLASSES:
-            c0, c1 = mmc3_to_file(c[1]), mmc3_to_file(c[2])
+        for k, c0, c1 in regions:
             if c0 <= pool_file < c1:
-                container = (c[0], (pool_file - c0) // 16)
+                container = (k, (pool_file - c0) // 16)
                 break
+        # the boss's own 144 tiles inside the shared pool, in *decoded* bytes
+        # (64 per NES 2bpp tile) - used as the graphics view's range. Clamped to
+        # the container: the game always copies 144 tiles but a pool near the
+        # end of the region has fewer than that available (and never uses them).
+        poolBytes = None
+        if container:
+            c1 = [r[2] for r in regions if r[0] == container[0]][0]
+            maxTiles = (c1 - (pool_file - container[1] * 16)) // 16
+            tiles = min(0x90, maxTiles)
+            poolBytes = (container[1] * 64, (container[1] + tiles) * 64)
         bosses.append({
             'index': i, 'pointer': (lo, hi), 'tile': tile, 'summon': summon,
             'bank': bank, 'defAddr': def_addr, 'owners': names_used,
             'container': container, 'tileOffset': (container[1] - 0x70) if container else None,
+            # the boss's own 144 tiles inside the shared pool, in *decoded*
+            # bytes (64 per NES 2bpp tile) - used as the graphics view's range
+            'poolBytes': (container[1] * 64, (container[1] + 0x90) * 64) if container else None,
             'palette': entry,
         })
 
+    # --- summons ---------------------------------------------------------
+    # $2A:$9440, 8 records of 8 bytes (32/8CEF "summon animation"):
+    #   0: graphics index (tile offset into the summon graphics bank $0C)
+    #   1: first of three consecutive sprite palette ids
+    #   4: size - high nibble = width, low nibble = height (in tiles)
+    #   5: initial position - high nibble = x, low nibble = y (in tiles)
+    #   6-7: little-endian pointer to the tilemap (bank 2A)
+    SUMMON_NAMES = 0x609          # text id of summon 0's plain name
+    summon_props = data[mmc3_to_file(0x2A9440):mmc3_to_file(0x2A9480)]
+    bank2A_file = mmc3_to_file(0x2A8000)
+    summons = []
+    for i in range(8):
+        p = summon_props[i * 8:i * 8 + 8]
+        gfx_index = p[0]
+        width, height = p[4] >> 4, p[4] & 0x0F
+        cells = width * height
+        map_file = bank2A_file + (p[6] | (p[7] << 8)) - 0x8000
+        entry = [{'path': 'battlePalettes[%d]' % ((p[1] + k) & 0xFF),
+                  'name': 'Sprite palette %d' % (k + 1), 'offset': k * 4}
+                 for k in range(3)]
+        for e in entry:
+            e['compose'] = True
+        entry.append({'path': 'battlePalettes'})
+        summons.append({
+            'index': i,
+            'name': text(SUMMON_NAMES + i * 3) or ('Summon %i' % i),
+            'gfxIndex': gfx_index, 'width': width, 'height': height,
+            'cells': cells, 'mapFile': map_file,
+            'mapBeginDef': file_to_def(map_file),
+            'mapEndDef': file_to_def(map_file + cells),
+            'propBeginDef': 0x2A9440 + i * 8,
+            'palette': entry,
+        })
+
+    # --- per-graphic palette cells ---------------------------------------
+    # $2E:$8F20 "monster attribute data": which of the two battle palettes each
+    # 2x2 tile cell uses. 2F/A8D8 gives the table base per class, 2F/A8E4 the
+    # bytes per monster, and the id is (props & $3F) - note bit 5 belongs to the
+    # id, so classes 0/1 and 2/3 share bases with different id ranges.
+    # 2F/A6FB reads the bits MSB-first, 2F/A78D walks cells row-major
+    # (ceil(w/2) columns, ceil(h/2) rows).
+    ATTR_BASE = [0x2E8F20, 0x2E8F20, 0x2E8F48, 0x2E8F48, 0x2E8FA8, 0x2E8FB4]
+    ATTR_SIZE = [1, 1, 2, 2, 3, 3]
+
+    def attr_cells(props_byte, cls, w, h):
+        addr = mmc3_to_file(ATTR_BASE[cls]) + (props_byte & 0x3F) * ATTR_SIZE[cls]
+        blob = data[addr:addr + ATTR_SIZE[cls]]
+        cols, rows = (w + 1) // 2, (h + 1) // 2
+        cells = []
+        for k in range(cols * rows):
+            byte = blob[k // 8] if k // 8 < len(blob) else 0
+            cells.append((byte >> (7 - (k % 8))) & 1)
+        return ''.join(str(c) for c in cells)
+
+    item_attrs = {}
+    for cls, (key, begin, end, w, h, count) in enumerate(MONSTER_CLASSES):
+        entries = []
+        for i in range(count):
+            users = [mid for mid, v in enumerate(props) if (v >> 5) == cls and (v & 0x1F) == i]
+            users.sort(key=lambda m: (-sum(pal1[m].values()), m))
+            entries.append(attr_cells(props[users[0]], cls, w, h) if users else '')
+        item_attrs[key] = entries
+
     result = {'tables': tables, 'itemPalettes': item_palettes,
+              'itemAttributes': item_attrs,
               'charPalettes': char_palettes, 'bosses': bosses,
+              'summons': summons, 'spareRegions': SPARE_REGIONS,
               'monsterName': monster_name, 'jobName': job_name}
     return result
 

@@ -70,7 +70,7 @@ MONSTER_CLASSES = [
 ]
 
 def graphics_array(key, name, rng, count, w, h, length, palette, table,
-                   item_name=None, item_palettes=None):
+                   item_name=None, item_palettes=None, item_attrs=None):
     pal = palette_list(palette, 16)
     lines = ['"%s": {' % key,
              '    "type": "array",',
@@ -87,6 +87,9 @@ def graphics_array(key, name, rng, count, w, h, length, palette, table,
              '        "backColor": true,',
              '        "palette": %s' % pal,
              '    },']
+    if item_attrs:
+        lines.append('    "itemAttributes": [' +
+                     ', '.join(json.dumps(a) for a in item_attrs) + '],')
     if item_palettes:
         lines.append('    "itemPalettes": [')
         for i, e in enumerate(item_palettes):
@@ -98,11 +101,25 @@ def graphics_array(key, name, rng, count, w, h, length, palette, table,
     return '\n'.join(lines)
 
 def file_to_def(file_addr):
-    """Inverse of mmc3 mapAddress; the result re-maps to the same file offset."""
-    a = file_addr - 0x10
-    bank = (a << 3) & 0xFF0000
-    off = a & 0x1FFF
-    return bank | off | (0xA000 if (bank & 0x10000) else 0x8000)
+    return names.file_to_def(file_addr)
+
+def pristine_definition(rel):
+    """The definition as it was *before* this tool ever touched it: walk back
+    through git history for a blob without our generated assemblies. (The
+    branch has commits containing generated output, so HEAD is not the base.)"""
+    import subprocess
+    revs = subprocess.run(['git', 'rev-list', 'HEAD'], cwd=ROOT,
+                          capture_output=True, text=True).stdout.split()
+    for rev in revs:
+        r = subprocess.run(['git', 'show', '%s:%s' % (rev, rel)], cwd=ROOT, capture_output=True)
+        if r.returncode != 0:
+            continue
+        blob = r.stdout.decode('utf-8')
+        if '"monsterGraphics4x4"' not in blob:
+            return blob
+    raise SystemExit('no pre-generation baseline for %s in git history; '
+                     'strip the generated assemblies by hand first' % rel)
+
 
 def main():
     dry = '--dry-run' in sys.argv
@@ -116,7 +133,8 @@ def main():
     ROMN = rom if os.path.isabs(rom) else os.path.join(ROOT, rom)
 
     r = names.main(ROMN, DEFN)
-    tables, item_pal, char_pal, bosses = r['tables'], r['itemPalettes'], r['charPalettes'], r['bosses']
+    tables, item_pal, char_pal = r['tables'], r['itemPalettes'], r['charPalettes']
+    item_attr, bosses, summons = r['itemAttributes'], r['bosses'], r['summons']
 
     original = open(DEFN, encoding='utf-8').read()
     text = original
@@ -128,14 +146,12 @@ def main():
         return
     if '--force' in sys.argv:
         # rebuild from the pristine definition so re-running is idempotent
-        import subprocess
         rel = os.path.relpath(DEFN, ROOT)
-        base = subprocess.run(['git', 'show', 'HEAD:%s' % rel], cwd=ROOT,
-                              capture_output=True, check=True).stdout.decode('utf-8')
+        base = pristine_definition(rel)
         text = base
         defn = json.loads(text)
         original = base
-        print('reset from git HEAD for a clean rebuild')
+        print('reset to the pre-generation baseline (%d bytes) for a clean rebuild' % len(base))
 
     # ---- fix the bogus worldPalette -------------------------------------
     if 'worldPalette' in defn.get('assembly', {}):
@@ -154,7 +170,7 @@ def main():
     for key, name, rng, count, w, h, length in MONSTER_CLASSES:
         blocks.append(graphics_array(key, name, rng, count, w, h, length,
                                      ['battlePalettes'], tables[key],
-                                     'Monster Graphics', item_pal[key]))
+                                     'Monster Graphics', item_pal[key], item_attr[key]))
 
     blocks.append('''"monsterGraphicsProperties": {
     "type": "array",
@@ -239,7 +255,7 @@ def main():
                 "type": "property",
                 "name": "Graphics Bank",
                 "begin": 1,
-                "mask": "0x03",
+                "mask": "0xC0",
                 "stringTable": {
                     "length": 4,
                     "default": "Bank %i",
@@ -251,7 +267,7 @@ def main():
                 "type": "property",
                 "name": "Use Summon Graphics",
                 "begin": 1,
-                "mask": "0x04",
+                "mask": "0x20",
                 "bool": true
             }
         }
@@ -270,22 +286,126 @@ def main():
     "type": "tilemap",
     "name": "Boss Tilemap %d (%s)",
     "range": "%s",
-    "format": "generic2bppTile",
+    "format": "ff3BossTilemap",
     "width": 18,
     "height": 12,
     "backColor": true,
     "graphics": {
         "path": "%s",
+        "whole": true,
+        "range": "%d-%d"
+    },
+    "palette": %s
+}''' % (i, i, name.replace('"', "'"), rng, container,
+        b['poolBytes'][0], b['poolBytes'][1],
+        indent(palette_list(b['palette'], 4), 4).lstrip()))
+
+    summon_names = {'length': 8, 'default': 'Summon %i',
+                    'string': {str(s['index']): s['name'] for s in summons}}
+    blocks.append('''"summonProperties": {
+    "type": "array",
+    "name": "Summon Graphics Properties",
+    "range": "0x2A9440-0x2A9480",
+    "arrayLength": 8,
+    "assembly": {
+        "type": "data",
+        "length": 8,
+        "assembly": {
+            "graphicsIndex": {
+                "type": "property",
+                "name": "Graphics Index",
+                "begin": 0,
+                "mask": "0xFF"
+            },
+            "paletteID": {
+                "type": "property",
+                "name": "First Sprite Palette",
+                "begin": 1,
+                "mask": "0xFF"
+            },
+            "unknown2": {
+                "type": "property",
+                "name": "Unknown 2",
+                "begin": 2,
+                "mask": "0xFF"
+            },
+            "unknown3": {
+                "type": "property",
+                "name": "Unknown 3",
+                "begin": 3,
+                "mask": "0xFF"
+            },
+            "width": {
+                "type": "property",
+                "name": "Width",
+                "begin": 4,
+                "mask": "0xF0"
+            },
+            "height": {
+                "type": "property",
+                "name": "Height",
+                "begin": 4,
+                "mask": "0x0F"
+            },
+            "startX": {
+                "type": "property",
+                "name": "Start X",
+                "begin": 5,
+                "mask": "0xF0"
+            },
+            "startY": {
+                "type": "property",
+                "name": "Start Y",
+                "begin": 5,
+                "mask": "0x0F"
+            },
+            "tilemapPointer": {
+                "type": "property",
+                "name": "Tilemap Pointer",
+                "begin": 6,
+                "mask": "0xFFFF"
+            }
+        }
+    },
+    "stringTable": @TABLE@
+}'''.replace('@TABLE@', indent(string_table(summon_names), 4).lstrip()))
+
+    # the unused stretches between the size-class arrays: most boss tile pools
+    # live here (a boss pointer addresses a 16 KiB window, which runs past the
+    # class entries), and each byte needs exactly one owner assembly
+    for key, f0, f1 in r['spareRegions']:
+        blocks.append('''"%s": {
+    "type": "graphics",
+    "name": "Monster Graphics (spare tile pool, file %05X-%05X)",
+    "range": "0x%06X-0x%06X",
+    "format": "nes2bpp",
+    "width": 12,
+    "backColor": true,
+    "palette": "battlePalettes"
+}''' % (key, f0, f1, file_to_def(f0), file_to_def(f1)))
+
+    for b in summons:
+        i = b['index']
+        blocks.append('''"summonTilemap%d": {
+    "type": "tilemap",
+    "name": "Summon Tilemap %d (%s)",
+    "range": "0x%06X-0x%06X",
+    "format": "ff3SummonTilemap",
+    "width": %d,
+    "height": %d,
+    "backColor": true,
+    "graphics": {
+        "path": "summonGraphics",
         "whole": true
     },
     "tileOffset": %d,
     "palette": %s
-}''' % (i, i, name.replace('"', "'"), rng, container, b['tileOffset'],
+}''' % (i, i, b['name'].replace('"', "'"), b['mapBeginDef'], b['mapEndDef'],
+        b['width'], b['height'], b['gfxIndex'],
         indent(palette_list(b['palette'], 4), 4).lstrip()))
 
     for key, name, rng in [
         ('battleBackgroundGraphics', 'Battle Background Graphics', '0x0C8000-0x0C9800'),
-        ('summonGraphics',           'Summon Graphics',            '0x0C9800-0x0DA800'),
         ('battleSpriteGraphics',     'Battle Sprite Graphics',     '0x0DA800-0x0E8000'),
         ('mapSpriteGraphics',        'Map Sprite Graphics',        '0x0E8000-0x108000'),
         ('attackGraphics',           'Attack Graphics',            '0x2A9600-0x2C8000'),
@@ -298,6 +418,20 @@ def main():
     "backColor": true
 }''' % (key, name, rng))
 
+    # the summon tile pool: 8 blocks of 3x3, 4x5, 4x5, 6x7, 5x7, 8x9, 8x9,
+    # 7x10 tiles (see summonProperties), so eight tiles per row lines the
+    # individual summons up instead of shredding them
+    blocks.append('''"summonGraphics": {
+    "type": "graphics",
+    "name": "Summon Graphics (tile pool - see the summon tilemaps)",
+    "range": "0x0C9800-0x0DA800",
+    "format": "nes2bpp",
+    "width": 8,
+    "height": 32,
+    "backColor": true,
+    "palette": %s
+}''' % indent(palette_list(summons[0]['palette'], 4), 4).lstrip())
+
     anchor = '    "assembly": {\n'
     assert anchor in text, 'assembly anchor not found'
     text = text.replace(anchor, anchor + indent(',\n'.join(blocks), 8) + ',\n', 1)
@@ -309,7 +443,6 @@ def main():
               '{"path": "battleCharacterGraphics"}',
               '{"path": "battleCharacterGraphicsStatus"}',
               '{"path": "battleBackgroundGraphics"}',
-              '{"path": "summonGraphics"}',
               '{"path": "battleSpriteGraphics"}',
               '{"path": "attackGraphics"}',
               '{"path": "mapSpriteGraphics"}']
@@ -325,10 +458,19 @@ def main():
                 {"path": "bossGraphicsPointers"},
                 %s''' % boss_items
 
+    summon_items = ', '.join('{"path": "summonTilemap%d"}' % s['index'] for s in summons)
+    summon_sec = '''        }, {
+            "name": "Summon Graphics",
+            "list": [
+                {"path": "summonProperties"},
+                {"path": "summonGraphics"},
+                %s''' % summon_items
+
     anchor = '        }, {\n            "name": "Text",'
     assert anchor in text, 'hierarchy anchor not found'
     text = text.replace(anchor,
-                        battle + '\n            ]\n' + boss_sec + '\n            ]\n        }, {\n            "name": "Text",', 1)
+                        battle + '\n            ]\n' + boss_sec + '\n            ]\n' +
+                        summon_sec + '\n            ]\n        }, {\n            "name": "Text",', 1)
 
     # ---- validate --------------------------------------------------------
     try:

@@ -24,13 +24,20 @@
         }, {
             "name": "Battle",
             "list": [
-                {"path": "monsterGraphics4x4"}, {"path": "monsterGraphics4x6"}, {"path": "monsterGraphics6x6"}, {"path": "monsterGraphics6x6b"}, {"path": "monsterGraphics6x12"}, {"path": "monsterGraphics12x6"}, {"path": "monsterGraphicsProperties"}, {"path": "battlePalettes"}, {"path": "battleCharacterGraphics"}, {"path": "battleCharacterGraphicsStatus"}, {"path": "battleBackgroundGraphics"}, {"path": "summonGraphics"}, {"path": "battleSpriteGraphics"}, {"path": "attackGraphics"}, {"path": "mapSpriteGraphics"}
+                {"path": "monsterGraphics4x4"}, {"path": "monsterGraphics4x6"}, {"path": "monsterGraphics6x6"}, {"path": "monsterGraphics6x6b"}, {"path": "monsterGraphics6x12"}, {"path": "monsterGraphics12x6"}, {"path": "monsterGraphicsProperties"}, {"path": "battlePalettes"}, {"path": "battleCharacterGraphics"}, {"path": "battleCharacterGraphicsStatus"}, {"path": "battleBackgroundGraphics"}, {"path": "battleSpriteGraphics"}, {"path": "attackGraphics"}, {"path": "mapSpriteGraphics"}
             ]
         }, {
             "name": "Boss Graphics",
             "list": [
                 {"path": "bossGraphicsPointers"},
                 {"path": "bossTilemap0"}, {"path": "bossTilemap1"}, {"path": "bossTilemap2"}, {"path": "bossTilemap3"}, {"path": "bossTilemap4"}, {"path": "bossTilemap5"}, {"path": "bossTilemap6"}, {"path": "bossTilemap7"}, {"path": "bossTilemap8"}, {"path": "bossTilemap9"}, {"path": "bossTilemap10"}, {"path": "bossTilemap11"}, {"path": "bossTilemap12"}, {"path": "bossTilemap13"}, {"path": "bossTilemap14"}, {"path": "bossTilemap15"}, {"path": "bossTilemap16"}, {"path": "bossTilemap17"}, {"path": "bossTilemap18"}, {"path": "bossTilemap19"}, {"path": "bossTilemap20"}, {"path": "bossTilemap21"}, {"path": "bossTilemap22"}, {"path": "bossTilemap23"}
+            ]
+        }, {
+            "name": "Summon Graphics",
+            "list": [
+                {"path": "summonProperties"},
+                {"path": "summonGraphics"},
+                {"path": "summonTilemap0"}, {"path": "summonTilemap1"}, {"path": "summonTilemap2"}, {"path": "summonTilemap3"}, {"path": "summonTilemap4"}, {"path": "summonTilemap5"}, {"path": "summonTilemap6"}, {"path": "summonTilemap7"}
             ]
         }, {
             "name": "Text",
@@ -58,84 +65,86 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
+            "itemAttributes": ["0000", "0001", "0011", "0000", "0000", "0000", "0000", "0011", "0011", "0000", "0000", "0011", "0011", "0000", "0011", "0011"],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[137]"},
-                            {"path": "battlePalettes[160]"},
+                            {"path": "battlePalettes[91]", "name": "レッドキャップ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[133]", "name": "ノッカー (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[63]"},
-                            {"path": "battlePalettes[64]"},
+                            {"path": "battlePalettes[63]", "name": "キラービー (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[64]", "name": "キラービー (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[89]"},
-                            {"path": "battlePalettes[107]"},
+                            {"path": "battlePalettes[72]", "name": "アイスフライ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[89]", "name": "ファイアフライ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[53]"},
-                            {"path": "battlePalettes[94]"},
+                            {"path": "battlePalettes[53]", "name": "カーバンクル (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[94]", "name": "カーバンクル (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[1]"},
-                            {"path": "battlePalettes[104]"},
+                            {"path": "battlePalettes[1]", "name": "ウェアラット (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[104]", "name": "ウェアラット (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[189]"},
-                            {"path": "battlePalettes[63]"},
+                            {"path": "battlePalettes[45]", "name": "シーデビル (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[63]", "name": "キラーフィッシュ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[6]"},
-                            {"path": "battlePalettes[2]"},
+                            {"path": "battlePalettes[2]", "name": "レプラホーン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[6]", "name": "レプラホーン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[132]"},
-                            {"path": "battlePalettes[104]"},
+                            {"path": "battlePalettes[104]", "name": "リリパット (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[209]", "name": "ピュグマン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[217]"},
+                            {"path": "battlePalettes[83]", "name": "ブラッドバット (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[217]", "name": "ポイズンバット (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[53]"},
-                            {"path": "battlePalettes[94]"},
+                            {"path": "battlePalettes[53]", "name": "ブルーウィスプ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[94]", "name": "ブルーウィスプ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[109]"},
-                            {"path": "battlePalettes[45]"},
+                            {"path": "battlePalettes[109]", "name": "バルーン, ボム (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[186]", "name": "バルーン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[13]"},
-                            {"path": "battlePalettes[14]"},
+                            {"path": "battlePalettes[13]", "name": "ダイブイーグル (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[14]", "name": "ダイブイーグル (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[180]"},
-                            {"path": "battlePalettes[187]"},
+                            {"path": "battlePalettes[74]", "name": "ブラックプリン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[75]", "name": "ブラックプリン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[194]"},
-                            {"path": "battlePalettes[52]"},
+                            {"path": "battlePalettes[167]", "name": "さまようきんか (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[52]", "name": "のろいのどうか (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[194]"},
-                            {"path": "battlePalettes[52]"},
+                            {"path": "battlePalettes[80]", "name": "レムレース (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[98]", "name": "レムレース (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[189]"},
-                            {"path": "battlePalettes[63]"},
+                            {"path": "battlePalettes[45]", "name": "ルイナスウエーブ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[63]", "name": "シーエレメンタル (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -143,7 +152,7 @@
                 "length": 16,
                 "default": "Monster Graphics %i",
                 "string": {
-                    "0": "ゴブリン, ノッカー, レッドキャップ +11", "1": "キラービー, ホーネット", "2": "ファイアフライ, アイスフライ", "3": "カーバンクル, しょうにゅうせき", "4": "ウェアラット", "5": "キラーフィッシュ, シーデビル", "6": "レプラホーン, ファージャルグ", "7": "リリパット, ピュグマン", "8": "ポイズンバット, ブラッドバット", "9": "ブルーウィスプ, レッドウィスプ", "10": "ボム, バルーン, グラネイド", "11": "ダイブイーグル, ゴールドイーグル", "12": "スライム, レッドマシュマロ, ブラックプリン", "13": "のろいのどうか, さまようきんか", "14": "ラルウァイ, レムレース", "15": "シーエレメンタル, ルイナスウエーブ"
+                    "0": "*Monster $FF, *イフリート, *オーディン, *シヴァ +10", "1": "キラービー, ホーネット", "2": "アイスフライ, ファイアフライ", "3": "しょうにゅうせき, カーバンクル", "4": "ウェアラット", "5": "キラーフィッシュ, シーデビル", "6": "ファージャルグ, レプラホーン", "7": "ピュグマン, リリパット", "8": "ブラッドバット, ポイズンバット", "9": "ブルーウィスプ, レッドウィスプ", "10": "*グラネイド, バルーン, ボム", "11": "ゴールドイーグル, ダイブイーグル", "12": "スライム, ブラックプリン, レッドマシュマロ", "13": "さまようきんか, のろいのどうか", "14": "ラルウァイ, レムレース", "15": "シーエレメンタル, ルイナスウエーブ"
                 }
             }
         },
@@ -162,124 +171,125 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
+            "itemAttributes": ["001100", "110000", "110000", "000100", "110000", "001111", "111100", "101000", "110000", "000000", "000011", "000000", "000000", "000000", "110010", "100000", "000000", "100000", "001001", "100000", "000011", "100000", "001000", "000000"],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[132]"},
-                            {"path": "battlePalettes[217]"},
+                            {"path": "battlePalettes[83]", "name": "プティメイジ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[132]", "name": "プティ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[53]"},
-                            {"path": "battlePalettes[94]"},
+                            {"path": "battlePalettes[53]", "name": "アイファング (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[94]", "name": "アイファング (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[204]"},
-                            {"path": "battlePalettes[206]"},
+                            {"path": "battlePalettes[57]", "name": "コッカトリス (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[70]", "name": "コッカトリス (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[109]"},
-                            {"path": "battlePalettes[90]"},
+                            {"path": "battlePalettes[61]", "name": "シャドウ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[62]", "name": "シャドウ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[141]"},
-                            {"path": "battlePalettes[142]"},
+                            {"path": "battlePalettes[61]", "name": "レブナント (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[62]", "name": "レブナント (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[124]"},
-                            {"path": "battlePalettes[125]"},
+                            {"path": "battlePalettes[23]", "name": "へルカンメイジ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[24]", "name": "へルカンメイジ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[48]"},
-                            {"path": "battlePalettes[51]"},
+                            {"path": "battlePalettes[48]", "name": "サハギン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[51]", "name": "サハギン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[109]"},
-                            {"path": "battlePalettes[90]"},
+                            {"path": "battlePalettes[80]", "name": "ファラオ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[98]", "name": "ファラオ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[74]"},
-                            {"path": "battlePalettes[75]"},
+                            {"path": "battlePalettes[23]", "name": "ソーサラー (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[24]", "name": "ソーサラー (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[93]"},
-                            {"path": "battlePalettes[168]"},
+                            {"path": "battlePalettes[93]", "name": "クムクム (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[168]", "name": "クムクム (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[180]"},
-                            {"path": "battlePalettes[187]"},
+                            {"path": "battlePalettes[70]", "name": "ダークフット (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[72]", "name": "ダークフット (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[125]"},
-                            {"path": "battlePalettes[118]"},
+                            {"path": "battlePalettes[118]", "name": "バグベアー (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[125]", "name": "バグベアー (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[171]"},
-                            {"path": "battlePalettes[167]"},
+                            {"path": "battlePalettes[167]", "name": "ゴールドナイト (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[171]", "name": "ゴールドナイト (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[1]"},
-                            {"path": "battlePalettes[104]"},
+                            {"path": "battlePalettes[104]", "name": "ブラッドウォーム (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[1]", "name": "ブラッドウォーム (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[111]"},
-                            {"path": "battlePalettes[41]"},
+                            {"path": "battlePalettes[41]", "name": "ほのおのまじん (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[111]", "name": "ほのおのまじん (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[122]"},
-                            {"path": "battlePalettes[75]"},
+                            {"path": "battlePalettes[75]", "name": "フライヤー, メイジフライヤー (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[122]", "name": "フライヤー (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[77]"},
-                            {"path": "battlePalettes[73]"},
+                            {"path": "battlePalettes[73]", "name": "ニードルモンキー (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[77]", "name": "ニードルモンキー (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[236]"},
-                            {"path": "battlePalettes[107]"},
+                            {"path": "battlePalettes[59]", "name": "かげ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[107]", "name": "しのび (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[59]"},
+                            {"path": "battlePalettes[59]", "name": "おかしら (1)", "offset": 0},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[143]"},
-                            {"path": "battlePalettes[152]"},
+                            {"path": "battlePalettes[143]", "name": "ウェアウルフ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[152]", "name": "ウェアウルフ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[6]"},
-                            {"path": "battlePalettes[2]"},
+                            {"path": "battlePalettes[2]", "name": "ダークフェイス (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[6]", "name": "ダークフェイス (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[195]"},
-                            {"path": "battlePalettes[32]"},
+                            {"path": "battlePalettes[195]", "name": "ウロボロス (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[32]", "name": "ウロボロス (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[122]"},
-                            {"path": "battlePalettes[75]"},
+                            {"path": "battlePalettes[75]", "name": "ゴルゴーン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[112]", "name": "カフジェル (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[132]"},
-                            {"path": "battlePalettes[134]"},
+                            {"path": "battlePalettes[70]", "name": "ギガントード (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[72]", "name": "ギガントード (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -287,7 +297,7 @@
                 "length": 24,
                 "default": "Monster Graphics %i",
                 "string": {
-                    "0": "プティ, プティメイジ", "1": "アイファング, ダークアイ", "2": "バシリスク, コッカトリス", "3": "スケルトン, シャドウ", "4": "ゾンビ, レブナント", "5": "へルカン, へルカンメイジ", "6": "サハギン, マーマン", "7": "マミー, ファラオ", "8": "マジシャン, ソーサラー", "9": "クムクム", "10": "タランチュラ, ダークフット", "11": "バグベアー, ゴールドベアー", "12": "ゴールドナイト, くろきし", "13": "ブラッドウォーム, サンドウォーム", "14": "ほのおのまじん", "15": "フライヤー, メイジフライヤー", "16": "ニードルモンキー, デスニードル", "17": "しのび, かげ", "18": "おかしら", "19": "ウェアウルフ, リンクス", "20": "ダークフェイス, オヒシュキ", "21": "ウロボロス, グレートボロス", "22": "ゴルゴーン, カフジェル", "23": "ポイズントード, ギガントード"
+                    "0": "プティ, プティメイジ", "1": "アイファング, ダークアイ", "2": "コッカトリス, バシリスク", "3": "シャドウ, スケルトン", "4": "ゾンビ, レブナント", "5": "へルカン, へルカンメイジ", "6": "サハギン, マーマン", "7": "ファラオ, マミー", "8": "ソーサラー, マジシャン", "9": "*クムクム", "10": "タランチュラ, ダークフット", "11": "ゴールドベアー, バグベアー", "12": "くろきし, ゴールドナイト", "13": "サンドウォーム, ブラッドウォーム", "14": "*ほのおのまじん", "15": "フライヤー, メイジフライヤー", "16": "*デスニードル, ニードルモンキー", "17": "*かげ, *しのび", "18": "*おかしら", "19": "ウェアウルフ, リンクス", "20": "オヒシュキ, ダークフェイス", "21": "*ウロボロス, *グレートボロス", "22": "カフジェル, ゴルゴーン", "23": "ギガントード, ポイズントード"
                 }
             }
         },
@@ -306,125 +316,126 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
+            "itemAttributes": ["110000000", "000011000", "000000100", "110010111", "000000111", "001001001", "000011001", "001000100", "000000011", "110111111", "111101000", "111011000", "011100010", "000001000", "111000001", "100110111", "000000111", "100111000", "000011111", "000100111", "000100000", "000100100", "010110100", "110100101"],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[161]"},
-                            {"path": "battlePalettes[159]"},
+                            {"path": "battlePalettes[159]", "name": "アイオン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[161]", "name": "アイオン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[213]"},
-                            {"path": "battlePalettes[130]"},
+                            {"path": "battlePalettes[130]", "name": "ダークジェネラル (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[213]", "name": "ダークジェネラル (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[125]"},
-                            {"path": "battlePalettes[118]"},
+                            {"path": "battlePalettes[118]", "name": "マンドレイク (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[125]", "name": "マンドレイク (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[221]"},
-                            {"path": "battlePalettes[223]"},
+                            {"path": "battlePalettes[158]", "name": "リザードマン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[159]", "name": "リザードマン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[225]"},
-                            {"path": "battlePalettes[220]"},
+                            {"path": "battlePalettes[1]", "name": "ロックガーゴイル (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[9]", "name": "ロックガーゴイル (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[87]"},
-                            {"path": "battlePalettes[88]"},
+                            {"path": "battlePalettes[87]", "name": "ハーミット (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[88]", "name": "ハーミット (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[190]"},
-                            {"path": "battlePalettes[191]"},
+                            {"path": "battlePalettes[190]", "name": "ドーガクローン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[191]", "name": "ドーガクローン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[48]"},
-                            {"path": "battlePalettes[51]"},
+                            {"path": "battlePalettes[48]", "name": "タンギー (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[51]", "name": "タンギー (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[89]"},
-                            {"path": "battlePalettes[107]"},
+                            {"path": "battlePalettes[89]", "name": "ラストバード (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[107]", "name": "ラストバード (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[138]"},
-                            {"path": "battlePalettes[119]"},
+                            {"path": "battlePalettes[12]", "name": "ドズメア (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[40]", "name": "ドズメア (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[27]"},
-                            {"path": "battlePalettes[42]"},
+                            {"path": "battlePalettes[27]", "name": "キマイラ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[42]", "name": "キマイラ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[209]"},
-                            {"path": "battlePalettes[204]"},
+                            {"path": "battlePalettes[37]", "name": "アブトー (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[39]", "name": "アブトー (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[155]"},
-                            {"path": "battlePalettes[156]"},
+                            {"path": "battlePalettes[69]", "name": "あくまのうま (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[72]", "name": "あくまのうま (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[183]"},
-                            {"path": "battlePalettes[179]"},
+                            {"path": "battlePalettes[179]", "name": "クロコッタ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[183]", "name": "クロコッタ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[143]"},
-                            {"path": "battlePalettes[152]"},
+                            {"path": "battlePalettes[143]", "name": "バーサーカー (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[152]", "name": "バーサーカー (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[117]"},
-                            {"path": "battlePalettes[99]"},
+                            {"path": "battlePalettes[67]", "name": "うみのまじょ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[99]", "name": "マーメイド (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[132]"},
-                            {"path": "battlePalettes[134]"},
+                            {"path": "battlePalettes[132]", "name": "ローパー (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[134]", "name": "ローパー (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[198]"},
-                            {"path": "battlePalettes[199]"},
+                            {"path": "battlePalettes[165]", "name": "トール (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[166]", "name": "トール (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[131]"},
-                            {"path": "battlePalettes[133]"},
+                            {"path": "battlePalettes[131]", "name": "ガーブ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[133]", "name": "ガーブ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[103]"},
-                            {"path": "battlePalettes[18]"},
+                            {"path": "battlePalettes[18]", "name": "カトブレパス (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[103]", "name": "カトブレパス (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[51]"},
-                            {"path": "battlePalettes[52]"},
+                            {"path": "battlePalettes[198]", "name": "ハニエル (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[199]", "name": "ハニエル (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[161]"},
-                            {"path": "battlePalettes[164]"},
+                            {"path": "battlePalettes[161]", "name": "マンティコラ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[164]", "name": "マンティコラ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[79]"},
-                            {"path": "battlePalettes[72]"},
+                            {"path": "battlePalettes[72]", "name": "ルフ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[79]", "name": "ルフ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[233]"},
-                            {"path": "battlePalettes[218]"},
+                            {"path": "battlePalettes[218]", "name": "ケンコス (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[233]", "name": "ケンコス (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -432,7 +443,7 @@
                 "length": 24,
                 "default": "Monster Graphics %i",
                 "string": {
-                    "0": "アイオン", "1": "ダークジェネラル", "2": "マンドレイク, バロメッツ", "3": "リザードマン, キングリザード", "4": "ガーゴイル, ロックガーゴイル", "5": "ハーミット, さつじんやどかり", "6": "ドーガクローン, ドーガ", "7": "タンギー, ニーグル", "8": "ラストバード, フェニックス", "9": "グリフォン, ドズメア", "10": "キマイラ, メイジキマイラ", "11": "アネット, アブトー", "12": "ナイトメアー, あくまのうま", "13": "クロコッタ, リュークロコッタ", "14": "バーサーカー, ゴールドウォリア", "15": "マーメイド, うみのまじょ", "16": "ローパー, ストローパー", "17": "バルフレー, ハオカー, トール", "18": "ガーブ, ブラク", "19": "カトブレパス, フンババ", "20": "アズリエル, ハニエル", "21": "マンティコラ, ミルメコレオ", "22": "ルフ, シムルグ", "23": "ケンコス"
+                    "0": "*アイオン", "1": "*ダークジェネラル", "2": "バロメッツ, マンドレイク", "3": "キングリザード, リザードマン", "4": "ガーゴイル, ロックガーゴイル", "5": "*さつじんやどかり, ハーミット", "6": "*ドーガ, *ドーガクローン", "7": "タンギー, ニーグル", "8": "フェニックス, ラストバード", "9": "*ドズメア, グリフォン", "10": "キマイラ, メイジキマイラ", "11": "アネット, アブトー", "12": "あくまのうま, ナイトメアー", "13": "クロコッタ, リュークロコッタ", "14": "ゴールドウォリア, バーサーカー", "15": "*うみのまじょ, マーメイド", "16": "ストローパー, ローパー", "17": "*トール, *ハオカー, *バルフレー", "18": "*ガーブ, *ブラク", "19": "*フンババ, カトブレパス", "20": "*アズリエル, *ハニエル", "21": "マンティコラ, ミルメコレオ", "22": "シムルグ, ルフ", "23": "*ケンコス"
                 }
             }
         },
@@ -451,125 +462,126 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
+            "itemAttributes": ["110100000", "110110111", "000000111", "111000000", "111111000", "001011111", "101111111", "011110010", "111111000", "101101000", "000011111", "010000101", "000101111", "101101110", "000110111", "000110000", "111101011", "010000001", "100111111", "111001001", "110000000", "111001111", "100000000", "110000000"],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[51]"},
-                            {"path": "battlePalettes[46]"},
+                            {"path": "battlePalettes[21]", "name": "イーター (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[22]", "name": "イーター (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[221]"},
-                            {"path": "battlePalettes[214]"},
+                            {"path": "battlePalettes[30]", "name": "プランクタイ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[105]", "name": "プランクタイ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[221]"},
-                            {"path": "battlePalettes[214]"},
+                            {"path": "battlePalettes[10]", "name": "シーライオン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[11]", "name": "シーライオン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[209]"},
-                            {"path": "battlePalettes[204]"},
+                            {"path": "battlePalettes[167]", "name": "キングシーホース (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[170]", "name": "キングシーホース (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[219]"},
-                            {"path": "battlePalettes[221]"},
+                            {"path": "battlePalettes[163]", "name": "ライガーサーベル (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[167]", "name": "ライガーサーベル (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[132]"},
-                            {"path": "battlePalettes[134]"},
+                            {"path": "battlePalettes[132]", "name": "ツインへッド (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[134]", "name": "ツインへッド (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[7]"},
-                            {"path": "battlePalettes[175]"},
+                            {"path": "battlePalettes[125]", "name": "エーギル (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[7]", "name": "アガリアレプト (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[65]"},
-                            {"path": "battlePalettes[66]"},
+                            {"path": "battlePalettes[65]", "name": "ワイバーン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[66]", "name": "ワイバーン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[185]"},
-                            {"path": "battlePalettes[115]"},
+                            {"path": "battlePalettes[115]", "name": "パラライマ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[185]", "name": "パラライマ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[234]"},
-                            {"path": "battlePalettes[192]"},
+                            {"path": "battlePalettes[17]", "name": "ネプトりゅう (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[226]", "name": "ネプトりゅう (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[98]"},
-                            {"path": "battlePalettes[80]"},
+                            {"path": "battlePalettes[80]", "name": "ラミア (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[98]", "name": "ラミア (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[1]"},
-                            {"path": "battlePalettes[9]"},
+                            {"path": "battlePalettes[1]", "name": "うしにんげん (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[9]", "name": "うしにんげん (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[186]"},
-                            {"path": "battlePalettes[127]"},
+                            {"path": "battlePalettes[127]", "name": "アダマンタイマイ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[186]", "name": "アダマンタイマイ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[205]"},
-                            {"path": "battlePalettes[201]"},
+                            {"path": "battlePalettes[0]", "name": "アバイ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[1]", "name": "アバイ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[198]"},
-                            {"path": "battlePalettes[199]"},
+                            {"path": "battlePalettes[198]", "name": "デスクロー (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[199]", "name": "デスクロー (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[28]"},
-                            {"path": "battlePalettes[31]"},
+                            {"path": "battlePalettes[28]", "name": "ウネクローン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[31]", "name": "ウネクローン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[205]"},
-                            {"path": "battlePalettes[203]"},
+                            {"path": "battlePalettes[25]", "name": "レモラ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[36]", "name": "レモラ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[17]"},
-                            {"path": "battlePalettes[15]"},
+                            {"path": "battlePalettes[15]", "name": "デーモン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[17]", "name": "デーモン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[3]"},
-                            {"path": "battlePalettes[2]"},
+                            {"path": "battlePalettes[2]", "name": "ボストロル (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[3]", "name": "ボストロル (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[4]"},
-                            {"path": "battlePalettes[1]"},
+                            {"path": "battlePalettes[219]", "name": "よくりゅう (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[221]", "name": "よくりゅう (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[231]"},
-                            {"path": "battlePalettes[232]"},
+                            {"path": "battlePalettes[148]", "name": "サイクロプス (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[154]", "name": "サイクロプス (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[131]"},
-                            {"path": "battlePalettes[133]"},
+                            {"path": "battlePalettes[201]", "name": "クロノス (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[205]", "name": "クロノス (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[205]"},
-                            {"path": "battlePalettes[201]"},
+                            {"path": "battlePalettes[0]", "name": "スレイプニル (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[1]", "name": "スレイプニル (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[166]"},
-                            {"path": "battlePalettes[165]"},
+                            {"path": "battlePalettes[165]", "name": "ガルム (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[166]", "name": "ガルム (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -577,7 +589,7 @@
                 "length": 24,
                 "default": "Monster Graphics %i",
                 "string": {
-                    "0": "バラー, イーター", "1": "オログハイ, プランクタイ", "2": "ケルピー, シーライオン", "3": "シーホース, カーグラ, キングシーホース", "4": "ライガー, ライガーサーベル", "5": "ツインへッド, ツインライガー", "6": "アガリアレプト, エーギル", "7": "ワイバーン, ペリュトン", "8": "パラライマ, ネメシス", "9": "シーサーペント, ネプトりゅう", "10": "ラミア, ラミアクイーン", "11": "うしにんげん, ミノタウロス", "12": "アダマンタイマイ", "13": "バッサゴ, アバイ", "14": "デスクロー, アイアンクロー", "15": "ウネクローン, ウネ", "16": "カリュブディス, レモラ", "17": "デーモン, グレートデーモン", "18": "ボストロル, ファハン, オーガ +1", "19": "プテラノゴン, よくりゅう", "20": "キュクロプス, サイクロプス", "21": "シレノス, クロノス", "22": "じごくのうま, スレイプニル", "23": "ガルム"
+                    "0": "*イーター, *バラー", "1": "*オログハイ, *プランクタイ", "2": "*ケルピー, *シーライオン", "3": "カーグラ, キングシーホース, シーホース", "4": "*ライガー, *ライガーサーベル", "5": "ツインへッド, ツインライガー", "6": "*エーギル, アガリアレプト", "7": "*ペリュトン, ワイバーン", "8": "*ネメシス, パラライマ", "9": "シーサーペント, ネプトりゅう", "10": "*ラミアクイーン, ラミア", "11": "*ミノタウロス, うしにんげん", "12": "アダマンタイマイ", "13": "*アバイ, *バッサゴ", "14": "*アイアンクロー, *デスクロー", "15": "*ウネ, ウネクローン", "16": "*レモラ, カリュブディス", "17": "*グレートデーモン, デーモン", "18": "*オーガ, *スプリガン, ファハン, ボストロル", "19": "*よくりゅう, プテラノゴン", "20": "*サイクロプス, キュクロプス", "21": "*クロノス, *シレノス", "22": "*じごくのうま, *スレイプニル", "23": "*ガルム"
                 }
             }
         },
@@ -596,25 +608,26 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
+            "itemAttributes": ["111101011111001001", "110100101001111111", "111001001000101111", "001001111110011111"],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[140]"},
-                            {"path": "battlePalettes[210]"},
+                            {"path": "battlePalettes[212]", "name": "へカトンケイル (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[81]", "name": "ティターン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[100]"},
-                            {"path": "battlePalettes[80]"},
+                            {"path": "battlePalettes[58]", "name": "まどうしハイン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[80]", "name": "アモン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[73]"},
-                            {"path": "battlePalettes[60]"},
+                            {"path": "battlePalettes[60]", "name": "ヒュドラ (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[73]", "name": "ヒュドラ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[121]"},
-                            {"path": "battlePalettes[120]"},
+                            {"path": "battlePalettes[120]", "name": "グラシャラボラス (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[121]", "name": "グラシャラボラス (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -622,7 +635,7 @@
                 "length": 4,
                 "default": "Monster Graphics %i",
                 "string": {
-                    "0": "アケローン, へカトンケイル, ティターン", "1": "アモン, まどうしハイン", "2": "ヒュドラ, エキドナ", "3": "グラシャラボラス, ガーディアン"
+                    "0": "*へカトンケイル, *アケローン, *ティターン", "1": "*まどうしハイン, *アモン", "2": "*エキドナ, *ヒュドラ", "3": "*ガーディアン, *グラシャラボラス"
                 }
             }
         },
@@ -641,25 +654,26 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
+            "itemAttributes": ["111111111111111111", "111111001111111111", "111111111111111111", "111110001111111111"],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[35]"},
-                            {"path": "battlePalettes[38]"},
+                            {"path": "battlePalettes[19]", "name": "キングベヒーモス (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[20]", "name": "キングベヒーモス (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[215]"},
-                            {"path": "battlePalettes[211]"},
+                            {"path": "battlePalettes[147]", "name": "２へッドドラゴン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[153]", "name": "２へッドドラゴン (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[182]"},
-                            {"path": "battlePalettes[186]"},
+                            {"path": "battlePalettes[106]", "name": "ヨルムンガンド (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[112]", "name": "ヨルムンガンド (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[174]"},
-                            {"path": "battlePalettes[101]"},
+                            {"path": "battlePalettes[8]", "name": "ボーンドラゴン (1)", "offset": 0, "compose": true},
+                            {"path": "battlePalettes[101]", "name": "ドラゴンゾンビ (2)", "offset": 4, "compose": true},
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -667,7 +681,7 @@
                 "length": 4,
                 "default": "Monster Graphics %i",
                 "string": {
-                    "0": "ベヒーモス, キングベヒーモス", "1": "ダブルドラゴン, ２へッドドラゴン", "2": "オケアノス, ヨルムンガンド", "3": "ドラゴンゾンビ, ボーンドラゴン"
+                    "0": "*キングベヒーモス, ベヒーモス", "1": "*ダブルドラゴン, *２へッドドラゴン", "2": "*オケアノス, *ヨルムンガンド", "3": "*ドラゴンゾンビ, *ボーンドラゴン"
                 }
             }
         },
@@ -901,7 +915,7 @@
                         "type": "property",
                         "name": "Graphics Bank",
                         "begin": 1,
-                        "mask": "0x03",
+                        "mask": "0xC0",
                         "stringTable": {
                             "length": 4,
                             "default": "Bank %i",
@@ -913,7 +927,7 @@
                         "type": "property",
                         "name": "Use Summon Graphics",
                         "begin": 1,
-                        "mask": "0x04",
+                        "mask": "0x20",
                         "bool": true
                     }
                 }
@@ -930,18 +944,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 0 (ゴモリー, メデューサ)",
             "range": "0x2A8000-0x2A80D8",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
-                "whole": true
+                "path": "monsterGraphicsSpare4",
+                "whole": true,
+                "range": "0-9216"
             },
-            "tileOffset": -48,
             "palette": [
-                    {"path": "battlePalettes[185]"},
-                    {"path": "battlePalettes[181]"},
+                    {"path": "battlePalettes[28]", "name": "メデューサ (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[29]", "name": "メデューサ (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -949,18 +963,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 1 (バルカン, ピュラリス, サラマンダー)",
             "range": "0x2A80D8-0x2A81B0",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare3",
+                "whole": true,
+                "range": "4736-13952"
             },
-            "tileOffset": 26,
             "palette": [
-                    {"path": "battlePalettes[126]"},
-                    {"path": "battlePalettes[123]"},
+                    {"path": "battlePalettes[54]", "name": "ピュラリス (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[64]", "name": "サラマンダー (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -968,18 +982,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 2 (ガルーダ)",
             "range": "0x2A81B0-0x2A8288",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare3",
+                "whole": true,
+                "range": "0-9216"
             },
-            "tileOffset": -48,
             "palette": [
-                    {"path": "battlePalettes[229]"},
-                    {"path": "battlePalettes[230]"},
+                    {"path": "battlePalettes[229]", "name": "ガルーダ (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[230]", "name": "ガルーダ (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -987,18 +1001,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 3 (クィーンスキュラ, スキュラ)",
             "range": "0x2A8288-0x2A8360",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
-                "whole": true
+                "path": "monsterGraphicsSpare4",
+                "whole": true,
+                "range": "4096-13312"
             },
-            "tileOffset": 16,
             "palette": [
-                    {"path": "battlePalettes[241]"},
-                    {"path": "battlePalettes[209]"},
+                    {"path": "battlePalettes[108]", "name": "スキュラ (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[158]", "name": "スキュラ (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1006,18 +1020,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 4 (アーリマン)",
             "range": "0x2A8360-0x2A8438",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
-                "whole": true
+                "path": "monsterGraphicsSpare4",
+                "whole": true,
+                "range": "8704-17920"
             },
-            "tileOffset": 88,
             "palette": [
-                    {"path": "battlePalettes[242]"},
-                    {"path": "battlePalettes[82]"},
+                    {"path": "battlePalettes[82]", "name": "アーリマン (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[242]", "name": "アーリマン (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1025,18 +1039,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 5 (ドラゴン)",
             "range": "0x2A8438-0x2A8510",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare2",
+                "whole": true,
+                "range": "0-9216"
             },
-            "tileOffset": -48,
             "palette": [
-                    {"path": "battlePalettes[52]"},
-                    {"path": "battlePalettes[51]"},
+                    {"path": "battlePalettes[51]", "name": "ドラゴン (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[52]", "name": "ドラゴン (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1044,18 +1058,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 6 (グリーンドラゴン, テリブルドラゴン, イエロードラゴン, レッドドラゴン)",
             "range": "0x2A8510-0x2A85E8",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare2",
+                "whole": true,
+                "range": "5056-14272"
             },
-            "tileOffset": 31,
             "palette": [
-                    {"path": "battlePalettes[182]"},
-                    {"path": "battlePalettes[181]"},
+                    {"path": "battlePalettes[106]", "name": "レッドドラゴン (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[109]", "name": "レッドドラゴン (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1063,18 +1077,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 7 (ザンデクローン, まおうザンデ)",
             "range": "0x2A85E8-0x2A86C0",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x12",
-                "whole": true
+                "path": "monsterGraphicsSpare4",
+                "whole": true,
+                "range": "12288-21504"
             },
-            "tileOffset": 144,
             "palette": [
-                    {"path": "battlePalettes[101]"},
-                    {"path": "battlePalettes[207]"},
+                    {"path": "battlePalettes[101]", "name": "ザンデクローン (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[160]", "name": "まおうザンデ (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1082,18 +1096,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 8 (くらやみのくも)",
             "range": "0x2A86C0-0x2A8798",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare4",
+                "whole": true,
+                "range": "19392-28608"
             },
-            "tileOffset": -33,
             "palette": [
-                    {"path": "battlePalettes[202]"},
-                    {"path": "battlePalettes[27]"},
+                    {"path": "battlePalettes[27]", "name": "くらやみのくも (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[78]", "name": "くらやみのくも (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1101,16 +1115,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 9 (フリアイ, ハルピュイア, ディーライ)",
             "range": "0x2A8798-0x2A8870",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare1",
+                "whole": true,
+                "range": "0-9216"
             },
-            "tileOffset": -80,
             "palette": [
+                    {"path": "battlePalettes[145]", "name": "ハルピュイア (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[149]", "name": "ハルピュイア (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1118,18 +1134,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 10 (デュラハン, タナトス)",
             "range": "0x2A8870-0x2A8948",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare1",
+                "whole": true,
+                "range": "2752-11968"
             },
-            "tileOffset": -37,
             "palette": [
-                    {"path": "battlePalettes[116]"},
-                    {"path": "battlePalettes[188]"},
+                    {"path": "battlePalettes[90]", "name": "タナトス (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[116]", "name": "デュラハン (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1137,18 +1153,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 11 (プラティナル, ゴールドル)",
             "range": "0x2A8948-0x2A8A20",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare1",
+                "whole": true,
+                "range": "8320-17536"
             },
-            "tileOffset": 50,
             "palette": [
-                    {"path": "battlePalettes[73]"},
-                    {"path": "battlePalettes[69]"},
+                    {"path": "battlePalettes[69]", "name": "プラティナル (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[73]", "name": "プラティナル (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1156,18 +1172,17 @@
             "type": "tilemap",
             "name": "Boss Tilemap 12 (おおネズミ)",
             "range": "0x2A8A20-0x2A8AF8",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
                 "path": "monsterGraphics4x4",
-                "whole": true
+                "whole": true,
+                "range": "4096-13312"
             },
-            "tileOffset": -48,
             "palette": [
-                    {"path": "battlePalettes[69]"},
-                    {"path": "battlePalettes[69]"},
+                    {"path": "battlePalettes[69]", "name": "おおネズミ (1)", "offset": 0},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1175,18 +1190,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 13 (ジン)",
             "range": "0x2A8AF8-0x2A8BD0",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
-                "whole": true
+                "path": "monsterGraphics4x6",
+                "whole": true,
+                "range": "21504-30720"
             },
-            "tileOffset": -32,
             "palette": [
-                    {"path": "battlePalettes[109]"},
-                    {"path": "battlePalettes[106]"},
+                    {"path": "battlePalettes[106]", "name": "ジン (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[109]", "name": "ジン (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1194,18 +1209,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 14 (ニンジャ)",
             "range": "0x2A8BD0-0x2A8CA8",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
-                "whole": true
+                "path": "monsterGraphics4x6",
+                "whole": true,
+                "range": "26112-35328"
             },
-            "tileOffset": 40,
             "palette": [
-                    {"path": "battlePalettes[53]"},
-                    {"path": "battlePalettes[48]"},
+                    {"path": "battlePalettes[48]", "name": "ニンジャ (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[53]", "name": "ニンジャ (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1213,18 +1228,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 15 (くのいち)",
             "range": "0x2A8CA8-0x2A8D80",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
-                "whole": true
+                "path": "monsterGraphics4x6",
+                "whole": true,
+                "range": "27648-36864"
             },
-            "tileOffset": 64,
             "palette": [
-                    {"path": "battlePalettes[227]"},
-                    {"path": "battlePalettes[228]"},
+                    {"path": "battlePalettes[227]", "name": "くのいち (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[228]", "name": "くのいち (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1232,18 +1247,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 16 (とうぞくグツコー)",
             "range": "0x2A8D80-0x2A8E58",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics4x4",
-                "whole": true
+                "path": "monsterGraphics6x6",
+                "whole": true,
+                "range": "0-9216"
             },
-            "tileOffset": -112,
             "palette": [
-                    {"path": "battlePalettes[1]"},
-                    {"path": "battlePalettes[5]"},
+                    {"path": "battlePalettes[1]", "name": "とうぞくグツコー (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[5]", "name": "とうぞくグツコー (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1251,18 +1266,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 17 (ジェネラル)",
             "range": "0x2A8E58-0x2A8F30",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics4x4",
-                "whole": true
+                "path": "monsterGraphics6x6",
+                "whole": true,
+                "range": "2304-11520"
             },
-            "tileOffset": -76,
             "palette": [
-                    {"path": "battlePalettes[60]"},
-                    {"path": "battlePalettes[27]"},
+                    {"path": "battlePalettes[27]", "name": "ジェネラル (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[60]", "name": "ジェネラル (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1270,18 +1285,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 18 (バハムート)",
             "range": "0x2A8F30-0x2A9008",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphicsSpare2",
+                "whole": true,
+                "range": "0-9216"
             },
-            "tileOffset": -48,
             "palette": [
-                    {"path": "battlePalettes[9]"},
-                    {"path": "battlePalettes[4]"},
+                    {"path": "battlePalettes[4]", "name": "バハムート, バハムート (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[9]", "name": "バハムート, バハムート (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1289,18 +1304,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 19 (クラーケン)",
             "range": "0x2A9008-0x2A90E0",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphics6x6",
+                "whole": true,
+                "range": "52992-62208"
             },
-            "tileOffset": -84,
             "palette": [
-                    {"path": "battlePalettes[235]"},
-                    {"path": "battlePalettes[72]"},
+                    {"path": "battlePalettes[72]", "name": "クラーケン (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[235]", "name": "クラーケン (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1308,18 +1323,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 20 (ランドタートル)",
             "range": "0x2A90E0-0x2A91B8",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6",
-                "whole": true
+                "path": "monsterGraphics6x6b",
+                "whole": true,
+                "range": "27648-36864"
             },
-            "tileOffset": 320,
             "palette": [
-                    {"path": "battlePalettes[34]"},
-                    {"path": "battlePalettes[71]"},
+                    {"path": "battlePalettes[34]", "name": "ランドタートル (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[71]", "name": "ランドタートル (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1327,18 +1342,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 21 (ケルベロス)",
             "range": "0x2A91B8-0x2A9290",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics12x6",
-                "whole": true
+                "path": "monsterGraphics6x6b",
+                "whole": true,
+                "range": "52992-62208"
             },
-            "tileOffset": -84,
             "palette": [
-                    {"path": "battlePalettes[46]"},
-                    {"path": "battlePalettes[53]"},
+                    {"path": "battlePalettes[46]", "name": "ケルベロス (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[53]", "name": "ケルベロス (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1346,18 +1361,18 @@
             "type": "tilemap",
             "name": "Boss Tilemap 22 (オーディン)",
             "range": "0x2A9290-0x2A9368",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6",
-                "whole": true
+                "path": "summonGraphics",
+                "whole": true,
+                "range": "6464-15680"
             },
-            "tileOffset": 373,
             "palette": [
-                    {"path": "battlePalettes[248]"},
-                    {"path": "battlePalettes[249]"},
+                    {"path": "battlePalettes[248]", "name": "オーディン (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[249]", "name": "オーディン (2)", "offset": 4, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1365,18 +1380,287 @@
             "type": "tilemap",
             "name": "Boss Tilemap 23 (リバイアサン)",
             "range": "0x2A9368-0x2A9440",
-            "format": "generic2bppTile",
+            "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
             "backColor": true,
             "graphics": {
-                "path": "monsterGraphics6x6b",
+                "path": "summonGraphics",
+                "whole": true,
+                "range": "9984-19200"
+            },
+            "palette": [
+                    {"path": "battlePalettes[208]", "name": "リバイアサン (1)", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[247]", "name": "リバイアサン (2)", "offset": 4, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonProperties": {
+            "type": "array",
+            "name": "Summon Graphics Properties",
+            "range": "0x2A9440-0x2A9480",
+            "arrayLength": 8,
+            "assembly": {
+                "type": "data",
+                "length": 8,
+                "assembly": {
+                    "graphicsIndex": {
+                        "type": "property",
+                        "name": "Graphics Index",
+                        "begin": 0,
+                        "mask": "0xFF"
+                    },
+                    "paletteID": {
+                        "type": "property",
+                        "name": "First Sprite Palette",
+                        "begin": 1,
+                        "mask": "0xFF"
+                    },
+                    "unknown2": {
+                        "type": "property",
+                        "name": "Unknown 2",
+                        "begin": 2,
+                        "mask": "0xFF"
+                    },
+                    "unknown3": {
+                        "type": "property",
+                        "name": "Unknown 3",
+                        "begin": 3,
+                        "mask": "0xFF"
+                    },
+                    "width": {
+                        "type": "property",
+                        "name": "Width",
+                        "begin": 4,
+                        "mask": "0xF0"
+                    },
+                    "height": {
+                        "type": "property",
+                        "name": "Height",
+                        "begin": 4,
+                        "mask": "0x0F"
+                    },
+                    "startX": {
+                        "type": "property",
+                        "name": "Start X",
+                        "begin": 5,
+                        "mask": "0xF0"
+                    },
+                    "startY": {
+                        "type": "property",
+                        "name": "Start Y",
+                        "begin": 5,
+                        "mask": "0x0F"
+                    },
+                    "tilemapPointer": {
+                        "type": "property",
+                        "name": "Tilemap Pointer",
+                        "begin": 6,
+                        "mask": "0xFFFF"
+                    }
+                }
+            },
+            "stringTable": {
+                "length": 8,
+                "default": "Summon %i",
+                "string": {
+                    "0": "チョコボ", "1": "シヴァ", "2": "ラムウ", "3": "イフリート", "4": "タイタン", "5": "オーディン", "6": "リバイアサン", "7": "バハムート"
+                }
+            }
+        },
+        "monsterGraphicsSpare1": {
+            "type": "graphics",
+            "name": "Monster Graphics (spare tile pool, file 43410-44010)",
+            "range": "0x21B400-0x228000",
+            "format": "nes2bpp",
+            "width": 12,
+            "backColor": true,
+            "palette": "battlePalettes"
+        },
+        "monsterGraphicsSpare2": {
+            "type": "graphics",
+            "name": "Monster Graphics (spare tile pool, file 47610-48010)",
+            "range": "0x23B600-0x248000",
+            "format": "nes2bpp",
+            "width": 12,
+            "backColor": true,
+            "palette": "battlePalettes"
+        },
+        "monsterGraphicsSpare3": {
+            "type": "graphics",
+            "name": "Monster Graphics (spare tile pool, file 4B610-4C010)",
+            "range": "0x25B600-0x268000",
+            "format": "nes2bpp",
+            "width": 12,
+            "backColor": true,
+            "palette": "battlePalettes"
+        },
+        "monsterGraphicsSpare4": {
+            "type": "graphics",
+            "name": "Monster Graphics (spare tile pool, file 4E410-50010)",
+            "range": "0x27A400-0x288000",
+            "format": "nes2bpp",
+            "width": 12,
+            "backColor": true,
+            "palette": "battlePalettes"
+        },
+        "summonTilemap0": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 0 (チョコボ)",
+            "range": "0x2A9480-0x2A9489",
+            "format": "ff3SummonTilemap",
+            "width": 3,
+            "height": 3,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
                 "whole": true
             },
-            "tileOffset": -84,
+            "tileOffset": 0,
             "palette": [
-                    {"path": "battlePalettes[208]"},
-                    {"path": "battlePalettes[247]"},
+                    {"path": "battlePalettes[191]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[192]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[193]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap1": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 1 (シヴァ)",
+            "range": "0x2A9489-0x2A949D",
+            "format": "ff3SummonTilemap",
+            "width": 4,
+            "height": 5,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 9,
+            "palette": [
+                    {"path": "battlePalettes[192]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[193]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[194]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap2": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 2 (ラムウ)",
+            "range": "0x2A949D-0x2A94B1",
+            "format": "ff3SummonTilemap",
+            "width": 4,
+            "height": 5,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 25,
+            "palette": [
+                    {"path": "battlePalettes[194]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[195]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[196]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap3": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 3 (イフリート)",
+            "range": "0x2A94B1-0x2A94DB",
+            "format": "ff3SummonTilemap",
+            "width": 6,
+            "height": 7,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 41,
+            "palette": [
+                    {"path": "battlePalettes[196]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[197]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[198]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap4": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 4 (タイタン)",
+            "range": "0x2A94DB-0x2A94FE",
+            "format": "ff3SummonTilemap",
+            "width": 5,
+            "height": 7,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 71,
+            "palette": [
+                    {"path": "battlePalettes[199]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[200]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[201]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap5": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 5 (オーディン)",
+            "range": "0x2A94FE-0x2A9546",
+            "format": "ff3SummonTilemap",
+            "width": 8,
+            "height": 9,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 101,
+            "palette": [
+                    {"path": "battlePalettes[202]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[203]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[204]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap6": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 6 (リバイアサン)",
+            "range": "0x2A9546-0x2A958E",
+            "format": "ff3SummonTilemap",
+            "width": 8,
+            "height": 9,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 156,
+            "palette": [
+                    {"path": "battlePalettes[205]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[206]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[207]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonTilemap7": {
+            "type": "tilemap",
+            "name": "Summon Tilemap 7 (バハムート)",
+            "range": "0x2A958E-0x2A95D4",
+            "format": "ff3SummonTilemap",
+            "width": 7,
+            "height": 10,
+            "backColor": true,
+            "graphics": {
+                "path": "summonGraphics",
+                "whole": true
+            },
+            "tileOffset": 205,
+            "palette": [
+                    {"path": "battlePalettes[208]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[209]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[210]", "name": "Sprite palette 3", "offset": 8, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1384,13 +1668,6 @@
             "type": "graphics",
             "name": "Battle Background Graphics",
             "range": "0x0C8000-0x0C9800",
-            "format": "nes2bpp",
-            "backColor": true
-        },
-        "summonGraphics": {
-            "type": "graphics",
-            "name": "Summon Graphics",
-            "range": "0x0C9800-0x0DA800",
             "format": "nes2bpp",
             "backColor": true
         },
@@ -1414,6 +1691,21 @@
             "range": "0x2A9600-0x2C8000",
             "format": "nes2bpp",
             "backColor": true
+        },
+        "summonGraphics": {
+            "type": "graphics",
+            "name": "Summon Graphics (tile pool - see the summon tilemaps)",
+            "range": "0x0C9800-0x0DA800",
+            "format": "nes2bpp",
+            "width": 8,
+            "height": 32,
+            "backColor": true,
+            "palette": [
+                    {"path": "battlePalettes[191]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[192]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[193]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
         },
         "mapGraphics": {
             "type": "graphics",

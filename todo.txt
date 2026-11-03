@@ -28,6 +28,51 @@ recently added
    differ), labelled with the ROM's own English monster and job names
  * ff3 nes (u): added patches/ff3u-nes-fix-dump.ips for the mislabelled
    English dump (header-only difference, mapper 132 vs 4)
+ * ff3 nes: each monster graphic now defaults to the palette its own battle
+   groups use (new generic itemPalettes key on ROMArray; 86 distinct defaults
+   across the 96 graphics), and each job's character graphics default to that
+   job's sprite palette ($FC-$FE)
+ * ff3 nes: battle character graphics are shown two tiles wide, matching the
+   game's 2x3 sprite grid, instead of scrambling every pose across 14 columns
+ * ff3 nes: boss graphics - the pointer table and 24 tilemaps (18x12 tile ids
+   that index the shared monster tile pool), rendered in the app via a new
+   "whole": true tile-pool option in the graphics view
+ * ff3 nes: monster, character, boss and summon graphics are now transparent
+   (no black box around the sprites)
+ * ff3 nes: a monster graphic opens with BOTH of its battle palettes shown at
+   once (new "compose"/"offset"/"name" palette definition keys - the panel
+   shows two rows and clicking a row flips the sprite between them), and the
+   palette dropdown leads with the palettes of the monsters that actually use
+   the selected graphic, named after them
+ * ff3 nes: summon graphics - the summonProperties table ($2A:$9440) and eight
+   summon tilemaps with a dedicated ff3SummonTilemap format (6-bit tile index,
+   0xff = empty), each with its three sprite palettes; Bahamut and friends now
+   render as whole creatures
+ * ff3 nes: boss tilemaps use a dedicated ff3BossTilemap format (0x70-0xff =
+   the boss's 144 tiles) and scope the graphics pool to just that boss, so the
+   tilemap and the pool panel agree; bosses also get two named palettes
+ * ff3 nes: black is opaque again - colour 0 is the sprite outline in the ROM,
+   so the earlier "make it transparent" change deleted outlines as well as the
+   box (the box is real: monsters are rectangles of BG tiles, index 0 = black)
+ * ff3 nes: both battle palettes now show at once, per 2x2 tile cell, from the
+   ROM's monster attribute data ($2E:$8F20) - new generic itemAttributes key on
+   ROMArray plus per-tile palette bits in the graphics view; Mandrake gets its
+   brown body and green leaves in one image
+ * ff3 nes: editing a palette colour actually changes the ROM now - a composed
+   palette spans several ROM palette objects, so edits are routed through
+   paletteSegments/targetForColor instead of always hitting the last one loaded
+ * ff3 nes: fixed 12 boss tilemaps that pointed at the wrong graphics - a boss
+   pointer addresses a 16 KiB window, so those pools sit in the unused stretch
+   after the size-class arrays (new monsterGraphicsSpare assembly)
+ * ff3 nes: summon tilemaps decode bits 6-7 of each cell as the tile's palette,
+   so summons render with all three of their sprite palettes at once (Bahamut
+   is a proper multi-coloured dragon)
+ * ff3 nes: fixed Up/Down arrow keys, which stopped moving the tree selection
+   because opening a graphic focuses the graphics pane and the arrow handler
+   lived only on the left pane
+ * ff3 nes: labels now list boss monsters first with a * marker - of 127 named
+   boss monsters only 32 use the tilemap mechanism, the other 95 live in the
+   ordinary size-class arrays
  * byte-exact undo: re-encoding is skipped when decoded data matches what was
    loaded, and unchanged-size assemblies are no longer relocated
  * navigator: Up/Down move the selection and expand the next section; fixed
@@ -78,11 +123,15 @@ gui
 
 game specific
 -------------
- * ff3 nes (j): boss graphics need a per-game editor class - $2E9068 holds 24
-   2-byte pointers (bbs---tt tttttttt: tile offset, "load summon from bank $0C
-   and flip" flag, bank id x2) and $2A8000 holds 12x18 tile tilemaps; the
-   tilemap's graphics path has to be computed per boss, like the battle bg
-   editors do. See HANDOFF.md.
+ * ff3 nes (j/u): bosses are composites of shared monster tiles - painting a
+   boss means editing the tiles in the size-class arrays; a per-boss "which
+   tiles does this boss use" highlight in the class arrays would help
+ * ff3 nes (j/u): boss tilemaps are single-palette in the game (the class-6
+   attribute path in 2F/A86C reads past the 6-entry class table, so there is no
+   per-cell data to reproduce) - both palettes are loaded but not mixed per cell
+ * ff3 nes (j/u): blank cells in boss/summon tilemaps normalise on save (a
+   boss's background cells all write back as 0x00) because the decoded tilemap
+   word cannot remember which background tile was underneath
  * ff3 nes (j): ff3-map.js dereferences this.rom.mapPalette, which the
    definition does not define (only reachable from the unwired showRooms
    control)

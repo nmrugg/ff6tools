@@ -205,41 +205,132 @@ console.log('boss graphics:');
   for(let i=0;i<24;i++){
     const p=ptrs.item(i);
     const lo=raw[2*i], hi=raw[2*i+1];
-    // the tool combines multi-byte properties big-endian, so a 0x3FF mask
-    // yields the game's 10-bit tile index
+    // bbs---tt tttttttt: bits 1-0 (+ low byte) = tile index, bits 7-6 = bank,
+    // bit 5 = summon flag. ROMProperty reads multi-byte values little-endian.
     if(p.tileIndex.value !== (((hi<<8)|lo)&0x3FF)) bad++;
-    if(p.graphicsBank.value!==(hi&3)) bad++;
-    if(!!p.useSummonGraphics.value!==!!((hi>>2)&1)) bad++;
+    if(p.graphicsBank.value!==((hi>>6)&3)) bad++;
+    if(!!p.useSummonGraphics.value!==!!((hi>>5)&1)) bad++;
   }
   check(bad===0,'pointer properties decode (tileIndex / graphicsBank / useSummonGraphics)');
 
   let badMaps=0, badOffset=0, resolved=0, detail=null;
   for(let i=0;i<24;i++){
     const tm=rom.parsePath('bossTilemap'+i);
-    if(!tm||tm.constructor.name!=='ROMTilemap'){ badMaps++; continue; }
+    if(!tm||tm.constructor.name!=='ROMTilemap'){ badMaps++; if(!detail) detail={i, why:'no tilemap'}; continue; }
     const begin=rom.mapAddress(0x2A8000)+i*216;
-    for(let t=0;t<216;t++) if(tm.data[t]!==data[begin+t]) { badMaps++; break; }
     const lo=raw[2*i], hi=raw[2*i+1];
-    const tile=((hi&3)<<8)|lo, bank=((hi>>2)&1)?0x0C:((hi&3)*2+0x20);
-    const poolFile=rom.mapAddress(bank*0x10000+0x8000+tile*16);
+    const tile=((hi&3)<<8)|lo, bank=((hi>>5)&1)?0x0C:(0x20+2*((hi>>6)&3));
+    const poolFile=bank*0x2000+tile*16+0x10;   // 16 KiB window, file space
     const gpath=(typeof tm.graphics==='string')?tm.graphics:tm.graphics.path;
     const g=rom.parsePath(gpath);
     if(!g||!g.range){ badOffset++; continue; }
     resolved++;
-    // pattern tile 0x70 in the tilemap is the pool base, so
-    // (0x70 + tileOffset) must be the pool base's tile index in `graphics`
+    // ff3BossTilemap maps 0x70-0xff to tiles 0-143, and the graphics
+    // definition's range must scope the pool to exactly those 144 tiles
+    // (64 decoded bytes per NES 2bpp tile) starting at the pointer's tile.
     const baseTile=(poolFile-g.range.begin)/16;
-    if(tm.tileOffset+0x70!==baseTile){
+    const gr=ROMRange.parse(tm.graphics.range);
+    if(gr.begin!==baseTile*64 || gr.end!==(baseTile+0x90)*64){
       badOffset++;
-      if(!detail) detail={i, graphics:tm.graphics, tileOffset:tm.tileOffset, want:baseTile-0x70};
+      if(!detail) detail={i, graphics:gpath, range:tm.graphics.range,
+                          want:[baseTile*64,(baseTile+0x90)*64]};
+    }
+    for(let t=0;t<216;t++){
+      const v=data[begin+t];
+      const want=(v>=0x70)?(v-0x70):0xFF00;
+      if(tm.data[t]!==want){ badMaps++; if(!detail) detail={i,cell:t,got:tm.data[t],want,raw:v}; break; }
     }
   }
-  check(badMaps===0,'all 24 boss tilemaps decode their 216 tile ids from the ROM');
+  check(badMaps===0,'all 24 boss tilemaps decode their 216 tile ids from the ROM'+(detail?' -- '+JSON.stringify(detail):''));
   check(resolved===24,'every boss tilemap resolves a graphics array ('+resolved+'/24)');
   check(badOffset===0,'every boss tileOffset matches its pointer ('+badOffset+' wrong)'+(detail?' '+JSON.stringify(detail):''));
 }
 
-// ---- 7. edit round trip + byte-exact undo -------------------------------
+// ---- 7. summons ---------------------------------------------------------
+console.log('summon graphics:');
+{
+  const sp=rom.parsePath('summonProperties');
+  check(sp&&sp.arrayLength===8,'8 summon graphics properties');
+  const raw=data.slice(rom.mapAddress(0x2A9440), rom.mapAddress(0x2A9480));
+  let bad=0, maps=0, why=[];
+  const fail=(m)=>{bad++; if(why.length<4) why.push(m);};
+  for(let i=0;i<8;i++){
+    const p=sp.item(i), b=i*8;
+    if(p.width.value!==(raw[b+4]>>4)) fail(i+': width '+p.width.value+' != '+(raw[b+4]>>4));
+    if(p.height.value!==(raw[b+4]&0x0F)) fail(i+': height');
+    if(p.tilemapPointer.value!==((raw[b+6]|(raw[b+7]<<8)))) fail(i+': ptr '+p.tilemapPointer.value.toString(16));
+    if(p.graphicsIndex.value!==raw[b]) fail(i+': gfxIndex');
+    const tm=rom.parsePath('summonTilemap'+i);
+    if(!tm){ fail(i+': no tilemap'); continue; }
+    maps++;
+    const cells=(raw[b+4]>>4)*(raw[b+4]&0x0F);
+    if(tm.width!==(raw[b+4]>>4)||tm.height!==(raw[b+4]&0x0F)) fail(i+': tilemap dims');
+    if(tm.data.length!==cells) fail(i+': data len '+tm.data.length+' != '+cells);
+    const begin=rom.mapAddress(0x2A8000)+(raw[b+6]|(raw[b+7]<<8))-0x8000;
+    for(let t=0;t<cells;t++){
+      const v=data[begin+t];
+      const want=(v===0xFF)?0xFF00:((v&0x3F) | ((((v>>6)&3)*4)<<16));
+      if(tm.data[t]!==want) { fail(i+': cell '+t+' = '+tm.data[t]+' want '+want+' (raw '+v+')'); break; }
+    }
+    const gpath=(typeof tm.graphics==='string')?tm.graphics:tm.graphics.path;
+    if(gpath!=='summonGraphics') fail(i+': graphics '+gpath);
+    if(tm.tileOffset!==raw[b]) fail(i+': tileOffset '+tm.tileOffset+' != '+raw[b]);
+  }
+  check(bad===0,`summon properties + ${maps} tilemaps decode (6-bit tile ids, 0xff blank, tileOffset = graphicsIndex)`+
+        (why.length?' -- '+why.join('; '):''));
+
+  // two palettes per monster graphic, composed into one 8-colour palette
+  const CL=['monsterGraphics4x4','monsterGraphics4x6','monsterGraphics6x6',
+            'monsterGraphics6x6b','monsterGraphics6x12','monsterGraphics12x6'];
+  let pairs=0, singles=0, named=0;
+  for(const key of CL){
+    const arr=rom.parsePath(key);
+    for(let i=0;i<arr.arrayLength;i++){
+      const pal=arr.item(i).palette;
+      if(!Array.isArray(pal)) { singles++; continue; }
+      const comp=pal.filter(p=>p&&p.compose);
+      if(comp.length>=2) pairs++; else singles++;
+      if(comp.every(p=>p&&p.name)) named++;
+    }
+  }
+  check(pairs>60,`${pairs} monster graphics carry two composed palettes, ${singles} a single one`);
+  check(named>pairs-4,`${named} of those have named palette entries (so the dropdown says whose palettes they are)`);
+
+  // per-cell palette selection: most monster graphics use both palettes, so
+  // they carry a cell map ('0'/'1' per 2x2 tile cell, from $2E:$8F20)
+  let withCells=0, twoTone=0;
+  for(const key of CL){
+    const arr=rom.parsePath(key);
+    for(let i=0;i<arr.arrayLength;i++){
+      const cells=arr.item(i).attributeCells;
+      if(cells&&cells.length){ withCells++; if(/[01]/.test(cells)&&/[0]/.test(cells)&&/[1]/.test(cells)) twoTone++; }
+    }
+  }
+  check(withCells===96,`${withCells}/96 monster graphics carry palette cell maps`);
+  check(twoTone>0,`${twoTone} of them actually mix both palettes (the rest are single-palette)`);
+
+  // the custom tile formats must survive encode->decode. Blank cells are
+  // normalised (a boss's background cells all encode back to 0x00, a summon's
+  // stay 0xff) because the decoded word cannot tell which background tile was
+  // underneath - everything that belongs to the sprite is exact.
+  const checkFmt=(fmt,name,blank)=>{
+    let lossy=0, blanks=0;
+    for(let i=0;i<(name==='boss'?24:8);i++){
+      const tm=rom.parsePath(name+'Tilemap'+i);
+      const raw=data.slice(tm.range.begin, tm.range.end);
+      const back=fmt.encode(fmt.decode(raw)[0])[0];
+      for(let t=0;t<raw.length;t++){
+        if(raw[t]===blank||back[t]===blank){ blanks++; continue; }
+        if(back[t]!==raw[t]) { lossy++; break; }
+      }
+    }
+    check(lossy===0,`${name} tilemap format round-trips every sprite tile byte-exactly (${blanks} blank cells normalised)`);
+  };
+  checkFmt(GFX.tileFormat.ff3SummonTilemap,'summon',0xFF);
+  checkFmt(GFX.tileFormat.ff3BossTilemap,'boss',0x00);
+}
+
+// ---- 8. edit round trip + byte-exact undo -------------------------------
 console.log('edit round trip:');
 {
   const arr=rom.parsePath('monsterGraphics6x6');
