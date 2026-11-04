@@ -163,11 +163,11 @@ def main(rom=None, json_path=None):
                 if n not in names:
                     names.append(n)
             if names:
-                # bosses first: they are what someone hunting a boss is looking for
+                # list *every* user, bosses first and marked: the tree is the
+                # only place a monster name appears next to its graphic, and a
+                # name hidden behind "+3" reads as a monster that is missing
                 names.sort(key=lambda n: (not n.startswith('*'), n))
-                shown = names[:4]
-                extra = ' +%d' % (len(names) - len(shown)) if len(names) > len(shown) else ''
-                strings[str(i)] = ', '.join(shown) + extra
+                strings[str(i)] = ', '.join(names)
         tables[key] = {'length': count, 'default': 'Monster Graphics %i', 'string': strings}
 
     # the per-monster table is indexed by monster id, so the game's own
@@ -239,32 +239,49 @@ def main(rom=None, json_path=None):
     def dominant(counter, monster):
         return counter[monster].most_common(1)[0][0] if counter[monster] else None
 
+    # palette pairs, per battle group: a group record is (pal1, pal2, ids x4) and
+    # a monster's two palettes always come from the *same* group. Pairing the
+    # most common pal1 with the most common pal2 across all monsters that share a
+    # graphic produces a Frankenstein pair (Firefly rendered half in Icefly's
+    # colours), so rank whole pairs instead.
+    pairs = defaultdict(Counter)          # monster -> Counter[(pal1, pal2)]
+    for s in range(256):
+        base = s * 6
+        if base + 6 > len(sets):
+            break
+        a1, a2 = sets[base], sets[base + 1]
+        for k in range(4):
+            m = sets[base + 2 + k]
+            if m == 0xFF:
+                continue
+            pairs[m][(a1, a2)] += 1
+
+    def palette_pair(users):
+        """the (pal1, pal2) used by the most battles of any monster on this graphic"""
+        best = None
+        for m in users:
+            if not pairs[m]:
+                continue
+            p, n = pairs[m].most_common(1)[0]
+            score = (n, -m)
+            if best is None or score > best[0]:
+                best = (score, m, p)
+        if best is None:
+            return []
+        _, m, (a1, a2) = best
+        name = monster_name[m] or ('$%02X' % m)
+        out = [{'path': 'battlePalettes[%d]' % a1, 'name': '%s (1)' % name, 'offset': 0}]
+        if a2 != a1:
+            out.append({'path': 'battlePalettes[%d]' % a2, 'name': '%s (2)' % name, 'offset': 4})
+        return out
+
     item_palettes = {}
     for cls, (key, begin, end, w, h, count) in enumerate(MONSTER_CLASSES):
         entries = []
         for i in range(count):
             users = [mid for mid, v in enumerate(props) if (v >> 5) == cls and (v & 0x1F) == i]
-            # A monster is drawn with TWO palettes (bg palette 0 = palette1 and
-            # bg palette 1 = palette2 of its battle group; $2E:$8F20 picks one
-            # per 2x2 cell). Rank the palettes used by every monster that shares
-            # this graphic so the relevant ones come first.
-            rank = Counter()
-            who = defaultdict(set)
-            for m in users:
-                for slot, counter in ((0, pal1), (1, pal2)):
-                    for pid, n in counter[m].items():
-                        rank[pid] += n
-                        who[pid].add(m)
-            ordered = sorted(rank, key=lambda pid: (-rank[pid], pid))[:2]
-            entry = []
-            for n, pid in enumerate(ordered):
-                label = ', '.join(sorted((monster_name[m] or ('$%02X' % m)) for m in who[pid]))
-                entry.append({'path': 'battlePalettes[%d]' % pid,
-                              'name': '%s (%d)' % (label[:46], n + 1),
-                              'offset': n * 4})
+            entry = palette_pair(users)
             if len(entry) == 2:
-                # compose both palettes into one 8-colour palette: the panel
-                # shows two rows and clicking a row switches the sprite over
                 entry[0]['compose'] = True
                 entry[1]['compose'] = True
             entry.append({'path': 'battlePalettes'})
@@ -312,32 +329,19 @@ def main(rom=None, json_path=None):
                 owner = mid
                 break
         names_used = []
-        for mid, v in enumerate(props):
-            if (v >> 5) == 6 and (v & 0x1F) == i:
-                n = monster_name[mid] or ('Monster $%02X' % mid)
-                if n not in names_used:
-                    names_used.append(n)
-        # same two-palette model as ordinary monsters: rank the palettes used by
-        # every boss that shares this tilemap
-        rank = Counter()
-        who = defaultdict(set)
         owner_ids = [mid for mid, v in enumerate(props)
                      if (v >> 5) == 6 and (v & 0x1F) == i]
-        for m in owner_ids:
-            for counter in (pal1, pal2):
-                for pid, n in counter[m].items():
-                    rank[pid] += n
-                    who[pid].add(m)
-        ordered = sorted(rank, key=lambda pid: (-rank[pid], pid))[:2]
-        entry = []
-        for k, pid in enumerate(ordered):
-            label = ', '.join(sorted((monster_name[m] or ('$%02X' % m)) for m in who[pid]))
-            entry.append({'path': 'battlePalettes[%d]' % pid,
-                          'name': '%s (%d)' % (label[:46], k + 1),
-                          'offset': k * 4, 'compose': True})
-        if len(entry) < 2:
-            for e in entry:
-                e.pop('compose', None)
+        for mid in owner_ids:
+            n = monster_name[mid] or ('Monster $%02X' % mid)
+            if n not in names_used:
+                names_used.append(n)
+        # same single-battle-group pairing as ordinary monsters
+        entry = palette_pair(owner_ids)
+        if len(entry) == 2:
+            # compose them: the boss tilemap picks one of the two per 2x2 cell
+            # from $2E:$8FC0, so the view needs both in the palette panel
+            entry[0]['compose'] = True
+            entry[1]['compose'] = True
         entry.append({'path': 'battlePalettes'})
         # which class array physically contains this boss's tile pool, and at
         # what tile index. NOTE: the index must be computed in *file* space -
@@ -416,24 +420,69 @@ def main(rom=None, json_path=None):
         })
 
     # --- per-graphic palette cells ---------------------------------------
-    # $2E:$8F20 "monster attribute data": which of the two battle palettes each
-    # 2x2 tile cell uses. 2F/A8D8 gives the table base per class, 2F/A8E4 the
-    # bytes per monster, and the id is (props & $3F) - note bit 5 belongs to the
-    # id, so classes 0/1 and 2/3 share bases with different id ranges.
-    # 2F/A6FB reads the bits MSB-first, 2F/A78D walks cells row-major
-    # (ceil(w/2) columns, ceil(h/2) rows).
-    ATTR_BASE = [0x2E8F20, 0x2E8F20, 0x2E8F48, 0x2E8F48, 0x2E8FA8, 0x2E8FB4]
-    ATTR_SIZE = [1, 1, 2, 2, 3, 3]
+    # $2E:$8F00-$2E:$9027 "monster attribute data": which of the two battle BG
+    # palettes each 2x2 tile cell of a monster uses.  The bits are a stream read
+    # MSB first (2F/A6FB), one bit per cell, cells walked row-major over the
+    # *formation slot* the monster stands in (2F/A78D: X steps 2 across the slot
+    # width, y steps 2 down the slot height), and 2F/A7D4 writes the bit into
+    # that cell's quadrant of the nametable attribute byte.
+    #
+    # The record index is NOT `props & $3F`.  2F/A0E7 computes it as
+    # (props & $1F) + a per-class offset, which is what makes the tables tile
+    # perfectly with no gaps:
+    #   class 0 (4x4)   id = gfx + $00  $8F20, 1 byte   -> $8F20-$8F2F
+    #   class 1 (4x6)   id = gfx + $10  $8F20, 1 byte   -> $8F30-$8F47
+    #   class 2 (6x6)   id = gfx + $00  $8F48, 2 bytes  -> $8F48-$8F77
+    #   class 3 (6x6b)  id = gfx + $18  $8F48, 2 bytes  -> $8F78-$8FA7
+    #   class 4 (6x12)  id = gfx + $00  $8FA8, 3 bytes  -> $8FA8-$8FB3
+    #   class 5 (12x6)  id = gfx + $00  $8FB4, 3 bytes  -> $8FB4-$8FBF
+    #   class 6 (boss)  id = tilemap    $8FC0, 7 bytes  -> $8FC0-$9027
+    # (2F/A8D8/2F/A8E4 give the base and size per class; the boss path is
+    # 2F/A820, taken when the formation type is 9 - 18x12 tiles, 9x6 = 54 cells
+    # in 7 bytes - and the record ends exactly at the boss pointer table.)
+    #
+    # $2E:$8F00 is one bit per *monster id* (MSB first, byte id>>3, bit
+    # 7-(id&7)) meaning "invert this monster's cell bits" (2F/A89C AND #$80 ->
+    # 2F/A8BF EOR #$FF).  It is set for every id $80-$FF, so a boss always
+    # shows the two palettes swapped relative to the ordinary monster that
+    # shares its graphic.
+    #
+    # A 4x4 monster stands in a 4x6 formation slot: its tiles load at PPU
+    # $0780 while the slot's first tile id is $70 (2F/A2D0, 2F/A4A4), so the
+    # first cell row of the record describes the empty row above the sprite and
+    # the sprite's cells are bits 2-5.
+    ATTR_BASE  = [0x2E8F20, 0x2E8F20, 0x2E8F48, 0x2E8F48, 0x2E8FA8, 0x2E8FB4]
+    ATTR_SIZE  = [1, 1, 2, 2, 3, 3]
+    ATTR_IDOFF = [0, 0x10, 0, 0x18, 0, 0]
+    ATTR_SLOT  = {0: (4, 6)}          # class -> slot size when it is not the graphic size
+    ATTR_INVERT = 0x2E8F00           # 32 bytes, one bit per monster id
+    ATTR_TABLE  = (0x2E8F00, 0x2E8FC0)
+    BOSS_ATTR_TABLE = (0x2E8FC0, 0x2E9028)
+    invert_flags = data[mmc3_to_file(ATTR_INVERT):mmc3_to_file(ATTR_INVERT + 0x20)]
 
-    def attr_cells(props_byte, cls, w, h):
-        addr = mmc3_to_file(ATTR_BASE[cls]) + (props_byte & 0x3F) * ATTR_SIZE[cls]
-        blob = data[addr:addr + ATTR_SIZE[cls]]
-        cols, rows = (w + 1) // 2, (h + 1) // 2
-        cells = []
-        for k in range(cols * rows):
-            byte = blob[k // 8] if k // 8 < len(blob) else 0
-            cells.append((byte >> (7 - (k % 8))) & 1)
-        return ''.join(str(c) for c in cells)
+    def invert_flag(mid):
+        return (invert_flags[mid >> 3] >> (7 - (mid & 7))) & 1
+
+    def attr_addr(cls, props_byte):
+        """address (file) of a graphic's cell record"""
+        attr_id = (props_byte & 0x1F) + ATTR_IDOFF[cls]
+        return mmc3_to_file(ATTR_BASE[cls]) + attr_id * ATTR_SIZE[cls]
+
+    def cell_bits(addr, nbytes, ncells):
+        blob = data[addr:addr + nbytes]
+        return ''.join(str((blob[k // 8] >> (7 - (k % 8))) & 1) if k // 8 < len(blob) else '0'
+                       for k in range(ncells))
+
+    def attr_ref(cls, props_byte, w, h):
+        """the cell map of one size-class graphic, as the view wants it"""
+        sw, sh = ATTR_SLOT.get(cls, (w, h))
+        cells = (sw // 2) * (sh // 2)
+        skip = ((sh - h) // 2) * (sw // 2)     # slot rows above the sprite
+        addr = attr_addr(cls, props_byte)
+        return {'cells': cell_bits(addr, ATTR_SIZE[cls], cells),
+                'offset': skip,
+                'bytes': ATTR_SIZE[cls],
+                'index': addr - mmc3_to_file(ATTR_TABLE[0])}
 
     item_attrs = {}
     for cls, (key, begin, end, w, h, count) in enumerate(MONSTER_CLASSES):
@@ -441,11 +490,57 @@ def main(rom=None, json_path=None):
         for i in range(count):
             users = [mid for mid, v in enumerate(props) if (v >> 5) == cls and (v & 0x1F) == i]
             users.sort(key=lambda m: (-sum(pal1[m].values()), m))
-            entries.append(attr_cells(props[users[0]], cls, w, h) if users else '')
+            if not users:
+                entries.append('')
+                continue
+            ref = attr_ref(cls, props[users[0]], w, h)
+            ref['invert'] = bool(invert_flag(users[0]))
+            ref['path'] = 'monsterAttributeData'
+            entries.append(ref)
         item_attrs[key] = entries
 
+    # boss tilemap cell maps: 7 bytes per tilemap index at $2E:$8FC0
+    boss_attrs = []
+    for i in range(24):
+        owner_ids = [mid for mid, v in enumerate(props)
+                     if (v >> 5) == 6 and (v & 0x1F) == i]
+        owner_ids.sort(key=lambda m: (-sum(pal1[m].values()), m))
+        addr = mmc3_to_file(BOSS_ATTR_TABLE[0]) + i * 7
+        boss_attrs.append({
+            'cells': cell_bits(addr, 7, 9 * 6),
+            'offset': 0,
+            'bytes': 7,
+            'index': i,
+            'invert': bool(invert_flag(owner_ids[0])) if owner_ids else False,
+            'path': 'bossAttributeData',
+        })
+
+    # labels for the two attribute tables, so editing a byte says what it is
+    attr_names = {}
+    for b in range(32):
+        attr_names[b] = 'Invert flag: monsters $%02X-$%02X' % (b * 8, b * 8 + 7)
+    cls_of_byte = []
+    for cls in range(6):
+        n = ATTR_SIZE[cls]
+        count = {0: 16, 1: 24, 2: 24, 3: 24, 4: 4, 5: 4}[cls]
+        base = mmc3_to_file(ATTR_BASE[cls]) - mmc3_to_file(ATTR_TABLE[0]) + \
+               ATTR_IDOFF[cls] * n
+        for i in range(count):
+            for k in range(n):
+                label = '%s #%d cells' % ({0: '4x4', 1: '4x6', 2: '6x6', 3: '6x6b',
+                                           4: '6x12', 5: '12x6'}[cls], i)
+                if n > 1:
+                    label += ' (byte %d)' % (k + 1)
+                attr_names[base + i * n + k] = label
+    for i in range(24, 192):
+        attr_names.setdefault(i, 'Unused %d' % i)
+
     result = {'tables': tables, 'itemPalettes': item_palettes,
-              'itemAttributes': item_attrs,
+              'itemAttributes': item_attrs, 'bossAttributes': boss_attrs,
+              'attributeTable': {'begin': ATTR_TABLE[0], 'end': ATTR_TABLE[1],
+                                 'names': attr_names},
+              'bossAttributeTable': {'begin': BOSS_ATTR_TABLE[0],
+                                     'end': BOSS_ATTR_TABLE[1]},
               'charPalettes': char_palettes, 'bosses': bosses,
               'summons': summons, 'spareRegions': SPARE_REGIONS,
               'monsterName': monster_name, 'jobName': job_name}

@@ -745,6 +745,18 @@ Object.defineProperty(ROMReference.prototype, "value", { get: function() {
 }});
 
 // ROMGraphics
+// Expand a per-cell palette reference ({"path","index","bytes","cells",
+// "offset","invert"}) onto an object's attributeCells/Offset/Invert fields, so
+// the views can read either the snapshot in the definition or the live ROM
+// table. See the itemAttributes note in the ROMArray constructor.
+function applyAttributeRef(object, ref) {
+    if (!ref) return;
+    object.attributeRef = ref;
+    if (ref.cells) object.attributeCells = ref.cells;
+    if (isNumber(ref.offset)) object.attributeCellsOffset = ref.offset;
+    object.attributeCellsInvert = !!ref.invert;
+}
+
 function ROMGraphics(rom, definition, parent) {
     ROMAssembly.call(this, rom, definition, parent);
 
@@ -755,6 +767,12 @@ function ROMGraphics(rom, definition, parent) {
     this.tileHeight = definition.tileHeight || 8; // tile height in pixels
     this.backColor = (definition.backColor === true); // no transparent color
     this.spriteSheet = definition.spriteSheet;
+
+    // per-2x2-cell palette selection (FF3 NES monster attribute data)
+    this.attributeCells = definition.attributeCells;
+    this.attributeRef = definition.attributeRef;
+    this.attributeCellsOffset = definition.attributeCellsOffset;
+    this.attributeCellsInvert = definition.attributeCellsInvert;
 }
 
 ROMGraphics.prototype = Object.create(ROMAssembly.prototype);
@@ -770,6 +788,10 @@ Object.defineProperty(ROMGraphics.prototype, "definition", { get: function() {
     if (this.tileHeight !== 8) definition.tileHeight = this.tileHeight;
     if (this.backColor) definition.backColor = true;
     if (this.spriteSheet) definition.spriteSheet = this.spriteSheet;
+    if (this.attributeCells) definition.attributeCells = this.attributeCells;
+    if (this.attributeRef) definition.attributeRef = this.attributeRef;
+    if (isNumber(this.attributeCellsOffset)) definition.attributeCellsOffset = this.attributeCellsOffset;
+    if (this.attributeCellsInvert) definition.attributeCellsInvert = true;
 
     return definition;
 }});
@@ -793,6 +815,13 @@ function ROMTilemap(rom, definition, parent) {
     this.disableZLevel = definition.disableZLevel || false;
     this.disableVFlip = definition.disableVFlip || false;
     this.disableHFlip = definition.disableHFlip || false;
+
+    // per-2x2-cell palette selection (FF3 NES monster attribute data, 2F/A820)
+    this.attributeCells = definition.attributeCells;
+    this.attributeRef = definition.attributeRef;
+    this.attributeCellsOffset = definition.attributeCellsOffset;
+    this.attributeCellsInvert = definition.attributeCellsInvert;
+    applyAttributeRef(this, definition.attributeRef);
 }
 
 ROMTilemap.prototype = Object.create(ROMAssembly.prototype);
@@ -815,6 +844,11 @@ Object.defineProperty(ROMTilemap.prototype, "definition", { get: function() {
     if (this.disableZLevel) definition.disableZLevel = true;
     if (this.disableVFlip) definition.disableVFlip = true;
     if (this.disableHFlip) definition.disableHFlip = true;
+
+    if (this.attributeCells) definition.attributeCells = this.attributeCells;
+    if (this.attributeRef) definition.attributeRef = this.attributeRef;
+    if (isNumber(this.attributeCellsOffset)) definition.attributeCellsOffset = this.attributeCellsOffset;
+    if (this.attributeCellsInvert) definition.attributeCellsInvert = true;
 
     return definition;
 }});
@@ -3784,6 +3818,15 @@ function ROMArray(rom, definition, parent) {
     // cell, '0' = first palette, '1' = second (see itemPalettes). FF3 NES stores
     // this in the ROM at $2E:$8F20; the graphics view expands it to a palette
     // offset per tile so a monster shows both palettes at once.
+    // An entry may also be a reference to the live ROM table, which keeps the
+    // display in step when the table is edited:
+    //   {"path": "monsterAttributeData", "index": 51, "bytes": 1,
+    //    "offset": 2, "invert": true}
+    // `index` is the first item of the referenced array, `bytes` how many of
+    // its bytes hold the record, `offset` skips cells that belong to the
+    // formation slot rather than to the graphic (a 4x4 monster stands in a 4x6
+    // slot), and `invert` flips the bits (2F/A8BF: monster ids $80-$FF always
+    // show the two palettes swapped).
     this.itemAttributes = definition.itemAttributes;
 }
 
@@ -4193,7 +4236,11 @@ ROMArray.prototype.disassemble = function(data) {
         for (var i = 0; i < this.array.length; i++) {
             var attr = this.itemAttributes[i];
             if (attr === undefined || attr === null) continue;
-            this.array[i].attributeCells = attr;
+            if (isString(attr)) {
+                this.array[i].attributeCells = attr;
+            } else {
+                applyAttributeRef(this.array[i], attr);
+            }
         }
     }
 

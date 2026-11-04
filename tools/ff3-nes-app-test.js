@@ -125,6 +125,118 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
       let d=0; const orig=new Uint8Array(rom.__origLen||0); return rom.undoStack.length; })()`);
   check(undone2>=0,'undo stack after palette undo: '+undone2);
 
+  // ---- per-cell palettes (the monster attribute table) -------------------
+  // A 4x4 monster stands in a 4x6 formation slot (2F/A2D0 gives the slot's
+  // first tile id as $70 while 4x4 graphics load at PPU $0780), so the first
+  // cell row of the record is the empty row above the sprite: the cells shown
+  // must be read with a 2-cell offset, or the split lands half a row too high.
+  const cells=await ev(c,sessionId,`(()=>{
+      const obj=rom.monsterGraphics4x4.item(2);          // ファイアフライ / アイスフライ
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const view=propertyList.activeEditor;
+      view.updateTilemap();
+      const per=view.paletteView.colorsPerPalette||4;
+      const bits=[];
+      for (let t=0;t<view.width*view.height;t++) bits.push(view.paletteBitsForTile(t)/per);
+      const ref=obj.attributeRef;
+      // the same record read straight out of the ROM
+      const b=rom.monsterAttributeData.item(ref.index).data[0];
+      const want=[];
+      for (let row=0;row<view.height;row++) for (let col=0;col<view.width;col++) {
+          const k=Math.floor(row/2)*Math.ceil(view.width/2)+Math.floor(col/2)+ref.offset;
+          want.push((((b>>(7-k))&1)^(ref.invert?1:0))?4:0);
+      }
+      return {offset:ref.offset, invert:!!ref.invert, byte:b, bits:bits.map(x=>x*4), want};
+  })()`);
+  console.log('  cells:',JSON.stringify(cells));
+  check(cells.offset===2,'4x4 graphics skip the empty slot row above the sprite (offset '+cells.offset+')');
+  check(JSON.stringify(cells.bits)===JSON.stringify(cells.want),
+        'every displayed tile uses the palette the ROM attribute byte selects');
+
+  // editing the attribute byte changes the picture without reloading
+  const live=await ev(c,sessionId,`(()=>{
+      const view=propertyList.activeEditor;
+      const obj=rom.monsterGraphics4x4.item(2);
+      const arr=rom.monsterAttributeData;
+      const before=[]; view.updateTilemap();
+      for (let t=0;t<16;t++) before.push(view.paletteBitsForTile(t));
+      const item=arr.item(obj.attributeRef.index);
+      const was=item.data[0];
+      item.replaceData(Uint8Array.from([was^0xFF]),0);
+      const after=[]; view.updateTilemap();
+      for (let t=0;t<16;t++) after.push(view.paletteBitsForTile(t));
+      rom.undo();
+      return {changed:after.filter((v,i)=>v!==before[i]).length,
+              restored:arr.item(obj.attributeRef.index).data[0]===was};
+  })()`);
+  console.log('  live attribute edit:',JSON.stringify(live));
+  check(live.changed===16,'editing the attribute byte repaints every cell (the view reads the table live)');
+  check(live.restored,'and undo puts the byte back');
+
+  // ---- boss tilemaps -----------------------------------------------------
+  const boss=await ev(c,sessionId,`(()=>{
+      const obj=rom.bossTilemap0;
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const view=propertyList.activeEditor;
+      const fmt=GFX.tileFormat.ff3BossTilemap;
+      // the palette bits the view stamped onto the working tilemap
+      const bits=view.tilemap.map(w=>(w & 0x00FF0000)>>16);
+      const rawBefore=fmt.encode(obj.data.slice())[0];
+      let src=-1,dst=-1;
+      for(let t=0;t<view.tilemap.length;t++){
+          const w=view.tilemap[t]&0xFFFF;
+          if(src<0 && w<0x100) src=t;
+          if(dst<0 && w>=0x100) dst=t;
+      }
+      view.pickedTile=view.tilemap[src];
+      view.selection={x:dst%view.width,y:Math.floor(dst/view.width),w:1,h:1,
+                      tilemap:new Uint32Array([view.tilemap[src]])};
+      const ok=view.stampTile();
+      view.setTilemap();
+      const rawAfter=fmt.encode(obj.data.slice())[0];
+      const changed=[]; for(let t=0;t<rawBefore.length;t++) if(rawBefore[t]!==rawAfter[t]) changed.push(t);
+      rom.undo();
+      const rawUndo=fmt.encode(rom.bossTilemap0.data.slice())[0];
+      let undone=true; for(let t=0;t<rawBefore.length;t++) if(rawBefore[t]!==rawUndo[t]) undone=false;
+      return {placeTile:view.placeTile, cells:obj.attributeCells?obj.attributeCells.length:0,
+              twoPalettes:view.paletteView.palette.length,
+              mixed:bits.includes(0)&&bits.includes(4),
+              ok,changed,srcCell:view.tilemap[src]&0xFFFF,dstRaw:rawBefore[dst],
+              afterRaw:rawAfter[dst],undone};
+  })()`);
+  console.log('  boss:',JSON.stringify(boss));
+  check(boss.placeTile===true,'a boss tilemap starts in "Place tile" mode');
+  check(boss.cells===54,'the boss tilemap carries its 54 palette cells');
+  check(boss.twoPalettes===8,'and both battle palettes of the boss battle');
+  check(boss.mixed,'the cells are drawn with both palettes (colour offsets 0 and 4 both appear)');
+  check(boss.ok&&boss.changed.length===1,
+        'stamping one cell writes exactly one tilemap byte ('+JSON.stringify(boss.changed)+')');
+  check(boss.dstRaw<0x70&&boss.afterRaw>=0x70,
+        'a background cell becomes a sprite tile ('+boss.dstRaw+' -> '+boss.afterRaw+')');
+  check(boss.undone,'and undo puts the whole tilemap back');
+
+  // ---- painting the shared tile pool a boss is built from ----------------
+  const pool=await ev(c,sessionId,`(()=>{
+      const obj=rom.bossTilemap0;
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const view=propertyList.activeEditor.graphicsView;
+      const container=rom.parsePath(obj.graphics.path);
+      rom.assemble();
+      const before=Uint8Array.from(rom.data);
+      view.paintStart=view.graphics.slice();
+      view.tool=1; view.color=2;
+      view.paintPixel(0,0); view.commitPaint();
+      rom.assemble();
+      const changed=[]; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) changed.push(i);
+      const inRange=changed.every(i=>i>=container.range.begin&&i<container.range.end);
+      rom.undo(); rom.assemble();
+      let restored=true; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) restored=false;
+      return {container:obj.graphics.path, changed:changed.length, inRange, restored};
+  })()`);
+  console.log('  pool paint:',JSON.stringify(pool));
+  check(pool.changed>0&&pool.inRange,'painting the boss tile pool writes through to '+pool.container+' (the assembly that owns those bytes)');
+  check(pool.restored,'and undo puts the pool back');
+
   await c.s('Page.captureScreenshot',{format:'png',quality:90},sessionId).then(r=>fs.writeFileSync('/tmp/ff3j-app.png',Buffer.from(r.data,'base64')));
   console.log('  wrote /tmp/ff3j-app.png');
   ws.close();

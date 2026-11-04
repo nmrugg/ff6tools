@@ -135,6 +135,7 @@ def main():
     r = names.main(ROMN, DEFN)
     tables, item_pal, char_pal = r['tables'], r['itemPalettes'], r['charPalettes']
     item_attr, bosses, summons = r['itemAttributes'], r['bosses'], r['summons']
+    boss_attr, attr_tab = r['bossAttributes'], r['attributeTable']
 
     original = open(DEFN, encoding='utf-8').read()
     text = original
@@ -232,6 +233,62 @@ def main():
     "stringTable": @TABLE@
 }'''.replace('@TABLE@', indent(string_table(tables['battlePalettes']), 4).lstrip()))
 
+    # ---- the monster attribute tables ------------------------------------
+    # $2E:$8F00: one invert bit per monster id, then the per-2x2-cell palette
+    # bits for every size class (and 7 bytes per boss tilemap at $8FC0). The
+    # graphics/boss views read their cell maps from here, so the tables have to
+    # be in the definition - and editable, because they are what decides which
+    # of a battle's two palettes a part of a sprite uses.
+    attr_strings = {'length': 192, 'default': 'Attribute byte %i',
+                    'string': {str(k): v for k, v in attr_tab['names'].items()}}
+    blocks.append('''"monsterAttributeData": {
+    "type": "array",
+    "name": "Monster Attribute Data (palette cells)",
+    "range": "@RANGE@",
+    "arrayLength": 192,
+    "assembly": {
+        "type": "data",
+        "length": 1,
+        "assembly": {
+            "value": {
+                "type": "property",
+                "name": "Value",
+                "begin": 0,
+                "mask": "0xFF"
+            }
+        }
+    },
+    "stringTable": @TABLE@
+}'''.replace('@RANGE@', '0x%06X-0x%06X' % (attr_tab['begin'], attr_tab['end']))
+        .replace('@TABLE@', indent(string_table(attr_strings), 4).lstrip()))
+
+    boss_attr_names = {'length': 24, 'default': 'Boss %i cells',
+                       'string': {str(b['index']): ', '.join(b['owners']) or ('Boss %d' % b['index'])
+                                  for b in bosses}}
+    boss_bytes = ',\n'.join('''            "cells%d": {
+                "type": "property",
+                "name": "Palette cells %d",
+                "begin": %d,
+                "mask": "0xFF"
+            }''' % (k, k + 1, k) for k in range(7))
+    blocks.append('''"bossAttributeData": {
+    "type": "array",
+    "name": "Boss Attribute Data (palette cells)",
+    "range": "@RANGE@",
+    "arrayLength": 24,
+    "assembly": {
+        "type": "data",
+        "length": 7,
+        "assembly": {
+@BYTES@
+        }
+    },
+    "stringTable": @TABLE@
+}'''.replace('@RANGE@', '0x%06X-0x%06X' % (r['bossAttributeTable']['begin'],
+                                            r['bossAttributeTable']['end']))
+        .replace('@BYTES@', boss_bytes)
+        .replace('@TABLE@', indent(string_table(boss_attr_names), 4).lstrip()))
+
     # ---- bosses ----------------------------------------------------------
     boss_names = {'length': 24, 'default': 'Boss %i',
                   'string': {str(b['index']): ', '.join(b['owners'])
@@ -282,7 +339,7 @@ def main():
         rng = '0x%06X-0x%06X' % (begin, end)
         name = ', '.join(b['owners']) or ('Boss %d' % i)
         container = b['container'][0] if b['container'] else 'monsterGraphics6x6'
-        blocks.append('''"bossTilemap%d": {
+        boss_block = '''"bossTilemap%d": {
     "type": "tilemap",
     "name": "Boss Tilemap %d (%s)",
     "range": "%s",
@@ -295,10 +352,12 @@ def main():
         "whole": true,
         "range": "%d-%d"
     },
+    "attributeRef": @ATTR@,
     "palette": %s
 }''' % (i, i, name.replace('"', "'"), rng, container,
         b['poolBytes'][0], b['poolBytes'][1],
-        indent(palette_list(b['palette'], 4), 4).lstrip()))
+        indent(palette_list(b['palette'], 4), 4).lstrip())
+        blocks.append(boss_block.replace('@ATTR@', js(boss_attr[i])))
 
     summon_names = {'length': 8, 'default': 'Summon %i',
                     'string': {str(s['index']): s['name'] for s in summons}}
@@ -439,6 +498,7 @@ def main():
     # ---- hierarchy -------------------------------------------------------
     items = ['{"path": "%s"}' % key for key, *_ in MONSTER_CLASSES]
     items += ['{"path": "monsterGraphicsProperties"}',
+              '{"path": "monsterAttributeData"}',
               '{"path": "battlePalettes"}',
               '{"path": "battleCharacterGraphics"}',
               '{"path": "battleCharacterGraphicsStatus"}',
@@ -456,6 +516,7 @@ def main():
             "name": "Boss Graphics",
             "list": [
                 {"path": "bossGraphicsPointers"},
+                {"path": "bossAttributeData"},
                 %s''' % boss_items
 
     summon_items = ', '.join('{"path": "summonTilemap%d"}' % s['index'] for s in summons)
@@ -481,6 +542,7 @@ def main():
         raise SystemExit('generated definition does not parse (%s); wrote %s' % (e, dump))
     need = ['monsterGraphics4x4', 'monsterGraphics12x6', 'monsterGraphicsProperties',
             'battlePalettes', 'battleCharacterGraphics', 'bossGraphicsPointers',
+            'monsterAttributeData', 'bossAttributeData',
             'bossTilemap0', 'bossTilemap23', 'summonGraphics']
     missing = [k for k in need if k not in updated['assembly']]
     if missing:

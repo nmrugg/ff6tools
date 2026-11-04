@@ -73,6 +73,34 @@ recently added
  * ff3 nes: labels now list boss monsters first with a * marker - of 127 named
    boss monsters only 32 use the tilemap mechanism, the other 95 live in the
    ordinary size-class arrays
+ * ff3 nes: fixed the per-cell palette split, which was wrong three ways: the
+   record index is (props & $1F) + a per-class offset (2F/A0E7), not props &
+   $3F, so 48 of the 96 graphics read the wrong record; the cell walk is over
+   the formation slot, so a 4x4 monster's cells are bits 2-5 of its record
+   (that was the "half line" on Firefry/Liliput); and $2E:$8F00 inverts the
+   cells for every monster id $80-$FF, which is why bosses look swapped
+ * ff3 nes: bosses have per-cell palettes too - 7 bytes per tilemap index at
+   $2E:$8FC0 (2F/A820), 9x6 cells for the 18x12 map; Medusa, Harpy, Bahamut
+   and Odin now render with both battle palettes
+ * ff3 nes: the two attribute tables are real assemblies (monsterAttributeData
+   $2E8F00-$2E8FC0, bossAttributeData $2E8FC0-$2E9028), named byte by byte, and
+   the views read them live - editing a byte repaints the monster; both views
+   gained a "Swap palette cells" control for graphics shared with a boss
+ * ff3 nes: editing boss graphics works: "Place tile" is on by default for
+   pool-based tilemaps, painting the pool panel writes through to the assembly
+   that owns those bytes (saveGraphics used to bail out on a whole-array pool),
+   and the Tool menu appears for pools - map tilesets stay read-only
+ * ff3 nes: ff3BossTilemap keeps a background cell as 0x100|byte instead of
+   collapsing it to 0, so editing one cell no longer rewrites the other 3798
+   background cells of the battle (3F/F90A copies all 216 bytes)
+ * ff3 nes: every monster name now appears in the label of its graphic (the
+   "+N" truncation made 149 monsters, many of them bosses, look missing)
+ * ff3 nes: new tools/ff3-nes-attrcheck.py re-derives the palette-cell model
+   from the ROM and scores it against videogamesprites.net rips against the
+   wrong variants: 61/62 agree at 100%, and the model wins every case where a
+   wrong record index or slot alignment would change the answer
+ * ff3 nes: guarded ff3-map.js changeLayer('showRooms'), which dereferenced a
+   mapPalette assembly FF3 never had
  * byte-exact undo: re-encoding is skipped when decoded data matches what was
    loaded, and unchanged-size assemblies are no longer relocated
  * navigator: Up/Down move the selection and expand the next section; fixed

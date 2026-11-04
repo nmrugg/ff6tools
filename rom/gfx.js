@@ -866,13 +866,19 @@ var GFX = {
             maxZ: 0,
             hFlip: false,
             vFlip: false,
+            blank: 0x100,    // a cell outside the pool: 0x100 | the byte itself
             encode: function(data) {
                 // 32-bit source, 8-bit destination
                 var src = new Uint32Array(data.buffer, data.byteOffset, data.byteLength >> 2);
                 var dest = new Uint8Array(src.length);
                 for (var i = 0; i < src.length; i++) {
                     var t = src[i] & 0xFFFF;
-                    dest[i] = (t >= 0xFE00) ? 0x00 : ((t + 0x70) & 0xFF);
+                    // 0x70-0xff address the boss's tile pool; anything below is
+                    // a battle-background tile the game leaves in the nametable
+                    // (3F/F90A copies all 216 bytes). Those bytes are kept
+                    // verbatim in the word's tile field (0x100 | byte), so
+                    // editing one cell cannot clobber the background of others.
+                    dest[i] = (t >= 0x100) ? (t & 0xFF) : ((t + 0x70) & 0xFF);
                 }
                 return [dest, data.byteLength];
             },
@@ -881,7 +887,7 @@ var GFX = {
                 var src = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
                 var dest = new Uint32Array(src.length);
                 for (var i = 0; i < src.length; i++)
-                    dest[i] = (src[i] >= 0x70) ? (src[i] - 0x70) : 0xFF00;
+                    dest[i] = (src[i] >= 0x70) ? (src[i] - 0x70) : (0x100 | src[i]);
                 return [dest, data.byteLength];
             }
         },

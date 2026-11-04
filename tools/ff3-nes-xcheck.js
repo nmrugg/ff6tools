@@ -237,7 +237,10 @@ console.log('boss graphics:');
     }
     for(let t=0;t<216;t++){
       const v=data[begin+t];
-      const want=(v>=0x70)?(v-0x70):0xFF00;
+      // 0x70-0xff address the pool; below that the game leaves a battle
+      // background tile in the nametable, and the format keeps that byte
+      // verbatim as 0x100|byte so editing one cell cannot clobber it
+      const want=(v>=0x70)?(v-0x70):(0x100|v);
       if(tm.data[t]!==want){ badMaps++; if(!detail) detail={i,cell:t,got:tm.data[t],want,raw:v}; break; }
     }
   }
@@ -309,10 +312,9 @@ console.log('summon graphics:');
   check(withCells===96,`${withCells}/96 monster graphics carry palette cell maps`);
   check(twoTone>0,`${twoTone} of them actually mix both palettes (the rest are single-palette)`);
 
-  // the custom tile formats must survive encode->decode. Blank cells are
-  // normalised (a boss's background cells all encode back to 0x00, a summon's
-  // stay 0xff) because the decoded word cannot tell which background tile was
-  // underneath - everything that belongs to the sprite is exact.
+  // the custom tile formats must survive encode->decode. The boss format is
+  // byte-exact for every cell (background cells are kept as 0x100|byte in the
+  // tile word); a summon's 0xff cells stay 0xff.
   const checkFmt=(fmt,name,blank)=>{
     let lossy=0, blanks=0;
     for(let i=0;i<(name==='boss'?24:8);i++){
@@ -324,10 +326,99 @@ console.log('summon graphics:');
         if(back[t]!==raw[t]) { lossy++; break; }
       }
     }
-    check(lossy===0,`${name} tilemap format round-trips every sprite tile byte-exactly (${blanks} blank cells normalised)`);
+    check(lossy===0,`${name} tilemap format round-trips every sprite tile byte-exactly (${blanks} blank cells)`);
   };
   checkFmt(GFX.tileFormat.ff3SummonTilemap,'summon',0xFF);
-  checkFmt(GFX.tileFormat.ff3BossTilemap,'boss',0x00);
+  checkFmt(GFX.tileFormat.ff3BossTilemap,'boss',0xFF);   // 0xff is never a boss cell byte now
+
+  }
+
+  // the boss format must be *lossless*, background cells included: 3F/F90A
+  // copies all 216 bytes into the nametable, so a background tile id written
+  // as 0 would change the battle background around the boss
+  {
+    let diffs=0, cells=0;
+    for(let i=0;i<24;i++){
+      const tm=rom.parsePath('bossTilemap'+i);
+      const raw=data.slice(tm.range.begin, tm.range.end);
+      const back=GFX.tileFormat.ff3BossTilemap.encode(GFX.tileFormat.ff3BossTilemap.decode(raw)[0])[0];
+      for(let t=0;t<raw.length;t++){ cells++; if(back[t]!==raw[t]) diffs++; }
+    }
+    check(diffs===0,`boss tilemaps round-trip all ${cells} cells byte-exactly (${diffs} changed)`);
+  }
+
+// ---- 7b. palette cell (attribute) tables --------------------------------
+console.log('palette cell tables:');
+{
+  // 2F/A0E7: the record index is (props & $1F) + a per-class offset, NOT
+  // props & $3F - that is what makes the tables tile perfectly from $8F20 to
+  // $9027. Re-derive every record from the ROM and compare with what the
+  // definition says, independently of the generator.
+  const BASE=[0x2E8F20,0x2E8F20,0x2E8F48,0x2E8F48,0x2E8FA8,0x2E8FB4];
+  const SIZE=[1,1,2,2,3,3];
+  const IDOFF=[0,0x10,0,0x18,0,0];
+  const SLOT=[[4,6],[4,6],[6,6],[6,6],[6,12],[12,6]];   // formation slot, 2F/A5E6
+  const INVERT=rom.mapAddress(0x2E8F00);
+  const props=data.slice(rom.mapAddress(0x2E8B00), rom.mapAddress(0x2E8C00));
+  const CL=['monsterGraphics4x4','monsterGraphics4x6','monsterGraphics6x6',
+            'monsterGraphics6x6b','monsterGraphics6x12','monsterGraphics12x6'];
+  let bad=0, checked=0, why=[];
+  for(let c=0;c<6;c++){
+    const arr=rom.parsePath(CL[c]);
+    for(let i=0;i<arr.arrayLength;i++){
+      const item=arr.item(i), ref=item.attributeRef;
+      if(!ref){ bad++; if(why.length<3) why.push(CL[c]+'['+i+'] has no attributeRef'); continue; }
+      // find a monster that uses this graphic
+      const users=[]; for(let m=0;m<256;m++) if((props[m]>>5)===c && (props[m]&0x1F)===i) users.push(m);
+      if(!users.length) continue;
+      const m=users[0], p=props[m];
+      const id=(p&0x1F)+IDOFF[c];
+      const addr=rom.mapAddress(BASE[c])+id*SIZE[c];
+      const cols=SLOT[c][0]/2, rows=SLOT[c][1]/2;
+      let want='';
+      for(let k=0;k<cols*rows;k++){
+        const b=data[addr+(k>>3)];
+        want+=((b>>(7-(k&7)))&1).toString();
+      }
+      if(ref.cells!==want){ bad++; if(why.length<3) why.push(CL[c]+'['+i+'] cells '+ref.cells+' want '+want); continue; }
+      const flags=users.map(u=>((data[INVERT+(u>>3)]>>(7-(u&7)))&1)?true:false);
+      if(!flags.includes(!!ref.invert)){ bad++; if(why.length<3) why.push(CL[c]+'['+i+'] invert '+ref.invert+' want one of '+flags); }
+      if(new Set(flags).size===1 && !!ref.invert!==flags[0]){ bad++; if(why.length<3) why.push(CL[c]+'['+i+'] invert '+ref.invert+' want '+flags[0]); }
+      // a 4x4 monster stands in a 4x6 slot, two tile rows lower (2F/A2D0:
+      // first tile id $70, but 4x4 graphics load at PPU $0780)
+      const skip=((SLOT[c][1]-[4,6,6,6,12,6][c])/2)*cols;
+      if((ref.offset||0)!==skip){ bad++; if(why.length<3) why.push(CL[c]+'['+i+'] offset '+ref.offset+' want '+skip); }
+      checked++;
+    }
+  }
+  check(bad===0,`${checked} monster graphics: cell record, invert bit and slot offset match the ROM`+(why.length?' -- '+why.join('; '):''));
+
+  // the tables themselves are in the definition and owned by exactly one
+  // assembly each, so they can be edited
+  const mad=rom.parsePath('monsterAttributeData'), bad2=rom.parsePath('bossAttributeData');
+  check(mad&&mad.arrayLength===192&&mad.range.begin===rom.mapAddress(0x2E8F00),
+        `monsterAttributeData covers $2E:$8F00-$8FC0 (${mad&&mad.arrayLength} bytes)`);
+  check(bad2&&bad2.arrayLength===24&&bad2.range.begin===rom.mapAddress(0x2E8FC0),
+        `bossAttributeData covers $2E:$8FC0-$9028 (${bad2&&bad2.arrayLength} x 7 bytes)`);
+  // $8F00 is a bit per monster id, and every boss id has it set
+  let inv=0; for(let m=0x80;m<0x100;m++) inv+=((data[INVERT+(m>>3)]>>(7-(m&7)))&1)?1:0;
+  check(inv===128,`the invert flag is set for all 128 boss monster ids (${inv})`);
+  let invLow=0; for(let m=0;m<0x80;m++) invLow+=((data[INVERT+(m>>3)]>>(7-(m&7)))&1)?1:0;
+  check(invLow===0,`and for none of the $00-$7F ids (${invLow})`);
+
+  // bosses: 18x12 tiles = 9x6 cells in 7 bytes, read the same way (2F/A820)
+  let badBoss=0, bossCells=0;
+  for(let i=0;i<24;i++){
+    const tm=rom.parsePath('bossTilemap'+i);
+    const ref=tm.attributeRef;
+    if(!ref||ref.cells.length!==54||ref.bytes!==7){ badBoss++; continue; }
+    const addr=rom.mapAddress(0x2E8FC0)+i*7;
+    let want='';
+    for(let k=0;k<54;k++){ const b=data[addr+(k>>3)]; want+=((b>>(7-(k&7)))&1).toString(); }
+    if(ref.cells!==want) badBoss++;
+    bossCells++;
+  }
+  check(badBoss===0,`${bossCells}/24 boss tilemaps have their 54 palette cells from $2E:$8FC0`);
 }
 
 // ---- 8. edit round trip + byte-exact undo -------------------------------

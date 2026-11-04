@@ -555,7 +555,11 @@ class FF3Map extends ROMEditor {
     changeLayer(id) {
         this[id] = document.getElementById(id).checked;
         if (id === "showRooms" && !this.isWorld) {
-            const paletteObject = this.rom.mapPalette.item(this.m);
+            // FF3J has no `mapPalette` assembly: 3A/9091 loads the base palette
+            // from mapPaletteBase (3 x 16 bytes) and there is no per-room
+            // palette table, so this control has nothing to switch.
+            const paletteObject = this.rom.mapPalette && this.rom.mapPalette.item(this.m);
+            if (!paletteObject) return;
             const palette = paletteObject.data.subarray(this.showRooms ? 32 : 0);
             this.ppu.pal = this.rom.gammaCorrectedPalette(palette);
             this.tileset.ppu.pal = this.ppu.pal;

@@ -276,10 +276,32 @@ class ROMGraphicsView extends ROMEditor {
 
         // painting tools (only for a directly selected graphics object; the
         // tileset toolbox is deliberately left alone - see notes)
-        if (this.editorMode && this.object) {
+        if ((this.editorMode && this.object) || this.paintablePool()) {
             this.addList('changeTool','Tool',['Select','Pencil','Fill','Colour picker'],
                 function(t){ self.tool=t; self.updateCursor(); self.redraw(); },
                 function(t){ return t===self.tool; });
+
+            // In the NES, index 0 of every palette is the universal backdrop
+            // colour, and FF3 NES monsters use that same index for their
+            // outlines - so the black box around a sprite is really in the ROM.
+            // Offer both views: faithful, or the sprite on its own.
+            this.addTwoState('transparentBack', function(on) {
+                self.transparentBack = on;
+                self.redraw();
+            }, 'Colour 0 transparent', this.transparentBack === true);
+
+            // The game swaps the two palettes for every monster id $80-$FF
+            // (the flag at $2E:$8F00). A graphic shared by a monster and its
+            // boss has to be shown one way or the other, so let the user flip
+            // it and see both.
+            if (this.object && (this.object.attributeCells || this.object.attributeRef)) {
+                this.addTwoState('swapPaletteCells', function(on) {
+                    self.swapPaletteCells = on;
+                    self._cellsFor = null;
+                    self.updateTilemap();
+                    self.redraw();
+                }, 'Swap palette cells', this.swapPaletteCells === true);
+            }
         }
 
         // add a control to select the sprite sheet
@@ -806,12 +828,29 @@ class ROMGraphicsView extends ROMEditor {
         this.redraw();
     }
 
+    // A toolbox graphics pane is paintable when the definition asks for the
+    // whole array as one tile pool ("whole": true): that is the art a FF3 NES
+    // boss or summon is assembled from, and the tilemap itself has no pixels.
+    // Map tilesets stay read-only in the toolbox on purpose - one tileset is
+    // shared by many maps, so painting it would change them all silently.
+    paintablePool() {
+        if (!this.toolboxMode || !this.definition) return false;
+        const defs = isArray(this.definition) ? this.definition : [this.definition];
+        return defs.some(d => d && typeof d === 'object' && d.whole);
+    }
+
     // write the edited pixels back to the ROM object (creates an undo action)
     commitPaint() {
         const target = this.paintTarget();
-        if (!target || !this.paintStart) return;
+        if (!this.paintStart) return;
         if (compareTypedArrays(this.paintStart, this.graphics)) { this.paintStart = null; return; }
-        target.replaceData(this.graphics.subarray(0, target.data.length), 0);
+        if (target) {
+            target.replaceData(this.graphics.subarray(0, target.data.length), 0);
+        } else if (this.paintablePool()) {
+            // write back through the definition: the pool is not one object,
+            // and saveGraphics() knows which item owns which bytes
+            this.saveGraphics(this.definition);
+        }
         this.paintStart = null;
     }
 
@@ -878,19 +917,63 @@ class ROMGraphicsView extends ROMEditor {
     // palette bits for one tile: FF3 NES monsters pick one of two battle
     // palettes per 2x2 tile cell (attributeCells, expanded from the ROM's
     // $2E:$8F20). Only applies when the loaded palette actually holds both.
+    //
+    // The cell bits live in the ROM, so when the object has an `attributeRef`
+    // we read them from there instead of the snapshot in the definition -
+    // editing the attribute table then changes the picture. `attributeCells-
+    // Offset` skips cells that belong to the formation slot rather than to the
+    // graphic (a 4x4 monster stands in a 4x6 slot, 2F/A2D0), and `attribute-
+    // CellsInvert` flips the bits, which the game does for every monster id
+    // $80-$FF (2F/A86C +$8D AND #$80, then EOR #$FF at 2F/A8BF).
+    attributeCellBits(obj, swap) {
+        obj = obj || this.object;
+        if (!obj) return null;
+        if (swap === undefined) swap = this.swapPaletteCells;
+        if (this._cellsFor === obj && this._cellsSwap === !!swap && this._cells !== undefined)
+            return this._cells;
+
+        let cells = obj.attributeCells || null;
+        const ref = obj.attributeRef;
+        if (ref && ref.path && this.rom) {
+            const array = this.rom.parsePath(ref.path, this.rom);
+            if (array && array.item) {
+                let bits = '';
+                const bytes = ref.bytes || 1;
+                for (let b = 0; b < bytes; b++) {
+                    const item = array.item((ref.index || 0) + b);
+                    if (!item || !item.data || !item.data.length) continue;
+                    for (let k = 0; k < 8; k++)
+                        bits += ((item.data[0] >> (7 - k)) & 1).toString();
+                }
+                if (bits.length) cells = bits;
+            }
+        }
+        if (cells && !!obj.attributeCellsInvert !== !!swap)
+            cells = cells.replace(/[01]/g, c => c === '1' ? '0' : '1');
+
+        this._cellsFor = obj;
+        this._cellsSwap = !!swap;
+        this._cells = cells;
+        return cells;
+    }
+
     paletteBitsForTile(t) {
-        const cells = this.object && this.object.attributeCells;
+        const cells = this.attributeCellBits();
         if (!cells || !cells.length) return 0;
         const perPalette = this.paletteView.colorsPerPalette || 4;
         if (this.paletteView.palette.length < perPalette * 2) return 0;
+        const obj = this.object;
         const col = t % this.width, row = Math.floor(t / this.width);
         const cols = Math.ceil(this.width * this.tileWidth / (2 * this.tileWidth));
-        const cell = Math.floor(row / 2) * cols + Math.floor(col / 2);
+        const cell = Math.floor(row / 2) * cols + Math.floor(col / 2) +
+                     (Number(obj.attributeCellsOffset) || 0);
         const bit = cells[cell];
         return (bit === undefined ? 0 : Number(bit)) * perPalette;
     }
 
     updateTilemap() {
+        this._cellsFor = null;   // re-read the attribute table (it may have changed)
+
         if (this.object && this.object.spriteSheet) {
             let spriteSheetArray = this.object.spriteSheet;
             if (!isArray(spriteSheetArray)) spriteSheetArray = [spriteSheetArray];
@@ -1062,7 +1145,12 @@ class ROMGraphicsView extends ROMEditor {
         // create the color palette
         const palette = new Uint32Array(this.paletteView.palette);
         this.ppu.pal = this.rom.gammaCorrectedPalette(palette);
-        this.ppu.back = this.backColor;
+        // "Colour 0 transparent" is a display choice: in the NES the universal
+        // backdrop colour is index 0 of every palette, and FF3 NES monsters use
+        // that same index for their outlines, so the black box around a sprite
+        // is genuinely in the ROM. Let the user see either the faithful picture
+        // or the sprite on its own.
+        this.ppu.back = this.transparentBack ? false : this.backColor;
 
         // draw layout image
         let context = this.graphicsCanvas.getContext('2d');
@@ -1379,7 +1467,7 @@ class ROMGraphicsView extends ROMEditor {
         if (object.tileHeight) this.tileHeight = object.tileHeight;
 
         const self = this;
-        this.observer.startObserving(object, function() {
+        const reload = function() {
 
             // reload the graphics
             self.loadDefinition(self.definition);
@@ -1394,7 +1482,22 @@ class ROMGraphicsView extends ROMEditor {
             self.updateTilemap();
             self.redraw();
             if (self.tilemapView) self.tilemapView.redraw();
-        });
+        };
+        this.observer.startObserving(object, reload);
+
+        // ... and the ROM bytes holding this object's per-cell palette bits, so
+        // editing the attribute table repaints the sprite
+        const ref = object.attributeRef;
+        if (ref && ref.path) {
+            const array = this.rom.parsePath(ref.path, this.rom);
+            if (array && array.item) {
+                const bytes = ref.bytes || 1;
+                for (let b = 0; b < bytes; b++) {
+                    const item = array.item((ref.index || 0) + b);
+                    if (item) this.observer.startObserving(item, reload);
+                }
+            }
+        }
 
         // parse data range
         let range;
@@ -1470,7 +1573,34 @@ class ROMGraphicsView extends ROMEditor {
         const object = this.rom.parsePath(path, this.rom, index);
 
         // ignore ROMArray objects for now
-        if (object instanceof ROMArray) return;
+        if (object instanceof ROMArray) {
+            // ... unless the definition asked for the whole array as one tile
+            // pool (FF3 NES boss tilemaps paint into the shared monster tile
+            // pool, which is stored as size-class arrays). Then each painted
+            // byte has to land in the item that owns it.
+            if (!definition.whole) return;
+            const offset = Number(definition.offset) || 0;
+            const parts = [];
+            let total = 0;
+            for (let i = 0; i < object.arrayLength; i++) {
+                const item = object.item(i);
+                if (!item || !item.data) continue;
+                parts.push({item: item, begin: total, end: total + item.data.length});
+                total += item.data.length;
+            }
+            let prange;
+            if (definition.range) prange = ROMRange.parse(definition.range);
+            else prange = new ROMRange(0, total);
+            for (const part of parts) {
+                const from = Math.max(part.begin, prange.begin);
+                const to = Math.min(part.end, prange.end);
+                if (to <= from) continue;
+                const chunk = this.graphics.slice(offset + from - prange.begin,
+                                                  offset + to - prange.begin);
+                part.item.replaceData(chunk, from - part.begin);
+            }
+            return;
+        }
 
         // // get object data
         // if (!object || !object.data) return;

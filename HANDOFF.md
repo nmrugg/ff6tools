@@ -359,25 +359,37 @@ battle palettes - it is not an editor artefact.
 
 ### Both palettes at once (per-cell palette selection)
 
-`$2E:$8F20` ("monster attribute data") says which of the two battle palettes
-each **2x2 tile cell** uses. `2F/A8D8` gives the table base per size class
-(`8F20, 8F20, 8F48, 8F48, 8FA8, 8FB4`), `2F/A8E4` the bytes per monster
-(`1,1,2,2,3,3`), and the record index is `props & $3F` - note bit 5 belongs to
-the index, so classes 0/1 and 2/3 share a base with different index ranges.
+`$2E:$8F00-$2E:$9027` ("monster attribute data") says which of the two battle
+palettes each **2x2 tile cell** uses. `2F/A8D8` gives the table base per size
+class (`8F20, 8F20, 8F48, 8F48, 8FA8, 8FB4`) and `2F/A8E4` the bytes per monster
+(`1,1,2,2,3,3`), but the **record index comes from `2F/A0E7`**: `(props & $1F)`
+plus a per-class offset (`$10` for the 4x6 class, `$18` for the 6x6b class).
+With that offset the tables tile perfectly - `$8F20-$8F2F`, `$8F30-$8F47`,
+`$8F48-$8F77`, `$8F78-$8FA7`, `$8FA8-$8FB3`, `$8FB4-$8FBF`, then 24 x 7 bytes of
+boss records at `$8FC0-$9027` ending exactly at the boss pointer table.
 `2F/A6FB` reads the bits **MSB-first** and `2F/A78D` walks the cells
-**row-major** (`ceil(w/2)` columns, `ceil(h/2)` rows).
+**row-major** over the *formation slot* (`2F/A5E6`), not over the graphic: a 4x4
+monster stands in a 4x6 slot with its art two rows low, so its cells are bits
+2-5. Finally `$2E:$8F00` is one bit per **monster id** meaning "invert the
+cells" (`2F/A8BF EOR #$FF`), and it is set for every id `$80-$FF`.
 
-The generator emits this per array item as `itemAttributes` (a new generic
-`ROMArray` key alongside `itemPalettes`), e.g. `"itemAttributes":
-["0100110100", ...]`; `ROMArray.disassemble` assigns it to
-`item.attributeCells`, and `ROMGraphicsView.paletteBitsForTile()` turns it into
-a palette offset per tile (0 or 4) - applied only when the loaded palette
-actually holds both palettes. Result: Mandrake shows its brown body and green
-leaves together. 96/96 graphics carry cell maps, 80 of them genuinely mix.
+(The first attempt used `props & $3F` as the index, ignored the slot alignment
+and the invert bit, and assumed bosses had no cell map - see
+`HANDOFF-FF3-NES.md` §2A. All three were visible bugs.)
 
-Bosses are single-palette in the game (the class-6 attribute path in `2F/A86C`
-reads past the 6-entry class table, i.e. it is not defined), so boss tilemaps
-get both palettes loaded but no per-cell map.
+The generator emits this per array item as `itemAttributes` (a generic
+`ROMArray` key alongside `itemPalettes`) - now a reference to the live ROM
+table, `{"path": "monsterAttributeData", "index": 51, "bytes": 1, "cells": 6,
+"offset": 2, "invert": true}`; `ROMArray.disassemble` expands it through
+`applyAttributeRef()` and `ROMGraphicsView.attributeCellBits()` reads the bytes
+from the ROM (so editing the table repaints the sprite), and
+`ROMGraphicsView.paletteBitsForTile()` turns it into a palette offset per tile
+(0 or 4) - applied only when the loaded palette actually holds both palettes.
+`tools/ff3-nes-attrcheck.py` checks the whole model against reference rips.
+96/96 graphics carry cell maps; 89 of them genuinely mix both palettes.
+
+Bosses get their cells from `$2E:$8FC0` (7 bytes per tilemap index, 9x6 cells
+for the 18x12 map, `2F/A820`), applied by `ROMTilemapView.applyPaletteCells()`.
 
 ### Palette editing with composed palettes
 
@@ -508,10 +520,10 @@ one contiguous tile pool. (Concatenating decoded items, not the array's raw
 bytes — the array itself has no format, so `array.data` is still encoded 2bpp
 planes.)
 
-Bosses are read-only composites of shared tiles: painting a boss means editing
-the tiles in the size-class arrays. There is deliberately **no** graphics
-assembly covering a boss's pool, because two assemblies owning the same bytes
-means last-writer-wins on save (see §1). The overlap test in the xcheck keeps
+Bosses are composites of shared tiles: painting a boss means editing the tiles
+in the pool panel (or the size-class arrays). There is deliberately **no**
+graphics assembly covering a boss's pool, because two assemblies owning the same
+bytes means last-writer-wins on save (see §1). The overlap test in the xcheck keeps
 that true.
 
 ### Graphics blobs added for reference
@@ -604,7 +616,7 @@ tools/  node-dom-stub.js rom-harness.js ff5e-xcheck.js ff5e-pallink.js
         ff3-nes-shots.js ff3-nes-map-smoke.js
         ff3-nes-probe.py ff3-nes-classify.py ff3-nes-tilesheet.py
         ff3-nes-montage.py ff3-nes-diff.py ff3-nes-dump.py
-        ff3-nes-names.py ff3-nes-add-graphics.py
+        ff3-nes-names.py ff3-nes-add-graphics.py ff3-nes-attrcheck.py
 ```
 
 `ff3-nes-dump.py` renders any monster size class / character block straight from
@@ -613,7 +625,9 @@ the ROM (the fastest way to check a range before touching the definition);
 (`-r <rom> -d <definition.json>`, works for either FF3 dump);
 `ff3-nes-add-graphics.py` writes the FF3 battle graphics assemblies into a
 definition (`--def`, `--rom`); `ff3-nes-diff.py` diffs two dumps and emits a
-verified IPS patch.
+verified IPS patch; `ff3-nes-attrcheck.py` re-derives the per-cell palette
+model from the ROM and checks it against the videogamesprites.net rips
+(cached in `/tmp/ff3-rips`), scoring the wrong variants alongside it.
 
 Modified: `ff5/ff5e-gba.json`, `ff3/ff3j-nes.json`, `ff3/ff3u-nes.json`,
 `ff5/ff5-battle.js`, `rom/romtools.js` (new generic `ROMArray` keys

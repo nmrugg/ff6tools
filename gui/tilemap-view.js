@@ -116,6 +116,34 @@ class ROMTilemapView extends ROMEditor {
 
         const self = this;
 
+        // Stamp the tile picked in the graphics toolbox onto layout cells.
+        // Without this there is no way to change *which* tile a cell uses,
+        // which is the whole point of the FF3 boss and summon tilemaps.
+        if (this.object && this.object.constructor &&
+            (this.object.constructor.name === 'ROMTilemap' || this.object.tilemap !== undefined)) {
+            // pool-based tilemaps (FF3 bosses and summons index a shared tile
+            // pool) have nothing else to offer, so stamping is the default
+            const poolBased = this.object && this.object.graphics &&
+                              this.object.graphics.whole;
+            if (this.placeTile === undefined || this.placeTileDefault !== poolBased) {
+                this.placeTile = poolBased;
+                this.placeTileDefault = poolBased;
+            }
+            this.addTwoState('placeTile', function(on) {
+                self.placeTile = on;
+            }, 'Place tile', this.placeTile !== false);
+
+            if (this.object.attributeCells || this.object.attributeRef) {
+                // the game swaps the two palettes for monster ids $80-$FF
+                // ($2E:$8F00); let the user see the other way round too
+                this.addTwoState('swapPaletteCells', function(on) {
+                    self.swapPaletteCells = on;
+                    self.graphicsView._cellsFor = null;
+                    self.loadTilemap();
+                }, 'Swap palette cells', this.swapPaletteCells === true);
+            }
+        }
+
         // // add controls to show/hide the palette and graphics
         // this.addTwoState('showPalette', function(show) {
         //     self.showPalette = show;
@@ -199,6 +227,9 @@ class ROMTilemapView extends ROMEditor {
             this.selection.y = this.clickPoint.y;
             this.selectTiles();
             this.isDragging = true;
+        } else if (this.clickPoint.button === 0) {
+            this.paintCell();
+            this.isDragging = true;
         } else {
             this.setTiles();
             this.isDragging = true;
@@ -211,6 +242,45 @@ class ROMTilemapView extends ROMEditor {
         // if (this.object) {
         //     propertyList.select(this.object);
         // }
+    }
+
+    // Paint one cell with the left button: either the block selected in the
+    // graphics toolbox, or - for the pool-based tilemaps (FF3 bosses, summons)
+    // where "Place tile" is on by default - the single tile that was picked.
+    paintCell() {
+        const multi = this.selection && this.selection.tilemap &&
+                      this.selection.tilemap.length > 1;
+        if (this.placeTile === true && !multi) {
+            if (this.stampTile()) return;
+            // nothing picked yet: clear the cell to this format's blank value
+            // (a boss background cell, or 0xff for a summon) instead of
+            // pasting the default empty selection, which is tile 0
+            const t = this.selection.y * this.width + this.selection.x;
+            if (this.format.blank !== undefined && t >= 0 && t < this.tilemap.length) {
+                this.tilemap[t] = this.format.blank;
+                this.redraw();
+                return;
+            }
+        }
+        this.setTiles();
+    }
+
+    // Write the picked tile into the cell under the selection. Which palette
+    // bits survive depends on the format: FF3 boss cells get theirs from the
+    // attribute table (so keep the cell's own), while a summon tilemap stores
+    // the palette in the tile byte itself (so keep the picked tile's).
+    stampTile() {
+        if (this.pickedTile === undefined || this.pickedTile === null) return false;
+        const t = this.selection.y * this.width + this.selection.x;
+        if (t < 0 || t >= this.tilemap.length) return false;
+        const obj = this.object || {};
+        const keep = (obj.attributeCells || obj.attributeRef) ?
+                     (this.tilemap[t] & 0x00FF0000) : (this.pickedTile & 0x00FF0000);
+        const word = (this.pickedTile & 0xFFFF) | keep;
+        if (this.tilemap[t] === word) return true;
+        this.tilemap[t] = word;
+        this.redraw();
+        return true;
     }
 
     mouseMove(e) {
@@ -236,7 +306,7 @@ class ROMTilemapView extends ROMEditor {
         this.selection.y = y;
 
         if (this.isDragging && this.clickPoint) {
-            if (this.clickPoint.button === 0) this.setTiles();
+            if (this.clickPoint.button === 0) this.paintCell();
             if (this.clickPoint.button === 2) this.selectTiles();
         }
 
@@ -324,6 +394,9 @@ class ROMTilemapView extends ROMEditor {
             var p = (tile & 0x00FF0000) >> 16;
             this.paletteView.p = Math.round(p / this.paletteView.colorsPerPalette);
             this.paletteView.redraw();
+
+            // remember it so "Place tile" can stamp it onto another cell
+            this.pickedTile = tile;
 
             this.graphicsView.selectTile(tile);
         } else {
@@ -428,7 +501,35 @@ class ROMTilemapView extends ROMEditor {
         this.loadFlip(this.object.vFlip, true);
         this.loadFlip(this.object.hFlip, false);
 
+        // FF3 NES: the monster attribute table picks one of the two battle
+        // palettes per 2x2 tile cell (2F/A820 for bosses). The tilemap byte has
+        // no palette bits of its own, so stamp them on from the same table the
+        // graphics view reads.
+        this.applyPaletteCells();
+
         this.redraw();
+    }
+
+    applyPaletteCells() {
+        if (!this.object) return;
+        const obj = this.object;
+        if (!obj.attributeCells && !obj.attributeRef) return;
+
+        const perPalette = this.format.colorsPerPalette || 4;
+        if (this.paletteView.palette.length < perPalette * 2) return;
+
+        const cells = this.graphicsView.attributeCellBits(obj, this.swapPaletteCells);
+        if (!cells || !cells.length) return;
+
+        const cols = Math.ceil(this.width / 2);
+        const skip = Number(obj.attributeCellsOffset) || 0;
+        for (let t = 0; t < this.tilemap.length; t++) {
+            if (this.tilemap[t] === 0xFFFFFFFF) continue;
+            const col = t % this.width, row = Math.floor(t / this.width);
+            const cell = Math.floor(row / 2) * cols + Math.floor(col / 2) + skip;
+            const bit = cells[cell] === undefined ? 0 : Number(cells[cell]);
+            this.tilemap[t] = (this.tilemap[t] & 0xFF00FFFF) | ((bit * perPalette) << 16);
+        }
     }
 
     setTilemap() {
