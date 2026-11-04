@@ -129,13 +129,29 @@ the right tiles in the wrong places.
   into the item that owns it. The toolbox also shows the Tool menu for pools
   (`ROMGraphicsView.paintablePool()`), and `commitPaint()` saves through the
   definition. Map tilesets stay read-only in the toolbox.
-- **Odin and Leviathan (tilemaps 22, 23) were garbled.** Bit 5 of their pointer
-  means "this boss is a summon: load from bank `$0C` and flip it" (`2F/A40B`),
-  and the ROM stores those two tilemaps **right-to-left** - a row reads
-  `73 72 71 70` - while the copy flips each tile's pixels. `"mirrorX": true` on
-  the definition mirrors the layout *and* the tile pixels for display, and
-  `setTilemap()` un-mirrors before saving, so the ROM keeps its own order (the
-  app test asserts it stays byte-exact).
+- **Odin and Leviathan (tilemaps 22, 23) were garbled - twice.** Bit 5 of their
+  pointer means "this boss is a summon: load from bank `$0C` and flip it"
+  (`2F/A40B`), and their tilemaps do read right-to-left (`73 72 71 70`). The
+  first fix reversed the columns *and* flipped the pixels, which mirrors the
+  image twice and leaves it scrambled. Read the copy routines: `3F/F90A` copies
+  the tilemap **as stored** (no column reversal) while `3F/F94F` builds a
+  bit-reversal table that `3F/F970` pushes every graphics byte through
+  (`$92` = "use horizontal flip table"). So `mirrorX` now only sets the
+  per-tile pixel-flip bit and leaves the ROM's tile order alone - and saving
+  stays byte-exact for free, because `ff3BossTilemap.encode` masks to `0xFFFF`
+  and the flip bit is display-only.
+- **A boss is edited like a monster graphic.** Pool-based tilemaps get a Tool
+  menu (Select / Pencil / Fill / Colour picker) in the layout pane, and
+  `paintLayoutDown/Drag/Up` route those into the graphics view's `paintPixel`,
+  `floodFill` and `pickColor` at the pixel under the cursor. The pool panel is
+  laid out cell for cell with the layout (`followLayout` + `poolLayout`), so
+  `ROMGraphicsView.tileOffset()` maps a painted pixel onto the pool tile that
+  occupies that cell. "Place tile" stays as a checkbox for the Select tool, and
+  the graphics view's own Tool menu is suppressed (`noToolMenu`) so there is
+  only one.
+- **The pool panel follows the layout** (`"followLayout": true`, kept in step by
+  `ROMTilemapView.syncPoolLayout()`, which also hands the per-cell palette bits
+  over as `graphicsView.cellsObject` so both panels colour identically).
 - **Boss tilemaps are lossless.** `ff3BossTilemap` keeps a background cell
   (byte < `$70`) as `0x100 | byte` in the word's tile field instead of
   collapsing it to 0: `3F/F90A` copies all 216 bytes into the nametable, so the
@@ -335,6 +351,15 @@ once; rips are cached in `/tmp/ff3-rips`).
     the right tiles in the wrong places; 6 boss ids disagree with the ROM's
     invert flag. Prefer the disassembly, and treat a rip as evidence only when
     the calibrated-palette histogram agrees (§C2).
+20. **`mirrorX` is a pixel flip, not a layout flip.** The ROM's tile order is
+    already the nametable order (`3F/F90A` copies it verbatim); the mirror comes
+    from the bit-reversal table in `3F/F94F`/`3F/F970`. Reversing the columns as
+    well mirrors twice and looks scrambled - which is how it looked wrong in the
+    layout panel while the pool panel (which never reversed) looked right.
+21. **Class bodies allow duplicate method names and the last one wins**, and
+    `this.redraw();\n    }` appears in several methods - a `fs_replace` on that
+    pattern hits them all. Factor shared logic into a named method
+    (`syncPoolLayout`) and call it from one place.
 
 ---
 

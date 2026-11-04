@@ -278,8 +278,8 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
   check(bossCells.layoutControls.indexOf('Paint palette cells')>=0&&
         bossCells.layoutControls.indexOf('Place tile')>=0,
         'the boss layout offers Place tile + Paint palette cells: '+JSON.stringify(bossCells.layoutControls));
-  check(bossCells.poolTools.indexOf('Pencil')>=0&&bossCells.poolTools.indexOf('Fill')>=0,
-        'the boss tile pool offers Pencil/Fill/Colour picker: '+JSON.stringify(bossCells.poolTools));
+  check(bossCells.poolTools.length===0,
+        'the pool panel shares the layout Tool menu instead of adding a second one');
   check(bossCells.layoutControls.indexOf('Swap palette cells')<0,
         'no "Swap palette cells" toggle - the pair order is a palette dropdown choice');
 
@@ -292,20 +292,25 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
       const fmt=GFX.tileFormat.ff3BossTilemap;
       const raw=fmt.encode(obj.data.slice())[0];
       const shown=view.tilemap;
-      // row 2 of the ROM runs 73 72 71 70 -> on screen it must read ascending
-      const row2=[]; for(let c=0;c<18;c++) row2.push(shown[2*18+c]&0xFFFF);
-      const asc=row2.filter(v=>v<0x100);
-      let ascOrder=true; for(let i=1;i<asc.length;i++) if(asc[i]<asc[i-1]) ascOrder=false;
+      // the game copies the tilemap as stored (3F/F90A) and flips each tile's
+      // pixels (2F/A40B + 3F/F970's bit-reversal table), so the view must keep
+      // the stored tile ids and set the pixel-flip bit - not reverse columns
+      const row2=[]; for(let c=0;c<18;c++) row2.push(shown[2*18+c]);
+      const ids=row2.filter(w=>(w&0xFFFF)<0x100).map(w=>w&0xFFFF);
+      let descOrder=true, flipped=ids.length>0;
+      for(let i=1;i<ids.length;i++) if(ids[i]>ids[i-1]) descOrder=false;
+      for(const w of row2) if((w&0xFFFF)<0x100 && !(w&0x10000000)) flipped=false;
       // saving must put it back exactly
       view.setTilemap();
       const back=fmt.encode(rom.bossTilemap22.data.slice())[0];
       let diffs=0; for(let t=0;t<raw.length;t++) if(raw[t]!==back[t]) diffs++;
       rom.undo();
-      return {mirrorX:!!obj.mirrorX, ascOrder, tiles:asc.length, diffs};
+      return {mirrorX:!!obj.mirrorX, descOrder, tiles:ids.length, flipped, diffs};
   })()`);
   console.log('  mirror:',JSON.stringify(mirror));
   check(mirror.mirrorX,'the summon-backed bosses are marked mirrorX');
-  check(mirror.ascOrder&&mirror.tiles>3,'and their tile ids read left-to-right on screen');
+  check(mirror.descOrder&&mirror.tiles>3,'their tile ids keep the ROM order on screen');
+  check(mirror.flipped,'and the flip is done per tile pixel, as 3F/F970 does');
   check(mirror.diffs===0,'saving a mirrored boss leaves the ROM byte-exact ('+mirror.diffs+' changed)');
 
   // the layout pane must forward Up/Down to the tree (it takes focus)
@@ -348,7 +353,62 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
   const lay=poolGeom.bossTilemap22.firstRow, rom22=poolGeom.bossTilemap22;
   check(lay[0]===-1||lay[0]>=0,'layout row: '+JSON.stringify(lay.slice(0,10)));
 
-  // ---- painting the shared tile pool a boss is built from ----------------
+  // painting the BOSS LAYOUT itself with Pencil/Fill - a boss must be editable
+  // exactly like a monster graphic, not only by swapping tiles around
+  const bossPaint=await ev(c,sessionId,`(()=>{
+      const obj=rom.bossTilemap8;
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      let view=propertyList.activeEditor;
+      if(view.constructor.name!=='ROMTilemapView'){
+          view=(typeof propertyListView!=='undefined'&&propertyListView.tilemapView)
+              ? propertyListView.tilemapView : null;
+          if(!view) return {why:'no ROMTilemapView; active='+propertyList.activeEditor.constructor.name};
+          view.selectObject(obj);
+      }
+      const gv=view.graphicsView;
+      if(!gv.poolLayout) view.loadTilemap();
+      if(!gv.poolLayout) return {why:'no poolLayout on the graphics view'};
+      const container=rom.parsePath(obj.graphics.path);
+      const gr=ROMRange.parse(obj.graphics.range);
+      // a cell that actually uses a tile (the pool panel follows the layout)
+      const cell=gv.poolLayout.findIndex(t=>t>=0);
+      if(cell<0) return {tools:(view.list&&view.list.changeTool)?view.list.changeTool.names:[],
+                         changed:-1, why:'no tile in the layout'};
+      const cx=cell%view.width, cy=Math.floor(cell/view.width);
+      // as stored + the game's per-tile flip (2F/A40B, 3F/F970): the layout must
+      // carry the flip bit on its tiles
+      const tools=(view.list&&view.list.changeTool)?view.list.changeTool.names:[];
+      view.isPoolBased=true; gv.tool=1;
+      rom.assemble();
+      const before=Uint8Array.from(rom.data);
+      const r=view.canvas.getBoundingClientRect();
+      const px=r.left+(cx*8+2)*view.zoom, py=r.top+(cy*8+2)*view.zoom;
+      const mk=(t,x,y)=>new MouseEvent(t,{bubbles:true,cancelable:true,clientX:x,clientY:y,
+                                          button:0,buttons:1});
+      view.canvas.dispatchEvent(mk('mousedown',px,py));
+      view.canvas.dispatchEvent(mk('mousemove',px+view.zoom,py));
+      view.canvas.dispatchEvent(mk('mouseup',px+view.zoom,py));
+      rom.assemble();
+      const changed=[]; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) changed.push(i);
+      const inPool=changed.every(i=>i>=container.range.begin &&
+                                     i<container.range.end);
+      gv.undo&&gv.undo(); rom.undo(); rom.assemble();
+      let restored=true; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) restored=false;
+      return {tools, changed:changed.length, inPool, restored,
+              flipBit:(()=>{ const v=rom.bossTilemap22; romNavigator.selectObject(v);
+                             propertyList.select(v);
+                             const t=propertyList.activeEditor.tilemap.findIndex(x=>x!==(0xFFFFFFFF) && (x&0xFFFF)<0x100);
+                             return {found:t>=0, flipped:t>=0?!!(propertyList.activeEditor.tilemap[t]&0x10000000):false}; })()};
+  })()`);
+  console.log('  boss pencil:',JSON.stringify(bossPaint));
+  check(bossPaint.tools.indexOf('Pencil')>=0,'the boss layout offers a Tool menu with Pencil/Fill: '+JSON.stringify(bossPaint.tools));
+  check(bossPaint.changed>0&&bossPaint.inPool,
+        'Pencil on the boss layout paints into the pool tile under the cursor ('+bossPaint.changed+' bytes)');
+  check(bossPaint.restored,'and undo puts it back');
+  check(bossPaint.flipBit.found&&bossPaint.flipBit.flipped,
+        'the mirrored bosses keep the ROM tile order and flip the tile pixels, as 3F/F970 does');
+
+
   const pool=await ev(c,sessionId,`(()=>{
       const obj=rom.bossTilemap0;
       romNavigator.selectObject(obj); propertyList.select(obj);

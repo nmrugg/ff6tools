@@ -276,7 +276,7 @@ class ROMGraphicsView extends ROMEditor {
 
         // painting tools (only for a directly selected graphics object; the
         // tileset toolbox is deliberately left alone - see notes)
-        if ((this.editorMode && this.object) || this.paintablePool()) {
+        if (((this.editorMode && this.object) || this.paintablePool()) && !this.noToolMenu) {
             // "Palette cells" only makes sense for an object that has a
             // per-cell palette table in the ROM (FF3 NES monsters and bosses)
             const tools = ['Select','Pencil','Fill','Colour picker'];
@@ -367,7 +367,7 @@ class ROMGraphicsView extends ROMEditor {
     // is what gets painted, so: pick row 2 in the panel, then click the parts
     // of the sprite that should use the second battle palette.
     paintableCells() {
-        const obj = this.object;
+        const obj = this.object || this.cellsObject;
         if (!obj || !obj.attributeRef) return false;
         const perPalette = this.paletteView.colorsPerPalette || 4;
         return this.paletteView.palette.length >= perPalette * 2;
@@ -375,7 +375,7 @@ class ROMGraphicsView extends ROMEditor {
 
     paintCellPalette(x, y) {
         if (!this.paintableCells()) return false;
-        const obj = this.object;
+        const obj = this.object || this.cellsObject;
         const cell = attributeCellForTile(obj, x, y);
         if (cell < 0) return false;
         const perPalette = this.paletteView.colorsPerPalette || 4;
@@ -962,7 +962,7 @@ class ROMGraphicsView extends ROMEditor {
     // CellsInvert` flips the bits, which the game does for every monster id
     // $80-$FF (2F/A86C +$8D AND #$80, then EOR #$FF at 2F/A8BF).
     attributeCellBits(obj) {
-        obj = obj || this.object;
+        obj = obj || this.object || this.cellsObject;
         if (!obj) return null;
         if (this._cellsFor === obj && this._cells !== undefined)
             return this._cells;
@@ -1005,7 +1005,7 @@ class ROMGraphicsView extends ROMEditor {
         if (!cells || !cells.length) return 0;
         const perPalette = this.paletteView.colorsPerPalette || 4;
         if (this.paletteView.palette.length < perPalette * 2) return 0;
-        const obj = this.object;
+        const obj = this.object || this.cellsObject;
         const col = t % this.width, row = Math.floor(t / this.width);
         const cols = Math.ceil(this.width * this.tileWidth / (2 * this.tileWidth));
         const cell = Math.floor(row / 2) * cols + Math.floor(col / 2) +
@@ -1045,7 +1045,9 @@ class ROMGraphicsView extends ROMEditor {
                 for (let t = 0; t < this.tilemap.length; t++) {
                     const idx = this.poolLayout[t];
                     if (idx < 0) continue;
-                    this.tilemap[t] = idx | ((p >> 16 | this.paletteBitsForTile(t)) << 16);
+                    const flip = (this.poolFlip && this.poolFlip[t]) ? 0x10000000 : 0;
+                    this.tilemap[t] = idx | flip |
+                                      ((p >> 16 | this.paletteBitsForTile(t)) << 16);
                 }
             } else {
                 for (let t = 0; t < tileCount; t++)

@@ -89,6 +89,10 @@ class ROMTilemapView extends ROMEditor {
         }
         this.format = GFX.tileFormat[formatKey] || GFX.tileFormat.defaultTile;
 
+        // a tilemap whose graphics definition asks for the whole array as one
+        // pool (FF3 bosses, summons) - these are painted, not just assembled
+        this.isPoolBased = !!(this.object.graphics && this.object.graphics.whole);
+
         this.loadTilemap();
         this.resetControls();
     }
@@ -127,10 +131,17 @@ class ROMTilemapView extends ROMEditor {
 
         const self = this;
 
+        // a tilemap whose graphics definition asks for the whole array as one
+        // pool (FF3 bosses, summons) is painted, not just assembled
+        const poolBasedEarly = !!(this.object && this.object.graphics &&
+                                  this.object.graphics.whole);
+
         // #edit-controls is one shared bar, so whoever calls resetControls last
         // owns it. The toolbox graphics view (the tile pool) never gets its own
-        // resetControls call, so build its Tool menu here, before ours, or the
-        // pool would have no Pencil / Fill / Colour picker at all.
+        // resetControls call, so build its controls here, before ours - but for
+        // a pool-based tilemap the Tool menu is ours (it paints both panels), so
+        // the graphics view must not add a second one.
+        this.graphicsView.noToolMenu = poolBasedEarly;
         this.graphicsView.resetControls();
 
         // Stamp the tile picked in the graphics toolbox onto layout cells.
@@ -138,17 +149,27 @@ class ROMTilemapView extends ROMEditor {
         // which is the whole point of the FF3 boss and summon tilemaps.
         if (this.object && this.object.constructor &&
             (this.object.constructor.name === 'ROMTilemap' || this.object.tilemap !== undefined)) {
-            // pool-based tilemaps (FF3 bosses and summons index a shared tile
-            // pool) have nothing else to offer, so stamping is the default
-            const poolBased = this.object && this.object.graphics &&
-                              this.object.graphics.whole;
+            const poolBased = poolBasedEarly;
             if (this.placeTile === undefined || this.placeTileDefault !== poolBased) {
                 this.placeTile = poolBased;
                 this.placeTileDefault = poolBased;
             }
-            this.addTwoState('placeTile', function(on) {
-                self.placeTile = on;
-            }, 'Place tile', this.placeTile !== false);
+            // pool-based tilemaps (FF3 bosses, summons) are edited like any
+            // other graphic: the Tool menu paints pixels into the tile that
+            // occupies the cell under the cursor
+            if (poolBased) {
+                const gv = this.graphicsView;
+                this.addList('changeTool','Tool',['Select','Pencil','Fill','Colour picker'],
+                    function(t){ gv.tool=t; self.placeTile=(t===0); self.redraw(); },
+                    function(t){ return t===gv.tool; });
+                this.addTwoState('placeTile', function(on) {
+                    self.placeTile = on;
+                }, 'Place tile', this.placeTile !== false && gv.tool === 0);
+            } else {
+                this.addTwoState('placeTile', function(on) {
+                    self.placeTile = on;
+                }, 'Place tile', this.placeTile !== false);
+            }
 
             if (this.object.attributeCells || this.object.attributeRef) {
                 // paint the cells: click one to make it use the palette row
@@ -226,6 +247,62 @@ class ROMTilemapView extends ROMEditor {
         this.redraw();
     }
 
+    // Pixel of the layout under the pointer, in the same coordinate space the
+    // toolbox graphics view uses (the pool panel is laid out cell for cell with
+    // the layout, see followLayout), or null outside the image.
+    layoutPixel(e) {
+        const x = Math.floor(e.offsetX / this.zoom);
+        const y = Math.floor(e.offsetY / this.zoom);
+        const w = this.width * this.tileWidth, h = this.height * this.tileHeight;
+        if (x < 0 || y < 0 || x >= w || y >= h) return null;
+        return {x: x, y: y};
+    }
+
+    // Paint the boss/summon layout with the toolbox graphics view's tools: the
+    // graphics view maps the pixel onto the pool tile that occupies the cell
+    // under the cursor (ROMGraphicsView.tileOffset -> poolLayout), so Pencil,
+    // Fill and the colour picker work here exactly as they do on a monster
+    // graphic - no separate "place a tile" dance.
+    paintLayoutDown(e) {
+        const gv = this.graphicsView;
+        if (!this.isPoolBased || !gv || gv.tool === 0 || gv.tool === 4) return false;
+        const p = this.layoutPixel(e);
+        if (!p) return false;
+        gv.paintStart = gv.graphics.slice();
+        switch (gv.tool) {
+            case 1: // pencil
+                gv.painting = true;
+                this.paintingLayout = true;
+                gv.paintPixel(p.x, p.y);
+                break;
+            case 2: // fill
+                gv.floodFill(p.x, p.y);
+                gv.commitPaint();
+                break;
+            case 3: // colour picker
+                gv.pickColor(p.x, p.y);
+                break;
+        }
+        this.redraw();
+        return true;
+    }
+
+    paintLayoutDrag(e) {
+        if (!this.paintingLayout) return false;
+        const p = this.layoutPixel(e);
+        if (p) { this.graphicsView.paintPixel(p.x, p.y); this.redraw(); }
+        return true;
+    }
+
+    paintLayoutUp() {
+        if (!this.paintingLayout) return false;
+        this.paintingLayout = false;
+        this.graphicsView.painting = false;
+        this.graphicsView.commitPaint();
+        this.redraw();
+        return true;
+    }
+
     mouseDown(e) {
         this.closeList();
 
@@ -252,6 +329,11 @@ class ROMTilemapView extends ROMEditor {
             this.selectTiles();
             this.isDragging = true;
         } else if (this.clickPoint.button === 0) {
+            if (this.paintLayoutDown(e)) {
+                this.isDragging = true;
+                this.drawCursor();
+                return;
+            }
             if (this.paintCells && this.object && this.object.attributeRef)
                 this.rom.beginAction();      // a drag over cells is one undo step
             this.paintCell();
@@ -344,7 +426,9 @@ class ROMTilemapView extends ROMEditor {
         this.selection.y = y;
 
         if (this.isDragging && this.clickPoint) {
-            if (this.clickPoint.button === 0) this.paintCell();
+            if (this.clickPoint.button === 0) {
+                if (!this.paintLayoutDrag(e)) this.paintCell();
+            }
             if (this.clickPoint.button === 2) this.selectTiles();
         }
 
@@ -353,6 +437,11 @@ class ROMTilemapView extends ROMEditor {
     }
 
     mouseUp(e) {
+        if (this.paintLayoutUp()) {
+            this.isDragging = false;
+            this.clickPoint = null;
+            return;
+        }
         if (this.isDragging && this.paintCells && this.object && this.object.attributeRef) {
             this.rom.endAction();
         } else if (this.isDragging) this.setTilemap();
@@ -526,6 +615,7 @@ class ROMTilemapView extends ROMEditor {
         this.width = this.object.width || 32;
         this.height = this.object.height || 32;
         this.backColor = this.object.backColor;
+        this.isPoolBased = !!(this.object.graphics && this.object.graphics.whole);
 
         // update graphics and palette
         this.graphicsView.loadDefinition(this.object.graphics);
@@ -566,23 +656,44 @@ class ROMTilemapView extends ROMEditor {
         // sheet. With "followLayout" on the definition, that sheet is shown in
         // the order this tilemap uses the tiles, so the panel reads as the
         // creature and Pencil/Fill in it paint the part you are looking at.
-        if (this.object.graphics && this.object.graphics.whole &&
-            this.object.graphics.followLayout) {
+        // A pool-based tilemap (FF3 bosses, summons) indexes a shared tile
+        // sheet; keep the pool panel in step with this tilemap's layout.
+        this.syncPoolLayout();
+
+        this.redraw();
+    }
+
+    // A pool-based tilemap (FF3 bosses, summons) indexes a shared tile sheet.
+    // With "followLayout" on the definition, that sheet is shown in the order
+    // this tilemap uses the tiles, so the panel reads as the creature and
+    // Pencil/Fill in it paint the part you are looking at.
+    syncPoolLayout() {
+        const g = this.object && this.object.graphics;
+        if (g && g.whole && g.followLayout) {
             const layout = new Int32Array(this.height * this.width);
+            const flip = new Int32Array(this.height * this.width);
             for (let t = 0; t < layout.length; t++) {
                 const idx = this.tilemap[t] & 0xFFFF;
                 layout[t] = (this.tilemap[t] === 0xFFFFFFFF || idx >= 0x100) ? -1 : idx;
+                flip[t] = (this.tilemap[t] & 0x10000000) ? 1 : 0;
             }
             this.graphicsView.poolLayout = layout;
+            this.graphicsView.poolFlip = flip;
+            // so the pool panel colours each cell with the same palette the
+            // layout gives it (the graphics view has no object of its own here)
+            this.graphicsView.cellsObject = this.object;
             this.graphicsView.width = this.width;
             this.graphicsView.height = this.height;
             this.graphicsView.updateTilemap();
             this.graphicsView.redraw();
         } else {
             this.graphicsView.poolLayout = null;
+            this.graphicsView.poolFlip = null;
+            // the pool panel shows the raw pool again, so its tile count must
+            // not stay pinned to this tilemap's dimensions
+            this.graphicsView.width = (g && g.width) || 16;
+            this.graphicsView.height = undefined;
         }
-
-        this.redraw();
     }
 
     // Two of the FF3 NES bosses (Odin, Leviathan) are assembled from the summon
@@ -592,22 +703,19 @@ class ROMTilemapView extends ROMEditor {
     // flipped at copy time, so the stored map only reads as a picture once both
     // are undone. `mirrorX` on the definition does that for display, and
     // un-does it on save so the ROM keeps its own order.
-    // Mirror the layout horizontally and toggle each tile's pixel-flip bit.
-    // It is its own inverse, so the same call turns the ROM order into the
-    // display order and back.
-    mirrored(src) {
-        const w = this.width;
-        const out = new Uint32Array(src.length);
-        for (let row = 0; row < this.height; row++) {
-            for (let col = 0; col < w; col++)
-                out[row * w + (w - 1 - col)] = src[row * w + col] ^ 0x10000000;
-        }
-        return out;
-    }
-
+    // Two FF3 NES bosses (Odin, Leviathan) are assembled from the summon tile
+    // pool, and 2F/A40B forces the "back attack" flip for them: 3F/F94F builds
+    // a bit-reversal table and 3F/F970 pushes every graphics byte through it
+    // ($92 = use horizontal flip table). The tilemap itself is copied as stored
+    // (3F/F90A, no column reversal), so the only thing the display has to add
+    // is the per-tile pixel flip - reversing the columns as well mirrors it
+    // twice and comes out scrambled.
     applyMirror() {
         if (!this.object || !this.object.mirrorX) return;
-        this.tilemap = this.mirrored(this.tilemap);
+        for (let t = 0; t < this.tilemap.length; t++) {
+            if (this.tilemap[t] === 0xFFFFFFFF) continue;
+            this.tilemap[t] |= 0x10000000;
+        }
     }
 
     applyPaletteCells() {
@@ -638,10 +746,6 @@ class ROMTilemapView extends ROMEditor {
 
         // make a copy of the current tiles
         let newData = this.tilemap.slice(0, this.object.data.length);
-
-        // the view shows mirrored bosses the right way round; the ROM stores
-        // them the other way, so mirror back before encoding
-        if (this.object.mirrorX) newData = this.mirrored(newData);
 
         this.rom.beginAction();
         this.observer.sleep();

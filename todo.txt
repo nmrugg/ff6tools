@@ -145,6 +145,20 @@ recently added
    Tool menu was never built)
  * ff3 nes: removed the "Colour 0 transparent" toggle - index 0 is the outline
    colour, so it only ever deleted outlines
+ * ff3 nes: BOSSSES ARE PAINTABLE LIKE MONSTERS - the boss layout pane gets a
+   Tool menu (Select / Pencil / Fill / Colour picker) that paints pixels into
+   the pool tile occupying the cell under the cursor (paintLayoutDown/Drag/Up
+   -> graphicsView.paintPixel/floodFill/pickColor, mapped through poolLayout in
+   ROMGraphicsView.tileOffset). "Place tile" is just a checkbox for Select now,
+   and the pool panel no longer adds a duplicate Tool menu
+ * ff3 nes: fixed the mirrored bosses properly - 3F/F90A copies the boss
+   tilemap as stored and 3F/F94F+3F/F970 flip each tile's PIXELS ($92 = use
+   horizontal flip table), so mirrorX must only set the per-tile flip bit;
+   reversing the columns too mirrored twice and left Odin/Leviathan scrambled
+   in the layout while the pool panel looked right
+ * ff3 nes: the pool panel follows the tilemap layout ("followLayout" +
+   syncPoolLayout) and shares its per-cell palette bits (cellsObject), so the
+   layout and the pool panel now show the same creature in the same colours
  * byte-exact undo: re-encoding is skipped when decoded data matches what was
    loaded, and unchanged-size assemblies are no longer relocated
  * navigator: Up/Down move the selection and expand the next section; fixed
