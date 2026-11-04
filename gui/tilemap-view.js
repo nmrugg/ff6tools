@@ -127,6 +127,12 @@ class ROMTilemapView extends ROMEditor {
 
         const self = this;
 
+        // #edit-controls is one shared bar, so whoever calls resetControls last
+        // owns it. The toolbox graphics view (the tile pool) never gets its own
+        // resetControls call, so build its Tool menu here, before ours, or the
+        // pool would have no Pencil / Fill / Colour picker at all.
+        this.graphicsView.resetControls();
+
         // Stamp the tile picked in the graphics toolbox onto layout cells.
         // Without this there is no way to change *which* tile a cell uses,
         // which is the whole point of the FF3 boss and summon tilemaps.
@@ -145,16 +151,8 @@ class ROMTilemapView extends ROMEditor {
             }, 'Place tile', this.placeTile !== false);
 
             if (this.object.attributeCells || this.object.attributeRef) {
-                // the game swaps the two palettes for monster ids $80-$FF
-                // ($2E:$8F00); let the user see the other way round too
-                this.addTwoState('swapPaletteCells', function(on) {
-                    self.swapPaletteCells = on;
-                    self.graphicsView._cellsFor = null;
-                    self.loadTilemap();
-                }, 'Swap palette cells', this.swapPaletteCells === true);
-
-                // ... and paint them: click a cell to make it use the palette
-                // row selected in the palette panel
+                // paint the cells: click one to make it use the palette row
+                // selected in the palette panel
                 if (this.object.attributeRef) {
                     this.addTwoState('paintCells', function(on) {
                         self.paintCells = on;
@@ -284,7 +282,7 @@ class ROMTilemapView extends ROMEditor {
                 const perPalette = this.format.colorsPerPalette || 4;
                 let row = Math.min(Math.floor((this.paletteView.p || 0) *
                               this.paletteView.colorsPerPalette / perPalette), 1);
-                if (!!this.object.attributeCellsInvert !== !!this.swapPaletteCells) row ^= 1;
+                if (!!this.object.attributeCellsInvert) row ^= 1;
                 if (setAttributeBit(this.object, cell, row)) return;
             }
         }
@@ -564,6 +562,26 @@ class ROMTilemapView extends ROMEditor {
         // ... and mirror the layout for the bosses the game flips (see mirrorX).
         this.applyMirror();
 
+        // A pool-based tilemap (FF3 bosses, summons) indexes a shared tile
+        // sheet. With "followLayout" on the definition, that sheet is shown in
+        // the order this tilemap uses the tiles, so the panel reads as the
+        // creature and Pencil/Fill in it paint the part you are looking at.
+        if (this.object.graphics && this.object.graphics.whole &&
+            this.object.graphics.followLayout) {
+            const layout = new Int32Array(this.height * this.width);
+            for (let t = 0; t < layout.length; t++) {
+                const idx = this.tilemap[t] & 0xFFFF;
+                layout[t] = (this.tilemap[t] === 0xFFFFFFFF || idx >= 0x100) ? -1 : idx;
+            }
+            this.graphicsView.poolLayout = layout;
+            this.graphicsView.width = this.width;
+            this.graphicsView.height = this.height;
+            this.graphicsView.updateTilemap();
+            this.graphicsView.redraw();
+        } else {
+            this.graphicsView.poolLayout = null;
+        }
+
         this.redraw();
     }
 
@@ -600,7 +618,7 @@ class ROMTilemapView extends ROMEditor {
         const perPalette = this.format.colorsPerPalette || 4;
         if (this.paletteView.palette.length < perPalette * 2) return;
 
-        const cells = this.graphicsView.attributeCellBits(obj, this.swapPaletteCells);
+        const cells = this.graphicsView.attributeCellBits(obj);
         if (!cells || !cells.length) return;
 
         const cols = Math.ceil(this.width / 2);

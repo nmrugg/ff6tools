@@ -268,13 +268,20 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
       rom.undo();
       const back=Uint8Array.from(arr.item(obj.attributeRef.index).data);
       return {diff, changed:diff>=0, undone:back.every((v,i)=>v===was[i]),
-              controls:[...document.querySelectorAll('.two-state p')].map(p=>p.textContent)};
+              layoutControls:[...view.editControls.querySelectorAll('.two-state p')].map(p=>p.textContent),
+              poolTools:(()=>{ const v=propertyList.activeEditor.graphicsView;
+                               return (v.list&&v.list.changeTool)?v.list.changeTool.names:[]; })()};
   })()`);
   console.log('  boss cell paint:',JSON.stringify(bossCells));
   check(bossCells.changed,'Paint palette cells edits the boss record in bossAttributeData (byte '+bossCells.diff+')');
   check(bossCells.undone,'and undo restores it');
-  check(bossCells.controls.indexOf('Paint palette cells')>=0&&bossCells.controls.indexOf('Place tile')>=0,
-        'the boss layout offers Place tile + Swap/Paint palette cells: '+JSON.stringify(bossCells.controls));
+  check(bossCells.layoutControls.indexOf('Paint palette cells')>=0&&
+        bossCells.layoutControls.indexOf('Place tile')>=0,
+        'the boss layout offers Place tile + Paint palette cells: '+JSON.stringify(bossCells.layoutControls));
+  check(bossCells.poolTools.indexOf('Pencil')>=0&&bossCells.poolTools.indexOf('Fill')>=0,
+        'the boss tile pool offers Pencil/Fill/Colour picker: '+JSON.stringify(bossCells.poolTools));
+  check(bossCells.layoutControls.indexOf('Swap palette cells')<0,
+        'no "Swap palette cells" toggle - the pair order is a palette dropdown choice');
 
   // mirrored bosses (Odin, Leviathan): the ROM stores them right-to-left and
   // the game flips them (2F/A40B), so the view mirrors and the save un-mirrors
@@ -323,6 +330,24 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
         'ArrowUp moves it again from the same pane: '+nav2.name+' -> '+nav2.backName);
 
 
+  // the pool panel of a boss is shown in the order the tilemap uses the tiles,
+  // so it reads as the creature and Pencil/Fill paint the part you see
+  const poolGeom=await ev(c,sessionId,`(()=>{
+      const out={};
+      for(const key of ['bossTilemap22','bossTilemap23','bossTilemap8']){
+          romNavigator.selectObject(rom[key]); propertyList.select(rom[key]);
+          const v=propertyList.activeEditor, gv=v.graphicsView;
+          out[key]={w:gv.width, h:gv.height, layout:!!gv.poolLayout,
+                    firstRow:[...gv.tilemap.slice(0,18)].map(t=>(t===0xFFFFFFFF)?-1:(t&0xFFFF))};
+      }
+      return out;
+  })()`);
+  console.log('  pool geometry:',JSON.stringify(poolGeom));
+  check(poolGeom.bossTilemap22.layout&&poolGeom.bossTilemap22.w===18,
+        'a boss pool panel follows the tilemap layout (18 wide, not a scattered sheet)');
+  const lay=poolGeom.bossTilemap22.firstRow, rom22=poolGeom.bossTilemap22;
+  check(lay[0]===-1||lay[0]>=0,'layout row: '+JSON.stringify(lay.slice(0,10)));
+
   // ---- painting the shared tile pool a boss is built from ----------------
   const pool=await ev(c,sessionId,`(()=>{
       const obj=rom.bossTilemap0;
@@ -331,9 +356,12 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
       const container=rom.parsePath(obj.graphics.path);
       rom.assemble();
       const before=Uint8Array.from(rom.data);
+      // the panel is shown in tilemap order, so find a cell that uses a tile and
+      // paint inside it
+      const cell=view.poolLayout?view.poolLayout.findIndex(t=>t>=0):0;
       view.paintStart=view.graphics.slice();
       view.tool=1; view.color=2;
-      view.paintPixel(0,0); view.commitPaint();
+      view.paintPixel((cell%view.width)*8, Math.floor(cell/view.width)*8); view.commitPaint();
       rom.assemble();
       const changed=[]; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) changed.push(i);
       const inRange=changed.every(i=>i>=container.range.begin&&i<container.range.end);

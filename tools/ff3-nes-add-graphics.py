@@ -339,6 +339,17 @@ def main():
         rng = '0x%06X-0x%06X' % (begin, end)
         name = ', '.join(b['owners']) or ('Boss %d' % i)
         container = b['container'][0] if b['container'] else 'monsterGraphics6x6'
+        # The pool panel is a tile *sheet*. Showing it in the order the tilemap
+        # uses the tiles makes it read as the creature, and it means Pencil/Fill
+        # in that panel paint the part of the boss you are looking at.
+        # 18 wide matches the tilemap's own width; the two summon-backed bosses
+        # reuse a summon's block, which is 8 wide.
+        pool_w = 18
+        if b['summon']:
+            for s in summons:
+                if s['gfxIndex'] == b['container'][1]:
+                    pool_w = s['width']
+                    break
         # 2F/A40B: bit 5 of the pointer means "this boss is a summon: load it
         # from the summon bank and flip it". The ROM stores those two tilemaps
         # right-to-left, so the view has to mirror them to look like a picture.
@@ -354,6 +365,7 @@ def main():
     "graphics": {
         "path": "%s",
         "whole": true,
+        "followLayout": true,
         "range": "%d-%d"
     },
     "attributeRef": @ATTR@,

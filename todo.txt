@@ -120,6 +120,31 @@ recently added
    so it is click-tile-then-click-place rather than right-click-then-left-click
  * ff3 nes: Up/Down now move the tree from the boss layout pane too (it takes
    focus, and the arrow handler only lived on the left pane)
+ * ff3 nes: fixed the invert-bit reading - 2F/A133-2F/A141 ASLs the byte inside
+   the loop and only then tests bit 7, so the flag is bit (6-(id&7)) of byte
+   (id>>3) and always 0 when id&7==7: 112 of the 128 boss ids invert, not 128.
+   That is why Cyclops ($97) and Ouroboros ($9F) looked wrong
+ * ff3 nes: new tools/ff3-nes-palcheck.py verifies every monster and boss
+   against reference rips: it first learns the rip site's NES palette from the
+   rips themselves (our colours and theirs never match numerically), then scores
+   the model against the swapped-pair and un-inverted alternatives. 27 of 36
+   rips exact; 6 boss ids disagree with the rips and the ROM wins by default,
+   with the reversed pair offered in the palette dropdown
+ * ff3 nes: the palette dropdown now lists every pair a monster's battles use
+   AND its reverse ("... #243, swapped"), so flipping which palette is "first"
+   is one click - no "Swap palette cells" toggle, which is removed
+ * ff3 nes: clicking a palette row no longer recolours the whole sprite; with
+   per-cell palette bits the base colour offset is 0 and the row only says what
+   painting writes
+ * ff3 nes: the boss/summon pool panel now shows the tiles in the order the
+   tilemap uses them ("followLayout"), so Odin and Leviathan read as a knight
+   and a serpent there too instead of noise, and Pencil/Fill paint the part you
+   see; ROMGraphicsView.tileOffset resolves through that layout
+ * ff3 nes: the boss toolbox now really offers Pencil / Fill / Colour picker
+   for the tile pool (the shared #edit-controls bar meant the graphics view's
+   Tool menu was never built)
+ * ff3 nes: removed the "Colour 0 transparent" toggle - index 0 is the outline
+   colour, so it only ever deleted outlines
  * byte-exact undo: re-encoding is skipped when decoded data matches what was
    loaded, and unchanged-size assemblies are no longer relocated
  * navigator: Up/Down move the selection and expand the next section; fixed

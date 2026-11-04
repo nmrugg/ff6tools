@@ -288,6 +288,19 @@ def main(rom=None, json_path=None):
                 entry.append({'path': 'battlePalettes[%d]' % a2,
                               'name': '(2) #%d' % a2, 'offset': 4, 'compose': True})
             out.append(entry)
+            # The game's own mapping is palette1 -> BG palette 0 and palette2 ->
+            # BG palette 1 (2E/9DA2, 2E/9DAD), and the cell bits are inverted for
+            # every id $80-$FF ($2E:$8F00). Reference rips disagree with that for
+            # a few bosses, and since "exchange the two palettes" and "flip every
+            # cell bit" produce the identical picture, offer the other reading as
+            # a dropdown entry: one click, no mystery toggle.
+            if a2 != a1:
+                alt = [{'path': 'battlePalettes[%d]' % a2,
+                        'name': '%s (1) #%d, swapped' % (name, a2),
+                        'offset': 0, 'compose': True},
+                       {'path': 'battlePalettes[%d]' % a1,
+                        'name': '(2) #%d' % a1, 'offset': 4, 'compose': True}]
+                out.append(alt)
         return out
 
     item_palettes = {}
@@ -448,11 +461,12 @@ def main(rom=None, json_path=None):
     # 2F/A820, taken when the formation type is 9 - 18x12 tiles, 9x6 = 54 cells
     # in 7 bytes - and the record ends exactly at the boss pointer table.)
     #
-    # $2E:$8F00 is one bit per *monster id* (MSB first, byte id>>3, bit
-    # 7-(id&7)) meaning "invert this monster's cell bits" (2F/A89C AND #$80 ->
-    # 2F/A8BF EOR #$FF).  It is set for every id $80-$FF, so a boss always
-    # shows the two palettes swapped relative to the ordinary monster that
-    # shares its graphic.
+    # $2E:$8F00 is one bit per *monster id* meaning "invert this monster's cell
+    # bits" (2F/A89C AND #$80 -> 2F/A8BF EOR #$FF). The bit is selected by a
+    # shift loop (see invert_flag), not by a plain bit index. In this ROM the
+    # flag is set for every id $80-$FF whose (id & 7) != 7, and for no id below
+    # $80 - so a boss normally shows the two palettes swapped relative to the
+    # ordinary monster sharing its graphic, with 16 exceptions.
     #
     # A 4x4 monster stands in a 4x6 formation slot: its tiles load at PPU
     # $0780 while the slot's first tile id is $70 (2F/A2D0, 2F/A4A4), so the
@@ -468,7 +482,11 @@ def main(rom=None, json_path=None):
     invert_flags = data[mmc3_to_file(ATTR_INVERT):mmc3_to_file(ATTR_INVERT + 0x20)]
 
     def invert_flag(mid):
-        return (invert_flags[mid >> 3] >> (7 - (mid & 7))) & 1
+        # 2F/A133-2F/A141: the loop reloads $8F00[id>>3] and ASLs it (id&7)+1
+        # times, then 2F/A141 tests bit 7 of what is left in A - so the flag is
+        # bit (6 - (id&7)) of that byte, and always 0 when id&7 == 7.
+        k = (mid & 7) + 1
+        return ((invert_flags[mid >> 3] << k) >> 7) & 1
 
     def attr_addr(cls, props_byte):
         """address (file) of a graphic's cell record"""

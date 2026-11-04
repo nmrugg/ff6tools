@@ -285,28 +285,6 @@ class ROMGraphicsView extends ROMEditor {
             this.addList('changeTool','Tool',tools,
                 function(t){ self.tool=t; self.updateCursor(); self.redraw(); },
                 function(t){ return t===self.tool; });
-
-            // In the NES, index 0 of every palette is the universal backdrop
-            // colour, and FF3 NES monsters use that same index for their
-            // outlines - so the black box around a sprite is really in the ROM.
-            // Offer both views: faithful, or the sprite on its own.
-            this.addTwoState('transparentBack', function(on) {
-                self.transparentBack = on;
-                self.redraw();
-            }, 'Colour 0 transparent', this.transparentBack === true);
-
-            // The game swaps the two palettes for every monster id $80-$FF
-            // (the flag at $2E:$8F00). A graphic shared by a monster and its
-            // boss has to be shown one way or the other, so let the user flip
-            // it and see both.
-            if (this.object && (this.object.attributeCells || this.object.attributeRef)) {
-                this.addTwoState('swapPaletteCells', function(on) {
-                    self.swapPaletteCells = on;
-                    self._cellsFor = null;
-                    self.updateTilemap();
-                    self.redraw();
-                }, 'Swap palette cells', this.swapPaletteCells === true);
-            }
         }
 
         // add a control to select the sprite sheet
@@ -404,7 +382,7 @@ class ROMGraphicsView extends ROMEditor {
         let row = Math.floor((this.paletteView.p || 0) * this.paletteView.colorsPerPalette / perPalette);
         row = Math.min(row, 1);
         // "Swap palette cells" is a display flip; painting has to undo it
-        if (!!obj.attributeCellsInvert !== !!this.swapPaletteCells) row ^= 1;
+        if (!!obj.attributeCellsInvert) row ^= 1;
         const before = (this.attributeCellBits() || '')[cell];
         if (before === undefined) return false;
         return setAttributeBit(obj, cell, row);
@@ -834,7 +812,11 @@ class ROMGraphicsView extends ROMEditor {
         const col = Math.floor(x / tw), row = Math.floor(y / th);
         const t = row * this.width + col;
         if (col < 0 || row < 0 || col >= this.width || row >= this.height) return -1;
-        const off = t * this.bytesPerTile + (y % th) * tw + (x % tw);
+        // a tile pool shown in tilemap order (FF3 bosses and summons) has its
+        // display cells pointing at arbitrary tiles of the pool
+        const idx = (this.poolLayout && t < this.poolLayout.length) ? this.poolLayout[t] : t;
+        if (idx < 0) return -1;
+        const off = idx * this.bytesPerTile + (y % th) * tw + (x % tw);
         if (off >= this.graphics.length) return -1;
         return off;
     }
@@ -979,11 +961,10 @@ class ROMGraphicsView extends ROMEditor {
     // graphic (a 4x4 monster stands in a 4x6 slot, 2F/A2D0), and `attribute-
     // CellsInvert` flips the bits, which the game does for every monster id
     // $80-$FF (2F/A86C +$8D AND #$80, then EOR #$FF at 2F/A8BF).
-    attributeCellBits(obj, swap) {
+    attributeCellBits(obj) {
         obj = obj || this.object;
         if (!obj) return null;
-        if (swap === undefined) swap = this.swapPaletteCells;
-        if (this._cellsFor === obj && this._cellsSwap === !!swap && this._cells !== undefined)
+        if (this._cellsFor === obj && this._cells !== undefined)
             return this._cells;
 
         let cells = obj.attributeCells || null;
@@ -1007,11 +988,14 @@ class ROMGraphicsView extends ROMEditor {
                 if (bits.length) cells = bits;
             }
         }
-        if (cells && !!obj.attributeCellsInvert !== !!swap)
+        // bosses (monster ids $80-$FF) always show the two palettes swapped:
+        // 2F/A89C AND #$80 then EOR #$FF at 2F/A8BF. The definition records
+        // that per object, so it is applied here rather than offered as a
+        // control the user would have to guess at.
+        if (cells && obj.attributeCellsInvert)
             cells = cells.replace(/[01]/g, c => c === '1' ? '0' : '1');
 
         this._cellsFor = obj;
-        this._cellsSwap = !!swap;
         this._cells = cells;
         return cells;
     }
@@ -1039,7 +1023,12 @@ class ROMGraphicsView extends ROMEditor {
             this.spriteSheet = spriteSheetArray[this.ss];
         }
 
+        // With per-cell palette bits the cell table decides which palette each
+        // tile uses, so the palette panel's selected row must not also shift
+        // every tile - otherwise clicking row 2 recolours the whole sprite and
+        // looks like a bug. The row only says what painting will write.
         let p = (this.paletteView.p * this.paletteView.colorsPerPalette) << 16;
+        if (this.attributeCellBits()) p = 0;
         let tileCount;
         if (this.toolboxMode) {
 
@@ -1050,8 +1039,18 @@ class ROMGraphicsView extends ROMEditor {
             this.tilemap = new Uint32Array(this.height * this.width);
             this.tilemap.fill(0xFFFFFFFF);
 
-            for (let t = 0; t < tileCount; t++)
-                this.tilemap[t] = t | ((p >> 16 | this.paletteBitsForTile(t)) << 16);
+            if (this.poolLayout && this.poolLayout.length === this.tilemap.length) {
+                // show the pool in the order the tilemap uses it, so the panel
+                // reads as the creature and Pencil/Fill paint the part you see
+                for (let t = 0; t < this.tilemap.length; t++) {
+                    const idx = this.poolLayout[t];
+                    if (idx < 0) continue;
+                    this.tilemap[t] = idx | ((p >> 16 | this.paletteBitsForTile(t)) << 16);
+                }
+            } else {
+                for (let t = 0; t < tileCount; t++)
+                    this.tilemap[t] = t | ((p >> 16 | this.paletteBitsForTile(t)) << 16);
+            }
 
         } else if (this.spriteSheet) {
             // use a sprite sheet
@@ -1204,12 +1203,10 @@ class ROMGraphicsView extends ROMEditor {
         // create the color palette
         const palette = new Uint32Array(this.paletteView.palette);
         this.ppu.pal = this.rom.gammaCorrectedPalette(palette);
-        // "Colour 0 transparent" is a display choice: in the NES the universal
-        // backdrop colour is index 0 of every palette, and FF3 NES monsters use
-        // that same index for their outlines, so the black box around a sprite
-        // is genuinely in the ROM. Let the user see either the faithful picture
-        // or the sprite on its own.
-        this.ppu.back = this.transparentBack ? false : this.backColor;
+        // index 0 is both the backdrop colour and the sprite outline in FF3 NES,
+        // so the black box around a monster is genuinely in the ROM: there is
+        // nothing to toggle here without the sprite silhouette.
+        this.ppu.back = this.backColor;
 
         // draw layout image
         let context = this.graphicsCanvas.getContext('2d');
@@ -1524,6 +1521,15 @@ class ROMGraphicsView extends ROMEditor {
 
         if (object.width) this.width = object.width;
         if (object.height) this.height = object.height;
+        // a tile *pool* has no size of its own: the definition says how to lay
+        // it out (an FF3 boss pool is 18 tiles wide to match its tilemap, the
+        // two summon-backed bosses reuse a summon's block, so 8)
+        if (definition.width) this.width = definition.width;
+        if (definition.height) this.height = definition.height;
+        else if (definition.width)
+            this.height = Math.ceil(data.length / (this.tileWidth * this.tileHeight * 2) / definition.width);
+        if (definition.tileWidth) this.tileWidth = definition.tileWidth;
+        if (definition.tileHeight) this.tileHeight = definition.tileHeight;
         if (object.tileWidth) this.tileWidth = object.tileWidth;
         if (object.tileHeight) this.tileHeight = object.tileHeight;
 

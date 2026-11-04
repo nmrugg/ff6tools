@@ -70,44 +70,62 @@
             "itemPalettes": [
                 [
                             [{"path": "battlePalettes[137]", "name": "Goblin (1) #137", "offset": 0, "compose": true}, {"path": "battlePalettes[160]", "name": "(2) #160", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[160]", "name": "Goblin (1) #160, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[137]", "name": "(2) #137", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[197]", "name": "Knocker (1) #197", "offset": 0, "compose": true}, {"path": "battlePalettes[133]", "name": "(2) #133", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[133]", "name": "Knocker (1) #133, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[197]", "name": "(2) #197", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[91]", "name": "RedCap (1) #91", "offset": 0, "compose": true}, {"path": "battlePalettes[178]", "name": "(2) #178", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[178]", "name": "RedCap (1) #178, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[91]", "name": "(2) #91", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[168]", "name": "RedCap (1) #168", "offset": 0, "compose": true}, {"path": "battlePalettes[169]", "name": "(2) #169", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[169]", "name": "RedCap (1) #169, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[168]", "name": "(2) #168", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[63]", "name": "KillerBee (1) #63", "offset": 0, "compose": true}, {"path": "battlePalettes[64]", "name": "(2) #64", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[64]", "name": "KillerBee (1) #64, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[63]", "name": "(2) #63", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[185]", "name": "Hornet (1) #185", "offset": 0, "compose": true}, {"path": "battlePalettes[115]", "name": "(2) #115", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[115]", "name": "Hornet (1) #115, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[185]", "name": "(2) #185", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[89]", "name": "Firefry (1) #89", "offset": 0, "compose": true}, {"path": "battlePalettes[107]", "name": "(2) #107", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[107]", "name": "Firefry (1) #107, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[89]", "name": "(2) #89", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[109]", "name": "Icefry (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[72]", "name": "(2) #72", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[72]", "name": "Icefry (1) #72, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[53]", "name": "Carbuncle (1) #53", "offset": 0, "compose": true}, {"path": "battlePalettes[94]", "name": "(2) #94", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[94]", "name": "Carbuncle (1) #94, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[53]", "name": "(2) #53", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[85]", "name": "Boulder (1) #85", "offset": 0, "compose": true}, {"path": "battlePalettes[84]", "name": "(2) #84", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[84]", "name": "Boulder (1) #84, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[85]", "name": "(2) #85", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[1]", "name": "Were-Rat (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[104]", "name": "(2) #104", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[104]", "name": "Were-Rat (1) #104, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[189]", "name": "KillerFish (1) #189", "offset": 0, "compose": true}, {"path": "battlePalettes[63]", "name": "(2) #63", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[63]", "name": "KillerFish (1) #63, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[189]", "name": "(2) #189", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[109]", "name": "SeaDevil (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[45]", "name": "(2) #45", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[45]", "name": "SeaDevil (1) #45, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[172]", "name": "SeaDevil (1) #172", "offset": 0, "compose": true}, {"path": "battlePalettes[173]", "name": "(2) #173", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[173]", "name": "SeaDevil (1) #173, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[172]", "name": "(2) #172", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[6]", "name": "Leprecaun (1) #6", "offset": 0, "compose": true}, {"path": "battlePalettes[2]", "name": "(2) #2", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[2]", "name": "Leprecaun (1) #2, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[6]", "name": "(2) #6", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[237]", "name": "Farjalug (1) #237", "offset": 0, "compose": true}, {"path": "battlePalettes[124]", "name": "(2) #124", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[124]", "name": "Farjalug (1) #124, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[237]", "name": "(2) #237", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[132]", "name": "Liliput (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[104]", "name": "(2) #104", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[104]", "name": "Liliput (1) #104, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[132]", "name": "(2) #132", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[1]", "name": "Liliput (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[104]", "name": "(2) #104", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[104]", "name": "Liliput (1) #104, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[209]", "name": "Pygman (1) #209", "offset": 0, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
@@ -115,47 +133,68 @@
                             [{"path": "battlePalettes[83]", "name": "BloodBat (1) #83", "offset": 0, "compose": true}],
                             [{"path": "battlePalettes[217]", "name": "PoisonBat (1) #217", "offset": 0, "compose": true}],
                             [{"path": "battlePalettes[170]", "name": "BloodBat (1) #170", "offset": 0, "compose": true}, {"path": "battlePalettes[171]", "name": "(2) #171", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[171]", "name": "BloodBat (1) #171, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[170]", "name": "(2) #170", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[53]", "name": "BlueWisp (1) #53", "offset": 0, "compose": true}, {"path": "battlePalettes[94]", "name": "(2) #94", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[94]", "name": "BlueWisp (1) #94, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[53]", "name": "(2) #53", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[112]", "name": "RedWisp (1) #112", "offset": 0, "compose": true}, {"path": "battlePalettes[216]", "name": "(2) #216", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[216]", "name": "RedWisp (1) #216, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[112]", "name": "(2) #112", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[109]", "name": "Bomb (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[45]", "name": "(2) #45", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[45]", "name": "Bomb (1) #45, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[186]", "name": "Balloon (1) #186", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[109]", "name": "Balloon (1) #109, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[186]", "name": "(2) #186", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[186]", "name": "Balloon (1) #186", "offset": 0, "compose": true}, {"path": "battlePalettes[127]", "name": "(2) #127", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[127]", "name": "Balloon (1) #127, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[186]", "name": "(2) #186", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[221]", "name": "Grenade (1) #221", "offset": 0, "compose": true}, {"path": "battlePalettes[219]", "name": "(2) #219", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[219]", "name": "Grenade (1) #219, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[221]", "name": "(2) #221", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[196]", "name": "Grenade (1) #196", "offset": 0, "compose": true}, {"path": "battlePalettes[197]", "name": "(2) #197", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[197]", "name": "Grenade (1) #197, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[196]", "name": "(2) #196", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[13]", "name": "DiveEagle (1) #13", "offset": 0, "compose": true}, {"path": "battlePalettes[14]", "name": "(2) #14", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[14]", "name": "DiveEagle (1) #14, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[13]", "name": "(2) #13", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[172]", "name": "GoldEagle (1) #172", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[167]", "name": "GoldEagle (1) #167, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[172]", "name": "(2) #172", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[180]", "name": "Slime (1) #180", "offset": 0, "compose": true}, {"path": "battlePalettes[187]", "name": "(2) #187", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[187]", "name": "Slime (1) #187, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[180]", "name": "(2) #180", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[186]", "name": "RedMallow (1) #186", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[109]", "name": "RedMallow (1) #109, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[186]", "name": "(2) #186", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[74]", "name": "Pudding (1) #74", "offset": 0, "compose": true}, {"path": "battlePalettes[75]", "name": "(2) #75", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[75]", "name": "Pudding (1) #75, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[74]", "name": "(2) #74", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[194]", "name": "CurseCoin (1) #194", "offset": 0, "compose": true}, {"path": "battlePalettes[52]", "name": "(2) #52", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[52]", "name": "CurseCoin (1) #52, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[194]", "name": "(2) #194", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[172]", "name": "GoldCoin (1) #172", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[167]", "name": "GoldCoin (1) #167, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[172]", "name": "(2) #172", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[171]", "name": "GoldCoin (1) #171", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[167]", "name": "GoldCoin (1) #167, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[171]", "name": "(2) #171", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[98]", "name": "Lemwraith (1) #98", "offset": 0, "compose": true}, {"path": "battlePalettes[80]", "name": "(2) #80", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[80]", "name": "Lemwraith (1) #80, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[98]", "name": "(2) #98", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[194]", "name": "Laruwai (1) #194", "offset": 0, "compose": true}, {"path": "battlePalettes[52]", "name": "(2) #52", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[52]", "name": "Laruwai (1) #52, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[194]", "name": "(2) #194", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[189]", "name": "SeaElmntl (1) #189", "offset": 0, "compose": true}, {"path": "battlePalettes[63]", "name": "(2) #63", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[63]", "name": "SeaElmntl (1) #63, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[189]", "name": "(2) #189", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[166]", "name": "SeaElmntl (1) #166", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[167]", "name": "SeaElmntl (1) #167, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[166]", "name": "(2) #166", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[109]", "name": "RuinWave (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[45]", "name": "(2) #45", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[45]", "name": "RuinWave (1) #45, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -182,99 +221,136 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
-            "itemAttributes": [{"cells": "000000", "offset": 0, "bytes": 1, "index": 48, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 0, "bytes": 1, "index": 49, "invert": false, "path": "monsterAttributeData"}, {"cells": "111001", "offset": 0, "bytes": 1, "index": 50, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011", "offset": 0, "bytes": 1, "index": 51, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 52, "invert": false, "path": "monsterAttributeData"}, {"cells": "111100", "offset": 0, "bytes": 1, "index": 53, "invert": false, "path": "monsterAttributeData"}, {"cells": "010011", "offset": 0, "bytes": 1, "index": 54, "invert": false, "path": "monsterAttributeData"}, {"cells": "101111", "offset": 0, "bytes": 1, "index": 55, "invert": false, "path": "monsterAttributeData"}, {"cells": "100011", "offset": 0, "bytes": 1, "index": 56, "invert": false, "path": "monsterAttributeData"}, {"cells": "000111", "offset": 0, "bytes": 1, "index": 57, "invert": true, "path": "monsterAttributeData"}, {"cells": "001100", "offset": 0, "bytes": 1, "index": 58, "invert": false, "path": "monsterAttributeData"}, {"cells": "001011", "offset": 0, "bytes": 1, "index": 59, "invert": false, "path": "monsterAttributeData"}, {"cells": "010110", "offset": 0, "bytes": 1, "index": 60, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111", "offset": 0, "bytes": 1, "index": 61, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011", "offset": 0, "bytes": 1, "index": 62, "invert": true, "path": "monsterAttributeData"}, {"cells": "111010", "offset": 0, "bytes": 1, "index": 63, "invert": false, "path": "monsterAttributeData"}, {"cells": "001100", "offset": 0, "bytes": 1, "index": 64, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 65, "invert": true, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 66, "invert": true, "path": "monsterAttributeData"}, {"cells": "000100", "offset": 0, "bytes": 1, "index": 67, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 68, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 0, "bytes": 1, "index": 69, "invert": true, "path": "monsterAttributeData"}, {"cells": "111100", "offset": 0, "bytes": 1, "index": 70, "invert": false, "path": "monsterAttributeData"}, {"cells": "101000", "offset": 0, "bytes": 1, "index": 71, "invert": false, "path": "monsterAttributeData"}],
+            "itemAttributes": [{"cells": "000000", "offset": 0, "bytes": 1, "index": 48, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 0, "bytes": 1, "index": 49, "invert": false, "path": "monsterAttributeData"}, {"cells": "111001", "offset": 0, "bytes": 1, "index": 50, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011", "offset": 0, "bytes": 1, "index": 51, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 52, "invert": false, "path": "monsterAttributeData"}, {"cells": "111100", "offset": 0, "bytes": 1, "index": 53, "invert": false, "path": "monsterAttributeData"}, {"cells": "010011", "offset": 0, "bytes": 1, "index": 54, "invert": false, "path": "monsterAttributeData"}, {"cells": "101111", "offset": 0, "bytes": 1, "index": 55, "invert": false, "path": "monsterAttributeData"}, {"cells": "100011", "offset": 0, "bytes": 1, "index": 56, "invert": false, "path": "monsterAttributeData"}, {"cells": "000111", "offset": 0, "bytes": 1, "index": 57, "invert": true, "path": "monsterAttributeData"}, {"cells": "001100", "offset": 0, "bytes": 1, "index": 58, "invert": false, "path": "monsterAttributeData"}, {"cells": "001011", "offset": 0, "bytes": 1, "index": 59, "invert": false, "path": "monsterAttributeData"}, {"cells": "010110", "offset": 0, "bytes": 1, "index": 60, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111", "offset": 0, "bytes": 1, "index": 61, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011", "offset": 0, "bytes": 1, "index": 62, "invert": false, "path": "monsterAttributeData"}, {"cells": "111010", "offset": 0, "bytes": 1, "index": 63, "invert": false, "path": "monsterAttributeData"}, {"cells": "001100", "offset": 0, "bytes": 1, "index": 64, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 65, "invert": true, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 66, "invert": true, "path": "monsterAttributeData"}, {"cells": "000100", "offset": 0, "bytes": 1, "index": 67, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 68, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 0, "bytes": 1, "index": 69, "invert": false, "path": "monsterAttributeData"}, {"cells": "111100", "offset": 0, "bytes": 1, "index": 70, "invert": false, "path": "monsterAttributeData"}, {"cells": "101000", "offset": 0, "bytes": 1, "index": 71, "invert": false, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
                             [{"path": "battlePalettes[83]", "name": "PutiMage (1) #83", "offset": 0, "compose": true}],
                             [{"path": "battlePalettes[132]", "name": "Puti (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[217]", "name": "(2) #217", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[217]", "name": "Puti (1) #217, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[132]", "name": "(2) #132", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[132]", "name": "Puti (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[104]", "name": "(2) #104", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[104]", "name": "Puti (1) #104, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[132]", "name": "(2) #132", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[53]", "name": "EyeFang (1) #53", "offset": 0, "compose": true}, {"path": "battlePalettes[94]", "name": "(2) #94", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[94]", "name": "EyeFang (1) #94, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[53]", "name": "(2) #53", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[112]", "name": "DarkEye (1) #112", "offset": 0, "compose": true}, {"path": "battlePalettes[216]", "name": "(2) #216", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[216]", "name": "DarkEye (1) #216, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[112]", "name": "(2) #112", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[204]", "name": "Basilisk (1) #204", "offset": 0, "compose": true}, {"path": "battlePalettes[206]", "name": "(2) #206", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[206]", "name": "Basilisk (1) #206, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[204]", "name": "(2) #204", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[57]", "name": "Cocktrice (1) #57", "offset": 0, "compose": true}, {"path": "battlePalettes[70]", "name": "(2) #70", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[70]", "name": "Cocktrice (1) #70, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[57]", "name": "(2) #57", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[109]", "name": "Skeleton (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[90]", "name": "(2) #90", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[90]", "name": "Skeleton (1) #90, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[62]", "name": "Shadow (1) #62", "offset": 0, "compose": true}, {"path": "battlePalettes[61]", "name": "(2) #61", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[61]", "name": "Shadow (1) #61, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[62]", "name": "(2) #62", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[141]", "name": "Zombie (1) #141", "offset": 0, "compose": true}, {"path": "battlePalettes[142]", "name": "(2) #142", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[142]", "name": "Zombie (1) #142, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[141]", "name": "(2) #141", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[62]", "name": "Revenant (1) #62", "offset": 0, "compose": true}, {"path": "battlePalettes[61]", "name": "(2) #61", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[61]", "name": "Revenant (1) #61, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[62]", "name": "(2) #62", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[124]", "name": "Helcan (1) #124", "offset": 0, "compose": true}, {"path": "battlePalettes[125]", "name": "(2) #125", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[125]", "name": "Helcan (1) #125, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[124]", "name": "(2) #124", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[24]", "name": "M.Helcan (1) #24", "offset": 0, "compose": true}, {"path": "battlePalettes[23]", "name": "(2) #23", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[23]", "name": "M.Helcan (1) #23, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[24]", "name": "(2) #24", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[48]", "name": "Sahuagin (1) #48", "offset": 0, "compose": true}, {"path": "battlePalettes[51]", "name": "(2) #51", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[51]", "name": "Sahuagin (1) #51, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[48]", "name": "(2) #48", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[85]", "name": "Merman (1) #85", "offset": 0, "compose": true}, {"path": "battlePalettes[84]", "name": "(2) #84", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[84]", "name": "Merman (1) #84, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[85]", "name": "(2) #85", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[98]", "name": "Pharaoh (1) #98", "offset": 0, "compose": true}, {"path": "battlePalettes[80]", "name": "(2) #80", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[80]", "name": "Pharaoh (1) #80, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[98]", "name": "(2) #98", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[109]", "name": "Mummy (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[90]", "name": "(2) #90", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[90]", "name": "Mummy (1) #90, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[74]", "name": "Magician (1) #74", "offset": 0, "compose": true}, {"path": "battlePalettes[75]", "name": "(2) #75", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[75]", "name": "Magician (1) #75, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[74]", "name": "(2) #74", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[24]", "name": "Sorcerer (1) #24", "offset": 0, "compose": true}, {"path": "battlePalettes[23]", "name": "(2) #23", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[23]", "name": "Sorcerer (1) #23, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[24]", "name": "(2) #24", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[93]", "name": "Qumqum (1) #93", "offset": 0, "compose": true}, {"path": "battlePalettes[168]", "name": "(2) #168", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[168]", "name": "Qumqum (1) #168, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[93]", "name": "(2) #93", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[208]", "name": "Qumqum (1) #208", "offset": 0, "compose": true}, {"path": "battlePalettes[209]", "name": "(2) #209", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[209]", "name": "Qumqum (1) #209, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[208]", "name": "(2) #208", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[180]", "name": "Tarantula (1) #180", "offset": 0, "compose": true}, {"path": "battlePalettes[187]", "name": "(2) #187", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[187]", "name": "Tarantula (1) #187, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[180]", "name": "(2) #180", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[72]", "name": "DarkFoot (1) #72", "offset": 0, "compose": true}, {"path": "battlePalettes[70]", "name": "(2) #70", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[70]", "name": "DarkFoot (1) #70, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[72]", "name": "(2) #72", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[125]", "name": "Bugbear (1) #125", "offset": 0, "compose": true}, {"path": "battlePalettes[118]", "name": "(2) #118", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[118]", "name": "Bugbear (1) #118, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[125]", "name": "(2) #125", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[169]", "name": "GoldBear (1) #169", "offset": 0, "compose": true}, {"path": "battlePalettes[139]", "name": "(2) #139", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[139]", "name": "GoldBear (1) #139, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[169]", "name": "(2) #169", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[171]", "name": "GoldKngt. (1) #171", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[167]", "name": "GoldKngt. (1) #167, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[171]", "name": "(2) #171", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[222]", "name": "DarkKngt. (1) #222", "offset": 0, "compose": true}, {"path": "battlePalettes[224]", "name": "(2) #224", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[224]", "name": "DarkKngt. (1) #224, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[222]", "name": "(2) #222", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[180]", "name": "DarkKngt. (1) #180", "offset": 0, "compose": true}, {"path": "battlePalettes[181]", "name": "(2) #181", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[181]", "name": "DarkKngt. (1) #181, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[180]", "name": "(2) #180", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[1]", "name": "BloodWorm (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[104]", "name": "(2) #104", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[104]", "name": "BloodWorm (1) #104, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[132]", "name": "BloodWorm (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[104]", "name": "(2) #104", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[104]", "name": "BloodWorm (1) #104, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[132]", "name": "(2) #132", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[167]", "name": "SandWorm (1) #167", "offset": 0, "compose": true}, {"path": "battlePalettes[164]", "name": "(2) #164", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[164]", "name": "SandWorm (1) #164, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[111]", "name": "FlameDevil (1) #111", "offset": 0, "compose": true}, {"path": "battlePalettes[41]", "name": "(2) #41", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[41]", "name": "FlameDevil (1) #41, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[111]", "name": "(2) #111", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[122]", "name": "Flyer (1) #122", "offset": 0, "compose": true}, {"path": "battlePalettes[75]", "name": "(2) #75", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[75]", "name": "Flyer (1) #75, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[122]", "name": "(2) #122", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[196]", "name": "MageFlyer (1) #196", "offset": 0, "compose": true}, {"path": "battlePalettes[75]", "name": "(2) #75", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[75]", "name": "MageFlyer (1) #75, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[196]", "name": "(2) #196", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[77]", "name": "Needler (1) #77", "offset": 0, "compose": true}, {"path": "battlePalettes[73]", "name": "(2) #73", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[73]", "name": "Needler (1) #73, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[77]", "name": "(2) #77", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[102]", "name": "DthNeedle (1) #102", "offset": 0, "compose": true}, {"path": "battlePalettes[236]", "name": "(2) #236", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[236]", "name": "DthNeedle (1) #236, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[102]", "name": "(2) #102", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[236]", "name": "Shinobi (1) #236", "offset": 0, "compose": true}, {"path": "battlePalettes[107]", "name": "(2) #107", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[107]", "name": "Shinobi (1) #107, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[236]", "name": "(2) #236", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[59]", "name": "Kage (1) #59", "offset": 0, "compose": true}],
                             [{"path": "battlePalettes[210]", "name": "Shinobi (1) #210", "offset": 0, "compose": true}, {"path": "battlePalettes[211]", "name": "(2) #211", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[211]", "name": "Shinobi (1) #211, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[210]", "name": "(2) #210", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
@@ -283,31 +359,45 @@
                         ],
                 [
                             [{"path": "battlePalettes[143]", "name": "Werewolf (1) #143", "offset": 0, "compose": true}, {"path": "battlePalettes[152]", "name": "(2) #152", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[152]", "name": "Werewolf (1) #152, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[143]", "name": "(2) #143", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[55]", "name": "Lynx (1) #55", "offset": 0, "compose": true}, {"path": "battlePalettes[47]", "name": "(2) #47", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[47]", "name": "Lynx (1) #47, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[55]", "name": "(2) #55", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[6]", "name": "DarkFace (1) #6", "offset": 0, "compose": true}, {"path": "battlePalettes[2]", "name": "(2) #2", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[2]", "name": "DarkFace (1) #2, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[6]", "name": "(2) #6", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[164]", "name": "DarkFace (1) #164", "offset": 0, "compose": true}, {"path": "battlePalettes[165]", "name": "(2) #165", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[165]", "name": "DarkFace (1) #165, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[164]", "name": "(2) #164", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[237]", "name": "Ohishuki (1) #237", "offset": 0, "compose": true}, {"path": "battlePalettes[129]", "name": "(2) #129", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[129]", "name": "Ohishuki (1) #129, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[237]", "name": "(2) #237", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[237]", "name": "Ohishuki (1) #237", "offset": 0, "compose": true}, {"path": "battlePalettes[124]", "name": "(2) #124", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[124]", "name": "Ohishuki (1) #124, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[237]", "name": "(2) #237", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[195]", "name": "Ouroboros (1) #195", "offset": 0, "compose": true}, {"path": "battlePalettes[32]", "name": "(2) #32", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[32]", "name": "Ouroboros (1) #32, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[195]", "name": "(2) #195", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[194]", "name": "Ouroboros (1) #194", "offset": 0, "compose": true}, {"path": "battlePalettes[195]", "name": "(2) #195", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[195]", "name": "Ouroboros (1) #195, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[194]", "name": "(2) #194", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[56]", "name": "Gt.Boros (1) #56", "offset": 0, "compose": true}, {"path": "battlePalettes[128]", "name": "(2) #128", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[128]", "name": "Gt.Boros (1) #128, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[56]", "name": "(2) #56", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[122]", "name": "Gorgone (1) #122", "offset": 0, "compose": true}, {"path": "battlePalettes[75]", "name": "(2) #75", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[75]", "name": "Gorgone (1) #75, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[122]", "name": "(2) #122", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[158]", "name": "Gorgone (1) #158", "offset": 0, "compose": true}, {"path": "battlePalettes[159]", "name": "(2) #159", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[159]", "name": "Gorgone (1) #159, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[158]", "name": "(2) #158", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[151]", "name": "Cafjel (1) #151", "offset": 0, "compose": true}, {"path": "battlePalettes[112]", "name": "(2) #112", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[112]", "name": "Cafjel (1) #112, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[151]", "name": "(2) #151", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[132]", "name": "VenomToad (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[134]", "name": "(2) #134", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[134]", "name": "VenomToad (1) #134, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[132]", "name": "(2) #132", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[72]", "name": "GiganToad (1) #72", "offset": 0, "compose": true}, {"path": "battlePalettes[70]", "name": "(2) #70", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[70]", "name": "GiganToad (1) #70, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[72]", "name": "(2) #72", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -338,124 +428,174 @@
             "itemPalettes": [
                 [
                             [{"path": "battlePalettes[161]", "name": "Ion (1) #161", "offset": 0, "compose": true}, {"path": "battlePalettes[159]", "name": "(2) #159", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[159]", "name": "Ion (1) #159, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[161]", "name": "(2) #161", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[213]", "name": "D.General (1) #213", "offset": 0, "compose": true}, {"path": "battlePalettes[130]", "name": "(2) #130", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[130]", "name": "D.General (1) #130, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[213]", "name": "(2) #213", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[125]", "name": "Mandrake (1) #125", "offset": 0, "compose": true}, {"path": "battlePalettes[118]", "name": "(2) #118", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[118]", "name": "Mandrake (1) #118, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[125]", "name": "(2) #125", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[63]", "name": "Barometz (1) #63", "offset": 0, "compose": true}, {"path": "battlePalettes[43]", "name": "(2) #43", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[43]", "name": "Barometz (1) #43, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[63]", "name": "(2) #63", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[221]", "name": "LizardMan (1) #221", "offset": 0, "compose": true}, {"path": "battlePalettes[223]", "name": "(2) #223", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[223]", "name": "LizardMan (1) #223, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[221]", "name": "(2) #221", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[158]", "name": "LizardMan (1) #158", "offset": 0, "compose": true}, {"path": "battlePalettes[159]", "name": "(2) #159", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[159]", "name": "LizardMan (1) #159, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[158]", "name": "(2) #158", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[167]", "name": "K.Lizard (1) #167", "offset": 0, "compose": true}, {"path": "battlePalettes[170]", "name": "(2) #170", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[170]", "name": "K.Lizard (1) #170, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[225]", "name": "Gargoyle (1) #225", "offset": 0, "compose": true}, {"path": "battlePalettes[220]", "name": "(2) #220", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[220]", "name": "Gargoyle (1) #220, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[225]", "name": "(2) #225", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[1]", "name": "Margoyle (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[9]", "name": "(2) #9", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[9]", "name": "Margoyle (1) #9, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[87]", "name": "Hermit (1) #87", "offset": 0, "compose": true}, {"path": "battlePalettes[88]", "name": "(2) #88", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[88]", "name": "Hermit (1) #88, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[87]", "name": "(2) #87", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[92]", "name": "KillerSnail (1) #92", "offset": 0, "compose": true}, {"path": "battlePalettes[241]", "name": "(2) #241", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[241]", "name": "KillerSnail (1) #241, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[92]", "name": "(2) #92", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[190]", "name": "DorgaCln. (1) #190", "offset": 0, "compose": true}, {"path": "battlePalettes[191]", "name": "(2) #191", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[191]", "name": "DorgaCln. (1) #191, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[190]", "name": "(2) #190", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[208]", "name": "Dorga (1) #208", "offset": 0, "compose": true}, {"path": "battlePalettes[59]", "name": "(2) #59", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[59]", "name": "Dorga (1) #59, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[208]", "name": "(2) #208", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[48]", "name": "Tangi (1) #48", "offset": 0, "compose": true}, {"path": "battlePalettes[51]", "name": "(2) #51", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[51]", "name": "Tangi (1) #51, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[48]", "name": "(2) #48", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[167]", "name": "Neegle (1) #167", "offset": 0, "compose": true}, {"path": "battlePalettes[170]", "name": "(2) #170", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[170]", "name": "Neegle (1) #170, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[89]", "name": "RustBird (1) #89", "offset": 0, "compose": true}, {"path": "battlePalettes[107]", "name": "(2) #107", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[107]", "name": "RustBird (1) #107, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[89]", "name": "(2) #89", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[138]", "name": "Griffon (1) #138", "offset": 0, "compose": true}, {"path": "battlePalettes[119]", "name": "(2) #119", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[119]", "name": "Griffon (1) #119, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[138]", "name": "(2) #138", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[12]", "name": "Dosmea (1) #12", "offset": 0, "compose": true}, {"path": "battlePalettes[40]", "name": "(2) #40", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[40]", "name": "Dosmea (1) #40, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[12]", "name": "(2) #12", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[27]", "name": "Chimera (1) #27", "offset": 0, "compose": true}, {"path": "battlePalettes[42]", "name": "(2) #42", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[42]", "name": "Chimera (1) #42, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[27]", "name": "(2) #27", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[178]", "name": "Chimera (1) #178", "offset": 0, "compose": true}, {"path": "battlePalettes[179]", "name": "(2) #179", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[179]", "name": "Chimera (1) #179, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[178]", "name": "(2) #178", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[49]", "name": "M.Chimera (1) #49", "offset": 0, "compose": true}, {"path": "battlePalettes[50]", "name": "(2) #50", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[50]", "name": "M.Chimera (1) #50, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[49]", "name": "(2) #49", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[184]", "name": "M.Chimera (1) #184", "offset": 0, "compose": true}, {"path": "battlePalettes[185]", "name": "(2) #185", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[185]", "name": "M.Chimera (1) #185, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[184]", "name": "(2) #184", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[209]", "name": "Anetto (1) #209", "offset": 0, "compose": true}, {"path": "battlePalettes[204]", "name": "(2) #204", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[204]", "name": "Anetto (1) #204, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[209]", "name": "(2) #209", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[39]", "name": "Abuto (1) #39", "offset": 0, "compose": true}, {"path": "battlePalettes[37]", "name": "(2) #37", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[37]", "name": "Abuto (1) #37, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[39]", "name": "(2) #39", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[155]", "name": "Nightmare (1) #155", "offset": 0, "compose": true}, {"path": "battlePalettes[156]", "name": "(2) #156", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[156]", "name": "Nightmare (1) #156, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[155]", "name": "(2) #155", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[69]", "name": "DevilHorse (1) #69", "offset": 0, "compose": true}, {"path": "battlePalettes[72]", "name": "(2) #72", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[72]", "name": "DevilHorse (1) #72, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[69]", "name": "(2) #69", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[183]", "name": "Crocotta (1) #183", "offset": 0, "compose": true}, {"path": "battlePalettes[179]", "name": "(2) #179", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[179]", "name": "Crocotta (1) #179, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[183]", "name": "(2) #183", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[174]", "name": "Crocotta (1) #174", "offset": 0, "compose": true}, {"path": "battlePalettes[175]", "name": "(2) #175", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[175]", "name": "Crocotta (1) #175, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[174]", "name": "(2) #174", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[169]", "name": "Leucrotta (1) #169", "offset": 0, "compose": true}, {"path": "battlePalettes[171]", "name": "(2) #171", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[171]", "name": "Leucrotta (1) #171, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[169]", "name": "(2) #169", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[143]", "name": "Berserker (1) #143", "offset": 0, "compose": true}, {"path": "battlePalettes[152]", "name": "(2) #152", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[152]", "name": "Berserker (1) #152, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[143]", "name": "(2) #143", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[153]", "name": "GoldWarr. (1) #153", "offset": 0, "compose": true}, {"path": "battlePalettes[173]", "name": "(2) #173", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[173]", "name": "GoldWarr. (1) #173, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[153]", "name": "(2) #153", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[117]", "name": "Mermaid (1) #117", "offset": 0, "compose": true}, {"path": "battlePalettes[99]", "name": "(2) #99", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[99]", "name": "Mermaid (1) #99, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[117]", "name": "(2) #117", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[113]", "name": "SeaWitch (1) #113", "offset": 0, "compose": true}, {"path": "battlePalettes[67]", "name": "(2) #67", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[67]", "name": "SeaWitch (1) #67, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[113]", "name": "(2) #113", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[132]", "name": "Roper (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[134]", "name": "(2) #134", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[134]", "name": "Roper (1) #134, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[132]", "name": "(2) #132", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[110]", "name": "Storoper (1) #110", "offset": 0, "compose": true}, {"path": "battlePalettes[193]", "name": "(2) #193", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[193]", "name": "Storoper (1) #193, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[110]", "name": "(2) #110", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[198]", "name": "Balfrey (1) #198", "offset": 0, "compose": true}, {"path": "battlePalettes[199]", "name": "(2) #199", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[199]", "name": "Balfrey (1) #199, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[198]", "name": "(2) #198", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[166]", "name": "Thor (1) #166", "offset": 0, "compose": true}, {"path": "battlePalettes[165]", "name": "(2) #165", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[165]", "name": "Thor (1) #165, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[166]", "name": "(2) #166", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[238]", "name": "Haokah (1) #238", "offset": 0, "compose": true}, {"path": "battlePalettes[44]", "name": "(2) #44", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[44]", "name": "Haokah (1) #44, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[238]", "name": "(2) #238", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[200]", "name": "Haokah (1) #200", "offset": 0, "compose": true}, {"path": "battlePalettes[201]", "name": "(2) #201", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[201]", "name": "Haokah (1) #201, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[200]", "name": "(2) #200", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[131]", "name": "Garb (1) #131", "offset": 0, "compose": true}, {"path": "battlePalettes[133]", "name": "(2) #133", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[133]", "name": "Garb (1) #133, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[131]", "name": "(2) #131", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[190]", "name": "Bluk (1) #190", "offset": 0, "compose": true}, {"path": "battlePalettes[191]", "name": "(2) #191", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[191]", "name": "Bluk (1) #191, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[190]", "name": "(2) #190", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[103]", "name": "Catoblpas (1) #103", "offset": 0, "compose": true}, {"path": "battlePalettes[18]", "name": "(2) #18", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[18]", "name": "Catoblpas (1) #18, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[103]", "name": "(2) #103", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[132]", "name": "Humbaba (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[243]", "name": "(2) #243", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[243]", "name": "Humbaba (1) #243, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[132]", "name": "(2) #132", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[198]", "name": "Haniel (1) #198", "offset": 0, "compose": true}, {"path": "battlePalettes[199]", "name": "(2) #199", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[199]", "name": "Haniel (1) #199, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[198]", "name": "(2) #198", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[51]", "name": "Azrael (1) #51", "offset": 0, "compose": true}, {"path": "battlePalettes[52]", "name": "(2) #52", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[52]", "name": "Azrael (1) #52, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[51]", "name": "(2) #51", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[161]", "name": "Manticore (1) #161", "offset": 0, "compose": true}, {"path": "battlePalettes[164]", "name": "(2) #164", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[164]", "name": "Manticore (1) #164, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[161]", "name": "(2) #161", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[183]", "name": "Milmecoreo (1) #183", "offset": 0, "compose": true}, {"path": "battlePalettes[179]", "name": "(2) #179", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[179]", "name": "Milmecoreo (1) #179, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[183]", "name": "(2) #183", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[79]", "name": "Rukh (1) #79", "offset": 0, "compose": true}, {"path": "battlePalettes[72]", "name": "(2) #72", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[72]", "name": "Rukh (1) #72, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[79]", "name": "(2) #79", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[225]", "name": "Simurgh (1) #225", "offset": 0, "compose": true}, {"path": "battlePalettes[220]", "name": "(2) #220", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[220]", "name": "Simurgh (1) #220, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[225]", "name": "(2) #225", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[233]", "name": "Kenkos (1) #233", "offset": 0, "compose": true}, {"path": "battlePalettes[218]", "name": "(2) #218", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[218]", "name": "Kenkos (1) #218, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[233]", "name": "(2) #233", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -482,132 +622,185 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
-            "itemAttributes": [{"cells": "000000111", "offset": 0, "bytes": 2, "index": 120, "invert": true, "path": "monsterAttributeData"}, {"cells": "000111111", "offset": 0, "bytes": 2, "index": 122, "invert": true, "path": "monsterAttributeData"}, {"cells": "000010011", "offset": 0, "bytes": 2, "index": 124, "invert": true, "path": "monsterAttributeData"}, {"cells": "001001000", "offset": 0, "bytes": 2, "index": 126, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111100", "offset": 0, "bytes": 2, "index": 128, "invert": true, "path": "monsterAttributeData"}, {"cells": "000111111", "offset": 0, "bytes": 2, "index": 130, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000101", "offset": 0, "bytes": 2, "index": 132, "invert": false, "path": "monsterAttributeData"}, {"cells": "111110000", "offset": 0, "bytes": 2, "index": 134, "invert": false, "path": "monsterAttributeData"}, {"cells": "110100000", "offset": 0, "bytes": 2, "index": 136, "invert": false, "path": "monsterAttributeData"}, {"cells": "110110111", "offset": 0, "bytes": 2, "index": 138, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000111", "offset": 0, "bytes": 2, "index": 140, "invert": false, "path": "monsterAttributeData"}, {"cells": "111000000", "offset": 0, "bytes": 2, "index": 142, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111000", "offset": 0, "bytes": 2, "index": 144, "invert": false, "path": "monsterAttributeData"}, {"cells": "001011111", "offset": 0, "bytes": 2, "index": 146, "invert": true, "path": "monsterAttributeData"}, {"cells": "101111111", "offset": 0, "bytes": 2, "index": 148, "invert": true, "path": "monsterAttributeData"}, {"cells": "011110010", "offset": 0, "bytes": 2, "index": 150, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111000", "offset": 0, "bytes": 2, "index": 152, "invert": false, "path": "monsterAttributeData"}, {"cells": "101101000", "offset": 0, "bytes": 2, "index": 154, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011111", "offset": 0, "bytes": 2, "index": 156, "invert": false, "path": "monsterAttributeData"}, {"cells": "010000101", "offset": 0, "bytes": 2, "index": 158, "invert": true, "path": "monsterAttributeData"}, {"cells": "000101111", "offset": 0, "bytes": 2, "index": 160, "invert": false, "path": "monsterAttributeData"}, {"cells": "101101110", "offset": 0, "bytes": 2, "index": 162, "invert": true, "path": "monsterAttributeData"}, {"cells": "000110111", "offset": 0, "bytes": 2, "index": 164, "invert": true, "path": "monsterAttributeData"}, {"cells": "000110000", "offset": 0, "bytes": 2, "index": 166, "invert": true, "path": "monsterAttributeData"}],
+            "itemAttributes": [{"cells": "000000111", "offset": 0, "bytes": 2, "index": 120, "invert": true, "path": "monsterAttributeData"}, {"cells": "000111111", "offset": 0, "bytes": 2, "index": 122, "invert": true, "path": "monsterAttributeData"}, {"cells": "000010011", "offset": 0, "bytes": 2, "index": 124, "invert": true, "path": "monsterAttributeData"}, {"cells": "001001000", "offset": 0, "bytes": 2, "index": 126, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111100", "offset": 0, "bytes": 2, "index": 128, "invert": true, "path": "monsterAttributeData"}, {"cells": "000111111", "offset": 0, "bytes": 2, "index": 130, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000101", "offset": 0, "bytes": 2, "index": 132, "invert": false, "path": "monsterAttributeData"}, {"cells": "111110000", "offset": 0, "bytes": 2, "index": 134, "invert": false, "path": "monsterAttributeData"}, {"cells": "110100000", "offset": 0, "bytes": 2, "index": 136, "invert": false, "path": "monsterAttributeData"}, {"cells": "110110111", "offset": 0, "bytes": 2, "index": 138, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000111", "offset": 0, "bytes": 2, "index": 140, "invert": false, "path": "monsterAttributeData"}, {"cells": "111000000", "offset": 0, "bytes": 2, "index": 142, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111000", "offset": 0, "bytes": 2, "index": 144, "invert": false, "path": "monsterAttributeData"}, {"cells": "001011111", "offset": 0, "bytes": 2, "index": 146, "invert": true, "path": "monsterAttributeData"}, {"cells": "101111111", "offset": 0, "bytes": 2, "index": 148, "invert": false, "path": "monsterAttributeData"}, {"cells": "011110010", "offset": 0, "bytes": 2, "index": 150, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111000", "offset": 0, "bytes": 2, "index": 152, "invert": false, "path": "monsterAttributeData"}, {"cells": "101101000", "offset": 0, "bytes": 2, "index": 154, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011111", "offset": 0, "bytes": 2, "index": 156, "invert": false, "path": "monsterAttributeData"}, {"cells": "010000101", "offset": 0, "bytes": 2, "index": 158, "invert": true, "path": "monsterAttributeData"}, {"cells": "000101111", "offset": 0, "bytes": 2, "index": 160, "invert": false, "path": "monsterAttributeData"}, {"cells": "101101110", "offset": 0, "bytes": 2, "index": 162, "invert": true, "path": "monsterAttributeData"}, {"cells": "000110111", "offset": 0, "bytes": 2, "index": 164, "invert": true, "path": "monsterAttributeData"}, {"cells": "000110000", "offset": 0, "bytes": 2, "index": 166, "invert": true, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
                             [{"path": "battlePalettes[51]", "name": "Valar (1) #51", "offset": 0, "compose": true}, {"path": "battlePalettes[46]", "name": "(2) #46", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[46]", "name": "Valar (1) #46, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[51]", "name": "(2) #51", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[22]", "name": "Eater (1) #22", "offset": 0, "compose": true}, {"path": "battlePalettes[21]", "name": "(2) #21", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[21]", "name": "Eater (1) #21, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[22]", "name": "(2) #22", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[188]", "name": "Eater (1) #188", "offset": 0, "compose": true}, {"path": "battlePalettes[189]", "name": "(2) #189", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[189]", "name": "Eater (1) #189, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[188]", "name": "(2) #188", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[221]", "name": "Olog-Hai (1) #221", "offset": 0, "compose": true}, {"path": "battlePalettes[214]", "name": "(2) #214", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[214]", "name": "Olog-Hai (1) #214, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[221]", "name": "(2) #221", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[30]", "name": "Planktae (1) #30", "offset": 0, "compose": true}, {"path": "battlePalettes[105]", "name": "(2) #105", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[105]", "name": "Planktae (1) #105, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[30]", "name": "(2) #30", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[221]", "name": "Kelpie (1) #221", "offset": 0, "compose": true}, {"path": "battlePalettes[214]", "name": "(2) #214", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[214]", "name": "Kelpie (1) #214, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[221]", "name": "(2) #221", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[10]", "name": "SeaLion (1) #10", "offset": 0, "compose": true}, {"path": "battlePalettes[11]", "name": "(2) #11", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[11]", "name": "SeaLion (1) #11, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[10]", "name": "(2) #10", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[209]", "name": "Seahorse (1) #209", "offset": 0, "compose": true}, {"path": "battlePalettes[204]", "name": "(2) #204", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[204]", "name": "Seahorse (1) #204, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[209]", "name": "(2) #209", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[205]", "name": "Khargra (1) #205", "offset": 0, "compose": true}, {"path": "battlePalettes[203]", "name": "(2) #203", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[203]", "name": "Khargra (1) #203, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[205]", "name": "(2) #205", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[167]", "name": "SeaKing (1) #167", "offset": 0, "compose": true}, {"path": "battlePalettes[170]", "name": "(2) #170", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[170]", "name": "SeaKing (1) #170, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[219]", "name": "Liger (1) #219", "offset": 0, "compose": true}, {"path": "battlePalettes[221]", "name": "(2) #221", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[221]", "name": "Liger (1) #221, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[219]", "name": "(2) #219", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[163]", "name": "Liger S. (1) #163", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[167]", "name": "Liger S. (1) #167, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[163]", "name": "(2) #163", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[132]", "name": "TwinHead (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[134]", "name": "(2) #134", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[134]", "name": "TwinHead (1) #134, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[132]", "name": "(2) #132", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[48]", "name": "TwinLiger (1) #48", "offset": 0, "compose": true}, {"path": "battlePalettes[50]", "name": "(2) #50", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[50]", "name": "TwinLiger (1) #50, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[48]", "name": "(2) #48", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[7]", "name": "Agaria (1) #7", "offset": 0, "compose": true}, {"path": "battlePalettes[175]", "name": "(2) #175", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[175]", "name": "Agaria (1) #175, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[7]", "name": "(2) #7", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[125]", "name": "Aegil (1) #125", "offset": 0, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[65]", "name": "Wyvern (1) #65", "offset": 0, "compose": true}, {"path": "battlePalettes[66]", "name": "(2) #66", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[66]", "name": "Wyvern (1) #66, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[65]", "name": "(2) #65", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[95]", "name": "Peryton (1) #95", "offset": 0, "compose": true}, {"path": "battlePalettes[96]", "name": "(2) #96", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[96]", "name": "Peryton (1) #96, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[95]", "name": "(2) #95", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[185]", "name": "Paralyma (1) #185", "offset": 0, "compose": true}, {"path": "battlePalettes[115]", "name": "(2) #115", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[115]", "name": "Paralyma (1) #115, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[185]", "name": "(2) #185", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[26]", "name": "Nemesis (1) #26", "offset": 0, "compose": true}, {"path": "battlePalettes[176]", "name": "(2) #176", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[176]", "name": "Nemesis (1) #176, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[26]", "name": "(2) #26", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[226]", "name": "Nepto (1) #226", "offset": 0, "compose": true}, {"path": "battlePalettes[17]", "name": "(2) #17", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[17]", "name": "Nepto (1) #17, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[226]", "name": "(2) #226", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[234]", "name": "SeaSerpnt (1) #234", "offset": 0, "compose": true}, {"path": "battlePalettes[192]", "name": "(2) #192", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[192]", "name": "SeaSerpnt (1) #192, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[234]", "name": "(2) #234", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[98]", "name": "Lamia (1) #98", "offset": 0, "compose": true}, {"path": "battlePalettes[80]", "name": "(2) #80", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[80]", "name": "Lamia (1) #80, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[98]", "name": "(2) #98", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[76]", "name": "Q.Lamia (1) #76", "offset": 0, "compose": true}, {"path": "battlePalettes[97]", "name": "(2) #97", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[97]", "name": "Q.Lamia (1) #97, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[76]", "name": "(2) #76", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[1]", "name": "BullMan (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[9]", "name": "(2) #9", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[9]", "name": "BullMan (1) #9, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[219]", "name": "Minotaur (1) #219", "offset": 0, "compose": true}, {"path": "battlePalettes[221]", "name": "(2) #221", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[221]", "name": "Minotaur (1) #221, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[219]", "name": "(2) #219", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[186]", "name": "Adamantai (1) #186", "offset": 0, "compose": true}, {"path": "battlePalettes[127]", "name": "(2) #127", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[127]", "name": "Adamantai (1) #127, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[186]", "name": "(2) #186", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[205]", "name": "Vassago (1) #205", "offset": 0, "compose": true}, {"path": "battlePalettes[201]", "name": "(2) #201", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[201]", "name": "Vassago (1) #201, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[205]", "name": "(2) #205", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[0]", "name": "Abai (1) #0", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[1]", "name": "Abai (1) #1, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[0]", "name": "(2) #0", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[198]", "name": "DeathClaw (1) #198", "offset": 0, "compose": true}, {"path": "battlePalettes[199]", "name": "(2) #199", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[199]", "name": "DeathClaw (1) #199, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[198]", "name": "(2) #198", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[10]", "name": "IronClaw (1) #10", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[1]", "name": "IronClaw (1) #1, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[10]", "name": "(2) #10", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[28]", "name": "Unne Cln. (1) #28", "offset": 0, "compose": true}, {"path": "battlePalettes[31]", "name": "(2) #31", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[31]", "name": "Unne Cln. (1) #31, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[28]", "name": "(2) #28", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[68]", "name": "Unne (1) #68", "offset": 0, "compose": true}, {"path": "battlePalettes[64]", "name": "(2) #64", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[64]", "name": "Unne (1) #64, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[68]", "name": "(2) #68", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[205]", "name": "Charybdis (1) #205", "offset": 0, "compose": true}, {"path": "battlePalettes[203]", "name": "(2) #203", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[203]", "name": "Charybdis (1) #203, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[205]", "name": "(2) #205", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[36]", "name": "Remora (1) #36", "offset": 0, "compose": true}, {"path": "battlePalettes[25]", "name": "(2) #25", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[25]", "name": "Remora (1) #25, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[36]", "name": "(2) #36", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[17]", "name": "Daemon (1) #17", "offset": 0, "compose": true}, {"path": "battlePalettes[15]", "name": "(2) #15", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[15]", "name": "Daemon (1) #15, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[17]", "name": "(2) #17", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[176]", "name": "Daemon (1) #176", "offset": 0, "compose": true}, {"path": "battlePalettes[177]", "name": "(2) #177", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[177]", "name": "Daemon (1) #177, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[176]", "name": "(2) #176", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[28]", "name": "Gt.Daemon (1) #28", "offset": 0, "compose": true}, {"path": "battlePalettes[31]", "name": "(2) #31", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[31]", "name": "Gt.Daemon (1) #31, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[28]", "name": "(2) #28", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[3]", "name": "BossTroll (1) #3", "offset": 0, "compose": true}, {"path": "battlePalettes[2]", "name": "(2) #2", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[2]", "name": "BossTroll (1) #2, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[3]", "name": "(2) #3", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[233]", "name": "Fahan (1) #233", "offset": 0, "compose": true}, {"path": "battlePalettes[218]", "name": "(2) #218", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[218]", "name": "Fahan (1) #218, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[233]", "name": "(2) #233", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[186]", "name": "Fahan (1) #186", "offset": 0, "compose": true}, {"path": "battlePalettes[187]", "name": "(2) #187", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[187]", "name": "Fahan (1) #187, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[186]", "name": "(2) #186", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[132]", "name": "Ogre (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[243]", "name": "(2) #243", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[243]", "name": "Ogre (1) #243, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[132]", "name": "(2) #132", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[221]", "name": "Pterosaur (1) #221", "offset": 0, "compose": true}, {"path": "battlePalettes[219]", "name": "(2) #219", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[219]", "name": "Pterosaur (1) #219, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[221]", "name": "(2) #221", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[4]", "name": "Pteragon (1) #4", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[1]", "name": "Pteragon (1) #1, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[4]", "name": "(2) #4", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[231]", "name": "Kyklops (1) #231", "offset": 0, "compose": true}, {"path": "battlePalettes[232]", "name": "(2) #232", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[232]", "name": "Kyklops (1) #232, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[231]", "name": "(2) #231", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[154]", "name": "Cyclops (1) #154", "offset": 0, "compose": true}, {"path": "battlePalettes[148]", "name": "(2) #148", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[148]", "name": "Cyclops (1) #148, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[154]", "name": "(2) #154", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[205]", "name": "Cronos (1) #205", "offset": 0, "compose": true}, {"path": "battlePalettes[201]", "name": "(2) #201", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[201]", "name": "Cronos (1) #201, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[205]", "name": "(2) #205", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[131]", "name": "Sirenos (1) #131", "offset": 0, "compose": true}, {"path": "battlePalettes[133]", "name": "(2) #133", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[133]", "name": "Sirenos (1) #133, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[131]", "name": "(2) #131", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[0]", "name": "Sleipnir (1) #0", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[1]", "name": "Sleipnir (1) #1, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[0]", "name": "(2) #0", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[205]", "name": "HellHorse (1) #205", "offset": 0, "compose": true}, {"path": "battlePalettes[201]", "name": "(2) #201", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[201]", "name": "HellHorse (1) #201, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[205]", "name": "(2) #205", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[190]", "name": "HellHorse (1) #190", "offset": 0, "compose": true}, {"path": "battlePalettes[191]", "name": "(2) #191", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[191]", "name": "HellHorse (1) #191, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[190]", "name": "(2) #190", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[198]", "name": "Sleipnir (1) #198", "offset": 0, "compose": true}, {"path": "battlePalettes[199]", "name": "(2) #199", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[199]", "name": "Sleipnir (1) #199, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[198]", "name": "(2) #198", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[166]", "name": "Garm (1) #166", "offset": 0, "compose": true}, {"path": "battlePalettes[165]", "name": "(2) #165", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[165]", "name": "Garm (1) #165, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[166]", "name": "(2) #166", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[22]", "name": "Garm (1) #22", "offset": 0, "compose": true}, {"path": "battlePalettes[21]", "name": "(2) #21", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[21]", "name": "Garm (1) #21, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[22]", "name": "(2) #22", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -638,28 +831,42 @@
             "itemPalettes": [
                 [
                             [{"path": "battlePalettes[212]", "name": "Hekaton (1) #212", "offset": 0, "compose": true}, {"path": "battlePalettes[177]", "name": "(2) #177", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[177]", "name": "Hekaton (1) #177, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[212]", "name": "(2) #212", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[140]", "name": "Acheron (1) #140", "offset": 0, "compose": true}, {"path": "battlePalettes[210]", "name": "(2) #210", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[210]", "name": "Acheron (1) #210, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[140]", "name": "(2) #140", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[202]", "name": "Acheron (1) #202", "offset": 0, "compose": true}, {"path": "battlePalettes[203]", "name": "(2) #203", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[203]", "name": "Acheron (1) #203, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[202]", "name": "(2) #202", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[212]", "name": "Hekaton (1) #212", "offset": 0, "compose": true}, {"path": "battlePalettes[213]", "name": "(2) #213", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[213]", "name": "Hekaton (1) #213, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[212]", "name": "(2) #212", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[81]", "name": "Titan (1) #81", "offset": 0, "compose": true}, {"path": "battlePalettes[33]", "name": "(2) #33", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[33]", "name": "Titan (1) #33, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[81]", "name": "(2) #81", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[81]", "name": "Titan (1) #81", "offset": 0, "compose": true}, {"path": "battlePalettes[82]", "name": "(2) #82", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[82]", "name": "Titan (1) #82, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[81]", "name": "(2) #81", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[100]", "name": "Amon (1) #100", "offset": 0, "compose": true}, {"path": "battlePalettes[80]", "name": "(2) #80", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[80]", "name": "Amon (1) #80, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[100]", "name": "(2) #100", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[206]", "name": "Amon (1) #206", "offset": 0, "compose": true}, {"path": "battlePalettes[207]", "name": "(2) #207", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[207]", "name": "Amon (1) #207, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[206]", "name": "(2) #206", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[58]", "name": "Hyne (1) #58", "offset": 0, "compose": true}, {"path": "battlePalettes[114]", "name": "(2) #114", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[114]", "name": "Hyne (1) #114, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[58]", "name": "(2) #58", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[73]", "name": "Hydra (1) #73", "offset": 0, "compose": true}, {"path": "battlePalettes[60]", "name": "(2) #60", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[60]", "name": "Hydra (1) #60, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[73]", "name": "(2) #73", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[214]", "name": "Hydra (1) #214", "offset": 0, "compose": true}, {"path": "battlePalettes[215]", "name": "(2) #215", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[215]", "name": "Hydra (1) #215, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[214]", "name": "(2) #214", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[185]", "name": "Echidna (1) #185", "offset": 0, "compose": true}, {"path": "battlePalettes[242]", "name": "(2) #242", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[242]", "name": "Echidna (1) #242, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[185]", "name": "(2) #185", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[121]", "name": "Grashara (1) #121", "offset": 0, "compose": true}, {"path": "battlePalettes[120]", "name": "(2) #120", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[120]", "name": "Grashara (1) #120, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[121]", "name": "(2) #121", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[157]", "name": "Guardian (1) #157", "offset": 0, "compose": true}, {"path": "battlePalettes[144]", "name": "(2) #144", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[144]", "name": "Guardian (1) #144, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[157]", "name": "(2) #157", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -686,27 +893,36 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
-            "itemAttributes": [{"cells": "100000000111010111", "offset": 0, "bytes": 3, "index": 180, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000001001111101", "offset": 0, "bytes": 3, "index": 183, "invert": true, "path": "monsterAttributeData"}, {"cells": "000000001101011110", "offset": 0, "bytes": 3, "index": 186, "invert": true, "path": "monsterAttributeData"}, {"cells": "111110100010000000", "offset": 0, "bytes": 3, "index": 189, "invert": true, "path": "monsterAttributeData"}],
+            "itemAttributes": [{"cells": "100000000111010111", "offset": 0, "bytes": 3, "index": 180, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000001001111101", "offset": 0, "bytes": 3, "index": 183, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000001101011110", "offset": 0, "bytes": 3, "index": 186, "invert": true, "path": "monsterAttributeData"}, {"cells": "111110100010000000", "offset": 0, "bytes": 3, "index": 189, "invert": true, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
                             [{"path": "battlePalettes[35]", "name": "Behemoth (1) #35", "offset": 0, "compose": true}, {"path": "battlePalettes[38]", "name": "(2) #38", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[38]", "name": "Behemoth (1) #38, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[35]", "name": "(2) #35", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[19]", "name": "KBehemoth (1) #19", "offset": 0, "compose": true}, {"path": "battlePalettes[20]", "name": "(2) #20", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[20]", "name": "KBehemoth (1) #20, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[19]", "name": "(2) #19", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[215]", "name": "Double D. (1) #215", "offset": 0, "compose": true}, {"path": "battlePalettes[211]", "name": "(2) #211", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[211]", "name": "Double D. (1) #211, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[215]", "name": "(2) #215", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[147]", "name": "2-Head D. (1) #147", "offset": 0, "compose": true}, {"path": "battlePalettes[153]", "name": "(2) #153", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[153]", "name": "2-Head D. (1) #153, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[147]", "name": "(2) #147", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[182]", "name": "Oceanos (1) #182", "offset": 0, "compose": true}, {"path": "battlePalettes[186]", "name": "(2) #186", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[186]", "name": "Oceanos (1) #186, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[182]", "name": "(2) #182", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[204]", "name": "Oceanos (1) #204", "offset": 0, "compose": true}, {"path": "battlePalettes[205]", "name": "(2) #205", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[205]", "name": "Oceanos (1) #205, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[204]", "name": "(2) #204", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[106]", "name": "Jormungnd (1) #106", "offset": 0, "compose": true}, {"path": "battlePalettes[112]", "name": "(2) #112", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[112]", "name": "Jormungnd (1) #112, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[106]", "name": "(2) #106", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
                             [{"path": "battlePalettes[174]", "name": "D.Zombie (1) #174", "offset": 0, "compose": true}, {"path": "battlePalettes[101]", "name": "(2) #101", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[101]", "name": "D.Zombie (1) #101, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[174]", "name": "(2) #174", "offset": 4, "compose": true}],
                             [{"path": "battlePalettes[8]", "name": "Bone D. (1) #8", "offset": 0, "compose": true}, {"path": "battlePalettes[210]", "name": "(2) #210", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[210]", "name": "Bone D. (1) #210, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[8]", "name": "(2) #8", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -1070,12 +1286,15 @@
             "graphics": {
                 "path": "monsterGraphicsSpare4",
                 "whole": true,
+                "followLayout": true,
                 "range": "0-9216"
             },
             "attributeRef": {"cells": "111111111111111111111101111111101111111010011111011111", "offset": 0, "bytes": 7, "index": 0, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[185]", "name": "Gomoree (1) #185", "offset": 0, "compose": true}, {"path": "battlePalettes[181]", "name": "(2) #181", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[181]", "name": "Gomoree (1) #181, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[185]", "name": "(2) #185", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[29]", "name": "Medusa (1) #29", "offset": 0, "compose": true}, {"path": "battlePalettes[28]", "name": "(2) #28", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[28]", "name": "Medusa (1) #28, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[29]", "name": "(2) #29", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1090,13 +1309,17 @@
             "graphics": {
                 "path": "monsterGraphicsSpare3",
                 "whole": true,
+                "followLayout": true,
                 "range": "4736-13952"
             },
             "attributeRef": {"cells": "000000000000000100000001110000001110000000000000000000", "offset": 0, "bytes": 7, "index": 1, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[126]", "name": "Vulcan (1) #126", "offset": 0, "compose": true}, {"path": "battlePalettes[123]", "name": "(2) #123", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[123]", "name": "Vulcan (1) #123, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[126]", "name": "(2) #126", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[184]", "name": "Pyralis (1) #184", "offset": 0, "compose": true}, {"path": "battlePalettes[54]", "name": "(2) #54", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[54]", "name": "Pyralis (1) #54, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[184]", "name": "(2) #184", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[64]", "name": "Salamandr (1) #64", "offset": 0, "compose": true}, {"path": "battlePalettes[86]", "name": "(2) #86", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[86]", "name": "Salamandr (1) #86, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[64]", "name": "(2) #64", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1111,11 +1334,13 @@
             "graphics": {
                 "path": "monsterGraphicsSpare3",
                 "whole": true,
+                "followLayout": true,
                 "range": "0-9216"
             },
             "attributeRef": {"cells": "000000000000000000000000000000010000000011000000011000", "offset": 0, "bytes": 7, "index": 2, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[229]", "name": "Garuda (1) #229", "offset": 0, "compose": true}, {"path": "battlePalettes[230]", "name": "(2) #230", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[230]", "name": "Garuda (1) #230, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[229]", "name": "(2) #229", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1130,13 +1355,17 @@
             "graphics": {
                 "path": "monsterGraphicsSpare4",
                 "whole": true,
+                "followLayout": true,
                 "range": "4096-13312"
             },
             "attributeRef": {"cells": "111111111111111111111111111111100111111101111111100111", "offset": 0, "bytes": 7, "index": 3, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[241]", "name": "Q.Scylla (1) #241", "offset": 0, "compose": true}, {"path": "battlePalettes[209]", "name": "(2) #209", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[209]", "name": "Q.Scylla (1) #209, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[241]", "name": "(2) #241", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[216]", "name": "Q.Scylla (1) #216", "offset": 0, "compose": true}, {"path": "battlePalettes[217]", "name": "(2) #217", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[217]", "name": "Q.Scylla (1) #217, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[216]", "name": "(2) #216", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[108]", "name": "Scylla (1) #108", "offset": 0, "compose": true}, {"path": "battlePalettes[158]", "name": "(2) #158", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[158]", "name": "Scylla (1) #158, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[108]", "name": "(2) #108", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1151,11 +1380,13 @@
             "graphics": {
                 "path": "monsterGraphicsSpare4",
                 "whole": true,
+                "followLayout": true,
                 "range": "8704-17920"
             },
             "attributeRef": {"cells": "111111111110000011110010011110010011111010111111111111", "offset": 0, "bytes": 7, "index": 4, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[242]", "name": "Ahriman (1) #242", "offset": 0, "compose": true}, {"path": "battlePalettes[82]", "name": "(2) #82", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[82]", "name": "Ahriman (1) #82, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[242]", "name": "(2) #242", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1170,11 +1401,13 @@
             "graphics": {
                 "path": "monsterGraphicsSpare2",
                 "whole": true,
+                "followLayout": true,
                 "range": "0-9216"
             },
             "attributeRef": {"cells": "110000111110000011110011111110010111110010111111011111", "offset": 0, "bytes": 7, "index": 5, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[52]", "name": "Dragon (1) #52", "offset": 0, "compose": true}, {"path": "battlePalettes[51]", "name": "(2) #51", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[51]", "name": "Dragon (1) #51, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[52]", "name": "(2) #52", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1189,13 +1422,17 @@
             "graphics": {
                 "path": "monsterGraphicsSpare2",
                 "whole": true,
+                "followLayout": true,
                 "range": "5056-14272"
             },
-            "attributeRef": {"cells": "111111111111111111110011111111100111111100111111111111", "offset": 0, "bytes": 7, "index": 6, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111111111111110011111111100111111100111111111111", "offset": 0, "bytes": 7, "index": 6, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[109]", "name": "Red D. (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[106]", "name": "(2) #106", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[106]", "name": "Red D. (1) #106, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[182]", "name": "Green D. (1) #182", "offset": 0, "compose": true}, {"path": "battlePalettes[181]", "name": "(2) #181", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[181]", "name": "Green D. (1) #181, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[182]", "name": "(2) #182", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[167]", "name": "Yellow D. (1) #167", "offset": 0, "compose": true}, {"path": "battlePalettes[166]", "name": "(2) #166", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[166]", "name": "Yellow D. (1) #166, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1210,13 +1447,17 @@
             "graphics": {
                 "path": "monsterGraphicsSpare4",
                 "whole": true,
+                "followLayout": true,
                 "range": "12288-21504"
             },
             "attributeRef": {"cells": "110111111111111111100000001100000011100000011110000111", "offset": 0, "bytes": 7, "index": 7, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[101]", "name": "ZandeCln. (1) #101", "offset": 0, "compose": true}, {"path": "battlePalettes[207]", "name": "(2) #207", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[207]", "name": "ZandeCln. (1) #207, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[101]", "name": "(2) #101", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[245]", "name": "Zande (1) #245", "offset": 0, "compose": true}, {"path": "battlePalettes[246]", "name": "(2) #246", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[246]", "name": "Zande (1) #246, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[245]", "name": "(2) #245", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[160]", "name": "Zande (1) #160", "offset": 0, "compose": true}, {"path": "battlePalettes[161]", "name": "(2) #161", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[161]", "name": "Zande (1) #161, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[160]", "name": "(2) #160", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1231,13 +1472,17 @@
             "graphics": {
                 "path": "monsterGraphicsSpare4",
                 "whole": true,
+                "followLayout": true,
                 "range": "19392-28608"
             },
             "attributeRef": {"cells": "111110001111000001111000000111000000111000000111000000", "offset": 0, "bytes": 7, "index": 8, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[202]", "name": "DarkCloud (1) #202", "offset": 0, "compose": true}, {"path": "battlePalettes[27]", "name": "(2) #27", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[27]", "name": "DarkCloud (1) #27, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[202]", "name": "(2) #202", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[78]", "name": "DarkCloud (1) #78", "offset": 0, "compose": true}, {"path": "battlePalettes[250]", "name": "(2) #250", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[250]", "name": "DarkCloud (1) #250, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[78]", "name": "(2) #78", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[222]", "name": "DarkCloud (1) #222", "offset": 0, "compose": true}, {"path": "battlePalettes[223]", "name": "(2) #223", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[223]", "name": "DarkCloud (1) #223, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[222]", "name": "(2) #222", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1252,13 +1497,17 @@
             "graphics": {
                 "path": "monsterGraphicsSpare1",
                 "whole": true,
+                "followLayout": true,
                 "range": "0-9216"
             },
             "attributeRef": {"cells": "111111111111101111111101111111001111111000111111111111", "offset": 0, "bytes": 7, "index": 9, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[149]", "name": "Harpy (1) #149", "offset": 0, "compose": true}, {"path": "battlePalettes[145]", "name": "(2) #145", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[145]", "name": "Harpy (1) #145, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[149]", "name": "(2) #149", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[152]", "name": "Dirai (1) #152", "offset": 0, "compose": true}, {"path": "battlePalettes[240]", "name": "(2) #240", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[240]", "name": "Dirai (1) #240, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[152]", "name": "(2) #152", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[182]", "name": "Dirai (1) #182", "offset": 0, "compose": true}, {"path": "battlePalettes[183]", "name": "(2) #183", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[183]", "name": "Dirai (1) #183, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[182]", "name": "(2) #182", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1273,12 +1522,15 @@
             "graphics": {
                 "path": "monsterGraphicsSpare1",
                 "whole": true,
+                "followLayout": true,
                 "range": "2752-11968"
             },
             "attributeRef": {"cells": "100000111100001111111101111111101111111111111111111111", "offset": 0, "bytes": 7, "index": 10, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[116]", "name": "Dullahan (1) #116", "offset": 0, "compose": true}, {"path": "battlePalettes[188]", "name": "(2) #188", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[188]", "name": "Dullahan (1) #188, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[116]", "name": "(2) #116", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[90]", "name": "Thanatos (1) #90", "offset": 0, "compose": true}, {"path": "battlePalettes[212]", "name": "(2) #212", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[212]", "name": "Thanatos (1) #212, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[90]", "name": "(2) #90", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1293,12 +1545,15 @@
             "graphics": {
                 "path": "monsterGraphicsSpare1",
                 "whole": true,
+                "followLayout": true,
                 "range": "8320-17536"
             },
             "attributeRef": {"cells": "111111111110111111111000011111000111111110011111111111", "offset": 0, "bytes": 7, "index": 11, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[73]", "name": "Platinal (1) #73", "offset": 0, "compose": true}, {"path": "battlePalettes[69]", "name": "(2) #69", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[69]", "name": "Platinal (1) #69, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[73]", "name": "(2) #73", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[171]", "name": "Goldor (1) #171", "offset": 0, "compose": true}, {"path": "battlePalettes[162]", "name": "(2) #162", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[162]", "name": "Goldor (1) #162, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[171]", "name": "(2) #171", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1313,6 +1568,7 @@
             "graphics": {
                 "path": "monsterGraphics4x4",
                 "whole": true,
+                "followLayout": true,
                 "range": "4096-13312"
             },
             "attributeRef": {"cells": "111111111111111111111111111111001111111111111111111111", "offset": 0, "bytes": 7, "index": 12, "invert": true, "path": "bossAttributeData"},
@@ -1332,11 +1588,13 @@
             "graphics": {
                 "path": "monsterGraphics4x6",
                 "whole": true,
+                "followLayout": true,
                 "range": "21504-30720"
             },
             "attributeRef": {"cells": "111111111111000111111000111111111111111111111111111111", "offset": 0, "bytes": 7, "index": 13, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[109]", "name": "Jinn (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[106]", "name": "(2) #106", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[106]", "name": "Jinn (1) #106, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1351,11 +1609,13 @@
             "graphics": {
                 "path": "monsterGraphics4x6",
                 "whole": true,
+                "followLayout": true,
                 "range": "26112-35328"
             },
             "attributeRef": {"cells": "111111111111111111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 14, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[53]", "name": "Ninja (1) #53", "offset": 0, "compose": true}, {"path": "battlePalettes[48]", "name": "(2) #48", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[48]", "name": "Ninja (1) #48, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[53]", "name": "(2) #53", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1370,11 +1630,13 @@
             "graphics": {
                 "path": "monsterGraphics4x6",
                 "whole": true,
+                "followLayout": true,
                 "range": "27648-36864"
             },
             "attributeRef": {"cells": "111111111111111111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 15, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[227]", "name": "Kunoichi (1) #227", "offset": 0, "compose": true}, {"path": "battlePalettes[228]", "name": "(2) #228", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[228]", "name": "Kunoichi (1) #228, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[227]", "name": "(2) #227", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1389,11 +1651,13 @@
             "graphics": {
                 "path": "monsterGraphics6x6",
                 "whole": true,
+                "followLayout": true,
                 "range": "0-9216"
             },
             "attributeRef": {"cells": "111111111111110111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 16, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[1]", "name": "Guzco (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[5]", "name": "(2) #5", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[5]", "name": "Guzco (1) #5, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1408,11 +1672,13 @@
             "graphics": {
                 "path": "monsterGraphics6x6",
                 "whole": true,
+                "followLayout": true,
                 "range": "2304-11520"
             },
             "attributeRef": {"cells": "111111111111000111111011111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 17, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[60]", "name": "General (1) #60", "offset": 0, "compose": true}, {"path": "battlePalettes[27]", "name": "(2) #27", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[27]", "name": "General (1) #27, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[60]", "name": "(2) #60", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1427,11 +1693,13 @@
             "graphics": {
                 "path": "monsterGraphicsSpare2",
                 "whole": true,
+                "followLayout": true,
                 "range": "0-9216"
             },
             "attributeRef": {"cells": "110000111110000011110011111110010111110010111111011111", "offset": 0, "bytes": 7, "index": 18, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[9]", "name": "Bahamut (1) #9", "offset": 0, "compose": true}, {"path": "battlePalettes[4]", "name": "(2) #4", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[4]", "name": "Bahamut (1) #4, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[9]", "name": "(2) #9", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1446,11 +1714,13 @@
             "graphics": {
                 "path": "monsterGraphics6x6",
                 "whole": true,
+                "followLayout": true,
                 "range": "52992-62208"
             },
             "attributeRef": {"cells": "111111111111111111111100111111101111111111111111111111", "offset": 0, "bytes": 7, "index": 19, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[235]", "name": "Kraken (1) #235", "offset": 0, "compose": true}, {"path": "battlePalettes[72]", "name": "(2) #72", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[72]", "name": "Kraken (1) #72, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[235]", "name": "(2) #235", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1465,11 +1735,13 @@
             "graphics": {
                 "path": "monsterGraphics6x6b",
                 "whole": true,
+                "followLayout": true,
                 "range": "27648-36864"
             },
             "attributeRef": {"cells": "111111111111111111111111111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 20, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[34]", "name": "LandTurtl (1) #34", "offset": 0, "compose": true}, {"path": "battlePalettes[71]", "name": "(2) #71", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[71]", "name": "LandTurtl (1) #71, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[34]", "name": "(2) #34", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1484,12 +1756,15 @@
             "graphics": {
                 "path": "monsterGraphics6x6b",
                 "whole": true,
+                "followLayout": true,
                 "range": "52992-62208"
             },
             "attributeRef": {"cells": "111111111111000111111110111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 21, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[46]", "name": "Cerberus (1) #46", "offset": 0, "compose": true}, {"path": "battlePalettes[53]", "name": "(2) #53", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[53]", "name": "Cerberus (1) #53, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[46]", "name": "(2) #46", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[162]", "name": "Cerberus (1) #162", "offset": 0, "compose": true}, {"path": "battlePalettes[163]", "name": "(2) #163", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[163]", "name": "Cerberus (1) #163, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[162]", "name": "(2) #162", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1505,11 +1780,13 @@
             "graphics": {
                 "path": "summonGraphics",
                 "whole": true,
+                "followLayout": true,
                 "range": "6464-15680"
             },
             "attributeRef": {"cells": "000000000000000000000000000000011000001111000001111000", "offset": 0, "bytes": 7, "index": 22, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[248]", "name": "Odin (1) #248", "offset": 0, "compose": true}, {"path": "battlePalettes[249]", "name": "(2) #249", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[249]", "name": "Odin (1) #249, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[248]", "name": "(2) #248", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1525,12 +1802,15 @@
             "graphics": {
                 "path": "summonGraphics",
                 "whole": true,
+                "followLayout": true,
                 "range": "9984-19200"
             },
             "attributeRef": {"cells": "000000000000000000000001000000000000000000000000000000", "offset": 0, "bytes": 7, "index": 23, "invert": true, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[208]", "name": "Leviathan (1) #208", "offset": 0, "compose": true}, {"path": "battlePalettes[247]", "name": "(2) #247", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[247]", "name": "Leviathan (1) #247, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[208]", "name": "(2) #208", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[248]", "name": "Leviathan (1) #248", "offset": 0, "compose": true}, {"path": "battlePalettes[249]", "name": "(2) #249", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[249]", "name": "Leviathan (1) #249, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[248]", "name": "(2) #248", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },

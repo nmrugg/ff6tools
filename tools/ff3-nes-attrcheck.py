@@ -10,8 +10,9 @@ The model comes from the disassembly:
     $8FA8/$8FB4        over the *formation slot* (a 4x4 monster stands in a 4x6
                        slot, so the first cell row is the empty row above it)
   * $2E:$8FC0          the same for a boss tilemap: 7 bytes = 9x6 cells
-  * $2E:$8F00          one bit per monster id: invert the cell bits
-                       (set for every id $80-$FF, so bosses swap the palettes)
+  * $2E:$8F00          invert the cell bits, selected by a shift loop
+                       (2F/A133-2F/A141): bit (6 - (id & 7)) of byte (id >> 3),
+                       and always 0 when (id & 7) == 7
 
 This script renders a monster from the ROM with that model and compares the
 result with a rip from videogamesprites.net (the rips are 2x scaled).  Matching
@@ -121,7 +122,8 @@ def cell_bit(rom, mid, variant='model'):
         attr_id = (idx + ATTR_IDOFF[cls]) if cls != 6 else idx
     base = names_mod.mmc3_to_file(addr) - names_mod.mmc3_to_file(0x2E8F00)
     rec = rom['attr'][base + attr_id * nbytes: base + attr_id * nbytes + nbytes]
-    inv = (rom['invert'][mid >> 3] >> (7 - (mid & 7))) & 1
+    k = (mid & 7) + 1
+    inv = ((rom['invert'][mid >> 3] << k) >> 7) & 1
     if variant == 'noinvert':
         inv = 0
     def bit(k):

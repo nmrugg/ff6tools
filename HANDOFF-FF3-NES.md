@@ -70,12 +70,15 @@ Three more things were wrong:
    and the sprite's cells are bits 2-5. This is exactly the "you can see the
    half line" the user reported on Firefry and Liliput: their records are
    `$3C`, which is *all one palette* once aligned.
-2. **`$2E:$8F00` is one bit per monster id meaning "invert this monster's
-   cells"** (`2F/A89C AND #$80` → `2F/A8BF EOR #$FF`). Bytes `$8F10-$8F1F` are
-   `$FF`: **every id `$80-$FF` shows the two palettes swapped.** That is why
-   Hornet's orange was missing from its antenna/feet and why boss/monster
-   pairs sharing a graphic (Kyklops/Cyclops, Behemoth/KBehemoth,
-   Needler/DeathNeedle, BossTroll/Ogre) look different in game.
+2. **`$2E:$8F00` holds the "invert this monster's cells" flag** (`2F/A89C AND
+   #$80` → `2F/A8BF EOR #$FF`), but the bit is *not* a plain bit index:
+   `2F/A133-2F/A141` reloads the byte and `ASL`s it `(id & 7) + 1` times inside
+   the loop, and `2F/A141` then tests bit 7 of what is left in `A`. So the flag
+   is **bit (6 - (id & 7)) of byte (id >> 3), and always 0 when `id & 7 == 7`**.
+   In this ROM that is 112 of the 128 boss ids - *not* `$87, $8F, $97, $9F,
+   $A7, ... $FF` - and none of `$00-$7F`. (The disassembler's comment on that
+   loop reads "this does nothing ...". It does.) Getting this right fixed
+   Cyclops `$97` and Ouroboros `$9F`, which the reference rips said were wrong.
 3. **Bosses do have cell maps** - 7 bytes per tilemap index at `$2E:$8FC0`
    (`2F/A820`, taken when the formation type is 9), 9x6 = 54 cells for the
    18x12 tilemap. The earlier note that the class-6 attribute path was
@@ -159,27 +162,88 @@ The convenient way to change which palette a part of a sprite uses:
   a boss writes a 0), plus `attributeCellForTile()` for the cell index.
 - `attributeRef` covers both table shapes: one byte per item (monsters) or one
   whole 7-byte record per item (bosses); the first item's `data.length` decides.
+- **There is deliberately no "Swap palette cells" toggle.** The inversion is a
+  ROM fact and is always applied; the equivalent choice (which of the two
+  palettes counts as "first") is offered as an extra entry in the *palette*
+  dropdown, which users already understand.
+- **Clicking a palette row must not recolour the sprite.** `updateTilemap` used
+  to add `paletteView.p * colorsPerPalette` as a base offset for every tile, so
+  selecting row 2 shifted the whole image - wrong once per-cell bits drive the
+  palette. The base is 0 whenever the object has cell bits; the row only says
+  what painting will write.
+
+### B2b. The boss pool panel follows the layout
+
+A boss's tiles come from a shared pool, and shown as a raw sheet the pool panel
+reads as noise (the summon blocks do too - their tilemaps reference tiles out of
+raster order). With `"followLayout": true` on the graphics definition,
+`ROMTilemapView` hands the graphics view a `poolLayout` (display cell → pool
+tile), so the panel reads as the creature and Pencil/Fill in it paint the part
+you are looking at. `ROMGraphicsView.tileOffset()` resolves the byte offset
+through that layout, which is what keeps painting correct.
+
+Two traps:
+- `#edit-controls` is **one shared bar** - whoever calls `resetControls()` last
+  owns it. The toolbox graphics view never gets its own `resetControls()`, so
+  `ROMTilemapView.resetControls()` calls `this.graphicsView.resetControls()`
+  first; doing it from `loadTilemap()` instead wipes the layout's own controls.
+- The toolbox needs the Tool menu explicitly: `paintablePool()` (a definition
+  with `graphics.whole`) is what makes Pencil / Fill / Colour picker appear for
+  a boss or summon pool. Map tilesets stay read-only on purpose.
 
 ### B3. Multiple forms, multiple palettes
 
-A monster's colours come from its **battle group**, so one graphic can appear in
+A monster's colours come from its **battle group** (`2E/9DA2`: palette1 -> BG
+palette 0, `2E/9DAD`: palette2 -> BG palette 1), so one graphic can appear in
 several colourings - Dark Cloud's forms use `#202+#27`, `#78+#250` and
-`#222+#223`, and a monster and its boss differ by the invert bit. The generator
-now emits **every pair its battles use** (up to 8, most common first) as
-separate composed entries in the palette dropdown -
+`#222+#223`. The generator emits **every pair its battles use** (up to 8, most
+common first) as separate composed entries in the palette dropdown -
 `[[pal1,pal2], [pal1,pal2], …, battlePalettes]` - labelled e.g.
-`くらやみのくも (1) #202 + (2) #27`, so the forms are switchable. 88 of the 96
-graphics offer more than one pair. The cell split itself does not change between
-forms: it is keyed by tilemap index, not by monster.
+`くらやみのくも (1) #202 + (2) #27`. It also emits the **reversed** pair of each
+(`#243, swapped + (2) #248`), because exchanging the two palettes is exactly
+equivalent to flipping every cell bit, and that is the one degree of freedom the
+reference rips disagree about (§C2). The cell split itself does not change
+between forms: it is keyed by tilemap index, not by monster.
 
 ### C. Transparency
 
-Unchanged: `"Colour 0 transparent"` is a **display toggle**
-(`this.transparentBack`, off by default). Index 0 is both the backdrop and the
-outline colour in FF3, so the black box is genuinely in the ROM - do not "fix"
-this by flipping `backColor` in the definitions; that already swung twice
-(see HANDOFF.md §5). If a better answer exists, it needs the sprite silhouette,
-not the palette.
+Removed as a control. Index 0 is both the backdrop colour and the outline colour
+in FF3, so the black box is genuinely in the ROM and a "Colour 0 transparent"
+toggle only ever deleted outlines. Do not reintroduce it, and do not try to fix
+it by flipping `backColor` in the definitions - that already swung twice (see
+HANDOFF.md §5). A real solution would need the sprite silhouette.
+
+### C2. Palette verification - `tools/ff3-nes-palcheck.py`
+
+The "are the palettes actually right?" check, and how it works, because it is
+the only way to answer it at scale:
+
+1. **Calibrate the rip site's NES palette.** videogamesprites.net renders NES
+   colours with its own emulation, so comparing RGB against a hand-picked table
+   fails (our magenta is `(140,24,184)`, theirs is `(219,0,205)`). The tile data
+   is not in doubt, so for a monster we know which NES *palette byte* every rip
+   pixel must be. Pairing our colour counts with the rip's (they agree exactly
+   when the model is right) yields observations "NES byte X renders as RGB", and
+   iterating that to a fixed point recovers the site's table.
+2. **Score the model against that table**, and score two alternatives: the two
+   palettes exchanged, and the invert bit dropped. Note that **exchanging the
+   palettes and flipping every cell bit are the same picture**, so a monster
+   that wants "swapped" is a monster where the pair order and the invert flag
+   disagree - the image alone cannot say which is wrong.
+
+Result over the 36 monsters that have rips: **27 exact**; 3 that no variant
+explains (Rukh 65%, KillerBee 77%, Chimera 96% - the rips themselves are
+suspect: Enemies/Hornet holds the right tiles in the wrong places); and **6
+boss ids where the rip prefers the opposite assignment**: Ogre `$96`, Peryton
+`$95`, Echidna `$E3`, Minotaur `$9E`, Azrael `$8B`, Haniel `$93`. For those the
+disassembly is explicit while the rips are hand-assembled, so the ROM wins by
+default - but the reversed pair is offered in the palette dropdown
+(`... #132 + (2) #243` and `... #243, swapped + (2) #132`), which is one click
+and needs no new UI concept. If the game is confirmed to disagree for one of the
+6, flip that object's `invert` in `ff3-nes-names.py`.
+
+Run it with `python3 tools/ff3-nes-palcheck.py [--report]` (needs the network
+once; rips are cached in `/tmp/ff3-rips`).
 
 ### D. Remaining gaps
 
@@ -257,6 +321,20 @@ not the palette.
     `ROMPaletteView` renders each inner list as one dropdown entry labelled
     `name1 + name2` and loads it composed. Anything that walks `item.palette`
     (the xcheck) has to handle both shapes.
+16. **`#edit-controls` is a single shared bar.** Every editor's
+    `resetControls()` clears it, so the last one to run wins. The tilemap view
+    builds the toolbox graphics view's Tool menu from inside its own
+    `resetControls()`, before its own controls.
+17. **The pool panel is a tile sheet, not a picture.** Boss and summon tilemaps
+    reference pool tiles out of raster order, so `followLayout` +
+    `poolLayout` exist; `tileOffset()` must resolve through it or painting
+    writes to the wrong tile.
+18. **The invert bit is not a plain bit index** - see §2A.3. `ASL` runs inside
+    the loop, so `AND #$80` tests bit `(6 - (id & 7))`, and 0 for `id & 7 == 7`.
+19. **Reference rips are hand-made and sometimes wrong.** Enemies/Hornet holds
+    the right tiles in the wrong places; 6 boss ids disagree with the ROM's
+    invert flag. Prefer the disassembly, and treat a rip as evidence only when
+    the calibrated-palette histogram agrees (§C2).
 
 ---
 
