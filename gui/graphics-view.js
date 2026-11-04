@@ -382,6 +382,23 @@ const self = this;
 
     // Paint one 2x2 tile cell's palette choice, writing it back to the ROM's
     // attribute table (2F/A6FB).
+    // A cell's palette bit lives in the ROM, but which palette each tile is
+    // drawn with is baked into this.tilemap by updateTilemap. So after writing
+    // a cell, the tilemap words have to be re-stamped - otherwise the change is
+    // in the file but invisible until something else reloads (which is why it
+    // only appeared when the mouse came up).
+    refreshPaletteCells() {
+        this._cellsFor = null;
+        this.updateTilemap();
+        this.redraw();
+        const tv = this.tilemapView;
+        if (tv && tv.graphicsView !== this) {
+            tv.graphicsView._cellsFor = null;
+            tv.applyPaletteCells();
+            tv.redraw();
+        }
+    }
+
     paintCellPalette(x, y, row) {
         if (!this.paintableCells()) return false;
         const obj = this.object || this.cellsObject;
@@ -393,7 +410,9 @@ const self = this;
         // the definition records the bits before the per-monster inversion, so
         // setAttributeBit needs the un-displayed value
         if (!!obj.attributeCellsInvert) row ^= 1;
-        return setAttributeBit(obj, cell, row);
+        if (!setAttributeBit(obj, cell, row)) return false;
+        this.refreshPaletteCells();
+        return true;
     }
 
     mouseDown(e) {
@@ -861,8 +880,11 @@ const self = this;
         const start = this.tileOffset(x, y);
         if (start < 0) return;
         const target = this.graphics[start];
-        if (target === this.color) return;
 
+        // Note: this does NOT bail out when target === this.color. For an
+        // object with a per-cell palette table the fill still has work to do -
+        // moving every cell of that region onto the palette row being painted
+        // with - even though no pixel index changes.
         const tw = this.tileWidth, th = this.tileHeight;
         const W = this.width * tw, H = this.height * th;
         const stack = [[x, y]];
@@ -892,7 +914,10 @@ const self = this;
         if (row >= 0) {
             const obj = this.object || this.cellsObject;
             if (!!obj.attributeCellsInvert) row ^= 1;
-            for (const cell of cells) setAttributeBit(obj, cell, row);
+            let wrote = false;
+            for (const cell of cells)
+                if (setAttributeBit(obj, cell, row)) wrote = true;
+            if (wrote) this.refreshPaletteCells();
         }
         this.redraw();
     }

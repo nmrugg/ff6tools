@@ -589,7 +589,7 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
       const before=Uint8Array.from(rom.data);
       const cell=(Math.floor(Math.floor(26/8)/2)*Math.ceil(obj.width/2)+Math.floor(Math.floor(10/8)/2)+obj.attributeCellsOffset);
       const bitOf=()=>(rec()>>(7-cell))&1;
-      const bitsShown=()=>[...v.tilemap].map(t=>(t&0x00FF0000)>>16);
+      const bitsShown=()=>{v.updateTilemap(); return [...v.tilemap].map(t=>(t&0x00FF0000)>>16);};
       const shown0=bitsShown();
       pv.p=1; pv.setColor(3); v.color=3;
       const cr=v.canvas.getBoundingClientRect();
@@ -624,6 +624,77 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
         'undo restores the ROM bytes ('+undoRedo.painted+' changed, '+undoRedo.afterUndo+' after undo)');
   check(undoRedo.changedOnPaint&&undoRedo.viewFollows,
         'the picture follows undo/redo (repaint on paint, back on undo, again on redo)');
+
+  // the cell must flip live (during the drag, not only on mouse-up), and it
+  // must flip even when the pixel already holds the paint color
+  const liveCell=await ev(c,sessionId,`(()=>{
+      const obj=rom.monsterGraphics4x4.item(11);
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const v=propertyList.activeEditor, pv=v.paletteView;
+      const arr=rom.monsterAttributeData;
+      const rec=()=>arr.item(obj.attributeRef.index).data[0];
+      const cell=(Math.floor(Math.floor(26/8)/2)*Math.ceil(obj.width/2)+Math.floor(Math.floor(10/8)/2)+obj.attributeCellsOffset);
+      const bit=()=>(rec()>>(7-cell))&1;
+      const shown=()=>{v.updateTilemap(); return (v.tilemap[Math.floor(26/8)*obj.width+Math.floor(10/8)]&0x00FF0000)>>16;};
+      const cr=v.canvas.getBoundingClientRect();
+      const mk=(t,x,y)=>new MouseEvent(t,{bubbles:true,cancelable:true,
+                    clientX:cr.left+x*v.zoom, clientY:cr.top+y*v.zoom, button:0, buttons:1});
+      const off=v.tileOffset(10,26);
+      const startBit=bit(), startShown=shown();
+      // paint with the SAME index the pixel already has, on the other palette row
+      v.color=v.graphics[off];
+      pv.p=startBit?0:1;
+      v.tool=1;
+      v.canvas.dispatchEvent(mk('mousedown',10,26));
+      const midBit=bit(), midShown=shown();
+      v.canvas.dispatchEvent(mk('mousemove',12,26));
+      v.canvas.dispatchEvent(mk('mouseup',12,26));
+      const endBit=bit(), endShown=shown();
+      rom.undo();
+      return {color:v.color, startBit, midBit, midShown, startShown, endBit, endShown,
+              wantShown:(pv.p?4:0)};
+  })()`);
+  console.log('  live cell flip:',JSON.stringify(liveCell));
+  check(liveCell.midBit!==liveCell.startBit,
+        'painting the same pixel index on another palette row still flips the cell ('+
+        liveCell.startBit+' -> '+liveCell.midBit+')');
+  check(liveCell.midShown!==liveCell.startShown,
+        'the picture updates during the drag, not only on mouse-up ('+
+        liveCell.startShown+' -> '+liveCell.midShown+', want '+liveCell.wantShown+')');
+
+  // flood fill must re-palette the region even when the pixels already hold
+  // the paint color (the same trap the pencil had)
+  const fillCells=await ev(c,sessionId,`(()=>{
+      const obj=rom.monsterGraphics4x4.item(11);
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const v=propertyList.activeEditor, pv=v.paletteView;
+      const arr=rom.monsterAttributeData;
+      const rec=()=>arr.item(obj.attributeRef.index).data[0];
+      const cellOf=(px,py)=>(Math.floor(Math.floor(py/8)/2)*Math.ceil(obj.width/2)+
+                             Math.floor(Math.floor(px/8)/2)+obj.attributeCellsOffset);
+      const cr=v.canvas.getBoundingClientRect();
+      const mk=(t,x,y)=>new MouseEvent(t,{bubbles:true,cancelable:true,
+                    clientX:cr.left+x*v.zoom, clientY:cr.top+y*v.zoom, button:0, buttons:1});
+      const px=10, py=26, cell=cellOf(px,py);
+      const startBit=(rec()>>(7-cell))&1;
+      v.color=v.graphics[v.tileOffset(px,py)];   // the index it already has
+      pv.p=startBit?0:1;                        // the other palette row
+      v.tool=2;
+      v.canvas.dispatchEvent(mk('mousedown',px,py));
+      v.canvas.dispatchEvent(mk('mouseup',px,py));
+      const endBit=(rec()>>(7-cell))&1;
+      v.updateTilemap();
+      const shown=(v.tilemap[Math.floor(py/8)*obj.width+Math.floor(px/8)]&0x00FF0000)>>16;
+      rom.undo();
+      const undoneBit=(rec()>>(7-cell))&1;
+      return {startBit,endBit,undoneBit,shown,want:(pv.p?4:0)};
+  })()`);
+  console.log('  flood fill cells:',JSON.stringify(fillCells));
+  check(fillCells.endBit!==fillCells.startBit&&fillCells.undoneBit===fillCells.startBit,
+        'filling the same pixel index re-palettizes the cell ('+fillCells.startBit+' -> '+
+        fillCells.endBit+', undo -> '+fillCells.undoneBit+')');
+  check(fillCells.shown===fillCells.want,
+        'and the picture shows the new palette immediately ('+fillCells.shown+' = '+fillCells.want+')');
 
   await c.s('Page.captureScreenshot',{format:'png',quality:90},sessionId).then(r=>fs.writeFileSync('/tmp/ff3j-app.png',Buffer.from(r.data,'base64')));
   console.log('  wrote /tmp/ff3j-app.png');
