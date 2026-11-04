@@ -58,6 +58,17 @@ class ROMTilemapView extends ROMEditor {
         this.canvas.oncontextmenu = function(e) { return false; };
         this.resizeSensor = null;
 
+        // The layout pane takes keyboard focus when a tilemap is opened, so
+        // Up/Down would only scroll it and the tree selection would never move
+        // (the same trap as ROMGraphicsView - any pane that grabs focus has to
+        // forward the arrows).
+        this.div.onkeydown = function(e) {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                const nav = (typeof romNavigator !== 'undefined') ? romNavigator : null;
+                if (nav && nav.moveSelection(e.key === 'ArrowDown' ? 1 : -1)) e.preventDefault();
+            }
+        };
+
         this.observer = new ROMObserver(rom, this);
     }
 
@@ -141,6 +152,14 @@ class ROMTilemapView extends ROMEditor {
                     self.graphicsView._cellsFor = null;
                     self.loadTilemap();
                 }, 'Swap palette cells', this.swapPaletteCells === true);
+
+                // ... and paint them: click a cell to make it use the palette
+                // row selected in the palette panel
+                if (this.object.attributeRef) {
+                    this.addTwoState('paintCells', function(on) {
+                        self.paintCells = on;
+                    }, 'Paint palette cells', this.paintCells === true);
+                }
             }
         }
 
@@ -222,12 +241,21 @@ class ROMTilemapView extends ROMEditor {
             y: this.clickPoint.y
         }
 
+        // the paint goes where the button went down, not where a previous
+        // click left the selection (mouseMove keeps it in step while dragging)
+        if (e.button === 0) {
+            this.selection.x = this.clickPoint.x;
+            this.selection.y = this.clickPoint.y;
+        }
+
         if (this.clickPoint.button === 2) {
             this.selection.x = this.clickPoint.x;
             this.selection.y = this.clickPoint.y;
             this.selectTiles();
             this.isDragging = true;
         } else if (this.clickPoint.button === 0) {
+            if (this.paintCells && this.object && this.object.attributeRef)
+                this.rom.beginAction();      // a drag over cells is one undo step
             this.paintCell();
             this.isDragging = true;
         } else {
@@ -248,6 +276,18 @@ class ROMTilemapView extends ROMEditor {
     // graphics toolbox, or - for the pool-based tilemaps (FF3 bosses, summons)
     // where "Place tile" is on by default - the single tile that was picked.
     paintCell() {
+        // "Paint palette cells" edits the attribute table instead of the layout
+        if (this.paintCells && this.object && this.object.attributeRef) {
+            const cell = attributeCellForTile(
+                this.object, this.selection.x, this.selection.y);
+            if (cell >= 0) {
+                const perPalette = this.format.colorsPerPalette || 4;
+                let row = Math.min(Math.floor((this.paletteView.p || 0) *
+                              this.paletteView.colorsPerPalette / perPalette), 1);
+                if (!!this.object.attributeCellsInvert !== !!this.swapPaletteCells) row ^= 1;
+                if (setAttributeBit(this.object, cell, row)) return;
+            }
+        }
         const multi = this.selection && this.selection.tilemap &&
                       this.selection.tilemap.length > 1;
         if (this.placeTile === true && !multi) {
@@ -315,7 +355,9 @@ class ROMTilemapView extends ROMEditor {
     }
 
     mouseUp(e) {
-        if (this.isDragging) this.setTilemap();
+        if (this.isDragging && this.paintCells && this.object && this.object.attributeRef) {
+            this.rom.endAction();
+        } else if (this.isDragging) this.setTilemap();
 
         this.isDragging = false;
         this.clickPoint = null;
@@ -470,6 +512,18 @@ class ROMTilemapView extends ROMEditor {
         this.observer.stopObservingAll();
         this.observer.startObserving(this.object, this.loadTilemap);
 
+        // the palette-cell table too, so editing it repaints the layout
+        const ref = this.object.attributeRef;
+        if (ref && ref.path) {
+            const array = this.rom.parsePath(ref.path, this.rom);
+            if (array && array.item) {
+                for (let b = 0; b < (ref.bytes || 1); b++) {
+                    const item = array.item((ref.index || 0) + b);
+                    if (item) this.observer.startObserving(item, this.loadTilemap);
+                }
+            }
+        }
+
         // update tile layout parameters
         this.width = this.object.width || 32;
         this.height = this.object.height || 32;
@@ -507,7 +561,35 @@ class ROMTilemapView extends ROMEditor {
         // graphics view reads.
         this.applyPaletteCells();
 
+        // ... and mirror the layout for the bosses the game flips (see mirrorX).
+        this.applyMirror();
+
         this.redraw();
+    }
+
+    // Two of the FF3 NES bosses (Odin, Leviathan) are assembled from the summon
+    // tile pool, and the game draws them mirrored: 2F/A40B forces the "back
+    // attack" flip when bit 5 of the graphics pointer is set. In the ROM their
+    // tilemap rows run right-to-left (73 72 71 70 ...) and the tile pixels are
+    // flipped at copy time, so the stored map only reads as a picture once both
+    // are undone. `mirrorX` on the definition does that for display, and
+    // un-does it on save so the ROM keeps its own order.
+    // Mirror the layout horizontally and toggle each tile's pixel-flip bit.
+    // It is its own inverse, so the same call turns the ROM order into the
+    // display order and back.
+    mirrored(src) {
+        const w = this.width;
+        const out = new Uint32Array(src.length);
+        for (let row = 0; row < this.height; row++) {
+            for (let col = 0; col < w; col++)
+                out[row * w + (w - 1 - col)] = src[row * w + col] ^ 0x10000000;
+        }
+        return out;
+    }
+
+    applyMirror() {
+        if (!this.object || !this.object.mirrorX) return;
+        this.tilemap = this.mirrored(this.tilemap);
     }
 
     applyPaletteCells() {
@@ -537,7 +619,11 @@ class ROMTilemapView extends ROMEditor {
         if (!this.object) return;
 
         // make a copy of the current tiles
-        const newData = this.tilemap.slice(0, this.object.data.length);
+        let newData = this.tilemap.slice(0, this.object.data.length);
+
+        // the view shows mirrored bosses the right way round; the ROM stores
+        // them the other way, so mirror back before encoding
+        if (this.object.mirrorX) newData = this.mirrored(newData);
 
         this.rom.beginAction();
         this.observer.sleep();

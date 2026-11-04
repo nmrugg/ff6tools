@@ -277,7 +277,12 @@ class ROMGraphicsView extends ROMEditor {
         // painting tools (only for a directly selected graphics object; the
         // tileset toolbox is deliberately left alone - see notes)
         if ((this.editorMode && this.object) || this.paintablePool()) {
-            this.addList('changeTool','Tool',['Select','Pencil','Fill','Colour picker'],
+            // "Palette cells" only makes sense for an object that has a
+            // per-cell palette table in the ROM (FF3 NES monsters and bosses)
+            const tools = ['Select','Pencil','Fill','Colour picker'];
+            if (this.object && (this.object.attributeRef || this.object.attributeCells))
+                tools.push('Palette cells');
+            this.addList('changeTool','Tool',tools,
                 function(t){ self.tool=t; self.updateCursor(); self.redraw(); },
                 function(t){ return t===self.tool; });
 
@@ -379,6 +384,32 @@ class ROMGraphicsView extends ROMEditor {
         this.redraw();
     }
 
+    // Paint one 2x2 tile cell's palette choice, writing it back to the ROM's
+    // attribute table (2F/A6FB). The palette row selected in the palette panel
+    // is what gets painted, so: pick row 2 in the panel, then click the parts
+    // of the sprite that should use the second battle palette.
+    paintableCells() {
+        const obj = this.object;
+        if (!obj || !obj.attributeRef) return false;
+        const perPalette = this.paletteView.colorsPerPalette || 4;
+        return this.paletteView.palette.length >= perPalette * 2;
+    }
+
+    paintCellPalette(x, y) {
+        if (!this.paintableCells()) return false;
+        const obj = this.object;
+        const cell = attributeCellForTile(obj, x, y);
+        if (cell < 0) return false;
+        const perPalette = this.paletteView.colorsPerPalette || 4;
+        let row = Math.floor((this.paletteView.p || 0) * this.paletteView.colorsPerPalette / perPalette);
+        row = Math.min(row, 1);
+        // "Swap palette cells" is a display flip; painting has to undo it
+        if (!!obj.attributeCellsInvert !== !!this.swapPaletteCells) row ^= 1;
+        const before = (this.attributeCellBits() || '')[cell];
+        if (before === undefined) return false;
+        return setAttributeBit(obj, cell, row);
+    }
+
     mouseDown(e) {
         this.closeList();
 
@@ -393,6 +424,16 @@ class ROMGraphicsView extends ROMEditor {
         if (this.editorMode && this.div.focus) this.div.focus();
 
         // painting tools take priority over tile selection
+        if (this.tool === 4 && this.paintableCells()) {
+            // click a 2x2 cell to make it use the palette row you have selected
+            const p = this.pixelAt(e);
+            if (!p) return;
+            this.cellPainting = true;
+            this.rom.beginAction();       // a whole drag is one undo step
+            this.paintCellPalette(p.x, p.y);
+            return;
+        }
+
         if (this.paintTarget() && this.tool !== 0) {
             const p = this.pixelAt(e);
             if (!p) return;
@@ -451,6 +492,10 @@ class ROMGraphicsView extends ROMEditor {
     mouseUp(e) {
         if (e.button !== undefined && e.button !== 0) return;
         this.floatDrag = null;
+        if (this.cellPainting) {
+            this.cellPainting = false;
+            this.rom.endAction();
+        }
         if (this.painting) {
             this.painting = false;
             this.commitPaint();
@@ -470,6 +515,13 @@ class ROMGraphicsView extends ROMEditor {
                 this.clampFloat();
                 this.redraw();
             }
+            return;
+        }
+
+        // palette-cell drag
+        if (this.cellPainting && (e.buttons & 1) && this.tool === 4) {
+            const p = this.pixelAt(e);
+            if (p) this.paintCellPalette(p.x, p.y);
             return;
         }
 
@@ -526,6 +578,8 @@ class ROMGraphicsView extends ROMEditor {
                 x: 0, y: 0, w: w, h: h,
                 tilemap: new Uint32Array(this.selection.tilemap)
             };
+            // a single tile picked out of the pool is also the tile to stamp
+            if (w * h === 1) this.tilemapView.pickedTile = this.selection.tilemap[0];
         }
     }
 
@@ -937,13 +991,18 @@ class ROMGraphicsView extends ROMEditor {
         if (ref && ref.path && this.rom) {
             const array = this.rom.parsePath(ref.path, this.rom);
             if (array && array.item) {
+                const first = array.item(ref.index || 0);
+                const itemBytes = (first && first.data && first.data.length) || 1;
                 let bits = '';
                 const bytes = ref.bytes || 1;
                 for (let b = 0; b < bytes; b++) {
-                    const item = array.item((ref.index || 0) + b);
+                    // the table may be one byte per item (monsters) or one whole
+                    // record per item (bosses)
+                    const item = array.item((ref.index || 0) + Math.floor(b / itemBytes));
                     if (!item || !item.data || !item.data.length) continue;
+                    const byte = item.data[b % item.data.length];
                     for (let k = 0; k < 8; k++)
-                        bits += ((item.data[0] >> (7 - k)) & 1).toString();
+                        bits += ((byte >> (7 - k)) & 1).toString();
                 }
                 if (bits.length) cells = bits;
             }
@@ -1257,12 +1316,14 @@ class ROMGraphicsView extends ROMEditor {
                 return;
             }
 
-            // V select, B pencil, G fill, I picker; 1-9 and 0 pick a palette colour
+            // V select, B pencil, G fill, I picker, C palette cells;
+            // 1-9 and 0 pick a palette colour
             switch (e.key.toLowerCase()) {
                 case 'v': this.tool = 0; break;
                 case 'b': this.tool = 1; break;
                 case 'g': this.tool = 2; break;
                 case 'i': this.tool = 3; break;
+                case 'c': if (!this.paintableCells()) return; this.tool = 4; break;
                 default:
                     if (e.key >= '0' && e.key <= '9') {
                         const idx = e.key === '0' ? 10 : Number(e.key);

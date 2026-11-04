@@ -258,21 +258,36 @@ def main(rom=None, json_path=None):
 
     def palette_pair(users):
         """the (pal1, pal2) used by the most battles of any monster on this graphic"""
-        best = None
+        pairs = palette_pairs(users)
+        return pairs[0] if pairs else []
+
+    def palette_pairs(users):
+        """every (pal1, pal2) the battles of these monsters use, most common first.
+
+        A monster's palette comes from its battle group, so the same graphic can
+        appear in several colourings - Dark Cloud's forms, the elemental bosses,
+        a monster and its palette-swapped boss. Each pair becomes one entry in
+        the palette dropdown, so you can flip between them and paint whichever
+        one you mean."""
+        ranked = []
         for m in users:
-            if not pairs[m]:
-                continue
-            p, n = pairs[m].most_common(1)[0]
-            score = (n, -m)
-            if best is None or score > best[0]:
-                best = (score, m, p)
-        if best is None:
-            return []
-        _, m, (a1, a2) = best
-        name = monster_name[m] or ('$%02X' % m)
-        out = [{'path': 'battlePalettes[%d]' % a1, 'name': '%s (1)' % name, 'offset': 0}]
-        if a2 != a1:
-            out.append({'path': 'battlePalettes[%d]' % a2, 'name': '%s (2)' % name, 'offset': 4})
+            for (a1, a2), n in pairs[m].most_common():
+                key = (a1, a2)
+                if key in [k for k, _, _ in ranked]:
+                    continue
+                ranked.append((key, n, m))
+        ranked.sort(key=lambda r: (-r[1], r[2]))
+        out = []
+        for (a1, a2), n, m in ranked[:8]:
+            name = monster_name[m] or ('$%02X' % m)
+            # with several pairs the dropdown would otherwise show the same
+            # label over and over, so say which palettes each one is
+            entry = [{'path': 'battlePalettes[%d]' % a1,
+                      'name': '%s (1) #%d' % (name, a1), 'offset': 0, 'compose': True}]
+            if a2 != a1:
+                entry.append({'path': 'battlePalettes[%d]' % a2,
+                              'name': '(2) #%d' % a2, 'offset': 4, 'compose': True})
+            out.append(entry)
         return out
 
     item_palettes = {}
@@ -280,10 +295,7 @@ def main(rom=None, json_path=None):
         entries = []
         for i in range(count):
             users = [mid for mid, v in enumerate(props) if (v >> 5) == cls and (v & 0x1F) == i]
-            entry = palette_pair(users)
-            if len(entry) == 2:
-                entry[0]['compose'] = True
-                entry[1]['compose'] = True
+            entry = palette_pairs(users)
             entry.append({'path': 'battlePalettes'})
             entries.append(entry)
         item_palettes[key] = entries
@@ -335,13 +347,8 @@ def main(rom=None, json_path=None):
             n = monster_name[mid] or ('Monster $%02X' % mid)
             if n not in names_used:
                 names_used.append(n)
-        # same single-battle-group pairing as ordinary monsters
-        entry = palette_pair(owner_ids)
-        if len(entry) == 2:
-            # compose them: the boss tilemap picks one of the two per 2x2 cell
-            # from $2E:$8FC0, so the view needs both in the palette panel
-            entry[0]['compose'] = True
-            entry[1]['compose'] = True
+        # every palette pair its battles use, so the forms can be switched
+        entry = palette_pairs(owner_ids)
         entry.append({'path': 'battlePalettes'})
         # which class array physically contains this boss's tile pool, and at
         # what tile index. NOTE: the index must be computed in *file* space -

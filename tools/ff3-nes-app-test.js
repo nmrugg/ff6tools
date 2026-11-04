@@ -53,9 +53,11 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
   check(await ev(c,sessionId,`rom.monsterGraphics6x6.item(0).backColor===true`),
         'colour 0 is opaque black - the sprite outline is colour 0 in the ROM, so it must not vanish');
   check(opened.palCount===8,'the monster opens with both of its battle palettes (8 colours = 2 rows, colour 0 = black)');
-  check(Array.isArray(opened.palette)&&opened.palette[0].compose&&opened.palette[1].compose&&
-        opened.palette[0].name&&opened.palette[1].name,
-        'the two palettes are composed and named: '+opened.palette.slice(0,2).map(p=>p.name).join(' | '));
+  const pair0=Array.isArray(opened.palette[0])?opened.palette[0]:opened.palette;
+  check(pair0.length>=2&&pair0.every(p=>p.compose)&&pair0.every(p=>p.name),
+        'the monster opens with its battle palettes composed and named: '+
+        pair0.map(p=>p.name).join(' + ')+
+        ' ('+(Array.isArray(opened.palette)?opened.palette.filter(p=>Array.isArray(p)).length:1)+' pairs to choose from)');
 
   // paint a pixel and check the ROM actually changed
   const painted=await ev(c,sessionId,`(()=>{
@@ -215,6 +217,112 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
         'a background cell becomes a sprite tile ('+boss.dstRaw+' -> '+boss.afterRaw+')');
   check(boss.undone,'and undo puts the whole tilemap back');
 
+  // ---- painting the palette cells themselves -----------------------------
+  // The convenient way to change which palette a part of a sprite uses: select
+  // a palette row in the panel, then click the cells. It writes the attribute
+  // byte back (un-inverted, 2F/A8BF), and the picture follows.
+  const cellPaint=await ev(c,sessionId,`(()=>{
+      const obj=rom.monsterGraphics6x6.item(2);      // マンドレイク / Mandrake
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const view=propertyList.activeEditor;
+      const arr=rom.monsterAttributeData;
+      const item=arr.item(obj.attributeRef.index);
+      const was=item.data[0];
+      view.tool=4; view.paletteView.p=1;
+      // drive it the way a user does: press, drag, release on the canvas
+      const r=view.canvas.getBoundingClientRect();
+      const at=(x,y)=>({bubbles:true,cancelable:true,clientX:r.left+x*view.zoom+1,
+                        clientY:r.top+y*view.zoom+1,button:0,buttons:1});
+      view.canvas.dispatchEvent(new MouseEvent('mousedown',at(2,2)));
+      view.canvas.dispatchEvent(new MouseEvent('mousemove',at(4,2)));
+      view.canvas.dispatchEvent(new MouseEvent('mouseup',at(4,2)));
+      const now=item.data[0];
+      // and the view must show the change
+      const bits0=view.paletteBitsForTile(0);
+      rom.undo();
+      return {ok:true, changed:now!==was, bits:[...((was^now)&0xFF).toString(2).padStart(8,'0')],
+              restored:arr.item(obj.attributeRef.index).data[0]===was,
+              toolButton:(document.getElementById('changeTool')||{}).value||null,
+              tools:(view.list&&view.list.changeTool)?view.list.changeTool.names:[]};
+  })()`);
+  console.log('  cell paint:',JSON.stringify(cellPaint));
+  check(cellPaint.changed,
+        'the Palette cells tool writes the dragged cells back to monsterAttributeData (bits '+cellPaint.bits.join('')+')');
+  check(cellPaint.restored,'and undo puts the byte back');
+  check(cellPaint.tools&&cellPaint.tools.indexOf('Palette cells')>=0,
+        'the tool is in the Tool menu: '+JSON.stringify(cellPaint.tools));
+
+  // boss layout: paint a cell's palette from the tilemap view
+  const bossCells=await ev(c,sessionId,`(()=>{
+      const obj=rom.bossTilemap8;
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const view=propertyList.activeEditor;
+      const arr=rom.bossAttributeData;
+      const item=arr.item(obj.attributeRef.index);
+      const was=Uint8Array.from(item.data);
+      view.paintCells=true; view.paletteView.p=0;
+      view.selection={x:4,y:2,w:1,h:1,tilemap:new Uint32Array([0])};
+      view.paintCell();
+      const now=Uint8Array.from(item.data);
+      let diff=-1; for(let i=0;i<was.length;i++) if(was[i]!==now[i]) diff=i;
+      rom.undo();
+      const back=Uint8Array.from(arr.item(obj.attributeRef.index).data);
+      return {diff, changed:diff>=0, undone:back.every((v,i)=>v===was[i]),
+              controls:[...document.querySelectorAll('.two-state p')].map(p=>p.textContent)};
+  })()`);
+  console.log('  boss cell paint:',JSON.stringify(bossCells));
+  check(bossCells.changed,'Paint palette cells edits the boss record in bossAttributeData (byte '+bossCells.diff+')');
+  check(bossCells.undone,'and undo restores it');
+  check(bossCells.controls.indexOf('Paint palette cells')>=0&&bossCells.controls.indexOf('Place tile')>=0,
+        'the boss layout offers Place tile + Swap/Paint palette cells: '+JSON.stringify(bossCells.controls));
+
+  // mirrored bosses (Odin, Leviathan): the ROM stores them right-to-left and
+  // the game flips them (2F/A40B), so the view mirrors and the save un-mirrors
+  const mirror=await ev(c,sessionId,`(()=>{
+      const obj=rom.bossTilemap22;
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const view=propertyList.activeEditor;
+      const fmt=GFX.tileFormat.ff3BossTilemap;
+      const raw=fmt.encode(obj.data.slice())[0];
+      const shown=view.tilemap;
+      // row 2 of the ROM runs 73 72 71 70 -> on screen it must read ascending
+      const row2=[]; for(let c=0;c<18;c++) row2.push(shown[2*18+c]&0xFFFF);
+      const asc=row2.filter(v=>v<0x100);
+      let ascOrder=true; for(let i=1;i<asc.length;i++) if(asc[i]<asc[i-1]) ascOrder=false;
+      // saving must put it back exactly
+      view.setTilemap();
+      const back=fmt.encode(rom.bossTilemap22.data.slice())[0];
+      let diffs=0; for(let t=0;t<raw.length;t++) if(raw[t]!==back[t]) diffs++;
+      rom.undo();
+      return {mirrorX:!!obj.mirrorX, ascOrder, tiles:asc.length, diffs};
+  })()`);
+  console.log('  mirror:',JSON.stringify(mirror));
+  check(mirror.mirrorX,'the summon-backed bosses are marked mirrorX');
+  check(mirror.ascOrder&&mirror.tiles>3,'and their tile ids read left-to-right on screen');
+  check(mirror.diffs===0,'saving a mirrored boss leaves the ROM byte-exact ('+mirror.diffs+' changed)');
+
+  // the layout pane must forward Up/Down to the tree (it takes focus)
+  const nav2=await ev(c,sessionId,`(()=>{
+      const view=propertyList.activeEditor;
+      const pane=view.div;
+      // select the boss again so the tree selection is on it
+      romNavigator.selectObject(rom.bossTilemap22);
+      const start=romNavigator.selectedNode;
+      pane.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true}));
+      const now=romNavigator.selectedNode;
+      pane.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowUp',bubbles:true}));
+      const backTo=romNavigator.selectedNode;
+      return {ok:true, hasHandler:!!pane.onkeydown, start:start?start.textContent.slice(0,18):null,
+              moved:!!now&&now!==start, back:backTo===start,
+              name:now?now.textContent.slice(0,18):null,
+              backName:backTo?backTo.textContent.slice(0,18):null};
+  })()`);
+  console.log('  tilemap arrows:',JSON.stringify(nav2));
+  check(nav2.hasHandler&&nav2.moved,'ArrowDown moves the tree from the boss layout pane: '+nav2.start+' -> '+nav2.name);
+  check(nav2.backName&&nav2.backName!==nav2.name,
+        'ArrowUp moves it again from the same pane: '+nav2.name+' -> '+nav2.backName);
+
+
   // ---- painting the shared tile pool a boss is built from ----------------
   const pool=await ev(c,sessionId,`(()=>{
       const obj=rom.bossTilemap0;
@@ -239,6 +347,8 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
 
   await c.s('Page.captureScreenshot',{format:'png',quality:90},sessionId).then(r=>fs.writeFileSync('/tmp/ff3j-app.png',Buffer.from(r.data,'base64')));
   console.log('  wrote /tmp/ff3j-app.png');
+  if(fails) console.log(`\nFAILED: ${fails} check(s)`);
   ws.close();
+  process.exitCode=fails?1:0;
  } finally { ch.kill(); srv.kill(); }
 })().catch(e=>{console.error('FAIL',e.message);process.exit(1);});

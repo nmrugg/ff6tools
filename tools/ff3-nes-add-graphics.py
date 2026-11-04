@@ -339,13 +339,17 @@ def main():
         rng = '0x%06X-0x%06X' % (begin, end)
         name = ', '.join(b['owners']) or ('Boss %d' % i)
         container = b['container'][0] if b['container'] else 'monsterGraphics6x6'
+        # 2F/A40B: bit 5 of the pointer means "this boss is a summon: load it
+        # from the summon bank and flip it". The ROM stores those two tilemaps
+        # right-to-left, so the view has to mirror them to look like a picture.
+        mirror = '\n    "mirrorX": true,' if b['summon'] else ''
         boss_block = '''"bossTilemap%d": {
     "type": "tilemap",
     "name": "Boss Tilemap %d (%s)",
     "range": "%s",
     "format": "ff3BossTilemap",
     "width": 18,
-    "height": 12,
+    "height": 12,%s
     "backColor": true,
     "graphics": {
         "path": "%s",
@@ -354,7 +358,7 @@ def main():
     },
     "attributeRef": @ATTR@,
     "palette": %s
-}''' % (i, i, name.replace('"', "'"), rng, container,
+}''' % (i, i, name.replace('"', "'"), rng, mirror, container,
         b['poolBytes'][0], b['poolBytes'][1],
         indent(palette_list(b['palette'], 4), 4).lstrip())
         blocks.append(boss_block.replace('@ATTR@', js(boss_attr[i])))

@@ -110,24 +110,67 @@ the right tiles in the wrong places.
 
 ### B. Boss/summon editing
 
-- **"Place tile" is now on by default** for pool-based tilemaps (a definition
-  with `graphics.whole`), left-drag stamps, and a multi-tile selection picked
-  in the pool panel still pastes as a block.
-- **Painting the pool panel now works.** `saveGraphics()` used to bail out for
-  a `ROMArray` (`// ignore ROMArray objects for now`), so painting a boss's
-  tile pool silently did nothing; with `whole: true` it now writes each byte
-  back into the array item that owns it. The toolbox also shows the Tool menu
-  for pools (`ROMGraphicsView.paintablePool()`), and `commitPaint()` saves
-  through the definition. Map tilesets stay read-only in the toolbox.
-- **Boss tilemaps are now lossless.** `ff3BossTilemap` keeps a background cell
+- **Left-click used to paint at the *previous* selection position, not where you
+  clicked** - `mouseDown` never moved `selection.x/y` for the left button (only
+  `mouseMove` did), so a stamp landed somewhere else and nothing appeared to
+  happen. That is the whole "bosses are not editable" report. `mouseDown` now
+  sets the selection to the click point.
+- **"Place tile" is on by default** for pool-based tilemaps (a definition with
+  `graphics.whole`), left-drag stamps, and a multi-tile selection picked in the
+  pool panel still pastes as a block. Picking a single tile in the pool panel
+  also sets `pickedTile`, so "click a tile on the right, click where you want
+  it" works.
+- **Painting the pool panel now works.** `saveGraphics()` used to bail out for a
+  `ROMArray` (`// ignore ROMArray objects for now`), so painting a boss's tile
+  pool silently did nothing; with `whole: true` it now writes each byte back
+  into the item that owns it. The toolbox also shows the Tool menu for pools
+  (`ROMGraphicsView.paintablePool()`), and `commitPaint()` saves through the
+  definition. Map tilesets stay read-only in the toolbox.
+- **Odin and Leviathan (tilemaps 22, 23) were garbled.** Bit 5 of their pointer
+  means "this boss is a summon: load from bank `$0C` and flip it" (`2F/A40B`),
+  and the ROM stores those two tilemaps **right-to-left** - a row reads
+  `73 72 71 70` - while the copy flips each tile's pixels. `"mirrorX": true` on
+  the definition mirrors the layout *and* the tile pixels for display, and
+  `setTilemap()` un-mirrors before saving, so the ROM keeps its own order (the
+  app test asserts it stays byte-exact).
+- **Boss tilemaps are lossless.** `ff3BossTilemap` keeps a background cell
   (byte < `$70`) as `0x100 | byte` in the word's tile field instead of
-  collapsing it to 0: `3F/F90A` copies all 216 bytes into the nametable, so
-  the old format rewrote 3798 background cells as 0 the moment you edited one
-  tile. `tools/ff3-nes-xcheck.js` now asserts all 5184 boss cells round-trip
-  byte-exactly.
+  collapsing it to 0: `3F/F90A` copies all 216 bytes into the nametable, so the
+  old format rewrote 3798 background cells as 0 the moment you edited one tile.
+  `tools/ff3-nes-xcheck.js` asserts all 5184 boss cells round-trip byte-exactly.
 - `format.blank` is honoured by `paintCell()`, so clicking with nothing picked
   clears a cell to a real blank instead of tile 0.
-- Tests for all of this are in `tools/ff3-nes-app-test.js`.
+- **Arrow keys**: the layout pane takes keyboard focus, so Up/Down only scrolled
+  it. `ROMTilemapView` now forwards them to `romNavigator.moveSelection()` -
+  the same trap as §3.8.
+- Tests for all of this are in `tools/ff3-nes-app-test.js` (43 checks).
+
+### B2. Painting the palette cells
+
+The convenient way to change which palette a part of a sprite uses:
+
+- **Monster graphics**: Tool → *Palette cells* (key `C`). Select a palette row
+  in the palette panel, then click or drag over the 2x2 cells; the bit is
+  written straight into `monsterAttributeData` and the picture follows.
+- **Boss tilemaps**: the *Paint palette cells* checkbox beside the layout does
+  the same into `bossAttributeData`.
+- Both go through `setAttributeBit(object, cell, value)` in `rom/romtools.js`,
+  which undoes the per-monster inversion before writing (painting "palette 2" on
+  a boss writes a 0), plus `attributeCellForTile()` for the cell index.
+- `attributeRef` covers both table shapes: one byte per item (monsters) or one
+  whole 7-byte record per item (bosses); the first item's `data.length` decides.
+
+### B3. Multiple forms, multiple palettes
+
+A monster's colours come from its **battle group**, so one graphic can appear in
+several colourings - Dark Cloud's forms use `#202+#27`, `#78+#250` and
+`#222+#223`, and a monster and its boss differ by the invert bit. The generator
+now emits **every pair its battles use** (up to 8, most common first) as
+separate composed entries in the palette dropdown -
+`[[pal1,pal2], [pal1,pal2], …, battlePalettes]` - labelled e.g.
+`くらやみのくも (1) #202 + (2) #27`, so the forms are switchable. 88 of the 96
+graphics offer more than one pair. The cell split itself does not change between
+forms: it is keyed by tilemap index, not by monster.
 
 ### C. Transparency
 
@@ -140,19 +183,21 @@ not the palette.
 
 ### D. Remaining gaps
 
-- The two summon-backed bosses (slots 22, 23; bit 5 of the pointer) do not get
-  the game's horizontal flip (`2F/A415` forces it); they render unflipped,
-  which is what the ROM holds. Their cell maps *are* defined now.
-- Summon/boss sprite palettes: summons use 3 sprite palettes
-  (`battlePalettes[byte1 .. byte1+1+2]`); bosses use 2 BG palettes. Verified
-  for bosses against rips, not for summons.
+- The two summon-backed bosses are now *displayed* the way the game draws them
+  (mirrorX), but painting their pool edits tiles the summons use too - the pool
+  is shared with `summonTilemap`s.
+- Summon sprite palettes: summons use 3 sprite palettes
+  (`battlePalettes[byte1 .. byte1+2]`); bosses use 2 BG palettes. Verified for
+  bosses against rips, not for summons.
 - `2F/A820` loads the boss attribute record from monster **slot 0** only
   (`LDA $7D74`, unindexed) - fine, since a type-9 formation has one monster.
-- A graphic shared by a monster and a boss can only be shown one way; the
-  generator picks the palette pair and invert flag of its most common battle,
-  and "Swap palette cells" shows the other.
+- A graphic shared by a monster and a boss shows one invert setting at a time;
+  the generator picks the representative battle, and "Swap palette cells" shows
+  the other. (Painting a cell already accounts for it.)
 - `ff3-map.js changeLayer('showRooms')` is guarded: FF3 has no `mapPalette`
   assembly (the palette comes from `mapPaletteBase`, `3A/9091`).
+- The pool panel in a boss view has no "which cells of this pool does this boss
+  use" highlighting.
 
 ---
 
@@ -195,6 +240,23 @@ not the palette.
 11. The English translation's text table uses **two-byte character codes**
     (`0xD0D2 = "ill"`); any decoder outside the app must try
     `decodingTable[(b1<<8)|b2]` before `decodingTable[b1]`.
+12. **A view that takes focus must forward the arrow keys.** Both `ROMGraphicsView`
+    and `ROMTilemapView` call `div.focus()`, and the tree's handler lives on
+    `leftPane.onkeydown` - each pane needs its own `onkeydown` that calls
+    `romNavigator.moveSelection()`.
+13. **`mouseDown` must move the selection to the click point.** The tilemap
+    paint path reads `selection.x/y`, which only `mouseMove` kept up to date, so
+    a click without a preceding move painted the wrong cell (and in a synthetic
+    test, always the wrong cell).
+14. **`ROMArray` items are not always one byte.** `monsterAttributeData` is 192
+    one-byte items, `bossAttributeData` is 24 seven-byte items. Anything that
+    indexes a record by byte offset must read the first item's `data.length`
+    (see `setAttributeBit`), or it silently edits the neighbour's record.
+15. **A palette definition can be a list of composed pairs**
+    (`[[{...compose}, {...compose}], [...], "battlePalettes"]`);
+    `ROMPaletteView` renders each inner list as one dropdown entry labelled
+    `name1 + name2` and loads it composed. Anything that walks `item.palette`
+    (the xcheck) has to handle both shapes.
 
 ---
 

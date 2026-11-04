@@ -161,22 +161,26 @@ console.log('per-graphic palettes:');
     for(let i=0;i<arr.arrayLength;i++){
       const g=arr.item(i);
       const pal=g.palette;
-      const first=Array.isArray(pal)?pal[0]:pal;
-      const path=typeof first==='string'?first:first.path;
-      if(!/^battlePalettes\[\d+\]$/.test(path)){ wrong++; if(!firstWrong)firstWrong={key,i,path}; continue; }
+      // the palette is a list of composed pairs: [[pal1,pal2], [pal1,pal2], ...,
+      // battlePalettes] - one dropdown entry per colouring its battles use
+      const firstPair=Array.isArray(pal)?(Array.isArray(pal[0])?pal[0]:[pal[0]]):null;
+      if(!firstPair){ wrong++; if(!firstWrong)firstWrong={key,i,path:pal}; continue; }
       applied++;
-      seen.add(path);
-      // the palette must be one that a battle group containing this monster uses
-      const id=Number(path.match(/\[(\d+)\]/)[1]);
+      for(const d of firstPair){
+        const path=typeof d==='string'?d:d.path;
+        if(!/^battlePalettes\[\d+\]$/.test(path)){ wrong++; if(!firstWrong)firstWrong={key,i,path}; continue; }
+        seen.add(path);
+      }
       const users=[];
       for(let m=0;m<256;m++) if((props.item(m).graphicsSize.value===cls)&&(props.item(m).graphicsID.value===i)) users.push(m);
       if(!users.length) continue;
+      const ids=firstPair.map(d=>Number((d.path||'').match(/\[(\d+)\]/)[1]));
       const setBase=rom.mapAddress(0x2E8400);
       let ok=false;
       for(let s=0;s<256;s++){
         const a1=data[setBase+s*6], a2=data[setBase+s*6+1];
-        const ids=[data[setBase+s*6+2],data[setBase+s*6+3],data[setBase+s*6+4],data[setBase+s*6+5]];
-        if(ids.some(m=>users.includes(m)) && (a1===id||a2===id)) { ok=true; break; }
+        const mids=[data[setBase+s*6+2],data[setBase+s*6+3],data[setBase+s*6+4],data[setBase+s*6+5]];
+        if(mids.some(m=>users.includes(m)) && ids.every(x=>x===a1||x===a2)) { ok=true; break; }
       }
       if(!ok){ wrong++; if(!firstWrong) firstWrong={key,i,path,users}; }
     }
@@ -282,22 +286,28 @@ console.log('summon graphics:');
   check(bad===0,`summon properties + ${maps} tilemaps decode (6-bit tile ids, 0xff blank, tileOffset = graphicsIndex)`+
         (why.length?' -- '+why.join('; '):''));
 
-  // two palettes per monster graphic, composed into one 8-colour palette
+  // palette pairs per monster graphic: each entry in the dropdown is one
+  // composed pair, so a graphic that fights in several colourings offers them
+  // all (Dark Cloud's forms, a monster and its boss version, ...)
   const CL=['monsterGraphics4x4','monsterGraphics4x6','monsterGraphics6x6',
             'monsterGraphics6x6b','monsterGraphics6x12','monsterGraphics12x6'];
-  let pairs=0, singles=0, named=0;
+  let pairs=0, singles=0, named=0, multi=0, maxPairs=0;
   for(const key of CL){
     const arr=rom.parsePath(key);
     for(let i=0;i<arr.arrayLength;i++){
       const pal=arr.item(i).palette;
       if(!Array.isArray(pal)) { singles++; continue; }
-      const comp=pal.filter(p=>p&&p.compose);
-      if(comp.length>=2) pairs++; else singles++;
-      if(comp.every(p=>p&&p.name)) named++;
+      const entries=pal.filter(p=>Array.isArray(p)&&p.length);
+      const whole=pal.filter(p=>p&&p.compose);
+      if(entries.length&&entries[0].filter(p=>p&&p.compose).length>=2) pairs++; else singles++;
+      if(entries.every(p=>p.every(d=>d&&d.name))) named++;
+      if(entries.length>1) multi++;
+      maxPairs=Math.max(maxPairs,entries.length);
     }
   }
   check(pairs>60,`${pairs} monster graphics carry two composed palettes, ${singles} a single one`);
   check(named>pairs-4,`${named} of those have named palette entries (so the dropdown says whose palettes they are)`);
+  check(multi>10,`${multi} graphics offer more than one palette pair (up to ${maxPairs}) - the forms are switchable`);
 
   // per-cell palette selection: most monster graphics use both palettes, so
   // they carry a cell map ('0'/'1' per 2x2 tile cell, from $2E:$8F20)

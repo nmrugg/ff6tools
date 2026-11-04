@@ -69,82 +69,93 @@
             "itemAttributes": [{"cells": "000011", "offset": 2, "bytes": 1, "index": 32, "invert": false, "path": "monsterAttributeData"}, {"cells": "000111", "offset": 2, "bytes": 1, "index": 33, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 2, "bytes": 1, "index": 34, "invert": false, "path": "monsterAttributeData"}, {"cells": "000001", "offset": 2, "bytes": 1, "index": 35, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000", "offset": 2, "bytes": 1, "index": 36, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000", "offset": 2, "bytes": 1, "index": 37, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011", "offset": 2, "bytes": 1, "index": 38, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 2, "bytes": 1, "index": 39, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 2, "bytes": 1, "index": 40, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000", "offset": 2, "bytes": 1, "index": 41, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000", "offset": 2, "bytes": 1, "index": 42, "invert": false, "path": "monsterAttributeData"}, {"cells": "001100", "offset": 2, "bytes": 1, "index": 43, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 2, "bytes": 1, "index": 44, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000", "offset": 2, "bytes": 1, "index": 45, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 2, "bytes": 1, "index": 46, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 2, "bytes": 1, "index": 47, "invert": false, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[137]", "name": "ゴブリン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[160]", "name": "ゴブリン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[137]", "name": "ゴブリン (1) #137", "offset": 0, "compose": true}, {"path": "battlePalettes[160]", "name": "(2) #160", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[197]", "name": "ノッカー (1) #197", "offset": 0, "compose": true}, {"path": "battlePalettes[133]", "name": "(2) #133", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[91]", "name": "レッドキャップ (1) #91", "offset": 0, "compose": true}, {"path": "battlePalettes[178]", "name": "(2) #178", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[168]", "name": "レッドキャップ (1) #168", "offset": 0, "compose": true}, {"path": "battlePalettes[169]", "name": "(2) #169", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[63]", "name": "キラービー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[64]", "name": "キラービー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[63]", "name": "キラービー (1) #63", "offset": 0, "compose": true}, {"path": "battlePalettes[64]", "name": "(2) #64", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[185]", "name": "ホーネット (1) #185", "offset": 0, "compose": true}, {"path": "battlePalettes[115]", "name": "(2) #115", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[89]", "name": "ファイアフライ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[107]", "name": "ファイアフライ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[89]", "name": "ファイアフライ (1) #89", "offset": 0, "compose": true}, {"path": "battlePalettes[107]", "name": "(2) #107", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[109]", "name": "アイスフライ (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[72]", "name": "(2) #72", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[53]", "name": "カーバンクル (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[94]", "name": "カーバンクル (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[53]", "name": "カーバンクル (1) #53", "offset": 0, "compose": true}, {"path": "battlePalettes[94]", "name": "(2) #94", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[85]", "name": "しょうにゅうせき (1) #85", "offset": 0, "compose": true}, {"path": "battlePalettes[84]", "name": "(2) #84", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[1]", "name": "ウェアラット (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[104]", "name": "ウェアラット (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[1]", "name": "ウェアラット (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[104]", "name": "(2) #104", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[189]", "name": "キラーフィッシュ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[63]", "name": "キラーフィッシュ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[189]", "name": "キラーフィッシュ (1) #189", "offset": 0, "compose": true}, {"path": "battlePalettes[63]", "name": "(2) #63", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[109]", "name": "シーデビル (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[45]", "name": "(2) #45", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[172]", "name": "シーデビル (1) #172", "offset": 0, "compose": true}, {"path": "battlePalettes[173]", "name": "(2) #173", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[6]", "name": "レプラホーン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[2]", "name": "レプラホーン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[6]", "name": "レプラホーン (1) #6", "offset": 0, "compose": true}, {"path": "battlePalettes[2]", "name": "(2) #2", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[237]", "name": "ファージャルグ (1) #237", "offset": 0, "compose": true}, {"path": "battlePalettes[124]", "name": "(2) #124", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[132]", "name": "リリパット (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[104]", "name": "リリパット (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[132]", "name": "リリパット (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[104]", "name": "(2) #104", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[1]", "name": "リリパット (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[104]", "name": "(2) #104", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[209]", "name": "ピュグマン (1) #209", "offset": 0, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[83]", "name": "ブラッドバット (1)", "offset": 0},
+                            [{"path": "battlePalettes[83]", "name": "ブラッドバット (1) #83", "offset": 0, "compose": true}],
+                            [{"path": "battlePalettes[217]", "name": "ポイズンバット (1) #217", "offset": 0, "compose": true}],
+                            [{"path": "battlePalettes[170]", "name": "ブラッドバット (1) #170", "offset": 0, "compose": true}, {"path": "battlePalettes[171]", "name": "(2) #171", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[53]", "name": "ブルーウィスプ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[94]", "name": "ブルーウィスプ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[53]", "name": "ブルーウィスプ (1) #53", "offset": 0, "compose": true}, {"path": "battlePalettes[94]", "name": "(2) #94", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[112]", "name": "レッドウィスプ (1) #112", "offset": 0, "compose": true}, {"path": "battlePalettes[216]", "name": "(2) #216", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[109]", "name": "ボム (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[45]", "name": "ボム (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[109]", "name": "ボム (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[45]", "name": "(2) #45", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[186]", "name": "バルーン (1) #186", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[186]", "name": "バルーン (1) #186", "offset": 0, "compose": true}, {"path": "battlePalettes[127]", "name": "(2) #127", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[221]", "name": "グラネイド (1) #221", "offset": 0, "compose": true}, {"path": "battlePalettes[219]", "name": "(2) #219", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[196]", "name": "グラネイド (1) #196", "offset": 0, "compose": true}, {"path": "battlePalettes[197]", "name": "(2) #197", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[13]", "name": "ダイブイーグル (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[14]", "name": "ダイブイーグル (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[13]", "name": "ダイブイーグル (1) #13", "offset": 0, "compose": true}, {"path": "battlePalettes[14]", "name": "(2) #14", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[172]", "name": "ゴールドイーグル (1) #172", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[180]", "name": "スライム (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[187]", "name": "スライム (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[180]", "name": "スライム (1) #180", "offset": 0, "compose": true}, {"path": "battlePalettes[187]", "name": "(2) #187", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[186]", "name": "レッドマシュマロ (1) #186", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[74]", "name": "ブラックプリン (1) #74", "offset": 0, "compose": true}, {"path": "battlePalettes[75]", "name": "(2) #75", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[194]", "name": "のろいのどうか (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[52]", "name": "のろいのどうか (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[194]", "name": "のろいのどうか (1) #194", "offset": 0, "compose": true}, {"path": "battlePalettes[52]", "name": "(2) #52", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[172]", "name": "さまようきんか (1) #172", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[171]", "name": "さまようきんか (1) #171", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[98]", "name": "レムレース (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[80]", "name": "レムレース (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[98]", "name": "レムレース (1) #98", "offset": 0, "compose": true}, {"path": "battlePalettes[80]", "name": "(2) #80", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[194]", "name": "ラルウァイ (1) #194", "offset": 0, "compose": true}, {"path": "battlePalettes[52]", "name": "(2) #52", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[189]", "name": "シーエレメンタル (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[63]", "name": "シーエレメンタル (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[189]", "name": "シーエレメンタル (1) #189", "offset": 0, "compose": true}, {"path": "battlePalettes[63]", "name": "(2) #63", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[166]", "name": "シーエレメンタル (1) #166", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[109]", "name": "ルイナスウエーブ (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[45]", "name": "(2) #45", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -174,121 +185,129 @@
             "itemAttributes": [{"cells": "000000", "offset": 0, "bytes": 1, "index": 48, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 0, "bytes": 1, "index": 49, "invert": false, "path": "monsterAttributeData"}, {"cells": "111001", "offset": 0, "bytes": 1, "index": 50, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011", "offset": 0, "bytes": 1, "index": 51, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 52, "invert": false, "path": "monsterAttributeData"}, {"cells": "111100", "offset": 0, "bytes": 1, "index": 53, "invert": false, "path": "monsterAttributeData"}, {"cells": "010011", "offset": 0, "bytes": 1, "index": 54, "invert": false, "path": "monsterAttributeData"}, {"cells": "101111", "offset": 0, "bytes": 1, "index": 55, "invert": false, "path": "monsterAttributeData"}, {"cells": "100011", "offset": 0, "bytes": 1, "index": 56, "invert": false, "path": "monsterAttributeData"}, {"cells": "000111", "offset": 0, "bytes": 1, "index": 57, "invert": true, "path": "monsterAttributeData"}, {"cells": "001100", "offset": 0, "bytes": 1, "index": 58, "invert": false, "path": "monsterAttributeData"}, {"cells": "001011", "offset": 0, "bytes": 1, "index": 59, "invert": false, "path": "monsterAttributeData"}, {"cells": "010110", "offset": 0, "bytes": 1, "index": 60, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111", "offset": 0, "bytes": 1, "index": 61, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011", "offset": 0, "bytes": 1, "index": 62, "invert": true, "path": "monsterAttributeData"}, {"cells": "111010", "offset": 0, "bytes": 1, "index": 63, "invert": false, "path": "monsterAttributeData"}, {"cells": "001100", "offset": 0, "bytes": 1, "index": 64, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 65, "invert": true, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 66, "invert": true, "path": "monsterAttributeData"}, {"cells": "000100", "offset": 0, "bytes": 1, "index": 67, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 68, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 0, "bytes": 1, "index": 69, "invert": true, "path": "monsterAttributeData"}, {"cells": "111100", "offset": 0, "bytes": 1, "index": 70, "invert": false, "path": "monsterAttributeData"}, {"cells": "101000", "offset": 0, "bytes": 1, "index": 71, "invert": false, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[83]", "name": "プティメイジ (1)", "offset": 0},
+                            [{"path": "battlePalettes[83]", "name": "プティメイジ (1) #83", "offset": 0, "compose": true}],
+                            [{"path": "battlePalettes[132]", "name": "プティ (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[217]", "name": "(2) #217", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[132]", "name": "プティ (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[104]", "name": "(2) #104", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[53]", "name": "アイファング (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[94]", "name": "アイファング (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[53]", "name": "アイファング (1) #53", "offset": 0, "compose": true}, {"path": "battlePalettes[94]", "name": "(2) #94", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[112]", "name": "ダークアイ (1) #112", "offset": 0, "compose": true}, {"path": "battlePalettes[216]", "name": "(2) #216", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[204]", "name": "バシリスク (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[206]", "name": "バシリスク (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[204]", "name": "バシリスク (1) #204", "offset": 0, "compose": true}, {"path": "battlePalettes[206]", "name": "(2) #206", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[57]", "name": "コッカトリス (1) #57", "offset": 0, "compose": true}, {"path": "battlePalettes[70]", "name": "(2) #70", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[109]", "name": "スケルトン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[90]", "name": "スケルトン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[109]", "name": "スケルトン (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[90]", "name": "(2) #90", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[62]", "name": "シャドウ (1) #62", "offset": 0, "compose": true}, {"path": "battlePalettes[61]", "name": "(2) #61", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[141]", "name": "ゾンビ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[142]", "name": "ゾンビ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[141]", "name": "ゾンビ (1) #141", "offset": 0, "compose": true}, {"path": "battlePalettes[142]", "name": "(2) #142", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[62]", "name": "レブナント (1) #62", "offset": 0, "compose": true}, {"path": "battlePalettes[61]", "name": "(2) #61", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[124]", "name": "へルカン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[125]", "name": "へルカン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[124]", "name": "へルカン (1) #124", "offset": 0, "compose": true}, {"path": "battlePalettes[125]", "name": "(2) #125", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[24]", "name": "へルカンメイジ (1) #24", "offset": 0, "compose": true}, {"path": "battlePalettes[23]", "name": "(2) #23", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[48]", "name": "サハギン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[51]", "name": "サハギン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[48]", "name": "サハギン (1) #48", "offset": 0, "compose": true}, {"path": "battlePalettes[51]", "name": "(2) #51", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[85]", "name": "マーマン (1) #85", "offset": 0, "compose": true}, {"path": "battlePalettes[84]", "name": "(2) #84", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[98]", "name": "ファラオ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[80]", "name": "ファラオ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[98]", "name": "ファラオ (1) #98", "offset": 0, "compose": true}, {"path": "battlePalettes[80]", "name": "(2) #80", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[109]", "name": "マミー (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[90]", "name": "(2) #90", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[74]", "name": "マジシャン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[75]", "name": "マジシャン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[74]", "name": "マジシャン (1) #74", "offset": 0, "compose": true}, {"path": "battlePalettes[75]", "name": "(2) #75", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[24]", "name": "ソーサラー (1) #24", "offset": 0, "compose": true}, {"path": "battlePalettes[23]", "name": "(2) #23", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[93]", "name": "クムクム (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[168]", "name": "クムクム (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[93]", "name": "クムクム (1) #93", "offset": 0, "compose": true}, {"path": "battlePalettes[168]", "name": "(2) #168", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[208]", "name": "クムクム (1) #208", "offset": 0, "compose": true}, {"path": "battlePalettes[209]", "name": "(2) #209", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[180]", "name": "タランチュラ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[187]", "name": "タランチュラ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[180]", "name": "タランチュラ (1) #180", "offset": 0, "compose": true}, {"path": "battlePalettes[187]", "name": "(2) #187", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[72]", "name": "ダークフット (1) #72", "offset": 0, "compose": true}, {"path": "battlePalettes[70]", "name": "(2) #70", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[125]", "name": "バグベアー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[118]", "name": "バグベアー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[125]", "name": "バグベアー (1) #125", "offset": 0, "compose": true}, {"path": "battlePalettes[118]", "name": "(2) #118", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[169]", "name": "ゴールドベアー (1) #169", "offset": 0, "compose": true}, {"path": "battlePalettes[139]", "name": "(2) #139", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[171]", "name": "ゴールドナイト (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[167]", "name": "ゴールドナイト (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[171]", "name": "ゴールドナイト (1) #171", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[222]", "name": "くろきし (1) #222", "offset": 0, "compose": true}, {"path": "battlePalettes[224]", "name": "(2) #224", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[180]", "name": "くろきし (1) #180", "offset": 0, "compose": true}, {"path": "battlePalettes[181]", "name": "(2) #181", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[1]", "name": "ブラッドウォーム (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[104]", "name": "ブラッドウォーム (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[1]", "name": "ブラッドウォーム (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[104]", "name": "(2) #104", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[132]", "name": "ブラッドウォーム (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[104]", "name": "(2) #104", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[167]", "name": "サンドウォーム (1) #167", "offset": 0, "compose": true}, {"path": "battlePalettes[164]", "name": "(2) #164", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[111]", "name": "ほのおのまじん (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[41]", "name": "ほのおのまじん (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[111]", "name": "ほのおのまじん (1) #111", "offset": 0, "compose": true}, {"path": "battlePalettes[41]", "name": "(2) #41", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[122]", "name": "フライヤー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[75]", "name": "フライヤー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[122]", "name": "フライヤー (1) #122", "offset": 0, "compose": true}, {"path": "battlePalettes[75]", "name": "(2) #75", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[196]", "name": "メイジフライヤー (1) #196", "offset": 0, "compose": true}, {"path": "battlePalettes[75]", "name": "(2) #75", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[77]", "name": "ニードルモンキー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[73]", "name": "ニードルモンキー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[77]", "name": "ニードルモンキー (1) #77", "offset": 0, "compose": true}, {"path": "battlePalettes[73]", "name": "(2) #73", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[102]", "name": "デスニードル (1) #102", "offset": 0, "compose": true}, {"path": "battlePalettes[236]", "name": "(2) #236", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[236]", "name": "しのび (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[107]", "name": "しのび (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[236]", "name": "しのび (1) #236", "offset": 0, "compose": true}, {"path": "battlePalettes[107]", "name": "(2) #107", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[59]", "name": "かげ (1) #59", "offset": 0, "compose": true}],
+                            [{"path": "battlePalettes[210]", "name": "しのび (1) #210", "offset": 0, "compose": true}, {"path": "battlePalettes[211]", "name": "(2) #211", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[59]", "name": "おかしら (1)", "offset": 0},
+                            [{"path": "battlePalettes[59]", "name": "おかしら (1) #59", "offset": 0, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[143]", "name": "ウェアウルフ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[152]", "name": "ウェアウルフ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[143]", "name": "ウェアウルフ (1) #143", "offset": 0, "compose": true}, {"path": "battlePalettes[152]", "name": "(2) #152", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[55]", "name": "リンクス (1) #55", "offset": 0, "compose": true}, {"path": "battlePalettes[47]", "name": "(2) #47", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[6]", "name": "ダークフェイス (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[2]", "name": "ダークフェイス (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[6]", "name": "ダークフェイス (1) #6", "offset": 0, "compose": true}, {"path": "battlePalettes[2]", "name": "(2) #2", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[164]", "name": "ダークフェイス (1) #164", "offset": 0, "compose": true}, {"path": "battlePalettes[165]", "name": "(2) #165", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[237]", "name": "オヒシュキ (1) #237", "offset": 0, "compose": true}, {"path": "battlePalettes[129]", "name": "(2) #129", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[237]", "name": "オヒシュキ (1) #237", "offset": 0, "compose": true}, {"path": "battlePalettes[124]", "name": "(2) #124", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[195]", "name": "ウロボロス (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[32]", "name": "ウロボロス (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[195]", "name": "ウロボロス (1) #195", "offset": 0, "compose": true}, {"path": "battlePalettes[32]", "name": "(2) #32", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[194]", "name": "ウロボロス (1) #194", "offset": 0, "compose": true}, {"path": "battlePalettes[195]", "name": "(2) #195", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[56]", "name": "グレートボロス (1) #56", "offset": 0, "compose": true}, {"path": "battlePalettes[128]", "name": "(2) #128", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[122]", "name": "ゴルゴーン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[75]", "name": "ゴルゴーン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[122]", "name": "ゴルゴーン (1) #122", "offset": 0, "compose": true}, {"path": "battlePalettes[75]", "name": "(2) #75", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[158]", "name": "ゴルゴーン (1) #158", "offset": 0, "compose": true}, {"path": "battlePalettes[159]", "name": "(2) #159", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[151]", "name": "カフジェル (1) #151", "offset": 0, "compose": true}, {"path": "battlePalettes[112]", "name": "(2) #112", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[132]", "name": "ポイズントード (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[134]", "name": "ポイズントード (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[132]", "name": "ポイズントード (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[134]", "name": "(2) #134", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[72]", "name": "ギガントード (1) #72", "offset": 0, "compose": true}, {"path": "battlePalettes[70]", "name": "(2) #70", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -318,123 +337,125 @@
             "itemAttributes": [{"cells": "110000000", "offset": 0, "bytes": 2, "index": 72, "invert": true, "path": "monsterAttributeData"}, {"cells": "000011000", "offset": 0, "bytes": 2, "index": 74, "invert": true, "path": "monsterAttributeData"}, {"cells": "000000100", "offset": 0, "bytes": 2, "index": 76, "invert": false, "path": "monsterAttributeData"}, {"cells": "110010111", "offset": 0, "bytes": 2, "index": 78, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000111", "offset": 0, "bytes": 2, "index": 80, "invert": false, "path": "monsterAttributeData"}, {"cells": "001001001", "offset": 0, "bytes": 2, "index": 82, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011001", "offset": 0, "bytes": 2, "index": 84, "invert": true, "path": "monsterAttributeData"}, {"cells": "001000100", "offset": 0, "bytes": 2, "index": 86, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000011", "offset": 0, "bytes": 2, "index": 88, "invert": false, "path": "monsterAttributeData"}, {"cells": "110111111", "offset": 0, "bytes": 2, "index": 90, "invert": false, "path": "monsterAttributeData"}, {"cells": "111101000", "offset": 0, "bytes": 2, "index": 92, "invert": false, "path": "monsterAttributeData"}, {"cells": "111011000", "offset": 0, "bytes": 2, "index": 94, "invert": false, "path": "monsterAttributeData"}, {"cells": "011100010", "offset": 0, "bytes": 2, "index": 96, "invert": false, "path": "monsterAttributeData"}, {"cells": "000001000", "offset": 0, "bytes": 2, "index": 98, "invert": false, "path": "monsterAttributeData"}, {"cells": "111000001", "offset": 0, "bytes": 2, "index": 100, "invert": false, "path": "monsterAttributeData"}, {"cells": "100110111", "offset": 0, "bytes": 2, "index": 102, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000111", "offset": 0, "bytes": 2, "index": 104, "invert": false, "path": "monsterAttributeData"}, {"cells": "100111000", "offset": 0, "bytes": 2, "index": 106, "invert": true, "path": "monsterAttributeData"}, {"cells": "000011111", "offset": 0, "bytes": 2, "index": 108, "invert": true, "path": "monsterAttributeData"}, {"cells": "000100111", "offset": 0, "bytes": 2, "index": 110, "invert": false, "path": "monsterAttributeData"}, {"cells": "000100000", "offset": 0, "bytes": 2, "index": 112, "invert": true, "path": "monsterAttributeData"}, {"cells": "000100100", "offset": 0, "bytes": 2, "index": 114, "invert": false, "path": "monsterAttributeData"}, {"cells": "010110100", "offset": 0, "bytes": 2, "index": 116, "invert": false, "path": "monsterAttributeData"}, {"cells": "110100101", "offset": 0, "bytes": 2, "index": 118, "invert": true, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[161]", "name": "アイオン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[159]", "name": "アイオン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[161]", "name": "アイオン (1) #161", "offset": 0, "compose": true}, {"path": "battlePalettes[159]", "name": "(2) #159", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[213]", "name": "ダークジェネラル (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[130]", "name": "ダークジェネラル (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[213]", "name": "ダークジェネラル (1) #213", "offset": 0, "compose": true}, {"path": "battlePalettes[130]", "name": "(2) #130", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[125]", "name": "マンドレイク (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[118]", "name": "マンドレイク (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[125]", "name": "マンドレイク (1) #125", "offset": 0, "compose": true}, {"path": "battlePalettes[118]", "name": "(2) #118", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[63]", "name": "バロメッツ (1) #63", "offset": 0, "compose": true}, {"path": "battlePalettes[43]", "name": "(2) #43", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[221]", "name": "リザードマン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[223]", "name": "リザードマン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[221]", "name": "リザードマン (1) #221", "offset": 0, "compose": true}, {"path": "battlePalettes[223]", "name": "(2) #223", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[158]", "name": "リザードマン (1) #158", "offset": 0, "compose": true}, {"path": "battlePalettes[159]", "name": "(2) #159", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[167]", "name": "キングリザード (1) #167", "offset": 0, "compose": true}, {"path": "battlePalettes[170]", "name": "(2) #170", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[225]", "name": "ガーゴイル (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[220]", "name": "ガーゴイル (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[225]", "name": "ガーゴイル (1) #225", "offset": 0, "compose": true}, {"path": "battlePalettes[220]", "name": "(2) #220", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[1]", "name": "ロックガーゴイル (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[9]", "name": "(2) #9", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[87]", "name": "ハーミット (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[88]", "name": "ハーミット (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[87]", "name": "ハーミット (1) #87", "offset": 0, "compose": true}, {"path": "battlePalettes[88]", "name": "(2) #88", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[92]", "name": "さつじんやどかり (1) #92", "offset": 0, "compose": true}, {"path": "battlePalettes[241]", "name": "(2) #241", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[190]", "name": "ドーガクローン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[191]", "name": "ドーガクローン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[190]", "name": "ドーガクローン (1) #190", "offset": 0, "compose": true}, {"path": "battlePalettes[191]", "name": "(2) #191", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[208]", "name": "ドーガ (1) #208", "offset": 0, "compose": true}, {"path": "battlePalettes[59]", "name": "(2) #59", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[48]", "name": "タンギー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[51]", "name": "タンギー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[48]", "name": "タンギー (1) #48", "offset": 0, "compose": true}, {"path": "battlePalettes[51]", "name": "(2) #51", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[167]", "name": "ニーグル (1) #167", "offset": 0, "compose": true}, {"path": "battlePalettes[170]", "name": "(2) #170", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[89]", "name": "ラストバード (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[107]", "name": "ラストバード (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[89]", "name": "ラストバード (1) #89", "offset": 0, "compose": true}, {"path": "battlePalettes[107]", "name": "(2) #107", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[138]", "name": "グリフォン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[119]", "name": "グリフォン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[138]", "name": "グリフォン (1) #138", "offset": 0, "compose": true}, {"path": "battlePalettes[119]", "name": "(2) #119", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[12]", "name": "ドズメア (1) #12", "offset": 0, "compose": true}, {"path": "battlePalettes[40]", "name": "(2) #40", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[27]", "name": "キマイラ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[42]", "name": "キマイラ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[27]", "name": "キマイラ (1) #27", "offset": 0, "compose": true}, {"path": "battlePalettes[42]", "name": "(2) #42", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[178]", "name": "キマイラ (1) #178", "offset": 0, "compose": true}, {"path": "battlePalettes[179]", "name": "(2) #179", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[49]", "name": "メイジキマイラ (1) #49", "offset": 0, "compose": true}, {"path": "battlePalettes[50]", "name": "(2) #50", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[184]", "name": "メイジキマイラ (1) #184", "offset": 0, "compose": true}, {"path": "battlePalettes[185]", "name": "(2) #185", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[209]", "name": "アネット (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[204]", "name": "アネット (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[209]", "name": "アネット (1) #209", "offset": 0, "compose": true}, {"path": "battlePalettes[204]", "name": "(2) #204", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[39]", "name": "アブトー (1) #39", "offset": 0, "compose": true}, {"path": "battlePalettes[37]", "name": "(2) #37", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[155]", "name": "ナイトメアー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[156]", "name": "ナイトメアー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[155]", "name": "ナイトメアー (1) #155", "offset": 0, "compose": true}, {"path": "battlePalettes[156]", "name": "(2) #156", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[69]", "name": "あくまのうま (1) #69", "offset": 0, "compose": true}, {"path": "battlePalettes[72]", "name": "(2) #72", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[183]", "name": "クロコッタ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[179]", "name": "クロコッタ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[183]", "name": "クロコッタ (1) #183", "offset": 0, "compose": true}, {"path": "battlePalettes[179]", "name": "(2) #179", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[174]", "name": "クロコッタ (1) #174", "offset": 0, "compose": true}, {"path": "battlePalettes[175]", "name": "(2) #175", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[169]", "name": "リュークロコッタ (1) #169", "offset": 0, "compose": true}, {"path": "battlePalettes[171]", "name": "(2) #171", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[143]", "name": "バーサーカー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[152]", "name": "バーサーカー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[143]", "name": "バーサーカー (1) #143", "offset": 0, "compose": true}, {"path": "battlePalettes[152]", "name": "(2) #152", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[153]", "name": "ゴールドウォリア (1) #153", "offset": 0, "compose": true}, {"path": "battlePalettes[173]", "name": "(2) #173", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[117]", "name": "マーメイド (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[99]", "name": "マーメイド (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[117]", "name": "マーメイド (1) #117", "offset": 0, "compose": true}, {"path": "battlePalettes[99]", "name": "(2) #99", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[113]", "name": "うみのまじょ (1) #113", "offset": 0, "compose": true}, {"path": "battlePalettes[67]", "name": "(2) #67", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[132]", "name": "ローパー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[134]", "name": "ローパー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[132]", "name": "ローパー (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[134]", "name": "(2) #134", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[110]", "name": "ストローパー (1) #110", "offset": 0, "compose": true}, {"path": "battlePalettes[193]", "name": "(2) #193", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[198]", "name": "バルフレー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[199]", "name": "バルフレー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[198]", "name": "バルフレー (1) #198", "offset": 0, "compose": true}, {"path": "battlePalettes[199]", "name": "(2) #199", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[166]", "name": "トール (1) #166", "offset": 0, "compose": true}, {"path": "battlePalettes[165]", "name": "(2) #165", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[238]", "name": "ハオカー (1) #238", "offset": 0, "compose": true}, {"path": "battlePalettes[44]", "name": "(2) #44", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[200]", "name": "ハオカー (1) #200", "offset": 0, "compose": true}, {"path": "battlePalettes[201]", "name": "(2) #201", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[131]", "name": "ガーブ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[133]", "name": "ガーブ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[131]", "name": "ガーブ (1) #131", "offset": 0, "compose": true}, {"path": "battlePalettes[133]", "name": "(2) #133", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[190]", "name": "ブラク (1) #190", "offset": 0, "compose": true}, {"path": "battlePalettes[191]", "name": "(2) #191", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[103]", "name": "カトブレパス (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[18]", "name": "カトブレパス (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[103]", "name": "カトブレパス (1) #103", "offset": 0, "compose": true}, {"path": "battlePalettes[18]", "name": "(2) #18", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[132]", "name": "フンババ (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[243]", "name": "(2) #243", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[198]", "name": "ハニエル (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[199]", "name": "ハニエル (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[198]", "name": "ハニエル (1) #198", "offset": 0, "compose": true}, {"path": "battlePalettes[199]", "name": "(2) #199", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[51]", "name": "アズリエル (1) #51", "offset": 0, "compose": true}, {"path": "battlePalettes[52]", "name": "(2) #52", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[161]", "name": "マンティコラ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[164]", "name": "マンティコラ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[161]", "name": "マンティコラ (1) #161", "offset": 0, "compose": true}, {"path": "battlePalettes[164]", "name": "(2) #164", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[183]", "name": "ミルメコレオ (1) #183", "offset": 0, "compose": true}, {"path": "battlePalettes[179]", "name": "(2) #179", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[79]", "name": "ルフ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[72]", "name": "ルフ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[79]", "name": "ルフ (1) #79", "offset": 0, "compose": true}, {"path": "battlePalettes[72]", "name": "(2) #72", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[225]", "name": "シムルグ (1) #225", "offset": 0, "compose": true}, {"path": "battlePalettes[220]", "name": "(2) #220", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[233]", "name": "ケンコス (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[218]", "name": "ケンコス (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[233]", "name": "ケンコス (1) #233", "offset": 0, "compose": true}, {"path": "battlePalettes[218]", "name": "(2) #218", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -464,123 +485,129 @@
             "itemAttributes": [{"cells": "000000111", "offset": 0, "bytes": 2, "index": 120, "invert": true, "path": "monsterAttributeData"}, {"cells": "000111111", "offset": 0, "bytes": 2, "index": 122, "invert": true, "path": "monsterAttributeData"}, {"cells": "000010011", "offset": 0, "bytes": 2, "index": 124, "invert": true, "path": "monsterAttributeData"}, {"cells": "001001000", "offset": 0, "bytes": 2, "index": 126, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111100", "offset": 0, "bytes": 2, "index": 128, "invert": true, "path": "monsterAttributeData"}, {"cells": "000111111", "offset": 0, "bytes": 2, "index": 130, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000101", "offset": 0, "bytes": 2, "index": 132, "invert": false, "path": "monsterAttributeData"}, {"cells": "111110000", "offset": 0, "bytes": 2, "index": 134, "invert": false, "path": "monsterAttributeData"}, {"cells": "110100000", "offset": 0, "bytes": 2, "index": 136, "invert": false, "path": "monsterAttributeData"}, {"cells": "110110111", "offset": 0, "bytes": 2, "index": 138, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000111", "offset": 0, "bytes": 2, "index": 140, "invert": false, "path": "monsterAttributeData"}, {"cells": "111000000", "offset": 0, "bytes": 2, "index": 142, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111000", "offset": 0, "bytes": 2, "index": 144, "invert": false, "path": "monsterAttributeData"}, {"cells": "001011111", "offset": 0, "bytes": 2, "index": 146, "invert": true, "path": "monsterAttributeData"}, {"cells": "101111111", "offset": 0, "bytes": 2, "index": 148, "invert": true, "path": "monsterAttributeData"}, {"cells": "011110010", "offset": 0, "bytes": 2, "index": 150, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111000", "offset": 0, "bytes": 2, "index": 152, "invert": false, "path": "monsterAttributeData"}, {"cells": "101101000", "offset": 0, "bytes": 2, "index": 154, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011111", "offset": 0, "bytes": 2, "index": 156, "invert": false, "path": "monsterAttributeData"}, {"cells": "010000101", "offset": 0, "bytes": 2, "index": 158, "invert": true, "path": "monsterAttributeData"}, {"cells": "000101111", "offset": 0, "bytes": 2, "index": 160, "invert": false, "path": "monsterAttributeData"}, {"cells": "101101110", "offset": 0, "bytes": 2, "index": 162, "invert": true, "path": "monsterAttributeData"}, {"cells": "000110111", "offset": 0, "bytes": 2, "index": 164, "invert": true, "path": "monsterAttributeData"}, {"cells": "000110000", "offset": 0, "bytes": 2, "index": 166, "invert": true, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[51]", "name": "バラー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[46]", "name": "バラー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[51]", "name": "バラー (1) #51", "offset": 0, "compose": true}, {"path": "battlePalettes[46]", "name": "(2) #46", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[22]", "name": "イーター (1) #22", "offset": 0, "compose": true}, {"path": "battlePalettes[21]", "name": "(2) #21", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[188]", "name": "イーター (1) #188", "offset": 0, "compose": true}, {"path": "battlePalettes[189]", "name": "(2) #189", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[221]", "name": "オログハイ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[214]", "name": "オログハイ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[221]", "name": "オログハイ (1) #221", "offset": 0, "compose": true}, {"path": "battlePalettes[214]", "name": "(2) #214", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[30]", "name": "プランクタイ (1) #30", "offset": 0, "compose": true}, {"path": "battlePalettes[105]", "name": "(2) #105", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[221]", "name": "ケルピー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[214]", "name": "ケルピー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[221]", "name": "ケルピー (1) #221", "offset": 0, "compose": true}, {"path": "battlePalettes[214]", "name": "(2) #214", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[10]", "name": "シーライオン (1) #10", "offset": 0, "compose": true}, {"path": "battlePalettes[11]", "name": "(2) #11", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[209]", "name": "シーホース (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[204]", "name": "シーホース (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[209]", "name": "シーホース (1) #209", "offset": 0, "compose": true}, {"path": "battlePalettes[204]", "name": "(2) #204", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[205]", "name": "カーグラ (1) #205", "offset": 0, "compose": true}, {"path": "battlePalettes[203]", "name": "(2) #203", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[167]", "name": "キングシーホース (1) #167", "offset": 0, "compose": true}, {"path": "battlePalettes[170]", "name": "(2) #170", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[219]", "name": "ライガー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[221]", "name": "ライガー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[219]", "name": "ライガー (1) #219", "offset": 0, "compose": true}, {"path": "battlePalettes[221]", "name": "(2) #221", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[163]", "name": "ライガーサーベル (1) #163", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[132]", "name": "ツインへッド (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[134]", "name": "ツインへッド (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[132]", "name": "ツインへッド (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[134]", "name": "(2) #134", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[48]", "name": "ツインライガー (1) #48", "offset": 0, "compose": true}, {"path": "battlePalettes[50]", "name": "(2) #50", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[7]", "name": "アガリアレプト (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[175]", "name": "アガリアレプト (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[7]", "name": "アガリアレプト (1) #7", "offset": 0, "compose": true}, {"path": "battlePalettes[175]", "name": "(2) #175", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[125]", "name": "エーギル (1) #125", "offset": 0, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[65]", "name": "ワイバーン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[66]", "name": "ワイバーン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[65]", "name": "ワイバーン (1) #65", "offset": 0, "compose": true}, {"path": "battlePalettes[66]", "name": "(2) #66", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[95]", "name": "ペリュトン (1) #95", "offset": 0, "compose": true}, {"path": "battlePalettes[96]", "name": "(2) #96", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[185]", "name": "パラライマ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[115]", "name": "パラライマ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[185]", "name": "パラライマ (1) #185", "offset": 0, "compose": true}, {"path": "battlePalettes[115]", "name": "(2) #115", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[26]", "name": "ネメシス (1) #26", "offset": 0, "compose": true}, {"path": "battlePalettes[176]", "name": "(2) #176", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[226]", "name": "ネプトりゅう (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[17]", "name": "ネプトりゅう (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[226]", "name": "ネプトりゅう (1) #226", "offset": 0, "compose": true}, {"path": "battlePalettes[17]", "name": "(2) #17", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[234]", "name": "シーサーペント (1) #234", "offset": 0, "compose": true}, {"path": "battlePalettes[192]", "name": "(2) #192", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[98]", "name": "ラミア (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[80]", "name": "ラミア (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[98]", "name": "ラミア (1) #98", "offset": 0, "compose": true}, {"path": "battlePalettes[80]", "name": "(2) #80", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[76]", "name": "ラミアクイーン (1) #76", "offset": 0, "compose": true}, {"path": "battlePalettes[97]", "name": "(2) #97", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[1]", "name": "うしにんげん (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[9]", "name": "うしにんげん (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[1]", "name": "うしにんげん (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[9]", "name": "(2) #9", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[219]", "name": "ミノタウロス (1) #219", "offset": 0, "compose": true}, {"path": "battlePalettes[221]", "name": "(2) #221", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[186]", "name": "アダマンタイマイ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[127]", "name": "アダマンタイマイ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[186]", "name": "アダマンタイマイ (1) #186", "offset": 0, "compose": true}, {"path": "battlePalettes[127]", "name": "(2) #127", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[205]", "name": "バッサゴ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[201]", "name": "バッサゴ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[205]", "name": "バッサゴ (1) #205", "offset": 0, "compose": true}, {"path": "battlePalettes[201]", "name": "(2) #201", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[0]", "name": "アバイ (1) #0", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[198]", "name": "デスクロー (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[199]", "name": "デスクロー (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[198]", "name": "デスクロー (1) #198", "offset": 0, "compose": true}, {"path": "battlePalettes[199]", "name": "(2) #199", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[10]", "name": "アイアンクロー (1) #10", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[28]", "name": "ウネクローン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[31]", "name": "ウネクローン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[28]", "name": "ウネクローン (1) #28", "offset": 0, "compose": true}, {"path": "battlePalettes[31]", "name": "(2) #31", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[68]", "name": "ウネ (1) #68", "offset": 0, "compose": true}, {"path": "battlePalettes[64]", "name": "(2) #64", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[205]", "name": "カリュブディス (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[203]", "name": "カリュブディス (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[205]", "name": "カリュブディス (1) #205", "offset": 0, "compose": true}, {"path": "battlePalettes[203]", "name": "(2) #203", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[36]", "name": "レモラ (1) #36", "offset": 0, "compose": true}, {"path": "battlePalettes[25]", "name": "(2) #25", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[17]", "name": "デーモン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[15]", "name": "デーモン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[17]", "name": "デーモン (1) #17", "offset": 0, "compose": true}, {"path": "battlePalettes[15]", "name": "(2) #15", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[176]", "name": "デーモン (1) #176", "offset": 0, "compose": true}, {"path": "battlePalettes[177]", "name": "(2) #177", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[28]", "name": "グレートデーモン (1) #28", "offset": 0, "compose": true}, {"path": "battlePalettes[31]", "name": "(2) #31", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[3]", "name": "ボストロル (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[2]", "name": "ボストロル (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[3]", "name": "ボストロル (1) #3", "offset": 0, "compose": true}, {"path": "battlePalettes[2]", "name": "(2) #2", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[233]", "name": "ファハン (1) #233", "offset": 0, "compose": true}, {"path": "battlePalettes[218]", "name": "(2) #218", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[186]", "name": "ファハン (1) #186", "offset": 0, "compose": true}, {"path": "battlePalettes[187]", "name": "(2) #187", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[132]", "name": "オーガ (1) #132", "offset": 0, "compose": true}, {"path": "battlePalettes[243]", "name": "(2) #243", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[221]", "name": "よくりゅう (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[219]", "name": "よくりゅう (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[221]", "name": "よくりゅう (1) #221", "offset": 0, "compose": true}, {"path": "battlePalettes[219]", "name": "(2) #219", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[4]", "name": "プテラノゴン (1) #4", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[231]", "name": "キュクロプス (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[232]", "name": "キュクロプス (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[231]", "name": "キュクロプス (1) #231", "offset": 0, "compose": true}, {"path": "battlePalettes[232]", "name": "(2) #232", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[154]", "name": "サイクロプス (1) #154", "offset": 0, "compose": true}, {"path": "battlePalettes[148]", "name": "(2) #148", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[205]", "name": "クロノス (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[201]", "name": "クロノス (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[205]", "name": "クロノス (1) #205", "offset": 0, "compose": true}, {"path": "battlePalettes[201]", "name": "(2) #201", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[131]", "name": "シレノス (1) #131", "offset": 0, "compose": true}, {"path": "battlePalettes[133]", "name": "(2) #133", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[0]", "name": "スレイプニル (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[1]", "name": "スレイプニル (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[0]", "name": "スレイプニル (1) #0", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[205]", "name": "じごくのうま (1) #205", "offset": 0, "compose": true}, {"path": "battlePalettes[201]", "name": "(2) #201", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[190]", "name": "じごくのうま (1) #190", "offset": 0, "compose": true}, {"path": "battlePalettes[191]", "name": "(2) #191", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[198]", "name": "スレイプニル (1) #198", "offset": 0, "compose": true}, {"path": "battlePalettes[199]", "name": "(2) #199", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[166]", "name": "ガルム (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[165]", "name": "ガルム (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[166]", "name": "ガルム (1) #166", "offset": 0, "compose": true}, {"path": "battlePalettes[165]", "name": "(2) #165", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[22]", "name": "ガルム (1) #22", "offset": 0, "compose": true}, {"path": "battlePalettes[21]", "name": "(2) #21", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -610,23 +637,29 @@
             "itemAttributes": [{"cells": "111101011111001001", "offset": 0, "bytes": 3, "index": 168, "invert": true, "path": "monsterAttributeData"}, {"cells": "110100101001111111", "offset": 0, "bytes": 3, "index": 171, "invert": true, "path": "monsterAttributeData"}, {"cells": "111001001000101111", "offset": 0, "bytes": 3, "index": 174, "invert": true, "path": "monsterAttributeData"}, {"cells": "001001111110011111", "offset": 0, "bytes": 3, "index": 177, "invert": true, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[212]", "name": "へカトンケイル (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[177]", "name": "へカトンケイル (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[212]", "name": "へカトンケイル (1) #212", "offset": 0, "compose": true}, {"path": "battlePalettes[177]", "name": "(2) #177", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[140]", "name": "アケローン (1) #140", "offset": 0, "compose": true}, {"path": "battlePalettes[210]", "name": "(2) #210", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[202]", "name": "アケローン (1) #202", "offset": 0, "compose": true}, {"path": "battlePalettes[203]", "name": "(2) #203", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[212]", "name": "へカトンケイル (1) #212", "offset": 0, "compose": true}, {"path": "battlePalettes[213]", "name": "(2) #213", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[81]", "name": "ティターン (1) #81", "offset": 0, "compose": true}, {"path": "battlePalettes[33]", "name": "(2) #33", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[81]", "name": "ティターン (1) #81", "offset": 0, "compose": true}, {"path": "battlePalettes[82]", "name": "(2) #82", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[100]", "name": "アモン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[80]", "name": "アモン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[100]", "name": "アモン (1) #100", "offset": 0, "compose": true}, {"path": "battlePalettes[80]", "name": "(2) #80", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[206]", "name": "アモン (1) #206", "offset": 0, "compose": true}, {"path": "battlePalettes[207]", "name": "(2) #207", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[58]", "name": "まどうしハイン (1) #58", "offset": 0, "compose": true}, {"path": "battlePalettes[114]", "name": "(2) #114", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[73]", "name": "ヒュドラ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[60]", "name": "ヒュドラ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[73]", "name": "ヒュドラ (1) #73", "offset": 0, "compose": true}, {"path": "battlePalettes[60]", "name": "(2) #60", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[214]", "name": "ヒュドラ (1) #214", "offset": 0, "compose": true}, {"path": "battlePalettes[215]", "name": "(2) #215", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[185]", "name": "エキドナ (1) #185", "offset": 0, "compose": true}, {"path": "battlePalettes[242]", "name": "(2) #242", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[121]", "name": "グラシャラボラス (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[120]", "name": "グラシャラボラス (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[121]", "name": "グラシャラボラス (1) #121", "offset": 0, "compose": true}, {"path": "battlePalettes[120]", "name": "(2) #120", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[157]", "name": "ガーディアン (1) #157", "offset": 0, "compose": true}, {"path": "battlePalettes[144]", "name": "(2) #144", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -656,23 +689,24 @@
             "itemAttributes": [{"cells": "100000000111010111", "offset": 0, "bytes": 3, "index": 180, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000001001111101", "offset": 0, "bytes": 3, "index": 183, "invert": true, "path": "monsterAttributeData"}, {"cells": "000000001101011110", "offset": 0, "bytes": 3, "index": 186, "invert": true, "path": "monsterAttributeData"}, {"cells": "111110100010000000", "offset": 0, "bytes": 3, "index": 189, "invert": true, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
-                            {"path": "battlePalettes[35]", "name": "ベヒーモス (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[38]", "name": "ベヒーモス (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[35]", "name": "ベヒーモス (1) #35", "offset": 0, "compose": true}, {"path": "battlePalettes[38]", "name": "(2) #38", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[19]", "name": "キングベヒーモス (1) #19", "offset": 0, "compose": true}, {"path": "battlePalettes[20]", "name": "(2) #20", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[215]", "name": "ダブルドラゴン (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[211]", "name": "ダブルドラゴン (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[215]", "name": "ダブルドラゴン (1) #215", "offset": 0, "compose": true}, {"path": "battlePalettes[211]", "name": "(2) #211", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[147]", "name": "２へッドドラゴン (1) #147", "offset": 0, "compose": true}, {"path": "battlePalettes[153]", "name": "(2) #153", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[182]", "name": "オケアノス (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[186]", "name": "オケアノス (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[182]", "name": "オケアノス (1) #182", "offset": 0, "compose": true}, {"path": "battlePalettes[186]", "name": "(2) #186", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[204]", "name": "オケアノス (1) #204", "offset": 0, "compose": true}, {"path": "battlePalettes[205]", "name": "(2) #205", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[106]", "name": "ヨルムンガンド (1) #106", "offset": 0, "compose": true}, {"path": "battlePalettes[112]", "name": "(2) #112", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ],
                 [
-                            {"path": "battlePalettes[174]", "name": "ドラゴンゾンビ (1)", "offset": 0, "compose": true},
-                            {"path": "battlePalettes[101]", "name": "ドラゴンゾンビ (2)", "offset": 4, "compose": true},
+                            [{"path": "battlePalettes[174]", "name": "ドラゴンゾンビ (1) #174", "offset": 0, "compose": true}, {"path": "battlePalettes[101]", "name": "(2) #101", "offset": 4, "compose": true}],
+                            [{"path": "battlePalettes[8]", "name": "ボーンドラゴン (1) #8", "offset": 0, "compose": true}, {"path": "battlePalettes[210]", "name": "(2) #210", "offset": 4, "compose": true}],
                             {"path": "battlePalettes"}
                         ]
             ],
@@ -1040,8 +1074,8 @@
             },
             "attributeRef": {"cells": "111111111111111111111101111111101111111010011111011111", "offset": 0, "bytes": 7, "index": 0, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[185]", "name": "ゴモリー (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[181]", "name": "ゴモリー (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[185]", "name": "ゴモリー (1) #185", "offset": 0, "compose": true}, {"path": "battlePalettes[181]", "name": "(2) #181", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[29]", "name": "メデューサ (1) #29", "offset": 0, "compose": true}, {"path": "battlePalettes[28]", "name": "(2) #28", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1060,8 +1094,9 @@
             },
             "attributeRef": {"cells": "000000000000000100000001110000001110000000000000000000", "offset": 0, "bytes": 7, "index": 1, "invert": false, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[126]", "name": "バルカン (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[123]", "name": "バルカン (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[126]", "name": "バルカン (1) #126", "offset": 0, "compose": true}, {"path": "battlePalettes[123]", "name": "(2) #123", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[184]", "name": "ピュラリス (1) #184", "offset": 0, "compose": true}, {"path": "battlePalettes[54]", "name": "(2) #54", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[64]", "name": "サラマンダー (1) #64", "offset": 0, "compose": true}, {"path": "battlePalettes[86]", "name": "(2) #86", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1080,8 +1115,7 @@
             },
             "attributeRef": {"cells": "000000000000000000000000000000010000000011000000011000", "offset": 0, "bytes": 7, "index": 2, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[229]", "name": "ガルーダ (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[230]", "name": "ガルーダ (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[229]", "name": "ガルーダ (1) #229", "offset": 0, "compose": true}, {"path": "battlePalettes[230]", "name": "(2) #230", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1100,8 +1134,9 @@
             },
             "attributeRef": {"cells": "111111111111111111111111111111100111111101111111100111", "offset": 0, "bytes": 7, "index": 3, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[241]", "name": "クィーンスキュラ (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[209]", "name": "クィーンスキュラ (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[241]", "name": "クィーンスキュラ (1) #241", "offset": 0, "compose": true}, {"path": "battlePalettes[209]", "name": "(2) #209", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[216]", "name": "クィーンスキュラ (1) #216", "offset": 0, "compose": true}, {"path": "battlePalettes[217]", "name": "(2) #217", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[108]", "name": "スキュラ (1) #108", "offset": 0, "compose": true}, {"path": "battlePalettes[158]", "name": "(2) #158", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1120,8 +1155,7 @@
             },
             "attributeRef": {"cells": "111111111110000011110010011110010011111010111111111111", "offset": 0, "bytes": 7, "index": 4, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[242]", "name": "アーリマン (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[82]", "name": "アーリマン (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[242]", "name": "アーリマン (1) #242", "offset": 0, "compose": true}, {"path": "battlePalettes[82]", "name": "(2) #82", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1140,8 +1174,7 @@
             },
             "attributeRef": {"cells": "110000111110000011110011111110010111110010111111011111", "offset": 0, "bytes": 7, "index": 5, "invert": false, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[52]", "name": "ドラゴン (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[51]", "name": "ドラゴン (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[52]", "name": "ドラゴン (1) #52", "offset": 0, "compose": true}, {"path": "battlePalettes[51]", "name": "(2) #51", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1160,8 +1193,9 @@
             },
             "attributeRef": {"cells": "111111111111111111110011111111100111111100111111111111", "offset": 0, "bytes": 7, "index": 6, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[109]", "name": "レッドドラゴン (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[106]", "name": "レッドドラゴン (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[109]", "name": "レッドドラゴン (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[106]", "name": "(2) #106", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[182]", "name": "グリーンドラゴン (1) #182", "offset": 0, "compose": true}, {"path": "battlePalettes[181]", "name": "(2) #181", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[167]", "name": "イエロードラゴン (1) #167", "offset": 0, "compose": true}, {"path": "battlePalettes[166]", "name": "(2) #166", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1180,8 +1214,9 @@
             },
             "attributeRef": {"cells": "110111111111111111100000001100000011100000011110000111", "offset": 0, "bytes": 7, "index": 7, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[101]", "name": "ザンデクローン (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[207]", "name": "ザンデクローン (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[101]", "name": "ザンデクローン (1) #101", "offset": 0, "compose": true}, {"path": "battlePalettes[207]", "name": "(2) #207", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[245]", "name": "まおうザンデ (1) #245", "offset": 0, "compose": true}, {"path": "battlePalettes[246]", "name": "(2) #246", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[160]", "name": "まおうザンデ (1) #160", "offset": 0, "compose": true}, {"path": "battlePalettes[161]", "name": "(2) #161", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1200,8 +1235,9 @@
             },
             "attributeRef": {"cells": "111110001111000001111000000111000000111000000111000000", "offset": 0, "bytes": 7, "index": 8, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[202]", "name": "くらやみのくも (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[27]", "name": "くらやみのくも (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[202]", "name": "くらやみのくも (1) #202", "offset": 0, "compose": true}, {"path": "battlePalettes[27]", "name": "(2) #27", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[78]", "name": "くらやみのくも (1) #78", "offset": 0, "compose": true}, {"path": "battlePalettes[250]", "name": "(2) #250", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[222]", "name": "くらやみのくも (1) #222", "offset": 0, "compose": true}, {"path": "battlePalettes[223]", "name": "(2) #223", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1220,8 +1256,9 @@
             },
             "attributeRef": {"cells": "111111111111101111111101111111001111111000111111111111", "offset": 0, "bytes": 7, "index": 9, "invert": false, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[149]", "name": "ハルピュイア (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[145]", "name": "ハルピュイア (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[149]", "name": "ハルピュイア (1) #149", "offset": 0, "compose": true}, {"path": "battlePalettes[145]", "name": "(2) #145", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[152]", "name": "ディーライ (1) #152", "offset": 0, "compose": true}, {"path": "battlePalettes[240]", "name": "(2) #240", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[182]", "name": "ディーライ (1) #182", "offset": 0, "compose": true}, {"path": "battlePalettes[183]", "name": "(2) #183", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1240,8 +1277,8 @@
             },
             "attributeRef": {"cells": "100000111100001111111101111111101111111111111111111111", "offset": 0, "bytes": 7, "index": 10, "invert": false, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[116]", "name": "デュラハン (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[188]", "name": "デュラハン (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[116]", "name": "デュラハン (1) #116", "offset": 0, "compose": true}, {"path": "battlePalettes[188]", "name": "(2) #188", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[90]", "name": "タナトス (1) #90", "offset": 0, "compose": true}, {"path": "battlePalettes[212]", "name": "(2) #212", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1260,8 +1297,8 @@
             },
             "attributeRef": {"cells": "111111111110111111111000011111000111111110011111111111", "offset": 0, "bytes": 7, "index": 11, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[73]", "name": "プラティナル (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[69]", "name": "プラティナル (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[73]", "name": "プラティナル (1) #73", "offset": 0, "compose": true}, {"path": "battlePalettes[69]", "name": "(2) #69", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[171]", "name": "ゴールドル (1) #171", "offset": 0, "compose": true}, {"path": "battlePalettes[162]", "name": "(2) #162", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1280,7 +1317,7 @@
             },
             "attributeRef": {"cells": "111111111111111111111111111111001111111111111111111111", "offset": 0, "bytes": 7, "index": 12, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[69]", "name": "おおネズミ (1)", "offset": 0},
+                    [{"path": "battlePalettes[69]", "name": "おおネズミ (1) #69", "offset": 0, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1299,8 +1336,7 @@
             },
             "attributeRef": {"cells": "111111111111000111111000111111111111111111111111111111", "offset": 0, "bytes": 7, "index": 13, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[109]", "name": "ジン (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[106]", "name": "ジン (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[109]", "name": "ジン (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[106]", "name": "(2) #106", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1319,8 +1355,7 @@
             },
             "attributeRef": {"cells": "111111111111111111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 14, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[53]", "name": "ニンジャ (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[48]", "name": "ニンジャ (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[53]", "name": "ニンジャ (1) #53", "offset": 0, "compose": true}, {"path": "battlePalettes[48]", "name": "(2) #48", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1339,8 +1374,7 @@
             },
             "attributeRef": {"cells": "111111111111111111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 15, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[227]", "name": "くのいち (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[228]", "name": "くのいち (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[227]", "name": "くのいち (1) #227", "offset": 0, "compose": true}, {"path": "battlePalettes[228]", "name": "(2) #228", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1359,8 +1393,7 @@
             },
             "attributeRef": {"cells": "111111111111110111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 16, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[1]", "name": "とうぞくグツコー (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[5]", "name": "とうぞくグツコー (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[1]", "name": "とうぞくグツコー (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[5]", "name": "(2) #5", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1379,8 +1412,7 @@
             },
             "attributeRef": {"cells": "111111111111000111111011111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 17, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[60]", "name": "ジェネラル (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[27]", "name": "ジェネラル (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[60]", "name": "ジェネラル (1) #60", "offset": 0, "compose": true}, {"path": "battlePalettes[27]", "name": "(2) #27", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1399,8 +1431,7 @@
             },
             "attributeRef": {"cells": "110000111110000011110011111110010111110010111111011111", "offset": 0, "bytes": 7, "index": 18, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[9]", "name": "バハムート (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[4]", "name": "バハムート (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[9]", "name": "バハムート (1) #9", "offset": 0, "compose": true}, {"path": "battlePalettes[4]", "name": "(2) #4", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1419,8 +1450,7 @@
             },
             "attributeRef": {"cells": "111111111111111111111100111111101111111111111111111111", "offset": 0, "bytes": 7, "index": 19, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[235]", "name": "クラーケン (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[72]", "name": "クラーケン (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[235]", "name": "クラーケン (1) #235", "offset": 0, "compose": true}, {"path": "battlePalettes[72]", "name": "(2) #72", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1439,8 +1469,7 @@
             },
             "attributeRef": {"cells": "111111111111111111111111111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 20, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[34]", "name": "ランドタートル (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[71]", "name": "ランドタートル (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[34]", "name": "ランドタートル (1) #34", "offset": 0, "compose": true}, {"path": "battlePalettes[71]", "name": "(2) #71", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1459,8 +1488,8 @@
             },
             "attributeRef": {"cells": "111111111111000111111110111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 21, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[46]", "name": "ケルベロス (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[53]", "name": "ケルベロス (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[46]", "name": "ケルベロス (1) #46", "offset": 0, "compose": true}, {"path": "battlePalettes[53]", "name": "(2) #53", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[162]", "name": "ケルベロス (1) #162", "offset": 0, "compose": true}, {"path": "battlePalettes[163]", "name": "(2) #163", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1471,6 +1500,7 @@
             "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
+            "mirrorX": true,
             "backColor": true,
             "graphics": {
                 "path": "summonGraphics",
@@ -1479,8 +1509,7 @@
             },
             "attributeRef": {"cells": "000000000000000000000000000000011000001111000001111000", "offset": 0, "bytes": 7, "index": 22, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[248]", "name": "オーディン (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[249]", "name": "オーディン (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[248]", "name": "オーディン (1) #248", "offset": 0, "compose": true}, {"path": "battlePalettes[249]", "name": "(2) #249", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -1491,6 +1520,7 @@
             "format": "ff3BossTilemap",
             "width": 18,
             "height": 12,
+            "mirrorX": true,
             "backColor": true,
             "graphics": {
                 "path": "summonGraphics",
@@ -1499,8 +1529,8 @@
             },
             "attributeRef": {"cells": "000000000000000000000001000000000000000000000000000000", "offset": 0, "bytes": 7, "index": 23, "invert": true, "path": "bossAttributeData"},
             "palette": [
-                    {"path": "battlePalettes[208]", "name": "リバイアサン (1)", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[247]", "name": "リバイアサン (2)", "offset": 4, "compose": true},
+                    [{"path": "battlePalettes[208]", "name": "リバイアサン (1) #208", "offset": 0, "compose": true}, {"path": "battlePalettes[247]", "name": "(2) #247", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[248]", "name": "リバイアサン (1) #248", "offset": 0, "compose": true}, {"path": "battlePalettes[249]", "name": "(2) #249", "offset": 4, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },

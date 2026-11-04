@@ -757,6 +757,48 @@ function applyAttributeRef(object, ref) {
     object.attributeCellsInvert = !!ref.invert;
 }
 
+// The cell number of a tile in an object's palette-cell grid, or -1.
+function attributeCellForTile(object, x, y) {
+    if (!object || !object.attributeRef) return -1;
+    var w = object.width || 0;
+    if (!w) return -1;
+    var cols = Math.ceil(w / 2);
+    return Math.floor(y / 2) * cols + Math.floor(x / 2) +
+           (Number(object.attributeCellsOffset) || 0);
+}
+
+// Write one cell's palette choice back to the ROM table the object references.
+// `value` is what the user sees (0 = first palette, 1 = second); the ROM holds
+// the bits before the per-monster inversion (2F/A8BF), so undo that here.
+function setAttributeBit(object, cell, value) {
+    var ref = object && object.attributeRef;
+    if (!ref || !ref.path || cell < 0) return false;
+    var rom = object.rom || (object.parent && object.parent.rom);
+    if (!rom) return false;
+    var array = rom.parsePath(ref.path, rom);
+    if (!array || !array.item) return false;
+    // the referenced array holds either one byte per item (the monster table)
+    // or one whole record per item (the boss table) - work out which from the
+    // first item, so `index` means the right thing in both cases
+    var first = array.item(ref.index || 0);
+    if (!first || !first.data || !first.data.length) return false;
+    var itemBytes = first.data.length;
+    var cellByte = Math.floor(cell / 8);
+    if (cellByte >= (ref.bytes || 1)) return false;      // past the record
+    var item = array.item((ref.index || 0) + Math.floor(cellByte / itemBytes));
+    if (!item || !item.data || !item.data.length) return false;
+    var want = (value ? 1 : 0) ^ (ref.invert ? 1 : 0);
+    var bit = 7 - (cell % 8);
+    var at = cellByte % itemBytes;
+    var b = item.data[at];
+    var v = want ? (b | (1 << bit)) : (b & ~(1 << bit));
+    if (v === b) return false;
+    var next = Uint8Array.from(item.data);
+    next[at] = v;
+    item.replaceData(next, 0);
+    return true;
+}
+
 function ROMGraphics(rom, definition, parent) {
     ROMAssembly.call(this, rom, definition, parent);
 
@@ -822,6 +864,11 @@ function ROMTilemap(rom, definition, parent) {
     this.attributeCellsOffset = definition.attributeCellsOffset;
     this.attributeCellsInvert = definition.attributeCellsInvert;
     applyAttributeRef(this, definition.attributeRef);
+
+    // display the layout mirrored (and each tile's pixels with it): FF3 NES
+    // stores the two summon-backed bosses right-to-left and flips them at copy
+    // time (2F/A40B), so the stored map is only a picture once both are undone
+    this.mirrorX = definition.mirrorX || false;
 }
 
 ROMTilemap.prototype = Object.create(ROMAssembly.prototype);
@@ -849,6 +896,7 @@ Object.defineProperty(ROMTilemap.prototype, "definition", { get: function() {
     if (this.attributeRef) definition.attributeRef = this.attributeRef;
     if (isNumber(this.attributeCellsOffset)) definition.attributeCellsOffset = this.attributeCellsOffset;
     if (this.attributeCellsInvert) definition.attributeCellsInvert = true;
+    if (this.mirrorX) definition.mirrorX = true;
 
     return definition;
 }});

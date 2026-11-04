@@ -101,6 +101,25 @@ recently added
    wrong record index or slot alignment would change the answer
  * ff3 nes: guarded ff3-map.js changeLayer('showRooms'), which dereferenced a
    mapPalette assembly FF3 never had
+ * ff3 nes: NEW - paint the palette cells: Tool > "Palette cells" (key C) on a
+   monster, "Paint palette cells" on a boss layout; pick a palette row in the
+   panel, click or drag the cells, and the bit is written back to
+   monsterAttributeData / bossAttributeData (undoing the per-monster inversion)
+ * ff3 nes: NEW - every palette pair a monster's battles use is in the palette
+   dropdown as its own composed entry (Dark Cloud's three forms, a monster and
+   its boss): [[pal1,pal2], [pal1,pal2], ..., battlePalettes], 88 of 96
+   graphics offer more than one
+ * ff3 nes: fixed "bosses are not editable" - mouseDown never moved
+   selection.x/y for the left button, so a stamp painted the cell under the
+   *previous* click instead of the one you made
+ * ff3 nes: fixed garbled Odin and Leviathan - bit 5 of the boss pointer means
+   "summon graphics, flipped", and the ROM stores those two tilemaps
+   right-to-left; "mirrorX" mirrors layout + tile pixels for display and
+   un-mirrors on save (ROM stays byte-exact)
+ * ff3 nes: picking a single tile in a boss's pool panel now also arms the stamp,
+   so it is click-tile-then-click-place rather than right-click-then-left-click
+ * ff3 nes: Up/Down now move the tree from the boss layout pane too (it takes
+   focus, and the arrow handler only lived on the left pane)
  * byte-exact undo: re-encoding is skipped when decoded data matches what was
    loaded, and unchanged-size assemblies are no longer relocated
  * navigator: Up/Down move the selection and expand the next section; fixed
