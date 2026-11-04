@@ -5,7 +5,7 @@
  Format chain (exactly as ff6tools describes it in ff5/ff5e-gba.json):
    storage order: gba-lzss  ->  tose-graphics (8-byte header: u32 mode=1, u32 tile count)
                   ->  linear4bpp (GBA tile: 32 bytes, row-major, low nibble = left pixel)
- Palettes:        tose-palette (8-byte header: u32 mode=3, u32 colour count) -> bgr555
+ Palettes:        tose-palette (8-byte header: u32 mode=3, u32 color count) -> bgr555
  Per-monster size: monsterSize[id] = {u8 width/8, u8 height/8, ...}
  Pointer table:  1472 dwords at 0x08131C14; even = graphics, odd = palette (id*2, id*2+1)
 
@@ -66,7 +66,7 @@ function monster(id){
   return {id,w,h,gfx:g.data,tiles:g.tiles,pal};
 }
 
-// ---------- PNG writer (indexed, with tRNS so colour 0 is transparent) ----------
+// ---------- PNG writer (indexed, with tRNS so color 0 is transparent) ----------
 function pngIndexed(w,h,idx,palette){
   const n=palette.length;
   const raw=Buffer.alloc((w+1)*h);
@@ -76,7 +76,7 @@ function pngIndexed(w,h,idx,palette){
     const crc=Buffer.alloc(4);crc.writeUInt32BE((~c)>>>0);return Buffer.concat([len,tb,data,crc]);};
   const ihdr=Buffer.alloc(13);ihdr.writeUInt32BE(w,0);ihdr.writeUInt32BE(h,4);ihdr[8]=8;ihdr[9]=3;ihdr[12]=0;
   const plte=Buffer.alloc(n*3);palette.forEach((p,i)=>{plte[i*3]=p[0];plte[i*3+1]=p[1];plte[i*3+2]=p[2];});
-  const trns=Buffer.alloc(n,255);trns[0]=0; // colour 0 fully transparent, all others opaque
+  const trns=Buffer.alloc(n,255);trns[0]=0; // color 0 fully transparent, all others opaque
   return Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',ihdr),chunk('PLTE',plte),chunk('tRNS',trns),chunk('IDAT',zlib.deflateSync(raw,{level:9})),chunk('IEND',Buffer.alloc(0))]);
 }
 function pngRGB(w,h,rgb){
@@ -95,7 +95,7 @@ function drawText(buf,W,x,y,str,rgbv){
 }
 function blit(m,rgb,W,ox,oy,Z){
   for(let y=0;y<m.h*8;y++)for(let x=0;x<m.w*8;x++){
-    const c=pixel(m.gfx,(y>>3)*m.w+(x>>3),x&7,y&7); if(!c) continue;      // colour 0 = transparent
+    const c=pixel(m.gfx,(y>>3)*m.w+(x>>3),x&7,y&7); if(!c) continue;      // color 0 = transparent
     const p=m.pal[c]||[255,0,255];
     for(let dy=0;dy<Z;dy++)for(let dx=0;dx<Z;dx++){
       const X=ox+x*Z+dx,Y=oy+y*Z+dy; if(X>=W) continue;
@@ -124,7 +124,7 @@ if(cmd==='atlas'){
     drawText(rgb,W,ox,oy-LBL+1,id,[200,200,200]);
   }
   fs.writeFileSync(out,pngRGB(W,H,rgb));
-  console.log('wrote',out,`${W}x${H}`,`(${NMON} graphics sets, 24 per row, colour 0 transparent)`);
+  console.log('wrote',out,`${W}x${H}`,`(${NMON} graphics sets, 24 per row, color 0 transparent)`);
 }else if(cmd==='show'){
   const args=process.argv.slice(3);
   const ids=args.filter(a=>/^\d+$/.test(a)).map(Number);
@@ -148,5 +148,5 @@ if(cmd==='atlas'){
   for(let y=0;y<m.h*8;y++)for(let x=0;x<m.w*8;x++) idx[y*(m.w*8)+x]=pixel(m.gfx,(y>>3)*m.w+(x>>3),x&7,y&7);
   const f=`${dir}/ff5e-monster-${id}.png`;
   fs.writeFileSync(f,pngIndexed(m.w*8,m.h*8,idx,m.pal));
-  console.log('wrote',f,`${m.w*8}x${m.h*8}`,`${m.tiles} tiles, ${m.pal.length} colours (indexed PNG, colour 0 transparent)`);
+  console.log('wrote',f,`${m.w*8}x${m.h*8}`,`${m.tiles} tiles, ${m.pal.length} colors (indexed PNG, color 0 transparent)`);
 }

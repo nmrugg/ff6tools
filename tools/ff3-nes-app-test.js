@@ -3,6 +3,7 @@
 //   node tools/ff3-nes-app-test.js
 const fs=require('fs'), path=require('path'), {spawn}=require('child_process');
 const ROOT='/storage/romhacking/ff6tools';
+const PROFILE = require('fs').mkdtempSync('/tmp/ff6tools-chrome-');
 const ROM=path.join(ROOT, process.argv[2]||'Final Fantasy III (Japan) (fixed).nes');
 const KEY=process.argv[3]||(process.env.FF3J_KEY||'ff3j-nes');
 const PORT=8471, CDP=9371;
@@ -14,7 +15,7 @@ let fails=0;
 const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)fails++;};
 (async()=>{
  const srv=spawn('python3',['-m','http.server',String(PORT),'--dir',ROOT],{stdio:'ignore'});
- const ch=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--remote-debugging-port='+CDP,'about:blank'],{stdio:'ignore'});
+ const ch=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--user-data-dir=' + PROFILE,'--disk-cache-size=1','--remote-debugging-port='+CDP,'about:blank'],{stdio:'ignore'});
  try{
   await sleep(2200);
   const info=await (await fetch('http://127.0.0.1:'+CDP+'/json/version')).json();
@@ -51,8 +52,8 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
   check(opened.shown,'the selected monster graphic is the editing target');
   check(opened.w===6&&opened.h===6,'displayed size is 6x6 tiles');
   check(await ev(c,sessionId,`rom.monsterGraphics6x6.item(0).backColor===true`),
-        'colour 0 is opaque black - the sprite outline is colour 0 in the ROM, so it must not vanish');
-  check(opened.palCount===8,'the monster opens with both of its battle palettes (8 colours = 2 rows, colour 0 = black)');
+        'color 0 is opaque black - the sprite outline is color 0 in the ROM, so it must not vanish');
+  check(opened.palCount===8,'the monster opens with both of its battle palettes (8 colors = 2 rows, color 0 = black)');
   const pair0=Array.isArray(opened.palette[0])?opened.palette[0]:opened.palette;
   check(pair0.length>=2&&pair0.every(p=>p.compose)&&pair0.every(p=>p.name),
         'the monster opens with its battle palettes composed and named: '+
@@ -74,7 +75,7 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
   console.log('  paint:',JSON.stringify(painted));
   check(painted.changed>0,'painting pencil pixels changes the ROM ('+painted.changed+' bytes)');
   check(painted.undo,'the edit is undoable');
-  // editing a palette colour must reach the ROM: with two composed palettes the
+  // editing a palette color must reach the ROM: with two composed palettes the
   // buffer spans two ROM objects, so the edit has to be routed to the right one
   const edited=await ev(c,sessionId,`(()=>{
     const before=rom.data.slice();
@@ -91,9 +92,9 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
             paletteBytesChanged:changed, undo:rom.canUndo()};
   })()`);
   console.log('  palette edit:',JSON.stringify(edited));
-  check(edited.routed,'colour 1 and colour 5 belong to different ROM palettes (composition routes edits correctly)');
+  check(edited.routed,'color 1 and color 5 belong to different ROM palettes (composition routes edits correctly)');
   check(edited.paletteBytesChanged>0&&edited.paletteBytesChanged<=3,
-        'editing a palette colour changes the ROM ('+edited.paletteBytesChanged+' bytes)');
+        'editing a palette color changes the ROM ('+edited.paletteBytesChanged+' bytes)');
 
   // Up/Down must move the tree selection even though the graphics pane takes
   // keyboard focus when an object is opened (that focus grab is what broke it)
@@ -210,7 +211,7 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
   check(boss.placeTile===true,'a boss tilemap starts in "Place tile" mode');
   check(boss.cells===54,'the boss tilemap carries its 54 palette cells');
   check(boss.twoPalettes===8,'and both battle palettes of the boss battle');
-  check(boss.mixed,'the cells are drawn with both palettes (colour offsets 0 and 4 both appear)');
+  check(boss.mixed,'the cells are drawn with both palettes (color offsets 0 and 4 both appear)');
   check(boss.ok&&boss.changed.length===1,
         'stamping one cell writes exactly one tilemap byte ('+JSON.stringify(boss.changed)+')');
   check(boss.dstRaw<0x70&&boss.afterRaw>=0x70,
@@ -372,14 +373,21 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
           out.hasLayout=!!v.poolLayout;
           rom.assemble();
           const before=Uint8Array.from(rom.data);
-          v.tool=1; v.color=2; v.paintStart=v.graphics.slice();
-          // paint inside a cell the tilemap actually uses
+          // drive it the way the user does: pick the tool, press, drag, release
+          v.tool=1; v.color=2;
           const cell=v.poolLayout.findIndex(t=>t>=0);
-          const px=(cell%v.width)*8+1, py=Math.floor(cell/v.width)*8+1;
-          v.paintPixel(px,py); v.commitPaint();
+          const cx=(cell%v.width)*8+1, cy=Math.floor(cell/v.width)*8+1;
+          const r=v.canvas.getBoundingClientRect();
+          const mk=(t,x,y)=>new MouseEvent(t,{bubbles:true,cancelable:true,
+                            clientX:r.left+x*v.zoom, clientY:r.top+y*v.zoom,
+                            button:0, buttons:1});
+          v.canvas.dispatchEvent(mk('mousedown',cx,cy));
+          v.canvas.dispatchEvent(mk('mousemove',cx+1,cy));
+          v.canvas.dispatchEvent(mk('mouseup',cx+1,cy));
           rom.assemble();
           let changed=0; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) changed++;
           out.changed=changed;
+          out.undoSteps=1;
           rom.undo(); rom.assemble();
           let back=0; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) back++;
           out.restored=back===0;
@@ -411,29 +419,211 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
   check(windows.layoutChecks.indexOf('Place tile')>=0,
         'the tilemap pane keeps Place tile + palette cells: '+JSON.stringify(windows.layoutChecks));
 
-  const pool=await ev(c,sessionId,`(()=>{
-      const obj=rom.bossTilemap0;
+  // every boss/summon window must agree with the pool bytes the tilemap view
+  // reads (that path already worked) and must not come out black
+  const allWindows=await ev(c,sessionId,`(()=>{
+      const bad=[];
+      const stats=[];
+      for(let i=0;i<24;i++){
+          const w=rom.parsePath('bossGraphics'+i), tm=rom.parsePath('bossTilemap'+i);
+          if(!w||!tm){ bad.push('boss'+i+': missing'); continue; }
+          // the toolbox path: concatenate the container's decoded items
+          const container=rom.parsePath(tm.graphics.path);
+          let pool=null;
+          if(container.array){
+              const parts=[]; let total=0;
+              for(let j=0;j<container.arrayLength;j++){
+                  const it=container.item(j); if(!it||!it.data) continue;
+                  parts.push(it.data); total+=it.data.length;
+              }
+              pool=new Uint8Array(total); let at=0;
+              for(const p of parts){ pool.set(p,at); at+=p.length; }
+          } else pool=container.data;
+          const r=ROMRange.parse(tm.graphics.range);
+          const expect=pool.subarray(r.begin, r.end);
+          if(w.data.length!==expect.length){
+              bad.push('boss'+i+': len '+w.data.length+' != '+expect.length); continue;
+          }
+          let diff=0; for(let k=0;k<expect.length;k++) if(w.data[k]!==expect[k]) diff++;
+          if(diff) bad.push('boss'+i+': '+diff+' bytes differ from the pool');
+          let nonzero=0; for(let k=0;k<w.data.length;k++) if(w.data[k]) nonzero++;
+          if(nonzero===0) bad.push('boss'+i+': all black');
+          stats.push({i, tiles:w.window.tiles, nonzero, mirror:!!tm.mirrorX});
+      }
+      for(let i=0;i<8;i++){
+          const w=rom.parsePath('summonGraphics'+i);
+          if(!w){ bad.push('summon'+i+': missing'); continue; }
+          let nonzero=0; for(let k=0;k<w.data.length;k++) if(w.data[k]) nonzero++;
+          if(nonzero===0) bad.push('summon'+i+': all black');
+      }
+      // the mirrored bosses' windows must carry the flip on every used cell
+      romNavigator.selectObject(rom.bossGraphics22); propertyList.select(rom.bossGraphics22);
+      const v=propertyList.activeEditor;
+      const used=[...v.tilemap].filter(t=>t!==0xFFFFFFFF);
+      const allFlipped=used.length>0 && used.every(t=>!!(t&0x10000000));
+      return {bad, checked:stats.length, allFlipped, used:used.length,
+              dims:v.width+'x'+v.height};
+  })()`);
+  console.log('  windows checked:', allWindows.checked, 'bad:', JSON.stringify(allWindows.bad));
+  check(allWindows.bad.length===0,
+        'all 24 boss + 8 summon graphics windows match the pool bytes and are not black');
+  check(allWindows.allFlipped,
+        'the mirrored bosses flip every tile in the window, as the game does ('+allWindows.used+' cells)');
+
+  // ---- the Palette cells tool and "paint forces the palette" -------------
+  const cellTool=await ev(c,sessionId,`(()=>{
+      const obj=rom.monsterGraphics6x6.item(2);
       romNavigator.selectObject(obj); propertyList.select(obj);
-      const view=propertyList.activeEditor.graphicsView;
-      const container=rom.parsePath(obj.graphics.path);
+      const v=propertyList.activeEditor;
+      const arr=rom.monsterAttributeData;
+      const item=arr.item(obj.attributeRef.index);
+      const out={before:item.data[0]};
+      const r=v.canvas.getBoundingClientRect();
+      const click=(x,y,tool)=>{
+          v.tool=tool;
+          const mk=t=>new MouseEvent(t,{bubbles:true,cancelable:true,
+              clientX:r.left+x*v.zoom, clientY:r.top+y*v.zoom, button:0, buttons:1});
+          v.canvas.dispatchEvent(mk('mousedown'));
+          v.canvas.dispatchEvent(mk('mouseup'));
+      };
+      // Palette cells tool with palette row 2 selected
+      v.paletteView.p=1; v.color=1;
+      click(2,2,4);
+      const afterTool=arr.item(obj.attributeRef.index).data[0];
+      out.toolChanged=afterTool!==out.before;
+      out.toolMask=(out.before^afterTool).toString(2);
+      // undo, then paint a pixel that ALREADY has the paint color: the cell
+      // must still move onto the selected palette row
+      rom.undo();
+      const base=arr.item(obj.attributeRef.index).data[0];
+      const idxAt=(x,y)=>(Math.floor(Math.floor(y/8)/2)*Math.ceil(obj.width/2)+Math.floor(Math.floor(x/8)/2)+obj.attributeCellsOffset);
+      out.cellBitBefore=(base>>(7-idxAt(2,2)))&1;
+      v.paletteView.p=1;
+      // pick a pixel whose current index equals the paint color
+      let px=-1,py=-1;
+      for(let y=0;y<obj.height*8&&px<0;y++)
+        for(let x=0;x<obj.width*8;x++)
+          if(v.graphics[v.tileOffset(x,y)]===1){px=x;py=y;break;}
+      out.pixel=px+','+py;
+      click(px,py,1);   // pencil
+      const afterPaint=arr.item(obj.attributeRef.index).data[0];
+      out.paintChanged=afterPaint!==base;
+      out.cellBitAfter=(afterPaint>>(7-idxAt(px,py)))&1;
+      rom.undo();
+      // color picking must select the palette that cell actually uses
+      const base2=arr.item(obj.attributeRef.index).data[0];
+      let pickX=-1,pickY=-1,wantBit=-1;
+      for(let y=0;y<obj.height*8&&pickX<0;y++)
+        for(let x=0;x<obj.width*8;x++){
+          const k=(Math.floor(Math.floor(y/8)/2)*Math.ceil(obj.width/2)+Math.floor(Math.floor(x/8)/2)+obj.attributeCellsOffset);
+          const bit=(base2>>(7-k))&1;
+          if(bit===1&&v.graphics[v.tileOffset(x,y)]>0){pickX=x;pickY=y;wantBit=bit;break;}
+        }
+      v.paletteView.p=0; v.color=0;
+      v.tool=3;
+      const mk=t=>new MouseEvent(t,{bubbles:true,cancelable:true,
+          clientX:r.left+pickX*v.zoom, clientY:r.top+pickY*v.zoom, button:0, buttons:1});
+      v.canvas.dispatchEvent(mk('mousedown'));
+      v.canvas.dispatchEvent(mk('mouseup'));
+      out.pick={x:pickX,y:pickY,wantBit};
+      out.pickRow=v.paletteView.p;
+      out.pickColor=v.color;
+      out.pickOk=v.paletteView.p===1&&v.color>0;
+      return out;
+  })()`);
+  console.log('  palette cell tool:',JSON.stringify(cellTool));
+  check(cellTool.toolChanged,'the Palette cells tool writes the clicked cell to the attribute byte');
+  check(cellTool.paintChanged&&cellTool.cellBitAfter===1,
+        'painting moves the cell onto the selected palette row even when the pixel already matches ('+
+        JSON.stringify(cellTool.pixel)+')');
+  check(cellTool.pickOk,
+        'the color picker selects the palette that cell uses (row '+cellTool.pickRow+
+        ', color '+cellTool.pickColor+', at '+JSON.stringify(cellTool.pick)+')');
+
+  // ---- DiveEagle: click the 4th color of the 2nd palette, then draw ------
+  const dive=await ev(c,sessionId,`(()=>{
+      const obj=rom.monsterGraphics4x4.item(11);      // DiveEagle / ボーイイーグル
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const v=propertyList.activeEditor, pv=v.paletteView;
+      const arr=rom.monsterAttributeData;
+      const rec=()=>arr.item(obj.attributeRef.index).data[0];
+      const out={colorsPerPalette:pv.colorsPerPalette, rowsPerPalette:pv.rowsPerPalette,
+                 rows:pv.rows, palLen:pv.palette.length, ref:JSON.stringify(obj.attributeRef),
+                 objW:obj.width, paintable:v.paintableCells()};
+      // click the last color of the second row in the palette panel
+      const pr=pv.canvas.getBoundingClientRect();
+      const x=pr.left+(pv.colorWidth*3.5), y=pr.top+(pv.colorHeight*1.5);
+      pv.canvas.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,cancelable:true,
+                                clientX:x, clientY:y, button:0, buttons:1}));
+      out.afterPalClick={p:pv.p, color:v.color, row:v.currentPaletteRow()};
+      // pencil on the bottom half of the sprite
+      const cr=v.canvas.getBoundingClientRect();
+      const px=10, py=26;
+      const cell=(Math.floor(py/16)*Math.ceil(obj.width/2)+Math.floor(px/16)+obj.attributeCellsOffset);
+      out.cellIndex=cell; out.bitBefore=(rec()>>(7-cell))&1;
+      v.tool=1;
+      const mk=t=>new MouseEvent(t,{bubbles:true,cancelable:true,
+                    clientX:cr.left+px*v.zoom, clientY:cr.top+py*v.zoom, button:0, buttons:1});
+      v.canvas.dispatchEvent(mk('mousedown'));
+      v.canvas.dispatchEvent(mk('mousemove'));
+      v.canvas.dispatchEvent(mk('mouseup'));
+      out.bitAfter=(rec()>>(7-cell))&1;
+      out.undoStack=rom.undoStack.length;
+      rom.undo();
+      out.bitAfterUndo=(rec()>>(7-cell))&1;
+      return out;
+  })()`);
+  console.log('  diveeagle:',JSON.stringify(dive));
+  check(dive.bitAfter===1&&dive.bitAfterUndo===dive.bitBefore,
+        'clicking palette row 2 then drawing flips DiveEagle cell '+dive.cellIndex+
+        ' ('+dive.bitBefore+' -> '+dive.bitAfter+', undo -> '+dive.bitAfterUndo+')');
+
+  // undo/redo through the UI must revert both the bytes and the picture
+  const undoRedo=await ev(c,sessionId,`(()=>{
+      const obj=rom.monsterGraphics4x4.item(11);
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const v=propertyList.activeEditor, pv=v.paletteView;
+      const arr=rom.monsterAttributeData;
+      const rec=()=>arr.item(obj.attributeRef.index).data[0];
       rom.assemble();
       const before=Uint8Array.from(rom.data);
-      // the panel is shown in tilemap order, so find a cell that uses a tile and
-      // paint inside it
-      const cell=view.poolLayout?view.poolLayout.findIndex(t=>t>=0):0;
-      view.paintStart=view.graphics.slice();
-      view.tool=1; view.color=2;
-      view.paintPixel((cell%view.width)*8, Math.floor(cell/view.width)*8); view.commitPaint();
+      const cell=(Math.floor(Math.floor(26/8)/2)*Math.ceil(obj.width/2)+Math.floor(Math.floor(10/8)/2)+obj.attributeCellsOffset);
+      const bitOf=()=>(rec()>>(7-cell))&1;
+      const bitsShown=()=>[...v.tilemap].map(t=>(t&0x00FF0000)>>16);
+      const shown0=bitsShown();
+      pv.p=1; pv.setColor(3); v.color=3;
+      const cr=v.canvas.getBoundingClientRect();
+      const mk=t=>new MouseEvent(t,{bubbles:true,cancelable:true,
+                    clientX:cr.left+10*v.zoom, clientY:cr.top+26*v.zoom, button:0, buttons:1});
+      v.tool=1;
+      v.canvas.dispatchEvent(mk('mousedown'));
+      v.canvas.dispatchEvent(mk('mousemove'));
+      v.canvas.dispatchEvent(mk('mouseup'));
+      const bitPainted=bitOf();
       rom.assemble();
-      const changed=[]; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) changed.push(i);
-      const inRange=changed.every(i=>i>=container.range.begin&&i<container.range.end);
+      let painted=0; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) painted++;
+      const shown1=bitsShown();
       rom.undo(); rom.assemble();
-      let restored=true; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) restored=false;
-      return {container:obj.graphics.path, changed:changed.length, inRange, restored};
+      const bitUndo=bitOf();
+      const shown2=bitsShown();
+      let afterUndo=0; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) afterUndo++;
+      rom.redo(); rom.assemble();
+      const bitRedo=bitOf();
+      const shown3=bitsShown();
+      rom.undo(); rom.assemble();
+      return {cell, bitPainted, bitUndo, bitRedo, painted, afterUndo,
+              viewFollows:JSON.stringify(shown2)===JSON.stringify(shown0)&&
+                          JSON.stringify(shown3)===JSON.stringify(shown1),
+              changedOnPaint:JSON.stringify(shown1)!==JSON.stringify(shown0)};
   })()`);
-  console.log('  pool paint:',JSON.stringify(pool));
-  check(pool.changed>0&&pool.inRange,'painting the boss tile pool writes through to '+pool.container+' (the assembly that owns those bytes)');
-  check(pool.restored,'and undo puts the pool back');
+  console.log('  undo/redo:',JSON.stringify(undoRedo));
+  check(undoRedo.bitPainted===1&&undoRedo.bitUndo===0&&undoRedo.bitRedo===1,
+        'undo and redo revert the palette cell ('+undoRedo.bitPainted+' -> '+undoRedo.bitUndo+
+        ' -> '+undoRedo.bitRedo+')');
+  check(undoRedo.painted>0&&undoRedo.afterUndo===0,
+        'undo restores the ROM bytes ('+undoRedo.painted+' changed, '+undoRedo.afterUndo+' after undo)');
+  check(undoRedo.changedOnPaint&&undoRedo.viewFollows,
+        'the picture follows undo/redo (repaint on paint, back on undo, again on redo)');
 
   await c.s('Page.captureScreenshot',{format:'png',quality:90},sessionId).then(r=>fs.writeFileSync('/tmp/ff3j-app.png',Buffer.from(r.data,'base64')));
   console.log('  wrote /tmp/ff3j-app.png');

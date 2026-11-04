@@ -160,10 +160,35 @@ the right tiles in the wrong places.
     `poolLayout`/`poolFlip`), so you see and paint the creature, not a sheet of
     loose pieces. `tileOffset()` resolves through `poolLayout`, which is what
     keeps the painted pixel landing on the right tile.
-  - Traps hit while building this: the display mapping has to be applied in
-    **both** branches of `updateTilemap` (the toolbox *and* the editor branch -
-    a tree selection is editor mode), and `updateTilemap` must not reset
-    `width`/`height` from `object.width` when a `poolLayout` is in force.
+  - Traps hit while building this:
+    - **A `ROMArray`'s own `.data` is still the encoded planes** (the array has
+      no format). A window whose source is a size-class array must read the
+      concatenation of its **items'** decoded data - the same thing
+      `ROMGraphicsView.loadGraphics` does for `whole: true`. Getting this wrong
+      made every boss whose pool sits in a class array (Big Rat, Jin, Ninja,
+      Kunoichi, GutzCo, General, Kraken, Land Turtle, Cerberus) come out black
+      or garbage, while the spare-region bosses looked fine.
+      `ROMGraphics.windowSourceBytes()` handles both.
+    - `replaceData` has to do the inverse: split the write across the covered
+      **items**, one `item.replaceData` per overlap.
+    - **A window is a mirror of bytes it does not own**, so it must re-read when
+      they change - including on undo, which notifies the *owner*, not the
+      window. `disassemble` registers an observer on the source and on each of
+      its items. (`addObserver(object, target, callback, args)` is positional -
+      passing one object makes `callback` undefined.)
+    - The display mapping must be applied in **both** branches of
+      `updateTilemap` (toolbox *and* editor - a tree selection is editor mode),
+      and `updateTilemap` must not reset `width`/`height` from `object.width`
+      when a `poolLayout` is in force.
+    - The flip comes from the tilemap object's **`mirrorX`**, not from the
+      stored words: the ROM never carries a flip bit, the game flips at copy
+      time. Reading the words gave Odin and Leviathan the "jumbled" look again.
+  - `poolBytes` is clamped to the tiles the container can actually supply
+    (`poolTiles`); without the clamp a boss's range ran past the end of its
+    array and the window read garbage.
+  - The app test now compares **all 24 boss and 8 summon windows** byte-for-byte
+    against the pool bytes the tilemap path reads, and rejects any that are all
+    black - that is the regression guard for this whole class of bug.
   - `poolBytes` is clamped to the tiles the container can actually supply
     (`poolTiles`); without the clamp a boss's range ran past the end of its
     array and the window read garbage.

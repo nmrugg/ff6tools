@@ -502,6 +502,10 @@ def main():
 
     for b in summons:
         i = b['index']
+        # the graphics range starts at the summon's own block, so the tile ids
+        # in the tilemap are already relative to it - adding the old
+        # summonProperties graphicsIndex on top would push every cell past the
+        # slice and render black (that is what "tileOffset: 0" means here)
         blocks.append('''"summonTilemap%d": {
     "type": "tilemap",
     "name": "Summon Tilemap %d (%s)",
@@ -512,12 +516,15 @@ def main():
     "backColor": true,
     "graphics": {
         "path": "summonGraphics",
-        "whole": true
+        "whole": true,
+        "followLayout": true,
+        "range": "%d-%d"
     },
-    "tileOffset": %d,
+    "tileOffset": 0,
     "palette": %s
 }''' % (i, i, b['name'].replace('"', "'"), b['mapBeginDef'], b['mapEndDef'],
-        b['width'], b['height'], b['gfxIndex'],
+        b['width'], b['height'],
+        b['gfxIndex'] * 64, (b['gfxIndex'] + b['cells']) * 64,
         indent(palette_list(b['palette'], 4), 4).lstrip()))
 
     for key, name, rng in [
@@ -576,6 +583,8 @@ def main():
                 {"path": "bossAttributeData"},
                 %s''' % boss_items
 
+    # the paintable bitmaps come first: that is what someone editing a boss's
+    # art is looking for, and the tilemaps are the assembly of those tiles
     boss_gfx_items = ', '.join('{"path": "bossGraphics%d"}' % b['index']
                                for b in bosses if b['container'])
     boss_gfx_sec = '''        }, {
@@ -600,10 +609,10 @@ def main():
     anchor = '        }, {\n            "name": "Text",'
     assert anchor in text, 'hierarchy anchor not found'
     text = text.replace(anchor,
-                        battle + '\n            ]\n' + boss_sec + '\n            ]\n' +
-                        boss_gfx_sec + '\n            ]\n' +
-                        summon_sec + '\n            ]\n' +
-                        summon_gfx_sec + '\n            ]\n        }, {\n            "name": "Text",', 1)
+                        battle + '\n            ]\n' +
+                        boss_gfx_sec + '\n            ]\n' + boss_sec + '\n            ]\n' +
+                        summon_gfx_sec + '\n            ]\n' + summon_sec +
+                        '\n            ]\n        }, {\n            "name": "Text",', 1)
 
     # ---- validate --------------------------------------------------------
     try:

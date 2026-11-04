@@ -27,6 +27,11 @@
                 {"path": "monsterGraphics4x4"}, {"path": "monsterGraphics4x6"}, {"path": "monsterGraphics6x6"}, {"path": "monsterGraphics6x6b"}, {"path": "monsterGraphics6x12"}, {"path": "monsterGraphics12x6"}, {"path": "monsterGraphicsProperties"}, {"path": "monsterAttributeData"}, {"path": "battlePalettes"}, {"path": "battleCharacterGraphics"}, {"path": "battleCharacterGraphicsStatus"}, {"path": "battleBackgroundGraphics"}, {"path": "battleSpriteGraphics"}, {"path": "attackGraphics"}, {"path": "mapSpriteGraphics"}
             ]
         }, {
+            "name": "Boss Graphics",
+            "list": [
+                {"path": "bossGraphics0"}, {"path": "bossGraphics1"}, {"path": "bossGraphics2"}, {"path": "bossGraphics3"}, {"path": "bossGraphics4"}, {"path": "bossGraphics5"}, {"path": "bossGraphics6"}, {"path": "bossGraphics7"}, {"path": "bossGraphics8"}, {"path": "bossGraphics9"}, {"path": "bossGraphics10"}, {"path": "bossGraphics11"}, {"path": "bossGraphics12"}, {"path": "bossGraphics13"}, {"path": "bossGraphics14"}, {"path": "bossGraphics15"}, {"path": "bossGraphics16"}, {"path": "bossGraphics17"}, {"path": "bossGraphics18"}, {"path": "bossGraphics19"}, {"path": "bossGraphics20"}, {"path": "bossGraphics21"}, {"path": "bossGraphics22"}, {"path": "bossGraphics23"}
+            ]
+        }, {
             "name": "Boss Tilemaps",
             "list": [
                 {"path": "bossGraphicsPointers"},
@@ -34,21 +39,16 @@
                 {"path": "bossTilemap0"}, {"path": "bossTilemap1"}, {"path": "bossTilemap2"}, {"path": "bossTilemap3"}, {"path": "bossTilemap4"}, {"path": "bossTilemap5"}, {"path": "bossTilemap6"}, {"path": "bossTilemap7"}, {"path": "bossTilemap8"}, {"path": "bossTilemap9"}, {"path": "bossTilemap10"}, {"path": "bossTilemap11"}, {"path": "bossTilemap12"}, {"path": "bossTilemap13"}, {"path": "bossTilemap14"}, {"path": "bossTilemap15"}, {"path": "bossTilemap16"}, {"path": "bossTilemap17"}, {"path": "bossTilemap18"}, {"path": "bossTilemap19"}, {"path": "bossTilemap20"}, {"path": "bossTilemap21"}, {"path": "bossTilemap22"}, {"path": "bossTilemap23"}
             ]
         }, {
-            "name": "Boss Graphics",
+            "name": "Summon Graphics",
             "list": [
-                {"path": "bossGraphics0"}, {"path": "bossGraphics1"}, {"path": "bossGraphics2"}, {"path": "bossGraphics3"}, {"path": "bossGraphics4"}, {"path": "bossGraphics5"}, {"path": "bossGraphics6"}, {"path": "bossGraphics7"}, {"path": "bossGraphics8"}, {"path": "bossGraphics9"}, {"path": "bossGraphics10"}, {"path": "bossGraphics11"}, {"path": "bossGraphics12"}, {"path": "bossGraphics13"}, {"path": "bossGraphics14"}, {"path": "bossGraphics15"}, {"path": "bossGraphics16"}, {"path": "bossGraphics17"}, {"path": "bossGraphics18"}, {"path": "bossGraphics19"}, {"path": "bossGraphics20"}, {"path": "bossGraphics21"}, {"path": "bossGraphics22"}, {"path": "bossGraphics23"}
+                {"path": "summonGraphics"},
+                {"path": "summonGraphics0"}, {"path": "summonGraphics1"}, {"path": "summonGraphics2"}, {"path": "summonGraphics3"}, {"path": "summonGraphics4"}, {"path": "summonGraphics5"}, {"path": "summonGraphics6"}, {"path": "summonGraphics7"}
             ]
         }, {
             "name": "Summon Tilemaps",
             "list": [
                 {"path": "summonProperties"},
                 {"path": "summonTilemap0"}, {"path": "summonTilemap1"}, {"path": "summonTilemap2"}, {"path": "summonTilemap3"}, {"path": "summonTilemap4"}, {"path": "summonTilemap5"}, {"path": "summonTilemap6"}, {"path": "summonTilemap7"}
-            ]
-        }, {
-            "name": "Summon Graphics",
-            "list": [
-                {"path": "summonGraphics"},
-                {"path": "summonGraphics0"}, {"path": "summonGraphics1"}, {"path": "summonGraphics2"}, {"path": "summonGraphics3"}, {"path": "summonGraphics4"}, {"path": "summonGraphics5"}, {"path": "summonGraphics6"}, {"path": "summonGraphics7"}
             ]
         }, {
             "name": "Text",
@@ -2251,9 +2251,9 @@
             "window": {"path": "summonGraphics", "offset": 0, "tiles": 9},
             "layoutFrom": "summonTilemap0",
             "palette": [
-                    {"path": "battlePalettes[191]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[192]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[193]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[191]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[192]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[193]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[211]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[212]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[213]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[231]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[232]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[233]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2267,9 +2267,9 @@
             "window": {"path": "summonGraphics", "offset": 576, "tiles": 20},
             "layoutFrom": "summonTilemap1",
             "palette": [
-                    {"path": "battlePalettes[192]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[193]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[194]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[192]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[193]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[194]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[212]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[213]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[214]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[232]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[233]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[234]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2283,9 +2283,9 @@
             "window": {"path": "summonGraphics", "offset": 1600, "tiles": 20},
             "layoutFrom": "summonTilemap2",
             "palette": [
-                    {"path": "battlePalettes[194]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[195]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[196]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[194]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[195]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[196]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[214]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[215]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[216]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[234]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[235]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[236]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2299,9 +2299,9 @@
             "window": {"path": "summonGraphics", "offset": 2624, "tiles": 42},
             "layoutFrom": "summonTilemap3",
             "palette": [
-                    {"path": "battlePalettes[196]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[197]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[198]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[196]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[197]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[198]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[216]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[217]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[218]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[236]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[237]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[238]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2315,9 +2315,9 @@
             "window": {"path": "summonGraphics", "offset": 4544, "tiles": 35},
             "layoutFrom": "summonTilemap4",
             "palette": [
-                    {"path": "battlePalettes[199]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[200]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[201]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[199]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[200]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[201]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[219]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[220]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[221]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[239]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[240]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[241]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2331,9 +2331,9 @@
             "window": {"path": "summonGraphics", "offset": 6464, "tiles": 72},
             "layoutFrom": "summonTilemap5",
             "palette": [
-                    {"path": "battlePalettes[202]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[203]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[204]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[202]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[203]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[204]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[222]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[223]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[224]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[242]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[243]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[244]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2347,9 +2347,9 @@
             "window": {"path": "summonGraphics", "offset": 9984, "tiles": 72},
             "layoutFrom": "summonTilemap6",
             "palette": [
-                    {"path": "battlePalettes[205]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[206]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[207]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[205]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[206]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[207]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[225]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[226]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[227]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[245]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[246]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[247]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2363,9 +2363,9 @@
             "window": {"path": "summonGraphics", "offset": 13120, "tiles": 70},
             "layoutFrom": "summonTilemap7",
             "palette": [
-                    {"path": "battlePalettes[208]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[209]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[210]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[208]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[209]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[210]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[228]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[229]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[230]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[248]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[249]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[250]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2488,13 +2488,15 @@
             "backColor": true,
             "graphics": {
                 "path": "summonGraphics",
-                "whole": true
+                "whole": true,
+                "followLayout": true,
+                "range": "0-576"
             },
             "tileOffset": 0,
             "palette": [
-                    {"path": "battlePalettes[191]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[192]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[193]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[191]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[192]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[193]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[211]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[212]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[213]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[231]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[232]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[233]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2508,13 +2510,15 @@
             "backColor": true,
             "graphics": {
                 "path": "summonGraphics",
-                "whole": true
+                "whole": true,
+                "followLayout": true,
+                "range": "576-1856"
             },
-            "tileOffset": 9,
+            "tileOffset": 0,
             "palette": [
-                    {"path": "battlePalettes[192]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[193]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[194]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[192]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[193]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[194]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[212]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[213]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[214]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[232]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[233]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[234]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2528,13 +2532,15 @@
             "backColor": true,
             "graphics": {
                 "path": "summonGraphics",
-                "whole": true
+                "whole": true,
+                "followLayout": true,
+                "range": "1600-2880"
             },
-            "tileOffset": 25,
+            "tileOffset": 0,
             "palette": [
-                    {"path": "battlePalettes[194]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[195]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[196]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[194]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[195]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[196]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[214]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[215]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[216]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[234]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[235]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[236]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2548,13 +2554,15 @@
             "backColor": true,
             "graphics": {
                 "path": "summonGraphics",
-                "whole": true
+                "whole": true,
+                "followLayout": true,
+                "range": "2624-5312"
             },
-            "tileOffset": 41,
+            "tileOffset": 0,
             "palette": [
-                    {"path": "battlePalettes[196]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[197]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[198]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[196]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[197]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[198]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[216]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[217]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[218]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[236]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[237]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[238]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2568,13 +2576,15 @@
             "backColor": true,
             "graphics": {
                 "path": "summonGraphics",
-                "whole": true
+                "whole": true,
+                "followLayout": true,
+                "range": "4544-6784"
             },
-            "tileOffset": 71,
+            "tileOffset": 0,
             "palette": [
-                    {"path": "battlePalettes[199]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[200]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[201]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[199]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[200]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[201]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[219]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[220]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[221]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[239]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[240]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[241]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2588,13 +2598,15 @@
             "backColor": true,
             "graphics": {
                 "path": "summonGraphics",
-                "whole": true
+                "whole": true,
+                "followLayout": true,
+                "range": "6464-11072"
             },
-            "tileOffset": 101,
+            "tileOffset": 0,
             "palette": [
-                    {"path": "battlePalettes[202]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[203]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[204]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[202]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[203]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[204]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[222]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[223]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[224]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[242]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[243]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[244]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2608,13 +2620,15 @@
             "backColor": true,
             "graphics": {
                 "path": "summonGraphics",
-                "whole": true
+                "whole": true,
+                "followLayout": true,
+                "range": "9984-14592"
             },
-            "tileOffset": 156,
+            "tileOffset": 0,
             "palette": [
-                    {"path": "battlePalettes[205]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[206]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[207]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[205]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[206]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[207]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[225]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[226]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[227]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[245]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[246]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[247]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2628,13 +2642,15 @@
             "backColor": true,
             "graphics": {
                 "path": "summonGraphics",
-                "whole": true
+                "whole": true,
+                "followLayout": true,
+                "range": "13120-17600"
             },
-            "tileOffset": 205,
+            "tileOffset": 0,
             "palette": [
-                    {"path": "battlePalettes[208]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[209]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[210]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[208]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[209]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[210]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[228]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[229]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[230]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[248]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[249]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[250]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },
@@ -2675,9 +2691,9 @@
             "height": 32,
             "backColor": true,
             "palette": [
-                    {"path": "battlePalettes[191]", "name": "Sprite palette 1", "offset": 0, "compose": true},
-                    {"path": "battlePalettes[192]", "name": "Sprite palette 2", "offset": 4, "compose": true},
-                    {"path": "battlePalettes[193]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    [{"path": "battlePalettes[191]", "name": "Attack 1 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[192]", "name": "Attack 1 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[193]", "name": "Attack 1 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[211]", "name": "Attack 2 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[212]", "name": "Attack 2 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[213]", "name": "Attack 2 palette 3", "offset": 8, "compose": true}],
+                    [{"path": "battlePalettes[231]", "name": "Attack 3 palette 1", "offset": 0, "compose": true}, {"path": "battlePalettes[232]", "name": "Attack 3 palette 2", "offset": 4, "compose": true}, {"path": "battlePalettes[233]", "name": "Attack 3 palette 3", "offset": 8, "compose": true}],
                     {"path": "battlePalettes"}
                 ]
         },

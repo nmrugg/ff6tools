@@ -1,6 +1,7 @@
 // Verify the new UI affordances: default tool, cursors, wheel zoom, right-click pick.
 const fs=require('fs'), path=require('path'), {spawn}=require('child_process');
 const ROOT='/storage/romhacking/ff6tools';
+const PROFILE = require('fs').mkdtempSync('/tmp/ff6tools-chrome-');
 const ROM=path.join(ROOT,'Final Fantasy V Advance (Europe) (En,Fr,De,Es,It).gba');
 const PORT=8361, CDP_PORT=9261;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -9,7 +10,7 @@ class CDP{constructor(ws){this.ws=ws;this.id=0;this.h=new Map();ws.onmessage=e=>
 const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,returnByValue:true},s);if(r.exceptionDetails)throw new Error(String(r.exceptionDetails.exception?.description||r.exceptionDetails.message));return r.result.value;};
 (async()=>{
   const server=spawn('python3',['-m','http.server',String(PORT),'--dir',ROOT],{stdio:'ignore'});
-  const chrome=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run',`--remote-debugging-port=${CDP_PORT}`,'about:blank'],{stdio:'ignore'});
+  const chrome=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--user-data-dir=' + PROFILE,'--disk-cache-size=1',`--remote-debugging-port=${CDP_PORT}`,'about:blank'],{stdio:'ignore'});
   try{
     await sleep(2500);
     const v=await (await fetch(`http://127.0.0.1:${CDP_PORT}/json/version`)).json();
@@ -56,7 +57,7 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
         const e=new MouseEvent('contextmenu',{bubbles:true,cancelable:true,
             clientX:cr.left+(tx+0.5)*v.zoom, clientY:cr.top+(ty+0.5)*v.zoom});
         v.div.dispatchEvent(e);
-        return 'pixel ('+tx+','+ty+') colour '+want+' -> picked '+v.color+', swatch '+v.paletteView.c+
+        return 'pixel ('+tx+','+ty+') color '+want+' -> picked '+v.color+', swatch '+v.paletteView.c+
                (v.color===want?' MATCH':' MISMATCH');})()`));
 
     console.log('right-button cursor:',await ev(c,sessionId,`(()=>{
@@ -135,7 +136,7 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
             seen.push(v.color);
         }
         v.picking=false;
-        return 'colours seen during drag: '+[...new Set(seen)].join(',');})()`));
+        return 'colors seen during drag: '+[...new Set(seen)].join(',');})()`));
 
     console.log('overlay pixels:',await ev(c,sessionId,`(()=>{
         const v=propertyList.getEditor('ROMGraphicsView');
@@ -162,7 +163,7 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
         const v=propertyList.getEditor('ROMGraphicsView');
         const sel=v.paletteView.definition && rom.parsePath(v.paletteView.definition);
         return 'selected row: '+li.textContent.trim()+' | palette panel shows: '+(sel?sel.path+' at '+sel.range:'nothing')+
-               ' | first colour 0x'+(v.paletteView.palette[0]>>>0).toString(16);})()`));
+               ' | first color 0x'+(v.paletteView.palette[0]>>>0).toString(16);})()`));
 
     console.log('navigator arrows:',await ev(c,sessionId,`(()=>{
         const cat=[...document.querySelectorAll('.nav-category > p')].find(p=>p.textContent.trim()==='Battle');

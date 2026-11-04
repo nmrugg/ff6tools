@@ -25,7 +25,7 @@ TEXT_DATA      = (0x188D60, 0x1FA000)
 MONSTER_PROPS  = (0x2E8B00, 0x2E8C00)   # 256 * 1 byte: %SSSi iiii
 BATTLE_PROPS   = (0x2E8000, 0x2E8400)   # 512 * 2 bytes: monster set, count id
 BATTLE_SETS    = (0x2E8400, 0x2E8A00)   # 256 * 6 bytes: pal1, pal2, 4 monster ids
-BATTLE_PALETTES= (0x2E8C00, 0x2E8F00)   # 256 * 3 bytes (colour 0 is always black)
+BATTLE_PALETTES= (0x2E8C00, 0x2E8F00)   # 256 * 3 bytes (color 0 is always black)
 
 # size classes: (key, def begin, def end, width, height, entries)
 MONSTER_CLASSES = [
@@ -243,7 +243,7 @@ def main(rom=None, json_path=None):
     # a monster's two palettes always come from the *same* group. Pairing the
     # most common pal1 with the most common pal2 across all monsters that share a
     # graphic produces a Frankenstein pair (Firefly rendered half in Icefly's
-    # colours), so rank whole pairs instead.
+    # colors), so rank whole pairs instead.
     pairs = defaultdict(Counter)          # monster -> Counter[(pal1, pal2)]
     for s in range(256):
         base = s * 6
@@ -265,7 +265,7 @@ def main(rom=None, json_path=None):
         """every (pal1, pal2) the battles of these monsters use, most common first.
 
         A monster's palette comes from its battle group, so the same graphic can
-        appear in several colourings - Dark Cloud's forms, the elemental bosses,
+        appear in several colorings - Dark Cloud's forms, the elemental bosses,
         a monster and its palette-swapped boss. Each pair becomes one entry in
         the palette dropdown, so you can flip between them and paint whichever
         one you mean."""
@@ -426,11 +426,22 @@ def main(rom=None, json_path=None):
         width, height = p[4] >> 4, p[4] & 0x0F
         cells = width * height
         map_file = bank2A_file + (p[6] | (p[7] << 8)) - 0x8000
-        entry = [{'path': 'battlePalettes[%d]' % ((p[1] + k) & 0xFF),
-                  'name': 'Sprite palette %d' % (k + 1), 'offset': k * 4}
-                 for k in range(3)]
-        for e in entry:
-            e['compose'] = True
+        # 32/8D32: the starting sprite palette id is byte[1 + summon attack id],
+        # and 32/8D3A/45/50 load three consecutive battle palettes into sprite
+        # palettes 0-2 ($3F10/$3F14/$3F18). So each of the summon's attacks has
+        # its own triple - offer all of them.
+        entry = []
+        for attack in range(3):
+            base = p[1 + attack]
+            if not (0 <= base <= 0xFF) or (base + 2 > 255):
+                continue
+            triple = [{'path': 'battlePalettes[%d]' % ((base + k) & 0xFF),
+                       'name': 'Attack %d palette %d' % (attack + 1, k + 1),
+                       'offset': k * 4, 'compose': True} for k in range(3)]
+            entry.append(triple)
+        if not entry:
+            entry = [[{'path': 'battlePalettes[%d]' % p[1], 'name': 'Sprite palette 1',
+                       'offset': 0, 'compose': True}]]
         entry.append({'path': 'battlePalettes'})
         summons.append({
             'index': i,

@@ -2,6 +2,7 @@
 // graphics-tool controls to its control bar.
 const fs=require('fs'), path=require('path'), {spawn}=require('child_process');
 const ROOT='/storage/romhacking/ff6tools';
+const PROFILE = require('fs').mkdtempSync('/tmp/ff6tools-chrome-');
 const ROM=path.join(ROOT,'Final Fantasy V Advance (Europe) (En,Fr,De,Es,It) (patched).gba');
 const PORT=8451, CDP=9351;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -10,7 +11,7 @@ class C{constructor(w){this.w=w;this.i=0;this.h=new Map();w.onmessage=e=>{const 
 const ev=async(c,sid,e)=>{const r=await c.s('Runtime.evaluate',{expression:e,returnByValue:true},sid);if(r.exceptionDetails)throw new Error(String(r.exceptionDetails.exception?.description));return r.result.value;};
 (async()=>{
  const srv=spawn('python3',['-m','http.server',String(PORT),'--dir',ROOT],{stdio:'ignore'});
- const ch=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--remote-debugging-port='+CDP,'about:blank'],{stdio:'ignore'});
+ const ch=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--user-data-dir=' + PROFILE,'--disk-cache-size=1','--remote-debugging-port='+CDP,'about:blank'],{stdio:'ignore'});
  try{
   await sleep(2200);
   const info=await (await fetch('http://127.0.0.1:'+CDP+'/json/version')).json();

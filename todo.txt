@@ -179,6 +179,21 @@ recently added
    APPLY_INVERT_FLAG = False
  * ff3 nes: fixed boss pool ranges running past the end of their container
    (poolBytes ignored the clamp), which made some boss windows read garbage
+ * ff3 nes: fixed the black/garbled boss graphics windows - a ROMArray's own
+   .data is still the ENCODED planes, so a window onto a size-class array must
+   read the concatenation of its items' decoded data (windowSourceBytes), and
+   replaceData must split the write across those items. That is why Big Rat,
+   Jin, Ninja, Kunoichi, GutzCo, General, Kraken, Land Turtle and Cerberus were
+   broken while the spare-region bosses were fine
+ * ff3 nes: a window now re-reads its source when the source changes (it
+   observes the owner and each of its items) - an undo notifies the owner, so
+   the window copy was going stale
+ * ff3 nes: the window's tile flip comes from the tilemap object's mirrorX, not
+   from the stored words (the ROM never carries a flip bit) - that was the
+   "same jumbled problem" on Odin and Leviathan
+ * ff3 nes: the app test now compares all 24 boss + 8 summon graphics windows
+   byte-for-byte against the pool bytes the tilemap path reads, and fails any
+   that are all black
  * byte-exact undo: re-encoding is skipped when decoded data matches what was
    loaded, and unchanged-size assemblies are no longer relocated
  * navigator: Up/Down move the selection and expand the next section; fixed

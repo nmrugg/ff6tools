@@ -15,8 +15,8 @@ The model comes from the disassembly:
 
 This script renders a monster from the ROM with that model and compares the
 result with a rip from videogamesprites.net (the rips are 2x scaled).  Matching
-is by colour histogram, which is enough to catch a wrong split: the two battle
-palettes have different colour sets, so a shifted or un-inverted split produces
+is by color histogram, which is enough to catch a wrong split: the two battle
+palettes have different color sets, so a shifted or un-inverted split produces
 different counts.  For each monster it also scores the two variants the old code
 would have produced, and the model must win both.
 
@@ -167,10 +167,10 @@ def boss_tiles(rom, tilemap, pool_file):
 
 
 def rip_grid(path, w, h):
-    """The rip as a w x h grid of RGB colours.
+    """The rip as a w x h grid of RGB colors.
 
     The site publishes 2x rips with a 1 pixel border, and the NES index 0 of
-    the sprite is the GIF's *transparent* colour (rendered as the page's
+    the sprite is the GIF's *transparent* color (rendered as the page's
     background), so transparent pixels are folded back onto black."""
     try:
         from PIL import Image
@@ -194,9 +194,9 @@ def rip_grid(path, w, h):
     transparent = tuple(pal[trans * 3:trans * 3 + 3]) if (trans is not None and im.mode != 'RGB') else None
     grid = [[get(y, x) for x in range(W)] for y in range(H)]
     if transparent is not None:
-        # the sprite's colour 0 is the GIF's transparent colour
+        # the sprite's color 0 is the GIF's transparent color
         grid = [[(0, 0, 0) if c == transparent else c for c in row] for row in grid]
-    # the site draws a frame of one colour around the sprite, and sometimes
+    # the site draws a frame of one color around the sprite, and sometimes
     # crops tighter than the tile rectangle: strip uniform outer lines
     def uniform(line):
         return all(c == line[0] for c in line)
@@ -224,7 +224,7 @@ def rip_grid(path, w, h):
 
 
 def render_grid(rom, mid, variant='model'):
-    """the sprite as a flat list of (colour, rip_colour_or_None) pairs"""
+    """the sprite as a flat list of (color, rip_color_or_None) pairs"""
     pair = dominant_pair(rom, mid)
     if not pair:
         return None
@@ -255,15 +255,15 @@ def score(mine, theirs):
     # the site's rips are 2x: scale our counts to match
     a = Counter({k: v * scale * scale for k, v in a.items()})
     total = sum(b.values())
-    # match our colours to the rip's by count, largest first
+    # match our colors to the rip's by count, largest first
     mapping, used = {}, set()
-    for colour, n in sorted(a.items(), key=lambda kv: -kv[1]):
+    for color, n in sorted(a.items(), key=lambda kv: -kv[1]):
         pool = [c for c in b if c not in used] or list(b)
         best = min(pool, key=lambda c: (abs(b[c] - n),
-                                        sum((x - y) ** 2 for x, y in zip(c, colour))))
-        mapping[colour] = best
+                                        sum((x - y) ** 2 for x, y in zip(c, color))))
+        mapping[color] = best
         used.add(best)
-    agree = sum(min(n, b.get(mapping[colour], 0)) for colour, n in a.items())
+    agree = sum(min(n, b.get(mapping[color], 0)) for color, n in a.items())
     hist = 100.0 * min(agree, total) / max(total, 1)
     same = sum(1 for y in range(h * 8) for x in range(w * 8)
                if mapping[grid[y][x]] == rg[y][x])

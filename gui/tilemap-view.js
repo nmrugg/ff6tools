@@ -602,7 +602,7 @@ class ROMTilemapView extends ROMEditor {
             }
             this.graphicsView.poolLayout = layout;
             this.graphicsView.poolFlip = flip;
-            // so the pool panel colours each cell with the same palette the
+            // so the pool panel colors each cell with the same palette the
             // layout gives it (the graphics view has no object of its own here)
             this.graphicsView.cellsObject = this.object;
             this.graphicsView.width = this.width;

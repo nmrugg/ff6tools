@@ -97,7 +97,7 @@ console.log('battle palettes:');
     const pal=p.item(i);
     if(pal.data.length!==4){ bad++; continue; }
     const base=p.range.begin+i*3;
-    // colour 0 is fixed black, colours 1-3 come from the three ROM bytes
+    // color 0 is fixed black, colors 1-3 come from the three ROM bytes
     if((pal.data[0]>>>0)!==0xFF000000) bad++;
     for(let c=0;c<3;c++){
       const nes=data[base+c]&0x3F;
@@ -105,7 +105,7 @@ console.log('battle palettes:');
       const want=(0xFF000000|(rgb[2]<<16)|(rgb[1]<<8)|rgb[0])>>>0;
       if((pal.data[c+1]>>>0)!==want) bad++;
     }
-    // re-encoding must round-trip to the same colours (the NES palette has
+    // re-encoding must round-trip to the same colors (the NES palette has
     // duplicate blacks, so the raw byte index is not always preserved - the
     // pristine byte cache is what keeps the ROM byte-identical)
     const enc=GFX.paletteFormat.nesFixedPalette.encode(pal.data)[0];
@@ -116,9 +116,9 @@ console.log('battle palettes:');
       if(enc[0]!==(data[base]&0x3F)) rawEncDiff++;
     }
   }
-  check(bad===0,'all 256 palettes decode correctly (colour 0 = black)');
+  check(bad===0,'all 256 palettes decode correctly (color 0 = black)');
   check(badEnc===0,'all 256 palettes survive a decode/encode round trip');
-  console.log(`       (${rawEncDiff} palettes re-encode to a different but visually identical NES colour)`);
+  console.log(`       (${rawEncDiff} palettes re-encode to a different but visually identical NES color)`);
   // the fixed palette format must be registered
   check(!!ROM.dataFormat.nesFixedPalette,'nesFixedPalette is registered as a data format');
 }
@@ -162,7 +162,7 @@ console.log('per-graphic palettes:');
       const g=arr.item(i);
       const pal=g.palette;
       // the palette is a list of composed pairs: [[pal1,pal2], [pal1,pal2], ...,
-      // battlePalettes] - one dropdown entry per colouring its battles use
+      // battlePalettes] - one dropdown entry per coloring its battles use
       const firstPair=Array.isArray(pal)?(Array.isArray(pal[0])?pal[0]:[pal[0]]):null;
       if(!firstPair){ wrong++; if(!firstWrong)firstWrong={key,i,path:pal}; continue; }
       applied++;
@@ -281,13 +281,15 @@ console.log('summon graphics:');
     }
     const gpath=(typeof tm.graphics==='string')?tm.graphics:tm.graphics.path;
     if(gpath!=='summonGraphics') fail(i+': graphics '+gpath);
-    if(tm.tileOffset!==raw[b]) fail(i+': tileOffset '+tm.tileOffset+' != '+raw[b]);
+    if(tm.tileOffset!==0) fail(i+': tileOffset '+tm.tileOffset+' should be 0 (the graphics range is already the summon block)');
+    const gr=ROMRange.parse(tm.graphics.range||'0-0');
+    if(gr.begin!==raw[b]*64) fail(i+': graphics range begins at '+gr.begin+' want '+raw[b]*64);
   }
   check(bad===0,`summon properties + ${maps} tilemaps decode (6-bit tile ids, 0xff blank, tileOffset = graphicsIndex)`+
         (why.length?' -- '+why.join('; '):''));
 
   // palette pairs per monster graphic: each entry in the dropdown is one
-  // composed pair, so a graphic that fights in several colourings offers them
+  // composed pair, so a graphic that fights in several colorings offers them
   // all (Dark Cloud's forms, a monster and its boss version, ...)
   const CL=['monsterGraphics4x4','monsterGraphics4x6','monsterGraphics6x6',
             'monsterGraphics6x6b','monsterGraphics6x12','monsterGraphics12x6'];

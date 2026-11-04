@@ -758,6 +758,9 @@ function applyAttributeRef(object, ref) {
 }
 
 // The cell number of a tile in an object's palette-cell grid, or -1.
+// x/y are TILE coordinates (a cell is 2x2 tiles), which is what the tilemap
+// view's selection uses. The graphics view works in pixels - see
+// attributeCellForPixel.
 function attributeCellForTile(object, x, y) {
     if (!object || !object.attributeRef) return -1;
     var w = object.width || 0;
@@ -765,6 +768,13 @@ function attributeCellForTile(object, x, y) {
     var cols = Math.ceil(w / 2);
     return Math.floor(y / 2) * cols + Math.floor(x / 2) +
            (Number(object.attributeCellsOffset) || 0);
+}
+
+// Same, from pixel coordinates inside the graphics view.
+function attributeCellForPixel(object, x, y, tileWidth, tileHeight) {
+    if (!object || !object.attributeRef) return -1;
+    return attributeCellForTile(object,
+        Math.floor(x / (tileWidth || 8)), Math.floor(y / (tileHeight || 8)));
 }
 
 // Write one cell's palette choice back to the ROM table the object references.
@@ -846,6 +856,30 @@ ROMGraphics.prototype.windowLength = function() {
     return tiles * 64;                    // decoded bytes (nes2bpp: 16 raw -> 64)
 }
 
+// The decoded bytes of the assembly this window looks at. A ROMArray's own
+// .data is still the *encoded* planes (the array has no format), so for an
+// array the window reads the concatenation of its items' decoded data - the
+// same thing ROMGraphicsView.loadGraphics does for "whole": true, and the
+// offsets in the definition are decoded bytes either way.
+ROMGraphics.prototype.windowSourceBytes = function(src) {
+    if (src.array && src.item) {
+        var parts = [], total = 0;
+        for (var i = 0; i < src.arrayLength; i++) {
+            var item = src.item(i);
+            if (!item || !item.data) continue;
+            parts.push(item.data);
+            total += item.data.length;
+        }
+        var pool = new Uint8Array(total), at = 0;
+        for (i = 0; i < parts.length; i++) {
+            pool.set(parts[i], at);
+            at += parts[i].length;
+        }
+        return pool;
+    }
+    return src.data;
+}
+
 ROMGraphics.prototype.disassemble = function(data) {
     if (!this.window)
         return ROMAssembly.prototype.disassemble.call(this, data);
@@ -856,8 +890,29 @@ ROMGraphics.prototype.disassemble = function(data) {
         src.disassemble(rom && rom.data);
     }
     var off = this.window.offset || 0;
-    this.data = Uint8Array.from(src.data.subarray(off, off + this.windowLength()));
+    var bytes = this.windowSourceBytes(src);
+    this.data = Uint8Array.from(bytes.subarray(off, off + this.windowLength()));
     this.isLoaded = true;
+
+    // the window is a mirror of bytes somebody else owns: when they change
+    // (an edit, or an undo of one) the window has to re-read them. For an
+    // array source the edits land on the items, so watch those too.
+    if (!this._windowWatched) this._windowWatched = [];
+    var watch = [src];
+    if (src.array && src.item) {
+        for (var i = 0; i < src.arrayLength; i++) {
+            var it = src.item(i);
+            if (it && it.data && it.data.length) watch.push(it);
+        }
+    }
+    var self = this;
+    for (i = 0; i < watch.length; i++) {
+        var target = watch[i];
+        if (!target.addObserver) continue;
+        if (this._windowWatched.indexOf(target) >= 0) continue;
+        target.addObserver(this, this, function() { self.disassemble(); });
+        this._windowWatched.push(target);
+    }
 }
 
 ROMGraphics.prototype.assemble = function(data) {
@@ -871,10 +926,35 @@ ROMGraphics.prototype.replaceData = function(newData, offset, newLength) {
     var src = this.sourceAssembly();
     if (!src) return;
     offset = Number(offset) || 0;
+
+    // keep our own copy current first, then push the change out to whatever
+    // owns the bytes
     var next = Uint8Array.from(this.data);
     next.set(newData, offset);
     this.data = next;
-    src.replaceData(Uint8Array.from(newData), (this.window.offset || 0) + offset);
+
+    var base = this.window.offset || 0;
+    if (src.array && src.item) {
+        // decoded spans of the array's items: one replaceData per item
+        var spans = [], at = 0;
+        for (var i = 0; i < src.arrayLength; i++) {
+            var item = src.item(i);
+            if (!item || !item.data) continue;
+            spans.push({item: item, begin: at, end: at + item.data.length});
+            at += item.data.length;
+        }
+        for (i = 0; i < spans.length; i++) {
+            var s = spans[i];
+            var from = Math.max(s.begin, base + offset);
+            var to = Math.min(s.end, base + offset + newData.length);
+            if (to <= from) continue;
+            s.item.replaceData(newData.subarray(from - (base + offset),
+                                                to - (base + offset)),
+                               from - s.begin);
+        }
+    } else {
+        src.replaceData(Uint8Array.from(newData), base + offset);
+    }
     this.disassemble();
     this.notifyObservers();
 }

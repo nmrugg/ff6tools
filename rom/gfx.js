@@ -651,20 +651,20 @@ var GFX = {
                 return [new Uint32Array(dest.buffer, dest.byteOffset, Math.ceil(dest.byteLength / 4)), data.length];
             }
         },
-        // NES palette where the first colour is fixed (always black on screen)
-        // and only the remaining colours are stored - FF3 (NES) battle palettes
+        // NES palette where the first color is fixed (always black on screen)
+        // and only the remaining colors are stored - FF3 (NES) battle palettes
         // are 3 bytes per palette, see 2E/9E28.
         nesFixedPalette: {
             key: "nesFixedPalette",
-            name: "NES Palette (Fixed Colour 0)",
+            name: "NES Palette (Fixed Color 0)",
             encode: function(data) {
-                // 32-bit source, 8-bit destination; colour 0 is not stored
+                // 32-bit source, 8-bit destination; color 0 is not stored
                 var src = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
                 var colors = Math.ceil(data.byteLength / 4);
                 if (colors < 2) return [new Uint8Array(0), colors];
                 var dest = new Uint8Array(colors - 1);
 
-                var s = 4;  // skip the fixed colour
+                var s = 4;  // skip the fixed color
                 var d = 0;
                 var r, g, b;
 
@@ -678,7 +678,7 @@ var GFX = {
                 return [dest, colors];
             },
             decode: function(data) {
-                // 8-bit source, 32-bit destination; insert the fixed colour first
+                // 8-bit source, 32-bit destination; insert the fixed color first
                 var src = new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
                 var dest = new Uint8Array((src.length + 1) * 4);
 
@@ -764,7 +764,7 @@ var GFX = {
         return pal;
     },
 
-    // index of the NES colour closest to an RGB value
+    // index of the NES color closest to an RGB value
     closestNESColor: function(r, g, b) {
         var bestColor = 0x0F;
         var bestDiff = b * b + g * g + r * r;
@@ -910,7 +910,7 @@ var GFX = {
                 for (var i = 0; i < src.length; i++) {
                     var t = src[i] & 0xFFFF;
                     if (t >= 0xFE00) { dest[i] = 0xFF; continue; }
-                    // bits 6-7 come back from the word's palette bits (colour
+                    // bits 6-7 come back from the word's palette bits (color
                     // offset 0/4/8 -> palette index 0/1/2)
                     var p = (src[i] & 0x00FF0000) >> 16;
                     dest[i] = (t & 0x3F) | ((p >> 2) << 6);

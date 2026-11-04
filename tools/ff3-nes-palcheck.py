@@ -4,12 +4,12 @@
 This is the "are the palettes actually right?" check. It works in two passes:
 
 1. **Calibrate the NES palette the rip site uses.** videogamesprites.net renders
-   NES colours with its own emulation, so an RGB comparison against a hand-picked
+   NES colors with its own emulation, so an RGB comparison against a hand-picked
    table fails (our magenta is (140,24,184), theirs is (219,0,205)). But the tile
    data is beyond doubt, so for a monster we know exactly which NES palette *byte*
    each rip pixel must be: the tile gives the 2-bit index, the attribute table
    gives the palette (0 or 1), and the battle group gives the palette ids. Match
-   our colour counts to the rip's colour counts (they agree exactly when the
+   our color counts to the rip's color counts (they agree exactly when the
    model is right) and each match is one observation "NES byte X renders as
    RGB(a,b,c)". Across dozens of monsters those observations agree with each
    other, which gives the site's NES table.
@@ -61,7 +61,7 @@ def rom_tables(path):
 
 
 def nes_bytes_for(rom, pid):
-    """the four NES palette bytes of a battle palette (colour 0 is always $0F)"""
+    """the four NES palette bytes of a battle palette (color 0 is always $0F)"""
     b = rom['pals'][pid * 3:pid * 3 + 3]
     return [0x0F, b[0], b[1], b[2]]
 
@@ -131,11 +131,11 @@ def boss_nes(i, rom, variant='model'):
     return out
 
 
-def rip_colours(path):
-    """the rip's colour histogram, in 1x pixels
+def rip_colors(path):
+    """the rip's color histogram, in 1x pixels
 
-    The site draws a 1 pixel frame and uses the GIF's transparent colour for the
-    area outside the sprite's silhouette - both of those are NES colour 0 in the
+    The site draws a 1 pixel frame and uses the GIF's transparent color for the
+    area outside the sprite's silhouette - both of those are NES color 0 in the
     ROM, so transparent pixels fold onto black and the frame is dropped."""
     from PIL import Image
     im = Image.open(path)
@@ -149,7 +149,7 @@ def rip_colours(path):
         if x == 0 or y == 0 or x == W - 1 or y == H - 1:
             continue                      # the site's 1 pixel frame
         if trans is not None and v == trans:
-            rgb = (0, 0, 0)               # NES colour 0
+            rgb = (0, 0, 0)               # NES color 0
         else:
             rgb = tuple(pal[v * 3:v * 3 + 3])
         c[rgb] += 1
@@ -160,7 +160,7 @@ def rip_colours(path):
 
 
 def pair_by_count(mine, theirs):
-    """match our NES bytes to the rip's colours by pixel count (exact when the
+    """match our NES bytes to the rip's colors by pixel count (exact when the
     model is right); returns [(nesByte, ripRGB)] or None if it cannot be done"""
     tleft = dict(theirs)
     out = []
@@ -181,7 +181,7 @@ def calibrate(rom, names, index, cache, seed=None):
     """NES byte -> rip RGB, learned from the rips themselves.
 
     A pairing is only trusted when it is unambiguous: the pixel count of our
-    colour is unique among ours and the rip colour with that count is unique
+    color is unique among ours and the rip color with that count is unique
     among theirs. Ambiguous cases are left to the seed table (or to the answer
     learned from other monsters), which keeps the noise down."""
     obs = defaultdict(Counter)
@@ -199,7 +199,7 @@ def calibrate(rom, names, index, cache, seed=None):
         mine = monster_nes(mid, rom)
         if mine is None:
             continue
-        theirs = rip_colours(path)
+        theirs = rip_colors(path)
         if sum(mine.values()) != sum(theirs.values()):
             continue
         tleft = dict(theirs)
@@ -265,7 +265,7 @@ def main():
     index = attr.fetch_index(a.cache)
     index = {norm(k): v for k, v in index.items()}
 
-    # the rip site renders NES colours with its own emulation, so learn its
+    # the rip site renders NES colors with its own emulation, so learn its
     # table from the rips: seed with our own, then iterate to a fixed point
     table = {i: attr.NES[i] for i in range(0x40)}
     used = []
@@ -283,7 +283,7 @@ def main():
         path = os.path.join(a.cache, os.path.basename(url))
         if not os.path.exists(path):
             continue
-        theirs = rip_colours(path)
+        theirs = rip_colors(path)
         m = monster_nes(mid, rom)
         if m is None or sum(m.values()) != sum(theirs.values()):
             continue
@@ -303,7 +303,7 @@ def main():
             path = os.path.join(a.cache, os.path.basename(url))
             if not os.path.exists(path):
                 continue
-            theirs = rip_colours(path)
+            theirs = rip_colors(path)
             m = boss_nes(i, rom)
             if m is None or sum(m.values()) != sum(theirs.values()):
                 continue

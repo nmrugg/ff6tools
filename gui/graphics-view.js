@@ -49,7 +49,7 @@ class ROMGraphicsView extends ROMEditor {
         this.panning = null;
         this.rightHeld = false;
 
-        // painting (0 = Select, 1 = Pencil, 2 = Fill, 3 = Colour picker)
+        // painting (0 = Select, 1 = Pencil, 2 = Fill, 3 = Color picker)
         this.tool = 1;       // pencil by default; V switches back to Select
         this.color = 1;      // palette index used by pencil/fill
         this.painting = false;
@@ -97,7 +97,7 @@ const self = this;
         this.canvas.onmousemove = function(e) { self.mouseMove(e); };
         this.canvas.onmouseout = function(e) { self.mouseOut(e); };
         this.canvas.oncontextmenu = function(e) {
-            // right click always picks up the colour under the cursor
+            // right click always picks up the color under the cursor
             self.rightClick(e);
             return false;
         };
@@ -279,7 +279,7 @@ const self = this;
         if (((this.editorMode && this.object) || this.paintablePool()) && !this.noToolMenu) {
             // "Palette cells" only makes sense for an object that has a
             // per-cell palette table in the ROM (FF3 NES monsters and bosses)
-            const tools = ['Select','Pencil','Fill','Colour picker'];
+            const tools = ['Select','Pencil','Fill','Color picker'];
             if (this.object && (this.object.attributeRef || this.object.attributeCells))
                 tools.push('Palette cells');
             this.addList('changeTool','Tool',tools,
@@ -362,10 +362,8 @@ const self = this;
         this.redraw();
     }
 
-    // Paint one 2x2 tile cell's palette choice, writing it back to the ROM's
-    // attribute table (2F/A6FB). The palette row selected in the palette panel
-    // is what gets painted, so: pick row 2 in the panel, then click the parts
-    // of the sprite that should use the second battle palette.
+    // Does this object have a per-cell palette table in the ROM, with both
+    // palettes loaded so a row can be chosen?
     paintableCells() {
         const obj = this.object || this.cellsObject;
         if (!obj || !obj.attributeRef) return false;
@@ -373,18 +371,28 @@ const self = this;
         return this.paletteView.palette.length >= perPalette * 2;
     }
 
-    paintCellPalette(x, y) {
+    // The palette row the current paint color belongs to: 0 or 1 when the
+    // object has two composed battle palettes (FF3 NES), -1 otherwise.
+    currentPaletteRow() {
+        const perPalette = this.paletteView.colorsPerPalette || 4;
+        if (this.paletteView.palette.length < perPalette * 2) return -1;
+        return Math.min(Math.floor((this.paletteView.p || 0) *
+                      this.paletteView.colorsPerPalette / perPalette), 1);
+    }
+
+    // Paint one 2x2 tile cell's palette choice, writing it back to the ROM's
+    // attribute table (2F/A6FB).
+    paintCellPalette(x, y, row) {
         if (!this.paintableCells()) return false;
         const obj = this.object || this.cellsObject;
-        const cell = attributeCellForTile(obj, x, y);
+        // the graphics view works in pixels; a cell is 2x2 tiles
+        const cell = attributeCellForPixel(obj, x, y, this.tileWidth, this.tileHeight);
         if (cell < 0) return false;
-        const perPalette = this.paletteView.colorsPerPalette || 4;
-        let row = Math.floor((this.paletteView.p || 0) * this.paletteView.colorsPerPalette / perPalette);
-        row = Math.min(row, 1);
-        // "Swap palette cells" is a display flip; painting has to undo it
+        if (row === undefined) row = this.currentPaletteRow();
+        if (row < 0) return false;
+        // the definition records the bits before the per-monster inversion, so
+        // setAttributeBit needs the un-displayed value
         if (!!obj.attributeCellsInvert) row ^= 1;
-        const before = (this.attributeCellBits() || '')[cell];
-        if (before === undefined) return false;
         return setAttributeBit(obj, cell, row);
     }
 
@@ -418,15 +426,19 @@ const self = this;
             switch (this.tool) {
                 case 1: // pencil
                     this.painting = true;
+                    this.paintStroke = true;
+                    this.rom.beginAction();   // pixels + palette cells, one undo
                     this.paintStart = this.graphics.slice();
                     this.paintPixel(p.x, p.y);
                     break;
                 case 2: // fill
+                    this.paintStroke = true;
+                    this.rom.beginAction();
                     this.paintStart = this.graphics.slice();
                     this.floodFill(p.x, p.y);
                     this.commitPaint();
                     break;
-                case 3: // colour picker
+                case 3: // color picker
                     this.picking = true;
                     this.pickColor(p.x, p.y);
                     break;
@@ -617,7 +629,7 @@ const self = this;
         for (let y = 0; y < f.h; y++) {
             for (let x = 0; x < f.w; x++) {
                 const c = f.pixels[y * f.w + x];
-                if (!c) continue;                    // colour 0 is transparent
+                if (!c) continue;                    // color 0 is transparent
                 const off = this.tileOffset(f.x + x, f.y + y);
                 if (off >= 0 && off < this.graphics.length) this.graphics[off] = c;
             }
@@ -736,12 +748,12 @@ const self = this;
             ctx.fill(); outline(ctx);
         });
         const dropper=draw(ctx=>{
-            const rgb=this.colourRGB(this.color);
+            const rgb=this.colorRGB(this.color);
             ctx.fillStyle='#fff';
             ctx.beginPath(); ctx.moveTo(4,20); ctx.lineTo(7,13); ctx.lineTo(14,6); ctx.lineTo(17,9); ctx.lineTo(10,16); ctx.closePath();
             ctx.fill(); outline(ctx);
             ctx.beginPath(); ctx.moveTo(14,6); ctx.lineTo(17,3); ctx.lineTo(21,7); ctx.lineTo(18,10); ctx.closePath(); ctx.fill(); outline(ctx);
-            // bulb shows the colour currently selected
+            // bulb shows the color currently selected
             ctx.fillStyle=rgb;
             ctx.beginPath(); ctx.arc(18.5,5.5,2.6,0,Math.PI*2); ctx.closePath(); ctx.fill(); outline(ctx);
         });
@@ -757,8 +769,8 @@ const self = this;
         return this.cursors;
     }
 
-    // css colour string for a palette index of the object being edited
-    colourRGB(index) {
+    // css color string for a palette index of the object being edited
+    colorRGB(index) {
         const pal = this.paletteView && this.paletteView.palette;
         if (!pal || !pal.length || !isNumber(index)) return '#ffffff';
         const c = pal[Math.min(index, pal.length - 1)] >>> 0;
@@ -767,7 +779,7 @@ const self = this;
     }
 
     updateCursor() {
-        // rebuild the cursor art when the selected colour changes
+        // rebuild the cursor art when the selected color changes
         if (this.cursors && this.cursorColor !== this.color) this.cursors = null;
         const cursors = this.makeCursors();
         if (this.panning) {
@@ -812,20 +824,37 @@ const self = this;
         const col = Math.floor(x / tw), row = Math.floor(y / th);
         const t = row * this.width + col;
         if (col < 0 || row < 0 || col >= this.width || row >= this.height) return -1;
-        // a tile pool shown in tilemap order (FF3 bosses and summons) has its
-        // display cells pointing at arbitrary tiles of the pool
+        // a window onto a shared pool (FF3 boss/summon graphics) maps its
+        // display cells onto arbitrary tiles of the pool
         const idx = (this.poolLayout && t < this.poolLayout.length) ? this.poolLayout[t] : t;
         if (idx < 0) return -1;
-        const off = idx * this.bytesPerTile + (y % th) * tw + (x % tw);
+        // and a tile shown flipped (the game's horizontal flip table, 3F/F94F)
+        // has to be painted mirrored, or the pencil draws the wrong side of it
+        let px = x % tw;
+        if (this.poolFlip && this.poolFlip[t]) px = tw - 1 - px;
+        const off = idx * this.bytesPerTile + (y % th) * tw + px;
         if (off >= this.graphics.length) return -1;
         return off;
     }
 
     paintPixel(x, y) {
         const off = this.tileOffset(x, y);
-        if (off < 0 || this.graphics[off] === this.color) return;
-        this.graphics[off] = this.color;
-        this.redraw();
+        if (off < 0) return;
+        let touched = false;
+        if (this.graphics[off] !== this.color) {
+            this.graphics[off] = this.color;
+            touched = true;
+        }
+        // an object with a per-cell palette table (FF3 NES) also moves the
+        // whole 2x2 cell onto the palette row you are painting with: pick a
+        // color from row 2 and the cell you draw in becomes palette 2, which
+        // is what makes repainting a sprite's parts in another palette a
+        // single gesture. The dedicated "Palette cells" tool does the same
+        // thing without touching any pixels. This has to run even when the
+        // pixel already holds this index, or drawing over art that already
+        // uses the color would never re-palette it.
+        if (this.paintableCells() && this.paintCellPalette(x, y)) touched = true;
+        if (touched) this.redraw();
     }
 
     floodFill(x, y) {
@@ -838,6 +867,7 @@ const self = this;
         const W = this.width * tw, H = this.height * th;
         const stack = [[x, y]];
         const seen = new Set();
+        const cells = new Set();
         while (stack.length) {
             const [cx, cy] = stack.pop();
             const off = this.tileOffset(cx, cy);
@@ -846,10 +876,23 @@ const self = this;
             if (seen.has(key)) continue;
             seen.add(key);
             this.graphics[off] = this.color;
+            // the fill also moves every cell it covers onto the palette row
+            // being painted with (see paintPixel)
+            if (this.paintableCells()) {
+                const obj = this.object || this.cellsObject;
+                const cell = attributeCellForPixel(obj, cx, cy, this.tileWidth, this.tileHeight);
+                if (cell >= 0) cells.add(cell);
+            }
             if (cx > 0)      stack.push([cx-1, cy]);
             if (cx < W-1)    stack.push([cx+1, cy]);
             if (cy > 0)      stack.push([cx, cy-1]);
             if (cy < H-1)    stack.push([cx, cy+1]);
+        }
+        let row = this.currentPaletteRow();
+        if (row >= 0) {
+            const obj = this.object || this.cellsObject;
+            if (!!obj.attributeCellsInvert) row ^= 1;
+            for (const cell of cells) setAttributeBit(obj, cell, row);
         }
         this.redraw();
     }
@@ -857,9 +900,25 @@ const self = this;
     pickColor(x, y) {
         const off = this.tileOffset(x, y);
         if (off < 0) return;
-        if (this.color === this.graphics[off]) return;
-        this.color = this.graphics[off];
-        this.paletteView.setColor(this.color);
+        let c = this.graphics[off];
+        // an object with a per-cell palette table (FF3 NES) picks from the
+        // palette that cell actually uses, so the palette panel follows the
+        // part of the sprite you clicked on
+        if (this.paintableCells()) {
+            const bits = this.attributeCellBits();
+            const obj = this.object || this.cellsObject;
+            const cell = attributeCellForPixel(obj, x, y, this.tileWidth, this.tileHeight);
+            if (bits && cell >= 0 && bits[cell] !== undefined) {
+                const perPalette = this.paletteView.colorsPerPalette || 4;
+                const row = Number(bits[cell]);
+                this.paletteView.p = row * (perPalette / this.paletteView.colorsPerPalette);
+                c = c + row * perPalette;
+            }
+        }
+        if (this.color === c) return;
+        this.color = c;
+        this.paletteView.setColor(c);
+        this.paletteView.redraw();
         this.updateCursor();
         this.redraw();
     }
@@ -879,7 +938,11 @@ const self = this;
     commitPaint() {
         const target = this.paintTarget();
         if (!this.paintStart) return;
-        if (compareTypedArrays(this.paintStart, this.graphics)) { this.paintStart = null; return; }
+        if (compareTypedArrays(this.paintStart, this.graphics)) {
+            this.paintStart = null;
+            if (this.paintStroke) { this.paintStroke = false; this.rom.endAction(); }
+            return;
+        }
         if (target) {
             target.replaceData(this.graphics.subarray(0, target.data.length), 0);
         } else if (this.paintablePool()) {
@@ -888,9 +951,11 @@ const self = this;
             this.saveGraphics(this.definition);
         }
         this.paintStart = null;
+        // one undo step for the whole stroke, pixels and palette cells alike
+        if (this.paintStroke) { this.paintStroke = false; this.rom.endAction(); }
     }
 
-    // clear the selected area to transparent (colour 0)
+    // clear the selected area to transparent (color 0)
     deleteSelection() {
         const r = this.selectionPixelRect();
         const target = this.paintTarget();
@@ -1025,7 +1090,7 @@ const self = this;
 
         // With per-cell palette bits the cell table decides which palette each
         // tile uses, so the palette panel's selected row must not also shift
-        // every tile - otherwise clicking row 2 recolours the whole sprite and
+        // every tile - otherwise clicking row 2 recolors the whole sprite and
         // looks like a bug. The row only says what painting will write.
         let p = (this.paletteView.p * this.paletteView.colorsPerPalette) << 16;
         if (this.attributeCellBits()) p = 0;
@@ -1218,7 +1283,7 @@ const self = this;
         // create the color palette
         const palette = new Uint32Array(this.paletteView.palette);
         this.ppu.pal = this.rom.gammaCorrectedPalette(palette);
-        // index 0 is both the backdrop colour and the sprite outline in FF3 NES,
+        // index 0 is both the backdrop color and the sprite outline in FF3 NES,
         // so the black box around a monster is genuinely in the ROM: there is
         // nothing to toggle here without the sprite silhouette.
         this.ppu.back = this.backColor;
@@ -1307,11 +1372,15 @@ const self = this;
         const w = tm.width || this.width;
         const layout = new Int32Array(tm.data.length);
         const flip = new Int32Array(tm.data.length);
+        // the flip is the view's, not the ROM's: mirrorX means the game pushes
+        // these tiles through its horizontal flip table (3F/F94F/3F/F970), and
+        // the stored tilemap words never carry that bit
+        const mirrorX = !!tm.mirrorX;
         for (let t = 0; t < tm.data.length; t++) {
             const word = tm.data[t];
             const idx = word & 0xFFFF;
             layout[t] = (word === 0xFFFFFFFF || idx >= 0x100) ? -1 : idx;
-            flip[t] = (word & 0x10000000) ? 1 : 0;
+            flip[t] = (mirrorX || (word & 0x10000000)) ? 1 : 0;
         }
         this.poolLayout = layout;
         this.poolFlip = flip;
@@ -1361,7 +1430,7 @@ const self = this;
             }
 
             // V select, B pencil, G fill, I picker, C palette cells;
-            // 1-9 and 0 pick a palette colour
+            // 1-9 and 0 pick a palette color
             switch (e.key.toLowerCase()) {
                 case 'v': this.tool = 0; break;
                 case 'b': this.tool = 1; break;
@@ -1390,7 +1459,11 @@ const self = this;
             // change this.object, so painting still targets the graphics.
             if (ROMPaletteView.isPaletteFormat(object.format)) {
                 this.paletteObject = object;
-                this.paletteView.loadDefinition(object.path);
+                // an array item's `path` is the array itself, so the index has
+                // to be part of it or every entry shows the same palette
+                const path = (object.i !== undefined) ?
+                             object.path + '[' + object.i + ']' : object.path;
+                this.paletteView.loadDefinition({path: path});
                 this.paletteView.updateToolbox();
                 this.paletteView.resize();
                 this.paletteView.redraw();
@@ -1591,6 +1664,16 @@ const self = this;
 
         const self = this;
         const reload = function() {
+            // Painting a pixel can also write an attribute byte, and that byte
+            // is observed too. Reloading mid-stroke would throw away the
+            // uncommitted pixels, so only refresh the colors while a stroke is
+            // actually in progress.
+            if (self.painting || self.cellPainting) {
+                self.updateTilemap();
+                self.redraw();
+                if (self.tilemapView) self.tilemapView.redraw();
+                return;
+            }
 
             // reload the graphics
             self.loadDefinition(self.definition);
@@ -1650,7 +1733,21 @@ const self = this;
         }
 
         // copy imported data to the current graphics
-        this.graphics.set(graphics, offset);
+        if (this.poolLayout) {
+            // A window onto a shared pool (FF3 boss/summon graphics) is shown
+            // in the order its tilemap places the tiles, so an imported bitmap
+            // - which the user drew in that same arrangement - has to be
+            // scattered through the same mapping. A linear copy here writes the
+            // image into pool order and comes out garbled.
+            const W = this.width * this.tileWidth;
+            for (let i = 0; i < graphics.length; i++) {
+                const p = offset + i;
+                const off = this.tileOffset(p % W, Math.floor(p / W));
+                if (off >= 0 && off < this.graphics.length) this.graphics[off] = graphics[i];
+            }
+        } else {
+            this.graphics.set(graphics, offset);
+        }
 
         // set graphics data
         this.observer.sleep();

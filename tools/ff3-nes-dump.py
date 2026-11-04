@@ -55,7 +55,7 @@ def colors_nes():
 
 
 def resolve_palette(data, entry):
-    """battlePalettes[N] -> 4 RGB colours, colour 0 fixed black (nesFixedPalette).
+    """battlePalettes[N] -> 4 RGB colors, color 0 fixed black (nesFixedPalette).
     An itemPalettes entry is a list of palette definitions; the first one that
     names a specific palette is the default the app opens with."""
     for e in (entry if isinstance(entry, list) else [entry]):
@@ -70,7 +70,7 @@ def resolve_palette(data, entry):
 
 
 def decode_tile(buf, base):
-    """NES 2bpp planar tile -> 8 rows of 8 colour indices."""
+    """NES 2bpp planar tile -> 8 rows of 8 color indices."""
     rows = []
     for y in range(8):
         lo, hi = buf[base + y], buf[base + 8 + y]

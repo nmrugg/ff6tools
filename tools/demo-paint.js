@@ -2,6 +2,7 @@
 // Pencil / Fill, send mouse events to the canvas, then save and verify.
 const fs=require('fs'), path=require('path'), {spawn}=require('child_process');
 const ROOT='/storage/romhacking/ff6tools';
+const PROFILE = require('fs').mkdtempSync('/tmp/ff6tools-chrome-');
 const ROM=path.join(ROOT,'Final Fantasy V Advance (Europe) (En,Fr,De,Es,It).gba');
 const OUT=process.argv[2]||'/tmp/ff5e-demo/painted.gba';
 const GID=Number(process.argv[3]||11);
@@ -13,7 +14,7 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
 
 (async()=>{
   const server=spawn('python3',['-m','http.server',String(PORT),'--dir',ROOT],{stdio:'ignore'});
-  const chrome=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run',`--remote-debugging-port=${CDP_PORT}`,'about:blank'],{stdio:'ignore'});
+  const chrome=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--user-data-dir=' + PROFILE,'--disk-cache-size=1',`--remote-debugging-port=${CDP_PORT}`,'about:blank'],{stdio:'ignore'});
   try{
     await sleep(2500);
     const v=await (await fetch(`http://127.0.0.1:${CDP_PORT}/json/version`)).json();
@@ -61,20 +62,20 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
 
     console.log('before:',await stats());
 
-    // FILL: flood a large flat region (the transparent background) with colour 5
+    // FILL: flood a large flat region (the transparent background) with color 5
     await setTool(2,5);
     await clickPixel(2,2);
     console.log('after fill:',await stats());
 
-    // PENCIL: draw a stripe of colour 12
+    // PENCIL: draw a stripe of color 12
     await setTool(1,12);
     for(let i=0;i<10;i++) await clickPixel(10+i,6);
     console.log('after pencil:',await stats());
 
-    // COLOUR PICKER
+    // COLOR PICKER
     await setTool(3,0);
     await clickPixel(16,20);
-    console.log('picked colour:',await ev(c,sessionId,`propertyList.getEditor('ROMGraphicsView').color`));
+    console.log('picked color:',await ev(c,sessionId,`propertyList.getEditor('ROMGraphicsView').color`));
 
     fs.writeFileSync('/tmp/ff5e-demo/painted-ui.png',
       Buffer.from((await c.send('Page.captureScreenshot',{format:'png'},sessionId)).data,'base64'));

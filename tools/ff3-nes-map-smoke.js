@@ -4,13 +4,14 @@
 //   node tools/ff3-nes-map-smoke.js    (FF3J_ROM=<dump> for the translation)
 const fs=require('fs'),path=require('path'),{spawn}=require('child_process');
 const ROOT='/storage/romhacking/ff6tools';const ROM=path.join(ROOT, process.env.FF3J_ROM||'Final Fantasy III (Japan) (fixed).nes');
+const PROFILE = require('fs').mkdtempSync('/tmp/ff6tools-chrome-');
 const PORT=8474,CDP=9374;const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 class C{constructor(w){this.w=w;this.i=0;this.h=new Map();w.onmessage=e=>{const m=JSON.parse(e.data);if(m.id&&this.h.has(m.id)){const{res,rej}=this.h.get(m.id);this.h.delete(m.id);m.error?rej(new Error(JSON.stringify(m.error))):res(m.result);}};}
  s(x,p={},sid){return new Promise((res,rej)=>{const id=++this.i;this.h.set(id,{res,rej});this.w.send(JSON.stringify({id,method:x,params:p,sessionId:sid}));});}}
 const ev=async(c,sid,e)=>{const r=await c.s('Runtime.evaluate',{expression:e,returnByValue:true},sid);if(r.exceptionDetails)throw new Error(String(r.exceptionDetails.exception?.description||r.exceptionDetails.text));return r.result.value;};
 let fails=0;const check=(c,m)=>{console.log((c?'  ok  ':'  FAIL')+' '+m);if(!c)fails++;};
 (async()=>{const srv=spawn('python3',['-m','http.server',String(PORT),'--dir',ROOT],{stdio:'ignore'});
- const ch=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--window-size=1280,800','--remote-debugging-port='+CDP,'about:blank'],{stdio:'ignore'});
+ const ch=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--user-data-dir=' + PROFILE,'--disk-cache-size=1','--window-size=1280,800','--remote-debugging-port='+CDP,'about:blank'],{stdio:'ignore'});
  try{await sleep(2200);const info=await(await fetch('http://127.0.0.1:'+CDP+'/json/version')).json();
   const ws=new WebSocket(info.webSocketDebuggerUrl);await new Promise(r=>ws.addEventListener('open',r));const c=new C(ws);
   const {targetId}=await c.s('Target.createTarget',{url:'http://127.0.0.1:'+PORT+'/ff6tools.html'});

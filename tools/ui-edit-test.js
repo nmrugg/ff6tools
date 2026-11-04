@@ -1,6 +1,7 @@
 // Tests for the new editing behaviour.
 const fs=require('fs'), path=require('path'), {spawn}=require('child_process');
 const ROOT='/storage/romhacking/ff6tools';
+const PROFILE = require('fs').mkdtempSync('/tmp/ff6tools-chrome-');
 const ROM=path.join(ROOT,'Final Fantasy V Advance (Europe) (En,Fr,De,Es,It).gba');
 const PORT=8401, CDP_PORT=9301;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -10,7 +11,7 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
 
 (async()=>{
   const server=spawn('python3',['-m','http.server',String(PORT),'--dir',ROOT],{stdio:'ignore'});
-  const chrome=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run',`--remote-debugging-port=${CDP_PORT}`,'about:blank'],{stdio:'ignore'});
+  const chrome=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--user-data-dir=' + PROFILE,'--disk-cache-size=1',`--remote-debugging-port=${CDP_PORT}`,'about:blank'],{stdio:'ignore'});
   try{
     await sleep(2200);
     const info=await (await fetch(`http://127.0.0.1:${CDP_PORT}/json/version`)).json();
@@ -64,7 +65,7 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
         return 'pan during='+during.x+','+during.y+' after release='+v.panX+','+v.panY+
                (v.panX===during.x&&v.panY===during.y?' STAYS':' JUMPED BACK');})()`));
 
-    console.log('4. eyedropper cursor reflects colour:',await ev(c,sessionId,`(()=>{
+    console.log('4. eyedropper cursor reflects color:',await ev(c,sessionId,`(()=>{
         const v=propertyList.getEditor('ROMGraphicsView');
         v.tool=3; v.color=1; v.updateCursor(); const a=v.canvas.style.cursor;
         v.color=9; v.updateCursor(); const b=v.canvas.style.cursor;
@@ -168,19 +169,19 @@ const ev=async(c,s,e)=>{const r=await c.send('Runtime.evaluate',{expression:e,re
                ' autoFitZoom='+before.zoom.toFixed(2)+' afterWheel='+gv.zoom.toFixed(2)+
                ' (unchanged: '+(before.zoom===gv.zoom)+')';})()`));
 
-    console.log('11. palette colour edit via double click:',await ev(c,sessionId,`(()=>{
+    console.log('11. palette color edit via double click:',await ev(c,sessionId,`(()=>{
         const pal=rom.monsterPalettes.item(0);
         propertyList.select(pal);
         const pv=propertyList.getEditor('ROMGraphicsView').paletteView;
         const obj=pv.paletteObject;
         const before=obj.data[3]>>>0;
-        // point at colour index 3 (first row, 4th swatch)
+        // point at color index 3 (first row, 4th swatch)
         const e=new MouseEvent('dblclick',{bubbles:true,cancelable:true});
         Object.defineProperty(e,'offsetX',{value:3.5*pv.colorWidth});
         Object.defineProperty(e,'offsetY',{value:0.5*pv.colorHeight});
         pv.editColor(e);
         const input=[...document.querySelectorAll('input[type=color]')].pop();
-        if(!input) return 'no colour input created';
+        if(!input) return 'no color input created';
         input.value='#302010';
         input.dispatchEvent(new Event('input'));
         const after=rom.monsterPalettes.item(0).data[3]>>>0;

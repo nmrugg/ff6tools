@@ -4,6 +4,7 @@
 //   node tools/ui-test.js
 const fs=require('fs'), path=require('path'), {spawn}=require('child_process');
 const ROOT='/storage/romhacking/ff6tools';
+const PROFILE = require('fs').mkdtempSync('/tmp/ff6tools-chrome-');
 const ROM=path.join(ROOT,'Final Fantasy V Advance (Europe) (En,Fr,De,Es,It).gba');
 const PORT=8321, CDP_PORT=9223;
 
@@ -25,7 +26,7 @@ async function evalJS(cdp,sessionId,expr,awaitPromise=false){
 
 async function main(){
   const server=spawn('python3',['-m','http.server',String(PORT),'--dir',ROOT],{stdio:'ignore'});
-  const chrome=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run',
+  const chrome=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--user-data-dir=' + PROFILE,'--disk-cache-size=1',
     `--remote-debugging-port=${CDP_PORT}`,'about:blank'],{stdio:'ignore'});
   try{
     await sleep(2500);

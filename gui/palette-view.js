@@ -23,7 +23,7 @@ class ROMPaletteView {
         this.definition = null;
         this.palette = new Uint32Array(16);
         this.p = 0; // selected palette index
-        this.c = 0; // selected colour index within the palette
+        this.c = 0; // selected color index within the palette
         this.colorsPerPalette = 16; // number of colors per palette
         this.rowsPerPalette = 1; // number of rows per palette
         this.colorsPerRow = 16; // number of colors per row
@@ -37,12 +37,12 @@ class ROMPaletteView {
         // add event handlers
         const self = this;
         this.canvas.onmousedown = function(e) { self.mouseDown(e); };
-        // double click (or right click) a swatch to edit that colour
+        // double click (or right click) a swatch to edit that color
         this.canvas.ondblclick = function(e) { self.editColor(e); };
         this.canvas.oncontextmenu = function(e) { self.editColor(e); return false; };
     }
 
-    // index of the colour under the mouse
+    // index of the color under the mouse
     colorIndexAt(e) {        const row = Math.floor(e.offsetY / this.colorHeight);
         const col = Math.floor(e.offsetX / this.colorWidth);
         if (row < 0 || col < 0 || row >= this.rows) return -1;
@@ -105,7 +105,7 @@ class ROMPaletteView {
         row = Math.min(Math.max(row, 0), this.rows - 1);
         this.p = Math.floor(row / this.rowsPerPalette);
 
-        // also pick the colour within the palette (used as the paint colour)
+        // also pick the color within the palette (used as the paint color)
         const col = Math.min(Math.max(Math.floor(e.offsetX / this.colorWidth), 0), this.colorsPerRow - 1);
         const rowInPalette = row % this.rowsPerPalette;
         const colorIndex = rowInPalette * this.colorsPerRow + col;
@@ -173,7 +173,7 @@ class ROMPaletteView {
 
     setColor(colorIndex) {
         this.c = colorIndex;
-        // the graphics buffer stores the raw colour index; the selected palette
+        // the graphics buffer stores the raw color index; the selected palette
         // row only affects how that index is displayed
         if (this.graphicsView) {
             this.graphicsView.color = colorIndex;
@@ -207,7 +207,7 @@ class ROMPaletteView {
         ctx.strokeStyle = 'black';
         ctx.strokeRect(x, y, w, h);
 
-        // highlight the currently selected colour
+        // highlight the currently selected color
         if (isNumber(this.c) && this.c >= 0 && this.c < this.colorsPerPalette) {
             const rowInPalette = Math.floor(this.c / this.colorsPerRow);
             const col = this.c % this.colorsPerRow;
@@ -337,7 +337,7 @@ class ROMPaletteView {
 
         // get object data (must be 32-bit)
         if (!object || !object.data) return;
-        this.paletteObject = object;   // used by the colour editor
+        this.paletteObject = object;   // used by the color editor
         let data = new Uint32Array(object.data.buffer);
         // observe the palette object
         const self = this;
@@ -379,7 +379,7 @@ class ROMPaletteView {
         this.palette.set(data, offset);
 
         // remember which ROM object owns each part of the buffer, so editing a
-        // colour writes to the palette it came from (a composed palette spans
+        // color writes to the palette it came from (a composed palette spans
         // several palette objects)
         if (!this.paletteSegments) this.paletteSegments = [];
         if (!(object instanceof ROMArray)) {

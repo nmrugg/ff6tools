@@ -2,6 +2,7 @@
 //   node tools/ff3-nes-shots.js [path ...]
 const fs=require('fs'), path=require('path'), {spawn}=require('child_process');
 const ROOT='/storage/romhacking/ff6tools';
+const PROFILE = require('fs').mkdtempSync('/tmp/ff6tools-chrome-');
 const ROM=path.join(ROOT, process.env.FF3J_ROM||'Final Fantasy III (Japan) (fixed).nes');
 const PORT=8472, CDP=9372;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
@@ -12,7 +13,7 @@ const ev=async(c,sid,e)=>{const r=await c.s('Runtime.evaluate',{expression:e,ret
  const args=process.argv.slice(2);
  const targets=args.length?args:['monsterGraphics6x6[3]','battleCharacterGraphics[0]','monsterGraphicsProperties[0x7A]','battlePalettes[1]','monsterGraphics12x6[0]'];
  const srv=spawn('python3',['-m','http.server',String(PORT),'--dir',ROOT],{stdio:'ignore'});
- const ch=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--remote-debugging-port='+CDP,'about:blank'],{stdio:'ignore'});
+ const ch=spawn('google-chrome',['--headless=new','--no-sandbox','--disable-gpu','--no-first-run','--user-data-dir=' + PROFILE,'--disk-cache-size=1','--remote-debugging-port='+CDP,'about:blank'],{stdio:'ignore'});
  try{
   await sleep(2200);
   const info=await (await fetch('http://127.0.0.1:'+CDP+'/json/version')).json();
