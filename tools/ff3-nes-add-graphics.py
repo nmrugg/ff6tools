@@ -375,6 +375,47 @@ def main():
         indent(palette_list(b['palette'], 4), 4).lstrip())
         blocks.append(boss_block.replace('@ATTR@', js(boss_attr[i])))
 
+    # ---- boss and summon graphics: paintable windows onto the shared pools ----
+    # A boss or summon is assembled from a tile pool that another assembly
+    # already owns, so these are *windows*: they show one creature's tiles as a
+    # bitmap and paint through to the owner. That is what makes "Boss Graphics"
+    # editable with Pencil/Fill exactly like a monster graphic, while "Boss
+    # Tilemaps" stays the placement view.
+    def graphics_window(key, title, source, offset, tiles, width, attr, palette,
+                        layout_from=None):
+        return '''"%s": {
+    "type": "graphics",
+    "name": "%s",
+    "format": "nes2bpp",
+    "width": %d,
+    "height": %d,
+    "backColor": true,
+    "window": {"path": "%s", "offset": %d, "tiles": %d},%s%s
+    "palette": %s
+}''' % (key, title, width, (tiles + width - 1) // width, source, offset, tiles,
+        ('\n    "attributeRef": ' + js(attr) + ',') if attr else '',
+        ('\n    "layoutFrom": "%s",' % layout_from) if layout_from else '',
+        indent(palette_list(palette, 4), 4).lstrip())
+
+    for b in bosses:
+        i = b['index']
+        if not b['container']:
+            continue
+        name = ', '.join(b['owners']) or ('Boss %d' % i)
+        blocks.append(graphics_window(
+            'bossGraphics%d' % i, 'Boss Graphics %d (%s)' % (i, name.replace('"', "'")),
+            b['container'][0], b['poolBytes'][0], b['poolTiles'], 18,
+            boss_attr[i], b['palette'], 'bossTilemap%d' % i))
+
+    for s in summons:
+        i = s['index']
+        # the summon's own block inside the summon tile pool; a summon carries
+        # its palette in the tilemap byte, so there is no cell table here
+        blocks.append(graphics_window(
+            'summonGraphics%d' % i, 'Summon Graphics %d (%s)' % (i, s['name'].replace('"', "'")),
+            'summonGraphics', s['gfxIndex'] * 64, s['cells'], s['width'],
+            None, s['palette'], 'summonTilemap%d' % i))
+
     summon_names = {'length': 8, 'default': 'Summon %i',
                     'string': {str(s['index']): s['name'] for s in summons}}
     blocks.append('''"summonProperties": {
@@ -529,25 +570,40 @@ def main():
 
     boss_items = ', '.join('{"path": "bossTilemap%d"}' % b['index'] for b in bosses)
     boss_sec = '''        }, {
-            "name": "Boss Graphics",
+            "name": "Boss Tilemaps",
             "list": [
                 {"path": "bossGraphicsPointers"},
                 {"path": "bossAttributeData"},
                 %s''' % boss_items
 
+    boss_gfx_items = ', '.join('{"path": "bossGraphics%d"}' % b['index']
+                               for b in bosses if b['container'])
+    boss_gfx_sec = '''        }, {
+            "name": "Boss Graphics",
+            "list": [
+                %s''' % boss_gfx_items
+
     summon_items = ', '.join('{"path": "summonTilemap%d"}' % s['index'] for s in summons)
     summon_sec = '''        }, {
-            "name": "Summon Graphics",
+            "name": "Summon Tilemaps",
             "list": [
                 {"path": "summonProperties"},
-                {"path": "summonGraphics"},
                 %s''' % summon_items
+
+    summon_gfx_items = ', '.join('{"path": "summonGraphics%d"}' % s['index'] for s in summons)
+    summon_gfx_sec = '''        }, {
+            "name": "Summon Graphics",
+            "list": [
+                {"path": "summonGraphics"},
+                %s''' % summon_gfx_items
 
     anchor = '        }, {\n            "name": "Text",'
     assert anchor in text, 'hierarchy anchor not found'
     text = text.replace(anchor,
                         battle + '\n            ]\n' + boss_sec + '\n            ]\n' +
-                        summon_sec + '\n            ]\n        }, {\n            "name": "Text",', 1)
+                        boss_gfx_sec + '\n            ]\n' +
+                        summon_sec + '\n            ]\n' +
+                        summon_gfx_sec + '\n            ]\n        }, {\n            "name": "Text",', 1)
 
     # ---- validate --------------------------------------------------------
     try:
@@ -559,17 +615,23 @@ def main():
     need = ['monsterGraphics4x4', 'monsterGraphics12x6', 'monsterGraphicsProperties',
             'battlePalettes', 'battleCharacterGraphics', 'bossGraphicsPointers',
             'monsterAttributeData', 'bossAttributeData',
-            'bossTilemap0', 'bossTilemap23', 'summonGraphics']
+            'bossTilemap0', 'bossTilemap23', 'bossGraphics0', 'bossGraphics22',
+            'summonGraphics0', 'summonGraphics7', 'summonGraphics']
     missing = [k for k in need if k not in updated['assembly']]
     if missing:
         raise SystemExit('definition is missing %s after the edit' % missing)
     if 'worldPalette' in updated['assembly']:
         raise SystemExit('worldPalette was not removed')
     for s in updated['hierarchy']:
-        if s.get('name') in ('Battle', 'Boss Graphics'):
+        if s.get('name') in ('Battle', 'Boss Tilemaps', 'Boss Graphics',
+                             'Summon Tilemaps', 'Summon Graphics'):
             break
     else:
         raise SystemExit('hierarchy sections missing')
+    sections = {s.get('name') for s in updated['hierarchy']}
+    for want in ('Boss Tilemaps', 'Boss Graphics', 'Summon Tilemaps', 'Summon Graphics'):
+        if want not in sections:
+            raise SystemExit('hierarchy section %s missing' % want)
 
     if dry:
         print('dry run: %d bytes -> %d bytes' % (len(original), len(text)))

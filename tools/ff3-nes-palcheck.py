@@ -66,6 +66,15 @@ def nes_bytes_for(rom, pid):
     return [0x0F, b[0], b[1], b[2]]
 
 
+# The app does not apply the $8F00 invert flag (the boss records are already
+# authored in the boss's orientation) - keep this tool in step with it, and use
+# 'inverted' as the alternative to test instead.
+INVERT_APPLIED = False
+def _cell_variant(variant):
+    inverted = (variant == 'inverted') != INVERT_APPLIED
+    return 'noinvert' if not inverted else 'model'
+
+
 def monster_nes(mid, rom, variant='model'):
     """the NES palette bytes a monster's pixels use, as a multiset"""
     p = rom['props'][mid]
@@ -76,8 +85,7 @@ def monster_nes(mid, rom, variant='model'):
         return None
     p1, p2 = pair if variant != 'swap' else (pair[1], pair[0])
     # cell_bit applies the per-monster inversion (2F/A8BF) unless told not to
-    bit, w, h, cols, skip = attr.cell_bit(
-        rom, mid, 'noinvert' if variant == 'noinvert' else 'model')
+    bit, w, h, cols, skip = attr.cell_bit(rom, mid, _cell_variant(variant))
     px, w, h = attr.tiles(rom, mid)
     P = [nes_bytes_for(rom, p1), nes_bytes_for(rom, p2)]
     out = Counter()
@@ -109,12 +117,9 @@ def boss_nes(i, rom, variant='model'):
         return None
     p1, p2 = pair if variant != 'swap' else (pair[1], pair[0])
     inv = 0
-    if owners:
+    if owners and _cell_variant(variant) == 'model':
         m = owners[0]
-        k = (m & 7) + 1
-        inv = ((rom['invert'][m >> 3] << k) >> 7) & 1
-        if variant == 'noinvert':
-            inv = 0
+        inv = (rom['invert'][m >> 3] >> 7) & 1
     addr = f(0x2E8FC0) + i * 7
     P = [nes_bytes_for(rom, p1), nes_bytes_for(rom, p2)]
     out = Counter()
@@ -284,7 +289,7 @@ def main():
             continue
         s_model = score(m, theirs, table)
         s_swap = score(monster_nes(mid, rom, 'swap'), theirs, table)
-        s_noinv = score(monster_nes(mid, rom, 'noinvert'), theirs, table)
+        s_noinv = score(monster_nes(mid, rom, 'inverted'), theirs, table)
         rows.append((name, mid, s_model, s_swap, s_noinv, 'monster'))
 
     for i in range(24):
@@ -304,7 +309,7 @@ def main():
                 continue
             rows.append((name, mid, score(m, theirs, table),
                          score(boss_nes(i, rom, 'swap'), theirs, table),
-                         score(boss_nes(i, rom, 'noinvert'), theirs, table), 'boss'))
+                         score(boss_nes(i, rom, 'inverted'), theirs, table), 'boss'))
 
     perfect = [r for r in rows if r[2] > 99.5]
     wrong = [r for r in rows if r[2] <= 99.5]

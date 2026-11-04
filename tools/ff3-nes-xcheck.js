@@ -369,9 +369,9 @@ console.log('palette cell tables:');
   const IDOFF=[0,0x10,0,0x18,0,0];
   const SLOT=[[4,6],[4,6],[6,6],[6,6],[6,12],[12,6]];   // formation slot, 2F/A5E6
   const INVERT=rom.mapAddress(0x2E8F00);
-  // 2F/A133-2F/A141 shifts $8F00[id>>3] left (id&7)+1 times and then tests bit
-  // 7 of A, so the invert flag is bit (6-(id&7)) - and 0 when id&7 == 7
-  const invertFlag=(m)=>(((data[INVERT+(m>>3)]<<((m&7)+1))>>7)&1)?true:false;
+  // the flag is bit 7 of $8F00[id>>3]: every id $80-$FF renders with the two
+  // battle palettes exchanged (2F/A8BF EOR #$FF)
+  const invertFlag=(m)=>((data[INVERT+(m>>3)]>>7)&1)?true:false;
   const props=data.slice(rom.mapAddress(0x2E8B00), rom.mapAddress(0x2E8C00));
   const CL=['monsterGraphics4x4','monsterGraphics4x6','monsterGraphics6x6',
             'monsterGraphics6x6b','monsterGraphics6x12','monsterGraphics12x6'];
@@ -394,9 +394,9 @@ console.log('palette cell tables:');
         want+=((b>>(7-(k&7)))&1).toString();
       }
       if(ref.cells!==want){ bad++; if(why.length<3) why.push(CL[c]+'['+i+'] cells '+ref.cells+' want '+want); continue; }
-      const flags=users.map(invertFlag);
-      if(!flags.includes(!!ref.invert)){ bad++; if(why.length<3) why.push(CL[c]+'['+i+'] invert '+ref.invert+' want one of '+flags); }
-      if(new Set(flags).size===1 && !!ref.invert!==flags[0]){ bad++; if(why.length<3) why.push(CL[c]+'['+i+'] invert '+ref.invert+' want '+flags[0]); }
+      // the ROM flag is recorded but deliberately NOT applied: the boss records
+      // are already authored in the boss's orientation (see ff3-nes-names.py)
+      if(!!ref.invert){ bad++; if(why.length<3) why.push(CL[c]+'['+i+'] invert should be 0'); }
       // a 4x4 monster stands in a 4x6 slot, two tile rows lower (2F/A2D0:
       // first tile id $70, but 4x4 graphics load at PPU $0780)
       const skip=((SLOT[c][1]-[4,6,6,6,12,6][c])/2)*cols;
@@ -413,11 +413,13 @@ console.log('palette cell tables:');
         `monsterAttributeData covers $2E:$8F00-$8FC0 (${mad&&mad.arrayLength} bytes)`);
   check(bad2&&bad2.arrayLength===24&&bad2.range.begin===rom.mapAddress(0x2E8FC0),
         `bossAttributeData covers $2E:$8FC0-$9028 (${bad2&&bad2.arrayLength} x 7 bytes)`);
-  // $8F00 is a bit per monster id, and every boss id has it set
+  // $8F00 bit 7 is set for every boss id; the definitions record it as not
+  // applied, because the boss cell records are already in the boss's orientation
   let inv=0; for(let m=0x80;m<0x100;m++) inv+=invertFlag(m)?1:0;
-  check(inv===112,`the invert flag is set for ${inv} of the 128 boss monster ids (not the 16 with id&7==7)`);
-  let invLow=0; for(let m=0;m<0x80;m++) invLow+=invertFlag(m)?1:0;
-  check(invLow===0,`and for none of the $00-$7F ids (${invLow}); the 16 with id&7==7 are not inverted`);
+  check(inv===128,`the ROM's invert flag is set for all ${inv} boss ids (not applied)`);
+  let applied=0;
+  for(let i=0;i<24;i++) if(rom.parsePath('bossTilemap'+i).attributeCellsInvert) applied++;
+  check(applied===0,`and no boss tilemap inverts its cells (${applied} do)`);
 
   // bosses: 18x12 tiles = 9x6 cells in 7 bytes, read the same way (2F/A820)
   let badBoss=0, bossCells=0;

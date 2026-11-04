@@ -154,22 +154,13 @@ class ROMTilemapView extends ROMEditor {
                 this.placeTile = poolBased;
                 this.placeTileDefault = poolBased;
             }
-            // pool-based tilemaps (FF3 bosses, summons) are edited like any
-            // other graphic: the Tool menu paints pixels into the tile that
-            // occupies the cell under the cursor
-            if (poolBased) {
-                const gv = this.graphicsView;
-                this.addList('changeTool','Tool',['Select','Pencil','Fill','Colour picker'],
-                    function(t){ gv.tool=t; self.placeTile=(t===0); self.redraw(); },
-                    function(t){ return t===gv.tool; });
-                this.addTwoState('placeTile', function(on) {
-                    self.placeTile = on;
-                }, 'Place tile', this.placeTile !== false && gv.tool === 0);
-            } else {
-                this.addTwoState('placeTile', function(on) {
-                    self.placeTile = on;
-                }, 'Place tile', this.placeTile !== false);
-            }
+            // The layout pane is about *which tile goes where*. Painting pixels
+            // happens in the matching "Boss Graphics" / "Summon Graphics" entry,
+            // which is a bitmap like any monster graphic - keeping the two
+            // apart is what makes each one behave the way it looks.
+            this.addTwoState('placeTile', function(on) {
+                self.placeTile = on;
+            }, 'Place tile', this.placeTile !== false);
 
             if (this.object.attributeCells || this.object.attributeRef) {
                 // paint the cells: click one to make it use the palette row
@@ -247,62 +238,6 @@ class ROMTilemapView extends ROMEditor {
         this.redraw();
     }
 
-    // Pixel of the layout under the pointer, in the same coordinate space the
-    // toolbox graphics view uses (the pool panel is laid out cell for cell with
-    // the layout, see followLayout), or null outside the image.
-    layoutPixel(e) {
-        const x = Math.floor(e.offsetX / this.zoom);
-        const y = Math.floor(e.offsetY / this.zoom);
-        const w = this.width * this.tileWidth, h = this.height * this.tileHeight;
-        if (x < 0 || y < 0 || x >= w || y >= h) return null;
-        return {x: x, y: y};
-    }
-
-    // Paint the boss/summon layout with the toolbox graphics view's tools: the
-    // graphics view maps the pixel onto the pool tile that occupies the cell
-    // under the cursor (ROMGraphicsView.tileOffset -> poolLayout), so Pencil,
-    // Fill and the colour picker work here exactly as they do on a monster
-    // graphic - no separate "place a tile" dance.
-    paintLayoutDown(e) {
-        const gv = this.graphicsView;
-        if (!this.isPoolBased || !gv || gv.tool === 0 || gv.tool === 4) return false;
-        const p = this.layoutPixel(e);
-        if (!p) return false;
-        gv.paintStart = gv.graphics.slice();
-        switch (gv.tool) {
-            case 1: // pencil
-                gv.painting = true;
-                this.paintingLayout = true;
-                gv.paintPixel(p.x, p.y);
-                break;
-            case 2: // fill
-                gv.floodFill(p.x, p.y);
-                gv.commitPaint();
-                break;
-            case 3: // colour picker
-                gv.pickColor(p.x, p.y);
-                break;
-        }
-        this.redraw();
-        return true;
-    }
-
-    paintLayoutDrag(e) {
-        if (!this.paintingLayout) return false;
-        const p = this.layoutPixel(e);
-        if (p) { this.graphicsView.paintPixel(p.x, p.y); this.redraw(); }
-        return true;
-    }
-
-    paintLayoutUp() {
-        if (!this.paintingLayout) return false;
-        this.paintingLayout = false;
-        this.graphicsView.painting = false;
-        this.graphicsView.commitPaint();
-        this.redraw();
-        return true;
-    }
-
     mouseDown(e) {
         this.closeList();
 
@@ -329,11 +264,6 @@ class ROMTilemapView extends ROMEditor {
             this.selectTiles();
             this.isDragging = true;
         } else if (this.clickPoint.button === 0) {
-            if (this.paintLayoutDown(e)) {
-                this.isDragging = true;
-                this.drawCursor();
-                return;
-            }
             if (this.paintCells && this.object && this.object.attributeRef)
                 this.rom.beginAction();      // a drag over cells is one undo step
             this.paintCell();
@@ -426,9 +356,7 @@ class ROMTilemapView extends ROMEditor {
         this.selection.y = y;
 
         if (this.isDragging && this.clickPoint) {
-            if (this.clickPoint.button === 0) {
-                if (!this.paintLayoutDrag(e)) this.paintCell();
-            }
+            if (this.clickPoint.button === 0) this.paintCell();
             if (this.clickPoint.button === 2) this.selectTiles();
         }
 
@@ -437,11 +365,6 @@ class ROMTilemapView extends ROMEditor {
     }
 
     mouseUp(e) {
-        if (this.paintLayoutUp()) {
-            this.isDragging = false;
-            this.clickPoint = null;
-            return;
-        }
         if (this.isDragging && this.paintCells && this.object && this.object.attributeRef) {
             this.rom.endAction();
         } else if (this.isDragging) this.setTilemap();

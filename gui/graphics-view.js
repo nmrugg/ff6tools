@@ -91,7 +91,7 @@ class ROMGraphicsView extends ROMEditor {
         this.div.classList.add('graphics-edit-pane');
 
         // add message handlers
-        const self = this;
+const self = this;
         this.canvas.onmousedown = function(e) { self.mouseDown(e); };
         this.canvas.onmouseup = function(e) { self.mouseUp(e); };
         this.canvas.onmousemove = function(e) { self.mouseMove(e); };
@@ -170,7 +170,7 @@ class ROMGraphicsView extends ROMEditor {
         this.toolbox.show(false);
 
         // notify on resize
-        const self = this;
+const self = this;
         this.resizeSensor = new ResizeSensor(this.toolbox.paneTop, function() {
             self.toolbox.setHeight(self.paletteView.div.scrollHeight);
             self.paletteView.resize();
@@ -272,7 +272,7 @@ class ROMGraphicsView extends ROMEditor {
     resetControls() {
         super.resetControls();
 
-        const self = this;
+const self = this;
 
         // painting tools (only for a directly selected graphics object; the
         // tileset toolbox is deliberately left alone - see notes)
@@ -1069,13 +1069,26 @@ class ROMGraphicsView extends ROMEditor {
 
         } else {
             // no sprite sheet
-            if (this.object) this.width = this.object.width || 16;
-            this.height = Math.ceil(this.graphics.length / this.bytesPerTile / this.width) || 1;
+            if (this.object && !this.poolLayout) this.width = this.object.width || 16;
+            if (!this.poolLayout)
+                this.height = Math.ceil(this.graphics.length / this.bytesPerTile / this.width) || 1;
             tileCount = this.height * this.width;
             this.tilemap = new Uint32Array(tileCount);
             this.tilemap.fill(0xFFFFFFFF);
-            for (let t = 0; t < this.tilemap.length; t++)
+            for (let t = 0; t < this.tilemap.length; t++) {
+                // a window onto a shared pool shows (and edits) the tiles in
+                // the order the matching tilemap places them, so the bitmap is
+                // the creature rather than a sheet of loose pieces
+                if (this.poolLayout && t < this.poolLayout.length) {
+                    const idx = this.poolLayout[t];
+                    if (idx < 0) continue;
+                    const flip = (this.poolFlip && this.poolFlip[t]) ? 0x10000000 : 0;
+                    this.tilemap[t] = idx | flip |
+                                      ((p >> 16 | this.paletteBitsForTile(t)) << 16);
+                    continue;
+                }
                 this.tilemap[t] = t | ((p >> 16 | this.paletteBitsForTile(t)) << 16);
+            }
         }
 
         // apply v-flip
@@ -1283,6 +1296,38 @@ class ROMGraphicsView extends ROMEditor {
         ctx.strokeRect(x, y, w, h);
     }
 
+    // Show this object's tiles in the order another tilemap places them, so the
+    // bitmap you see and paint is the creature rather than a sheet of loose
+    // pieces (FF3 NES bosses and summons are assembled from a shared pool).
+    applyLayoutFrom(path) {
+        if (!path || !this.rom) return false;
+        const tm = this.rom.parsePath(path, this.rom);
+        if (!tm || !tm.data) return false;
+        if (!tm.isLoaded && tm.disassemble) tm.disassemble(this.rom.data);
+        const w = tm.width || this.width;
+        const layout = new Int32Array(tm.data.length);
+        const flip = new Int32Array(tm.data.length);
+        for (let t = 0; t < tm.data.length; t++) {
+            const word = tm.data[t];
+            const idx = word & 0xFFFF;
+            layout[t] = (word === 0xFFFFFFFF || idx >= 0x100) ? -1 : idx;
+            flip[t] = (word & 0x10000000) ? 1 : 0;
+        }
+        this.poolLayout = layout;
+        this.poolFlip = flip;
+        this.width = w;
+        this.height = tm.height || Math.ceil(layout.length / w);
+        if (tm.addObserver) {
+            const self = this;
+            this.observer.startObserving(tm, function() {
+                self.applyLayoutFrom(path);
+                self.updateTilemap();
+                self.redraw();
+            });
+        }
+        return true;
+    }
+
     selectObject(object) {
 
         // this is only valid in editor mode
@@ -1395,7 +1440,12 @@ class ROMGraphicsView extends ROMEditor {
         }
         this.format = GFX.graphicsFormat[formatKey];
 
-        const self = this;
+        // a window onto a shared pool: show the creature, not the sheet
+        this.poolLayout = null;
+        this.poolFlip = null;
+        if (object.window && object.layoutFrom) this.applyLayoutFrom(object.layoutFrom);
+
+const self = this;
         this.observer.startObserving(object, function() {
             self.selectObject(object);
             self.redraw();
@@ -1534,6 +1584,10 @@ class ROMGraphicsView extends ROMEditor {
         if (definition.tileHeight) this.tileHeight = definition.tileHeight;
         if (object.tileWidth) this.tileWidth = object.tileWidth;
         if (object.tileHeight) this.tileHeight = object.tileHeight;
+
+        // A pool-based window (FF3 boss/summon graphics) can show its tiles in
+        // the order the matching tilemap uses them.
+        if (definition.layoutFrom) this.applyLayoutFrom(definition.layoutFrom);
 
         const self = this;
         const reload = function() {

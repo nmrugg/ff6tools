@@ -70,15 +70,19 @@ Three more things were wrong:
    and the sprite's cells are bits 2-5. This is exactly the "you can see the
    half line" the user reported on Firefry and Liliput: their records are
    `$3C`, which is *all one palette* once aligned.
-2. **`$2E:$8F00` holds the "invert this monster's cells" flag** (`2F/A89C AND
-   #$80` → `2F/A8BF EOR #$FF`), but the bit is *not* a plain bit index:
-   `2F/A133-2F/A141` reloads the byte and `ASL`s it `(id & 7) + 1` times inside
-   the loop, and `2F/A141` then tests bit 7 of what is left in `A`. So the flag
-   is **bit (6 - (id & 7)) of byte (id >> 3), and always 0 when `id & 7 == 7`**.
-   In this ROM that is 112 of the 128 boss ids - *not* `$87, $8F, $97, $9F,
-   $A7, ... $FF` - and none of `$00-$7F`. (The disassembler's comment on that
-   loop reads "this does nothing ...". It does.) Getting this right fixed
-   Cyclops `$97` and Ouroboros `$9F`, which the reference rips said were wrong.
+2. **`$2E:$8F00` bit 7 selects the EOR** (`2F/A89C AND #$80` → `2F/A8BF EOR
+   #$FF`) and is set for every id `$80-$FF`. Read literally, that inverts every
+   boss - **and that is wrong on screen.** All 24 boss tilemaps, and all 8
+   boss-ids that have reference rips, render correctly with the cells *not*
+   inverted: confirmed in-game for Gomoree, Medusa and Dark Cloud, and by
+   `tools/ff3-nes-palcheck.py`, which went from 25/36 exact to **33/36** as soon
+   as the flag stopped being applied (the remaining 3 - Rukh, KillerBee, Chimera
+   - are bad rips: no variant explains them). The records at `$2E:$8FC0` are
+   evidently already authored in the boss's orientation, so `ff3-nes-names.py`
+   records `invert: false` behind an `APPLY_INVERT_FLAG = False` constant.
+   (A side quest - reading `2F/A133-2F/A141` as a shift loop and deriving
+   "bit (6-(id&7)), 0 when id&7==7" - was a dead end; it fixed 2 cases and broke
+   none of the evidence. Don't re-derive it.)
 3. **Bosses do have cell maps** - 7 bytes per tilemap index at `$2E:$8FC0`
    (`2F/A820`, taken when the formation type is 9), 9x6 = 54 cells for the
    18x12 tilemap. The earlier note that the class-6 attribute path was
@@ -140,15 +144,29 @@ the right tiles in the wrong places.
   per-tile pixel-flip bit and leaves the ROM's tile order alone - and saving
   stays byte-exact for free, because `ff3BossTilemap.encode` masks to `0xFFFF`
   and the flip bit is display-only.
-- **A boss is edited like a monster graphic.** Pool-based tilemaps get a Tool
-  menu (Select / Pencil / Fill / Colour picker) in the layout pane, and
-  `paintLayoutDown/Drag/Up` route those into the graphics view's `paintPixel`,
-  `floodFill` and `pickColor` at the pixel under the cursor. The pool panel is
-  laid out cell for cell with the layout (`followLayout` + `poolLayout`), so
-  `ROMGraphicsView.tileOffset()` maps a painted pixel onto the pool tile that
-  occupies that cell. "Place tile" stays as a checkbox for the Select tool, and
-  the graphics view's own Tool menu is suppressed (`noToolMenu`) so there is
-  only one.
+- **Two tree sections, two jobs.** `Boss Tilemaps` / `Summon Tilemaps` are the
+  placement views (Place tile + Paint palette cells, no Tool menu). `Boss
+  Graphics` / `Summon Graphics` are 24 + 8 **windows** - one per creature - that
+  open in the ordinary `ROMGraphicsView` with Select / Pencil / Fill / Colour
+  picker / Palette cells, exactly like a monster graphic.
+  - `{"window": {"path": <owner>, "offset": <decoded bytes>, "tiles": n}}` in
+    `rom/romtools.js`: `disassemble` reads the owner's decoded slice,
+    `replaceData`/`setData` delegate to the owner (so it stays one undoable
+    action on the right bytes), and `assemble` returns early - **a window never
+    owns bytes**, which is what keeps the "one owner per byte" rule intact
+    (windows have no `range`, so the xcheck's overlap test ignores them).
+  - `{"layoutFrom": "bossTilemapN"}` makes the window display its tiles **in the
+    order the tilemap places them** (`ROMGraphicsView.applyLayoutFrom` sets
+    `poolLayout`/`poolFlip`), so you see and paint the creature, not a sheet of
+    loose pieces. `tileOffset()` resolves through `poolLayout`, which is what
+    keeps the painted pixel landing on the right tile.
+  - Traps hit while building this: the display mapping has to be applied in
+    **both** branches of `updateTilemap` (the toolbox *and* the editor branch -
+    a tree selection is editor mode), and `updateTilemap` must not reset
+    `width`/`height` from `object.width` when a `poolLayout` is in force.
+  - `poolBytes` is clamped to the tiles the container can actually supply
+    (`poolTiles`); without the clamp a boss's range ran past the end of its
+    array and the window read garbage.
 - **The pool panel follows the layout** (`"followLayout": true`, kept in step by
   `ROMTilemapView.syncPoolLayout()`, which also hands the per-cell palette bits
   over as `graphicsView.cellsObject` so both panels colour identically).
@@ -247,37 +265,35 @@ the only way to answer it at scale:
    that wants "swapped" is a monster where the pair order and the invert flag
    disagree - the image alone cannot say which is wrong.
 
-Result over the 36 monsters that have rips: **27 exact**; 3 that no variant
-explains (Rukh 65%, KillerBee 77%, Chimera 96% - the rips themselves are
-suspect: Enemies/Hornet holds the right tiles in the wrong places); and **6
-boss ids where the rip prefers the opposite assignment**: Ogre `$96`, Peryton
-`$95`, Echidna `$E3`, Minotaur `$9E`, Azrael `$8B`, Haniel `$93`. For those the
-disassembly is explicit while the rips are hand-assembled, so the ROM wins by
-default - but the reversed pair is offered in the palette dropdown
-(`... #132 + (2) #243` and `... #243, swapped + (2) #132`), which is one click
-and needs no new UI concept. If the game is confirmed to disagree for one of the
-6, flip that object's `invert` in `ff3-nes-names.py`.
+Result over the 36 monsters that have rips: **33 exact**; the 3 that no variant
+explains (Rukh 65%, KillerBee 77%, Chimera 96%) are bad rips - Enemies/Hornet
+holds the right tiles in the wrong places, and those three are the same kind of
+hand-assembly error. **Zero cases prefer the swapped pair or the inversion**,
+which is the evidence for `APPLY_INVERT_FLAG = False` (§2A.2).
+
+The dropdown still offers the reversed pair of every palette pair
+(`... #243, swapped + (2) #248`) as a safety valve, since exchanging the two
+palettes is exactly equivalent to flipping every cell bit.
 
 Run it with `python3 tools/ff3-nes-palcheck.py [--report]` (needs the network
 once; rips are cached in `/tmp/ff3-rips`).
 
 ### D. Remaining gaps
 
-- The two summon-backed bosses are now *displayed* the way the game draws them
-  (mirrorX), but painting their pool edits tiles the summons use too - the pool
-  is shared with `summonTilemap`s.
+- A window's `range` is empty, so anything that assumes `assembly.range.length`
+  (relocation, the property pane's address display) needs care.
+- The two summon-backed bosses are displayed the way the game draws them
+  (`mirrorX` = per-tile pixel flip), but painting their window edits tiles the
+  summons use too - the pool is shared, by design.
 - Summon sprite palettes: summons use 3 sprite palettes
   (`battlePalettes[byte1 .. byte1+2]`); bosses use 2 BG palettes. Verified for
   bosses against rips, not for summons.
 - `2F/A820` loads the boss attribute record from monster **slot 0** only
   (`LDA $7D74`, unindexed) - fine, since a type-9 formation has one monster.
-- A graphic shared by a monster and a boss shows one invert setting at a time;
-  the generator picks the representative battle, and "Swap palette cells" shows
-  the other. (Painting a cell already accounts for it.)
 - `ff3-map.js changeLayer('showRooms')` is guarded: FF3 has no `mapPalette`
   assembly (the palette comes from `mapPaletteBase`, `3A/9091`).
-- The pool panel in a boss view has no "which cells of this pool does this boss
-  use" highlighting.
+- The pool panel inside a tilemap view still exists (`followLayout`) and is
+  handy, but it duplicates the new Boss/Summon Graphics entries.
 
 ---
 

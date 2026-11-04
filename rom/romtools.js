@@ -810,6 +810,18 @@ function ROMGraphics(rom, definition, parent) {
     this.backColor = (definition.backColor === true); // no transparent color
     this.spriteSheet = definition.spriteSheet;
 
+    // A *window* shows (and edits) a slice of another assembly's bytes without
+    // owning them. FF3 NES bosses and summons are assembled from a shared tile
+    // pool, and exactly one assembly may own a byte (two assemblies over the
+    // same range means last-writer-wins on save), so the per-boss "Boss
+    // Graphics" entries are windows onto the pool: paint here and the write is
+    // delegated to the assembly that owns the bytes.
+    //   "window": {"path": "monsterGraphicsSpare4", "offset": 19392, "tiles": 144}
+    // `offset` is in decoded bytes (64 per NES 2bpp tile).
+    this.window = definition.window;
+    // show the window's tiles in the order this tilemap places them
+    this.layoutFrom = definition.layoutFrom;
+
     // per-2x2-cell palette selection (FF3 NES monster attribute data)
     this.attributeCells = definition.attributeCells;
     this.attributeRef = definition.attributeRef;
@@ -819,6 +831,58 @@ function ROMGraphics(rom, definition, parent) {
 
 ROMGraphics.prototype = Object.create(ROMAssembly.prototype);
 ROMGraphics.prototype.constructor = ROMGraphics;
+
+// A window never owns bytes: it reads them from, and writes them through, the
+// assembly that does.
+ROMGraphics.prototype.sourceAssembly = function() {
+    if (!this.window) return null;
+    var rom = this.rom || (this.parent && this.parent.rom);
+    return rom ? rom.parsePath(this.window.path, rom) : null;
+}
+
+ROMGraphics.prototype.windowLength = function() {
+    var tiles = this.window.tiles ||
+                Math.floor((this.window.length || 0) / 16);
+    return tiles * 64;                    // decoded bytes (nes2bpp: 16 raw -> 64)
+}
+
+ROMGraphics.prototype.disassemble = function(data) {
+    if (!this.window)
+        return ROMAssembly.prototype.disassemble.call(this, data);
+    var src = this.sourceAssembly();
+    if (!src) return;
+    if (!src.data || !src.data.length) {
+        var rom = this.rom || (this.parent && this.parent.rom);
+        src.disassemble(rom && rom.data);
+    }
+    var off = this.window.offset || 0;
+    this.data = Uint8Array.from(src.data.subarray(off, off + this.windowLength()));
+    this.isLoaded = true;
+}
+
+ROMGraphics.prototype.assemble = function(data) {
+    if (this.window) return true;         // the owner writes these bytes
+    return ROMAssembly.prototype.assemble.call(this, data);
+}
+
+ROMGraphics.prototype.replaceData = function(newData, offset, newLength) {
+    if (!this.window)
+        return ROMAssembly.prototype.replaceData.call(this, newData, offset, newLength);
+    var src = this.sourceAssembly();
+    if (!src) return;
+    offset = Number(offset) || 0;
+    var next = Uint8Array.from(this.data);
+    next.set(newData, offset);
+    this.data = next;
+    src.replaceData(Uint8Array.from(newData), (this.window.offset || 0) + offset);
+    this.disassemble();
+    this.notifyObservers();
+}
+
+ROMGraphics.prototype.setData = function(data) {
+    if (!this.window) return ROMAssembly.prototype.setData.call(this, data);
+    this.replaceData(data, 0);
+}
 
 Object.defineProperty(ROMGraphics.prototype, "definition", { get: function() {
     var definition = Object.getOwnPropertyDescriptor(ROMAssembly.prototype, "definition").get.call(this);
@@ -830,6 +894,8 @@ Object.defineProperty(ROMGraphics.prototype, "definition", { get: function() {
     if (this.tileHeight !== 8) definition.tileHeight = this.tileHeight;
     if (this.backColor) definition.backColor = true;
     if (this.spriteSheet) definition.spriteSheet = this.spriteSheet;
+    if (this.window) definition.window = this.window;
+    if (this.layoutFrom) definition.layoutFrom = this.layoutFrom;
     if (this.attributeCells) definition.attributeCells = this.attributeCells;
     if (this.attributeRef) definition.attributeRef = this.attributeRef;
     if (isNumber(this.attributeCellsOffset)) definition.attributeCellsOffset = this.attributeCellsOffset;

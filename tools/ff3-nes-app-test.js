@@ -353,61 +353,63 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
   const lay=poolGeom.bossTilemap22.firstRow, rom22=poolGeom.bossTilemap22;
   check(lay[0]===-1||lay[0]>=0,'layout row: '+JSON.stringify(lay.slice(0,10)));
 
-  // painting the BOSS LAYOUT itself with Pencil/Fill - a boss must be editable
-  // exactly like a monster graphic, not only by swapping tiles around
-  const bossPaint=await ev(c,sessionId,`(()=>{
-      const obj=rom.bossTilemap8;
-      romNavigator.selectObject(obj); propertyList.select(obj);
-      let view=propertyList.activeEditor;
-      if(view.constructor.name!=='ROMTilemapView'){
-          view=(typeof propertyListView!=='undefined'&&propertyListView.tilemapView)
-              ? propertyListView.tilemapView : null;
-          if(!view) return {why:'no ROMTilemapView; active='+propertyList.activeEditor.constructor.name};
-          view.selectObject(obj);
+  // ---- Boss Graphics: paintable windows onto the shared pools ------------
+  // A boss is assembled from a tile pool another assembly owns, so the tree
+  // gets a separate "Boss Graphics" entry per boss: a real bitmap with
+  // Pencil/Fill that writes through to the owner. The tilemap entry stays the
+  // placement view.
+  const windows=await ev(c,sessionId,`(()=>{
+      const names=rom.hierarchy.map(s=>s.name);
+      const bg=rom.parsePath('bossGraphics8');
+      const out={sections:names, bg:!!bg, bgType:bg&&bg.constructor.name,
+                 bgW:bg&&bg.width, bgH:bg&&bg.height, bgTiles:bg&&bg.data.length/64};
+      if(bg){
+          romNavigator.selectObject(bg); propertyList.select(bg);
+          const v=propertyList.activeEditor;
+          out.view=v.constructor.name;
+          out.tools=(v.list&&v.list.changeTool)?v.list.changeTool.names:[];
+          out.layoutW=v.width; out.layoutH=v.height;
+          out.hasLayout=!!v.poolLayout;
+          rom.assemble();
+          const before=Uint8Array.from(rom.data);
+          v.tool=1; v.color=2; v.paintStart=v.graphics.slice();
+          // paint inside a cell the tilemap actually uses
+          const cell=v.poolLayout.findIndex(t=>t>=0);
+          const px=(cell%v.width)*8+1, py=Math.floor(cell/v.width)*8+1;
+          v.paintPixel(px,py); v.commitPaint();
+          rom.assemble();
+          let changed=0; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) changed++;
+          out.changed=changed;
+          rom.undo(); rom.assemble();
+          let back=0; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) back++;
+          out.restored=back===0;
       }
-      const gv=view.graphicsView;
-      if(!gv.poolLayout) view.loadTilemap();
-      if(!gv.poolLayout) return {why:'no poolLayout on the graphics view'};
-      const container=rom.parsePath(obj.graphics.path);
-      const gr=ROMRange.parse(obj.graphics.range);
-      // a cell that actually uses a tile (the pool panel follows the layout)
-      const cell=gv.poolLayout.findIndex(t=>t>=0);
-      if(cell<0) return {tools:(view.list&&view.list.changeTool)?view.list.changeTool.names:[],
-                         changed:-1, why:'no tile in the layout'};
-      const cx=cell%view.width, cy=Math.floor(cell/view.width);
-      // as stored + the game's per-tile flip (2F/A40B, 3F/F970): the layout must
-      // carry the flip bit on its tiles
-      const tools=(view.list&&view.list.changeTool)?view.list.changeTool.names:[];
-      view.isPoolBased=true; gv.tool=1;
-      rom.assemble();
-      const before=Uint8Array.from(rom.data);
-      const r=view.canvas.getBoundingClientRect();
-      const px=r.left+(cx*8+2)*view.zoom, py=r.top+(cy*8+2)*view.zoom;
-      const mk=(t,x,y)=>new MouseEvent(t,{bubbles:true,cancelable:true,clientX:x,clientY:y,
-                                          button:0,buttons:1});
-      view.canvas.dispatchEvent(mk('mousedown',px,py));
-      view.canvas.dispatchEvent(mk('mousemove',px+view.zoom,py));
-      view.canvas.dispatchEvent(mk('mouseup',px+view.zoom,py));
-      rom.assemble();
-      const changed=[]; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) changed.push(i);
-      const inPool=changed.every(i=>i>=container.range.begin &&
-                                     i<container.range.end);
-      gv.undo&&gv.undo(); rom.undo(); rom.assemble();
-      let restored=true; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) restored=false;
-      return {tools, changed:changed.length, inPool, restored,
-              flipBit:(()=>{ const v=rom.bossTilemap22; romNavigator.selectObject(v);
-                             propertyList.select(v);
-                             const t=propertyList.activeEditor.tilemap.findIndex(x=>x!==(0xFFFFFFFF) && (x&0xFFFF)<0x100);
-                             return {found:t>=0, flipped:t>=0?!!(propertyList.activeEditor.tilemap[t]&0x10000000):false}; })()};
+      romNavigator.selectObject(rom.bossTilemap8); propertyList.select(rom.bossTilemap8);
+      const tv=propertyList.activeEditor;
+      tv.resetControls();
+      out.layoutTools=(tv.list&&tv.list.changeTool)?tv.list.changeTool.names:null;
+      out.layoutChecks=[...tv.editControls.querySelectorAll('.two-state p')].map(p=>p.textContent);
+      out.sg=!!rom.parsePath('summonGraphics5');
+      return out;
   })()`);
-  console.log('  boss pencil:',JSON.stringify(bossPaint));
-  check(bossPaint.tools.indexOf('Pencil')>=0,'the boss layout offers a Tool menu with Pencil/Fill: '+JSON.stringify(bossPaint.tools));
-  check(bossPaint.changed>0&&bossPaint.inPool,
-        'Pencil on the boss layout paints into the pool tile under the cursor ('+bossPaint.changed+' bytes)');
-  check(bossPaint.restored,'and undo puts it back');
-  check(bossPaint.flipBit.found&&bossPaint.flipBit.flipped,
-        'the mirrored bosses keep the ROM tile order and flip the tile pixels, as 3F/F970 does');
-
+  console.log('  boss graphics windows:',JSON.stringify(windows));
+  check(windows.sections.indexOf('Boss Tilemaps')>=0&&windows.sections.indexOf('Boss Graphics')>=0&&
+        windows.sections.indexOf('Summon Tilemaps')>=0&&windows.sections.indexOf('Summon Graphics')>=0,
+        'the tree separates tilemaps from graphics: '+windows.sections.join(', '));
+  check(windows.bgType==='ROMGraphics'&&windows.bgTiles===144,
+        'Boss Graphics 8 is a 144-tile bitmap ('+windows.bgW+'x'+windows.bgH+')');
+  check(windows.view==='ROMGraphicsView','it opens in the ordinary graphics editor: '+windows.view);
+  check(windows.tools.indexOf('Pencil')>=0&&windows.tools.indexOf('Fill')>=0,
+        'with the normal tools: '+JSON.stringify(windows.tools));
+  check(windows.hasLayout&&windows.layoutW===18&&windows.layoutH===12,
+        'the Boss Graphics window shows the tiles in the tilemap order ('+
+        windows.layoutW+'x'+windows.layoutH+'), so you paint the creature');
+  check(windows.changed>0,'Pencil on Boss Graphics writes '+windows.changed+' byte(s) into the pool');
+  check(windows.restored,'and undo restores the ROM exactly');
+  check(windows.sg,'summon graphics windows exist too');
+  check(!windows.layoutTools,'the tilemap pane has no Tool menu (placement only)');
+  check(windows.layoutChecks.indexOf('Place tile')>=0,
+        'the tilemap pane keeps Place tile + palette cells: '+JSON.stringify(windows.layoutChecks));
 
   const pool=await ev(c,sessionId,`(()=>{
       const obj=rom.bossTilemap0;

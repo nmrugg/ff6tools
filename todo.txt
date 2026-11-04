@@ -159,6 +159,26 @@ recently added
  * ff3 nes: the pool panel follows the tilemap layout ("followLayout" +
    syncPoolLayout) and shares its per-cell palette bits (cellsObject), so the
    layout and the pool panel now show the same creature in the same colours
+ * ff3 nes: SEPARATED the two jobs into the tree, as asked - "Boss Tilemaps" /
+   "Summon Tilemaps" are placement (Place tile + Paint palette cells, no Tool
+   menu), and "Boss Graphics" / "Summon Graphics" are 24 + 8 new entries that
+   open in the ordinary graphics editor with Select / Pencil / Fill / Colour
+   picker / Palette cells, exactly like a monster graphic
+ * ff3 nes: new "window" assembly in rom/romtools.js - a graphics object that
+   reads a slice of another assembly's decoded bytes and writes through to it,
+   but never owns bytes (no range, assemble() returns early), so the one-owner
+   rule still holds and the xcheck overlap test ignores it
+ * ff3 nes: "layoutFrom" makes a window display its tiles in the order the
+   tilemap places them, so Boss Graphics 22 is a paintable bitmap of Odin
+   rather than a sheet of loose pieces; tileOffset() resolves through
+   poolLayout so the painted pixel lands on the right tile
+ * ff3 nes: fixed the boss palettes - the $2E:$8F00 invert flag must NOT be
+   applied (all 24 boss tilemaps and all 8 boss ids with rips render correctly
+   un-inverted; ff3-nes-palcheck went 25/36 exact -> 33/36, with 0 cases
+   preferring the swap or the inversion). It is recorded behind
+   APPLY_INVERT_FLAG = False
+ * ff3 nes: fixed boss pool ranges running past the end of their container
+   (poolBytes ignored the clamp), which made some boss windows read garbage
  * byte-exact undo: re-encoding is skipped when decoded data matches what was
    loaded, and unchanged-size assemblies are no longer relocated
  * navigator: Up/Down move the selection and expand the next section; fixed

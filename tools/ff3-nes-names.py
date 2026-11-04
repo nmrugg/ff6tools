@@ -394,14 +394,18 @@ def main(rom=None, json_path=None):
             c1 = [r[2] for r in regions if r[0] == container[0]][0]
             maxTiles = (c1 - (pool_file - container[1] * 16)) // 16
             tiles = min(0x90, maxTiles)
+            # the game always copies 144 tiles, but a pool near the end of its
+            # region has fewer available - and the view must not read past the
+            # assembly that owns them
             poolBytes = (container[1] * 64, (container[1] + tiles) * 64)
+            poolTiles = tiles
         bosses.append({
             'index': i, 'pointer': (lo, hi), 'tile': tile, 'summon': summon,
             'bank': bank, 'defAddr': def_addr, 'owners': names_used,
             'container': container, 'tileOffset': (container[1] - 0x70) if container else None,
-            # the boss's own 144 tiles inside the shared pool, in *decoded*
-            # bytes (64 per NES 2bpp tile) - used as the graphics view's range
-            'poolBytes': (container[1] * 64, (container[1] + 0x90) * 64) if container else None,
+            # the boss's own tiles inside the shared pool, in *decoded* bytes
+            # (64 per NES 2bpp tile) - used as the graphics view's range
+            'poolBytes': poolBytes, 'poolTiles': poolTiles if container else 0,
             'palette': entry,
         })
 
@@ -481,12 +485,18 @@ def main(rom=None, json_path=None):
     BOSS_ATTR_TABLE = (0x2E8FC0, 0x2E9028)
     invert_flags = data[mmc3_to_file(ATTR_INVERT):mmc3_to_file(ATTR_INVERT + 0x20)]
 
+    # $2E:$8F00 bit 7 selects the EOR #$FF at 2F/A86C/2F/A8BF, and it is set for
+    # every id $80-$FF. Reading that literally inverts every boss, and that is
+    # wrong on the screen: all 24 boss tilemaps and all 8 boss-ids that have
+    # reference rips render correctly with the cells NOT inverted (verified with
+    # tools/ff3-nes-palcheck.py, and confirmed in-game for Gomoree, Medusa and
+    # Dark Cloud). The records at $2E:$8FC0 are evidently already authored in
+    # the boss's orientation, so the flag is recorded but not applied.
+    APPLY_INVERT_FLAG = False
+
     def invert_flag(mid):
-        # 2F/A133-2F/A141: the loop reloads $8F00[id>>3] and ASLs it (id&7)+1
-        # times, then 2F/A141 tests bit 7 of what is left in A - so the flag is
-        # bit (6 - (id&7)) of that byte, and always 0 when id&7 == 7.
-        k = (mid & 7) + 1
-        return ((invert_flags[mid >> 3] << k) >> 7) & 1
+        flag = (invert_flags[mid >> 3] >> 7) & 1
+        return flag if APPLY_INVERT_FLAG else 0
 
     def attr_addr(cls, props_byte):
         """address (file) of a graphic's cell record"""

@@ -27,18 +27,28 @@
                 {"path": "monsterGraphics4x4"}, {"path": "monsterGraphics4x6"}, {"path": "monsterGraphics6x6"}, {"path": "monsterGraphics6x6b"}, {"path": "monsterGraphics6x12"}, {"path": "monsterGraphics12x6"}, {"path": "monsterGraphicsProperties"}, {"path": "monsterAttributeData"}, {"path": "battlePalettes"}, {"path": "battleCharacterGraphics"}, {"path": "battleCharacterGraphicsStatus"}, {"path": "battleBackgroundGraphics"}, {"path": "battleSpriteGraphics"}, {"path": "attackGraphics"}, {"path": "mapSpriteGraphics"}
             ]
         }, {
-            "name": "Boss Graphics",
+            "name": "Boss Tilemaps",
             "list": [
                 {"path": "bossGraphicsPointers"},
                 {"path": "bossAttributeData"},
                 {"path": "bossTilemap0"}, {"path": "bossTilemap1"}, {"path": "bossTilemap2"}, {"path": "bossTilemap3"}, {"path": "bossTilemap4"}, {"path": "bossTilemap5"}, {"path": "bossTilemap6"}, {"path": "bossTilemap7"}, {"path": "bossTilemap8"}, {"path": "bossTilemap9"}, {"path": "bossTilemap10"}, {"path": "bossTilemap11"}, {"path": "bossTilemap12"}, {"path": "bossTilemap13"}, {"path": "bossTilemap14"}, {"path": "bossTilemap15"}, {"path": "bossTilemap16"}, {"path": "bossTilemap17"}, {"path": "bossTilemap18"}, {"path": "bossTilemap19"}, {"path": "bossTilemap20"}, {"path": "bossTilemap21"}, {"path": "bossTilemap22"}, {"path": "bossTilemap23"}
             ]
         }, {
-            "name": "Summon Graphics",
+            "name": "Boss Graphics",
+            "list": [
+                {"path": "bossGraphics0"}, {"path": "bossGraphics1"}, {"path": "bossGraphics2"}, {"path": "bossGraphics3"}, {"path": "bossGraphics4"}, {"path": "bossGraphics5"}, {"path": "bossGraphics6"}, {"path": "bossGraphics7"}, {"path": "bossGraphics8"}, {"path": "bossGraphics9"}, {"path": "bossGraphics10"}, {"path": "bossGraphics11"}, {"path": "bossGraphics12"}, {"path": "bossGraphics13"}, {"path": "bossGraphics14"}, {"path": "bossGraphics15"}, {"path": "bossGraphics16"}, {"path": "bossGraphics17"}, {"path": "bossGraphics18"}, {"path": "bossGraphics19"}, {"path": "bossGraphics20"}, {"path": "bossGraphics21"}, {"path": "bossGraphics22"}, {"path": "bossGraphics23"}
+            ]
+        }, {
+            "name": "Summon Tilemaps",
             "list": [
                 {"path": "summonProperties"},
-                {"path": "summonGraphics"},
                 {"path": "summonTilemap0"}, {"path": "summonTilemap1"}, {"path": "summonTilemap2"}, {"path": "summonTilemap3"}, {"path": "summonTilemap4"}, {"path": "summonTilemap5"}, {"path": "summonTilemap6"}, {"path": "summonTilemap7"}
+            ]
+        }, {
+            "name": "Summon Graphics",
+            "list": [
+                {"path": "summonGraphics"},
+                {"path": "summonGraphics0"}, {"path": "summonGraphics1"}, {"path": "summonGraphics2"}, {"path": "summonGraphics3"}, {"path": "summonGraphics4"}, {"path": "summonGraphics5"}, {"path": "summonGraphics6"}, {"path": "summonGraphics7"}
             ]
         }, {
             "name": "Text",
@@ -221,7 +231,7 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
-            "itemAttributes": [{"cells": "000000", "offset": 0, "bytes": 1, "index": 48, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 0, "bytes": 1, "index": 49, "invert": false, "path": "monsterAttributeData"}, {"cells": "111001", "offset": 0, "bytes": 1, "index": 50, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011", "offset": 0, "bytes": 1, "index": 51, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 52, "invert": false, "path": "monsterAttributeData"}, {"cells": "111100", "offset": 0, "bytes": 1, "index": 53, "invert": false, "path": "monsterAttributeData"}, {"cells": "010011", "offset": 0, "bytes": 1, "index": 54, "invert": false, "path": "monsterAttributeData"}, {"cells": "101111", "offset": 0, "bytes": 1, "index": 55, "invert": false, "path": "monsterAttributeData"}, {"cells": "100011", "offset": 0, "bytes": 1, "index": 56, "invert": false, "path": "monsterAttributeData"}, {"cells": "000111", "offset": 0, "bytes": 1, "index": 57, "invert": true, "path": "monsterAttributeData"}, {"cells": "001100", "offset": 0, "bytes": 1, "index": 58, "invert": false, "path": "monsterAttributeData"}, {"cells": "001011", "offset": 0, "bytes": 1, "index": 59, "invert": false, "path": "monsterAttributeData"}, {"cells": "010110", "offset": 0, "bytes": 1, "index": 60, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111", "offset": 0, "bytes": 1, "index": 61, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011", "offset": 0, "bytes": 1, "index": 62, "invert": false, "path": "monsterAttributeData"}, {"cells": "111010", "offset": 0, "bytes": 1, "index": 63, "invert": false, "path": "monsterAttributeData"}, {"cells": "001100", "offset": 0, "bytes": 1, "index": 64, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 65, "invert": true, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 66, "invert": true, "path": "monsterAttributeData"}, {"cells": "000100", "offset": 0, "bytes": 1, "index": 67, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 68, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 0, "bytes": 1, "index": 69, "invert": false, "path": "monsterAttributeData"}, {"cells": "111100", "offset": 0, "bytes": 1, "index": 70, "invert": false, "path": "monsterAttributeData"}, {"cells": "101000", "offset": 0, "bytes": 1, "index": 71, "invert": false, "path": "monsterAttributeData"}],
+            "itemAttributes": [{"cells": "000000", "offset": 0, "bytes": 1, "index": 48, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 0, "bytes": 1, "index": 49, "invert": false, "path": "monsterAttributeData"}, {"cells": "111001", "offset": 0, "bytes": 1, "index": 50, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011", "offset": 0, "bytes": 1, "index": 51, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 52, "invert": false, "path": "monsterAttributeData"}, {"cells": "111100", "offset": 0, "bytes": 1, "index": 53, "invert": false, "path": "monsterAttributeData"}, {"cells": "010011", "offset": 0, "bytes": 1, "index": 54, "invert": false, "path": "monsterAttributeData"}, {"cells": "101111", "offset": 0, "bytes": 1, "index": 55, "invert": false, "path": "monsterAttributeData"}, {"cells": "100011", "offset": 0, "bytes": 1, "index": 56, "invert": false, "path": "monsterAttributeData"}, {"cells": "000111", "offset": 0, "bytes": 1, "index": 57, "invert": false, "path": "monsterAttributeData"}, {"cells": "001100", "offset": 0, "bytes": 1, "index": 58, "invert": false, "path": "monsterAttributeData"}, {"cells": "001011", "offset": 0, "bytes": 1, "index": 59, "invert": false, "path": "monsterAttributeData"}, {"cells": "010110", "offset": 0, "bytes": 1, "index": 60, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111", "offset": 0, "bytes": 1, "index": 61, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011", "offset": 0, "bytes": 1, "index": 62, "invert": false, "path": "monsterAttributeData"}, {"cells": "111010", "offset": 0, "bytes": 1, "index": 63, "invert": false, "path": "monsterAttributeData"}, {"cells": "001100", "offset": 0, "bytes": 1, "index": 64, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 65, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 66, "invert": false, "path": "monsterAttributeData"}, {"cells": "000100", "offset": 0, "bytes": 1, "index": 67, "invert": false, "path": "monsterAttributeData"}, {"cells": "110000", "offset": 0, "bytes": 1, "index": 68, "invert": false, "path": "monsterAttributeData"}, {"cells": "001111", "offset": 0, "bytes": 1, "index": 69, "invert": false, "path": "monsterAttributeData"}, {"cells": "111100", "offset": 0, "bytes": 1, "index": 70, "invert": false, "path": "monsterAttributeData"}, {"cells": "101000", "offset": 0, "bytes": 1, "index": 71, "invert": false, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
                             [{"path": "battlePalettes[83]", "name": "プティメイジ (1) #83", "offset": 0, "compose": true}],
@@ -424,7 +434,7 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
-            "itemAttributes": [{"cells": "110000000", "offset": 0, "bytes": 2, "index": 72, "invert": true, "path": "monsterAttributeData"}, {"cells": "000011000", "offset": 0, "bytes": 2, "index": 74, "invert": true, "path": "monsterAttributeData"}, {"cells": "000000100", "offset": 0, "bytes": 2, "index": 76, "invert": false, "path": "monsterAttributeData"}, {"cells": "110010111", "offset": 0, "bytes": 2, "index": 78, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000111", "offset": 0, "bytes": 2, "index": 80, "invert": false, "path": "monsterAttributeData"}, {"cells": "001001001", "offset": 0, "bytes": 2, "index": 82, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011001", "offset": 0, "bytes": 2, "index": 84, "invert": true, "path": "monsterAttributeData"}, {"cells": "001000100", "offset": 0, "bytes": 2, "index": 86, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000011", "offset": 0, "bytes": 2, "index": 88, "invert": false, "path": "monsterAttributeData"}, {"cells": "110111111", "offset": 0, "bytes": 2, "index": 90, "invert": false, "path": "monsterAttributeData"}, {"cells": "111101000", "offset": 0, "bytes": 2, "index": 92, "invert": false, "path": "monsterAttributeData"}, {"cells": "111011000", "offset": 0, "bytes": 2, "index": 94, "invert": false, "path": "monsterAttributeData"}, {"cells": "011100010", "offset": 0, "bytes": 2, "index": 96, "invert": false, "path": "monsterAttributeData"}, {"cells": "000001000", "offset": 0, "bytes": 2, "index": 98, "invert": false, "path": "monsterAttributeData"}, {"cells": "111000001", "offset": 0, "bytes": 2, "index": 100, "invert": false, "path": "monsterAttributeData"}, {"cells": "100110111", "offset": 0, "bytes": 2, "index": 102, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000111", "offset": 0, "bytes": 2, "index": 104, "invert": false, "path": "monsterAttributeData"}, {"cells": "100111000", "offset": 0, "bytes": 2, "index": 106, "invert": true, "path": "monsterAttributeData"}, {"cells": "000011111", "offset": 0, "bytes": 2, "index": 108, "invert": true, "path": "monsterAttributeData"}, {"cells": "000100111", "offset": 0, "bytes": 2, "index": 110, "invert": false, "path": "monsterAttributeData"}, {"cells": "000100000", "offset": 0, "bytes": 2, "index": 112, "invert": true, "path": "monsterAttributeData"}, {"cells": "000100100", "offset": 0, "bytes": 2, "index": 114, "invert": false, "path": "monsterAttributeData"}, {"cells": "010110100", "offset": 0, "bytes": 2, "index": 116, "invert": false, "path": "monsterAttributeData"}, {"cells": "110100101", "offset": 0, "bytes": 2, "index": 118, "invert": true, "path": "monsterAttributeData"}],
+            "itemAttributes": [{"cells": "110000000", "offset": 0, "bytes": 2, "index": 72, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011000", "offset": 0, "bytes": 2, "index": 74, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000100", "offset": 0, "bytes": 2, "index": 76, "invert": false, "path": "monsterAttributeData"}, {"cells": "110010111", "offset": 0, "bytes": 2, "index": 78, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000111", "offset": 0, "bytes": 2, "index": 80, "invert": false, "path": "monsterAttributeData"}, {"cells": "001001001", "offset": 0, "bytes": 2, "index": 82, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011001", "offset": 0, "bytes": 2, "index": 84, "invert": false, "path": "monsterAttributeData"}, {"cells": "001000100", "offset": 0, "bytes": 2, "index": 86, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000011", "offset": 0, "bytes": 2, "index": 88, "invert": false, "path": "monsterAttributeData"}, {"cells": "110111111", "offset": 0, "bytes": 2, "index": 90, "invert": false, "path": "monsterAttributeData"}, {"cells": "111101000", "offset": 0, "bytes": 2, "index": 92, "invert": false, "path": "monsterAttributeData"}, {"cells": "111011000", "offset": 0, "bytes": 2, "index": 94, "invert": false, "path": "monsterAttributeData"}, {"cells": "011100010", "offset": 0, "bytes": 2, "index": 96, "invert": false, "path": "monsterAttributeData"}, {"cells": "000001000", "offset": 0, "bytes": 2, "index": 98, "invert": false, "path": "monsterAttributeData"}, {"cells": "111000001", "offset": 0, "bytes": 2, "index": 100, "invert": false, "path": "monsterAttributeData"}, {"cells": "100110111", "offset": 0, "bytes": 2, "index": 102, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000111", "offset": 0, "bytes": 2, "index": 104, "invert": false, "path": "monsterAttributeData"}, {"cells": "100111000", "offset": 0, "bytes": 2, "index": 106, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011111", "offset": 0, "bytes": 2, "index": 108, "invert": false, "path": "monsterAttributeData"}, {"cells": "000100111", "offset": 0, "bytes": 2, "index": 110, "invert": false, "path": "monsterAttributeData"}, {"cells": "000100000", "offset": 0, "bytes": 2, "index": 112, "invert": false, "path": "monsterAttributeData"}, {"cells": "000100100", "offset": 0, "bytes": 2, "index": 114, "invert": false, "path": "monsterAttributeData"}, {"cells": "010110100", "offset": 0, "bytes": 2, "index": 116, "invert": false, "path": "monsterAttributeData"}, {"cells": "110100101", "offset": 0, "bytes": 2, "index": 118, "invert": false, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
                             [{"path": "battlePalettes[161]", "name": "アイオン (1) #161", "offset": 0, "compose": true}, {"path": "battlePalettes[159]", "name": "(2) #159", "offset": 4, "compose": true}],
@@ -622,7 +632,7 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
-            "itemAttributes": [{"cells": "000000111", "offset": 0, "bytes": 2, "index": 120, "invert": true, "path": "monsterAttributeData"}, {"cells": "000111111", "offset": 0, "bytes": 2, "index": 122, "invert": true, "path": "monsterAttributeData"}, {"cells": "000010011", "offset": 0, "bytes": 2, "index": 124, "invert": true, "path": "monsterAttributeData"}, {"cells": "001001000", "offset": 0, "bytes": 2, "index": 126, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111100", "offset": 0, "bytes": 2, "index": 128, "invert": true, "path": "monsterAttributeData"}, {"cells": "000111111", "offset": 0, "bytes": 2, "index": 130, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000101", "offset": 0, "bytes": 2, "index": 132, "invert": false, "path": "monsterAttributeData"}, {"cells": "111110000", "offset": 0, "bytes": 2, "index": 134, "invert": false, "path": "monsterAttributeData"}, {"cells": "110100000", "offset": 0, "bytes": 2, "index": 136, "invert": false, "path": "monsterAttributeData"}, {"cells": "110110111", "offset": 0, "bytes": 2, "index": 138, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000111", "offset": 0, "bytes": 2, "index": 140, "invert": false, "path": "monsterAttributeData"}, {"cells": "111000000", "offset": 0, "bytes": 2, "index": 142, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111000", "offset": 0, "bytes": 2, "index": 144, "invert": false, "path": "monsterAttributeData"}, {"cells": "001011111", "offset": 0, "bytes": 2, "index": 146, "invert": true, "path": "monsterAttributeData"}, {"cells": "101111111", "offset": 0, "bytes": 2, "index": 148, "invert": false, "path": "monsterAttributeData"}, {"cells": "011110010", "offset": 0, "bytes": 2, "index": 150, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111000", "offset": 0, "bytes": 2, "index": 152, "invert": false, "path": "monsterAttributeData"}, {"cells": "101101000", "offset": 0, "bytes": 2, "index": 154, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011111", "offset": 0, "bytes": 2, "index": 156, "invert": false, "path": "monsterAttributeData"}, {"cells": "010000101", "offset": 0, "bytes": 2, "index": 158, "invert": true, "path": "monsterAttributeData"}, {"cells": "000101111", "offset": 0, "bytes": 2, "index": 160, "invert": false, "path": "monsterAttributeData"}, {"cells": "101101110", "offset": 0, "bytes": 2, "index": 162, "invert": true, "path": "monsterAttributeData"}, {"cells": "000110111", "offset": 0, "bytes": 2, "index": 164, "invert": true, "path": "monsterAttributeData"}, {"cells": "000110000", "offset": 0, "bytes": 2, "index": 166, "invert": true, "path": "monsterAttributeData"}],
+            "itemAttributes": [{"cells": "000000111", "offset": 0, "bytes": 2, "index": 120, "invert": false, "path": "monsterAttributeData"}, {"cells": "000111111", "offset": 0, "bytes": 2, "index": 122, "invert": false, "path": "monsterAttributeData"}, {"cells": "000010011", "offset": 0, "bytes": 2, "index": 124, "invert": false, "path": "monsterAttributeData"}, {"cells": "001001000", "offset": 0, "bytes": 2, "index": 126, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111100", "offset": 0, "bytes": 2, "index": 128, "invert": false, "path": "monsterAttributeData"}, {"cells": "000111111", "offset": 0, "bytes": 2, "index": 130, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000101", "offset": 0, "bytes": 2, "index": 132, "invert": false, "path": "monsterAttributeData"}, {"cells": "111110000", "offset": 0, "bytes": 2, "index": 134, "invert": false, "path": "monsterAttributeData"}, {"cells": "110100000", "offset": 0, "bytes": 2, "index": 136, "invert": false, "path": "monsterAttributeData"}, {"cells": "110110111", "offset": 0, "bytes": 2, "index": 138, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000111", "offset": 0, "bytes": 2, "index": 140, "invert": false, "path": "monsterAttributeData"}, {"cells": "111000000", "offset": 0, "bytes": 2, "index": 142, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111000", "offset": 0, "bytes": 2, "index": 144, "invert": false, "path": "monsterAttributeData"}, {"cells": "001011111", "offset": 0, "bytes": 2, "index": 146, "invert": false, "path": "monsterAttributeData"}, {"cells": "101111111", "offset": 0, "bytes": 2, "index": 148, "invert": false, "path": "monsterAttributeData"}, {"cells": "011110010", "offset": 0, "bytes": 2, "index": 150, "invert": false, "path": "monsterAttributeData"}, {"cells": "111111000", "offset": 0, "bytes": 2, "index": 152, "invert": false, "path": "monsterAttributeData"}, {"cells": "101101000", "offset": 0, "bytes": 2, "index": 154, "invert": false, "path": "monsterAttributeData"}, {"cells": "000011111", "offset": 0, "bytes": 2, "index": 156, "invert": false, "path": "monsterAttributeData"}, {"cells": "010000101", "offset": 0, "bytes": 2, "index": 158, "invert": false, "path": "monsterAttributeData"}, {"cells": "000101111", "offset": 0, "bytes": 2, "index": 160, "invert": false, "path": "monsterAttributeData"}, {"cells": "101101110", "offset": 0, "bytes": 2, "index": 162, "invert": false, "path": "monsterAttributeData"}, {"cells": "000110111", "offset": 0, "bytes": 2, "index": 164, "invert": false, "path": "monsterAttributeData"}, {"cells": "000110000", "offset": 0, "bytes": 2, "index": 166, "invert": false, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
                             [{"path": "battlePalettes[51]", "name": "バラー (1) #51", "offset": 0, "compose": true}, {"path": "battlePalettes[46]", "name": "(2) #46", "offset": 4, "compose": true}],
@@ -827,7 +837,7 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
-            "itemAttributes": [{"cells": "111101011111001001", "offset": 0, "bytes": 3, "index": 168, "invert": true, "path": "monsterAttributeData"}, {"cells": "110100101001111111", "offset": 0, "bytes": 3, "index": 171, "invert": true, "path": "monsterAttributeData"}, {"cells": "111001001000101111", "offset": 0, "bytes": 3, "index": 174, "invert": true, "path": "monsterAttributeData"}, {"cells": "001001111110011111", "offset": 0, "bytes": 3, "index": 177, "invert": true, "path": "monsterAttributeData"}],
+            "itemAttributes": [{"cells": "111101011111001001", "offset": 0, "bytes": 3, "index": 168, "invert": false, "path": "monsterAttributeData"}, {"cells": "110100101001111111", "offset": 0, "bytes": 3, "index": 171, "invert": false, "path": "monsterAttributeData"}, {"cells": "111001001000101111", "offset": 0, "bytes": 3, "index": 174, "invert": false, "path": "monsterAttributeData"}, {"cells": "001001111110011111", "offset": 0, "bytes": 3, "index": 177, "invert": false, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
                             [{"path": "battlePalettes[212]", "name": "へカトンケイル (1) #212", "offset": 0, "compose": true}, {"path": "battlePalettes[177]", "name": "(2) #177", "offset": 4, "compose": true}],
@@ -893,7 +903,7 @@
                 "backColor": true,
                 "palette": "battlePalettes"
             },
-            "itemAttributes": [{"cells": "100000000111010111", "offset": 0, "bytes": 3, "index": 180, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000001001111101", "offset": 0, "bytes": 3, "index": 183, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000001101011110", "offset": 0, "bytes": 3, "index": 186, "invert": true, "path": "monsterAttributeData"}, {"cells": "111110100010000000", "offset": 0, "bytes": 3, "index": 189, "invert": true, "path": "monsterAttributeData"}],
+            "itemAttributes": [{"cells": "100000000111010111", "offset": 0, "bytes": 3, "index": 180, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000001001111101", "offset": 0, "bytes": 3, "index": 183, "invert": false, "path": "monsterAttributeData"}, {"cells": "000000001101011110", "offset": 0, "bytes": 3, "index": 186, "invert": false, "path": "monsterAttributeData"}, {"cells": "111110100010000000", "offset": 0, "bytes": 3, "index": 189, "invert": false, "path": "monsterAttributeData"}],
             "itemPalettes": [
                 [
                             [{"path": "battlePalettes[35]", "name": "ベヒーモス (1) #35", "offset": 0, "compose": true}, {"path": "battlePalettes[38]", "name": "(2) #38", "offset": 4, "compose": true}],
@@ -1289,7 +1299,7 @@
                 "followLayout": true,
                 "range": "0-9216"
             },
-            "attributeRef": {"cells": "111111111111111111111101111111101111111010011111011111", "offset": 0, "bytes": 7, "index": 0, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111111111111111101111111101111111010011111011111", "offset": 0, "bytes": 7, "index": 0, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[185]", "name": "ゴモリー (1) #185", "offset": 0, "compose": true}, {"path": "battlePalettes[181]", "name": "(2) #181", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[181]", "name": "ゴモリー (1) #181, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[185]", "name": "(2) #185", "offset": 4, "compose": true}],
@@ -1337,7 +1347,7 @@
                 "followLayout": true,
                 "range": "0-9216"
             },
-            "attributeRef": {"cells": "000000000000000000000000000000010000000011000000011000", "offset": 0, "bytes": 7, "index": 2, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "000000000000000000000000000000010000000011000000011000", "offset": 0, "bytes": 7, "index": 2, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[229]", "name": "ガルーダ (1) #229", "offset": 0, "compose": true}, {"path": "battlePalettes[230]", "name": "(2) #230", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[230]", "name": "ガルーダ (1) #230, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[229]", "name": "(2) #229", "offset": 4, "compose": true}],
@@ -1358,7 +1368,7 @@
                 "followLayout": true,
                 "range": "4096-13312"
             },
-            "attributeRef": {"cells": "111111111111111111111111111111100111111101111111100111", "offset": 0, "bytes": 7, "index": 3, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111111111111111111111111100111111101111111100111", "offset": 0, "bytes": 7, "index": 3, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[241]", "name": "クィーンスキュラ (1) #241", "offset": 0, "compose": true}, {"path": "battlePalettes[209]", "name": "(2) #209", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[209]", "name": "クィーンスキュラ (1) #209, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[241]", "name": "(2) #241", "offset": 4, "compose": true}],
@@ -1383,7 +1393,7 @@
                 "followLayout": true,
                 "range": "8704-17920"
             },
-            "attributeRef": {"cells": "111111111110000011110010011110010011111010111111111111", "offset": 0, "bytes": 7, "index": 4, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111110000011110010011110010011111010111111111111", "offset": 0, "bytes": 7, "index": 4, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[242]", "name": "アーリマン (1) #242", "offset": 0, "compose": true}, {"path": "battlePalettes[82]", "name": "(2) #82", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[82]", "name": "アーリマン (1) #82, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[242]", "name": "(2) #242", "offset": 4, "compose": true}],
@@ -1450,7 +1460,7 @@
                 "followLayout": true,
                 "range": "12288-21504"
             },
-            "attributeRef": {"cells": "110111111111111111100000001100000011100000011110000111", "offset": 0, "bytes": 7, "index": 7, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "110111111111111111100000001100000011100000011110000111", "offset": 0, "bytes": 7, "index": 7, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[101]", "name": "ザンデクローン (1) #101", "offset": 0, "compose": true}, {"path": "battlePalettes[207]", "name": "(2) #207", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[207]", "name": "ザンデクローン (1) #207, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[101]", "name": "(2) #101", "offset": 4, "compose": true}],
@@ -1475,7 +1485,7 @@
                 "followLayout": true,
                 "range": "19392-28608"
             },
-            "attributeRef": {"cells": "111110001111000001111000000111000000111000000111000000", "offset": 0, "bytes": 7, "index": 8, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111110001111000001111000000111000000111000000111000000", "offset": 0, "bytes": 7, "index": 8, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[202]", "name": "くらやみのくも (1) #202", "offset": 0, "compose": true}, {"path": "battlePalettes[27]", "name": "(2) #27", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[27]", "name": "くらやみのくも (1) #27, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[202]", "name": "(2) #202", "offset": 4, "compose": true}],
@@ -1548,7 +1558,7 @@
                 "followLayout": true,
                 "range": "8320-17536"
             },
-            "attributeRef": {"cells": "111111111110111111111000011111000111111110011111111111", "offset": 0, "bytes": 7, "index": 11, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111110111111111000011111000111111110011111111111", "offset": 0, "bytes": 7, "index": 11, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[73]", "name": "プラティナル (1) #73", "offset": 0, "compose": true}, {"path": "battlePalettes[69]", "name": "(2) #69", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[69]", "name": "プラティナル (1) #69, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[73]", "name": "(2) #73", "offset": 4, "compose": true}],
@@ -1571,7 +1581,7 @@
                 "followLayout": true,
                 "range": "4096-13312"
             },
-            "attributeRef": {"cells": "111111111111111111111111111111001111111111111111111111", "offset": 0, "bytes": 7, "index": 12, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111111111111111111111111001111111111111111111111", "offset": 0, "bytes": 7, "index": 12, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[69]", "name": "おおネズミ (1) #69", "offset": 0, "compose": true}],
                     {"path": "battlePalettes"}
@@ -1591,7 +1601,7 @@
                 "followLayout": true,
                 "range": "21504-30720"
             },
-            "attributeRef": {"cells": "111111111111000111111000111111111111111111111111111111", "offset": 0, "bytes": 7, "index": 13, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111111000111111000111111111111111111111111111111", "offset": 0, "bytes": 7, "index": 13, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[109]", "name": "ジン (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[106]", "name": "(2) #106", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[106]", "name": "ジン (1) #106, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
@@ -1612,7 +1622,7 @@
                 "followLayout": true,
                 "range": "26112-35328"
             },
-            "attributeRef": {"cells": "111111111111111111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 14, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111111111111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 14, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[53]", "name": "ニンジャ (1) #53", "offset": 0, "compose": true}, {"path": "battlePalettes[48]", "name": "(2) #48", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[48]", "name": "ニンジャ (1) #48, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[53]", "name": "(2) #53", "offset": 4, "compose": true}],
@@ -1633,7 +1643,7 @@
                 "followLayout": true,
                 "range": "27648-36864"
             },
-            "attributeRef": {"cells": "111111111111111111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 15, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111111111111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 15, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[227]", "name": "くのいち (1) #227", "offset": 0, "compose": true}, {"path": "battlePalettes[228]", "name": "(2) #228", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[228]", "name": "くのいち (1) #228, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[227]", "name": "(2) #227", "offset": 4, "compose": true}],
@@ -1654,7 +1664,7 @@
                 "followLayout": true,
                 "range": "0-9216"
             },
-            "attributeRef": {"cells": "111111111111110111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 16, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111111110111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 16, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[1]", "name": "とうぞくグツコー (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[5]", "name": "(2) #5", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[5]", "name": "とうぞくグツコー (1) #5, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
@@ -1675,7 +1685,7 @@
                 "followLayout": true,
                 "range": "2304-11520"
             },
-            "attributeRef": {"cells": "111111111111000111111011111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 17, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111111000111111011111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 17, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[60]", "name": "ジェネラル (1) #60", "offset": 0, "compose": true}, {"path": "battlePalettes[27]", "name": "(2) #27", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[27]", "name": "ジェネラル (1) #27, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[60]", "name": "(2) #60", "offset": 4, "compose": true}],
@@ -1696,7 +1706,7 @@
                 "followLayout": true,
                 "range": "0-9216"
             },
-            "attributeRef": {"cells": "110000111110000011110011111110010111110010111111011111", "offset": 0, "bytes": 7, "index": 18, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "110000111110000011110011111110010111110010111111011111", "offset": 0, "bytes": 7, "index": 18, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[9]", "name": "バハムート (1) #9", "offset": 0, "compose": true}, {"path": "battlePalettes[4]", "name": "(2) #4", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[4]", "name": "バハムート (1) #4, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[9]", "name": "(2) #9", "offset": 4, "compose": true}],
@@ -1717,7 +1727,7 @@
                 "followLayout": true,
                 "range": "52992-62208"
             },
-            "attributeRef": {"cells": "111111111111111111111100111111101111111111111111111111", "offset": 0, "bytes": 7, "index": 19, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111111111111111100111111101111111111111111111111", "offset": 0, "bytes": 7, "index": 19, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[235]", "name": "クラーケン (1) #235", "offset": 0, "compose": true}, {"path": "battlePalettes[72]", "name": "(2) #72", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[72]", "name": "クラーケン (1) #72, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[235]", "name": "(2) #235", "offset": 4, "compose": true}],
@@ -1738,7 +1748,7 @@
                 "followLayout": true,
                 "range": "27648-36864"
             },
-            "attributeRef": {"cells": "111111111111111111111111111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 20, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111111111111111111111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 20, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[34]", "name": "ランドタートル (1) #34", "offset": 0, "compose": true}, {"path": "battlePalettes[71]", "name": "(2) #71", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[71]", "name": "ランドタートル (1) #71, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[34]", "name": "(2) #34", "offset": 4, "compose": true}],
@@ -1759,7 +1769,7 @@
                 "followLayout": true,
                 "range": "52992-62208"
             },
-            "attributeRef": {"cells": "111111111111000111111110111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 21, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "111111111111000111111110111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 21, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[46]", "name": "ケルベロス (1) #46", "offset": 0, "compose": true}, {"path": "battlePalettes[53]", "name": "(2) #53", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[53]", "name": "ケルベロス (1) #53, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[46]", "name": "(2) #46", "offset": 4, "compose": true}],
@@ -1783,7 +1793,7 @@
                 "followLayout": true,
                 "range": "6464-15680"
             },
-            "attributeRef": {"cells": "000000000000000000000000000000011000001111000001111000", "offset": 0, "bytes": 7, "index": 22, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "000000000000000000000000000000011000001111000001111000", "offset": 0, "bytes": 7, "index": 22, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[248]", "name": "オーディン (1) #248", "offset": 0, "compose": true}, {"path": "battlePalettes[249]", "name": "(2) #249", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[249]", "name": "オーディン (1) #249, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[248]", "name": "(2) #248", "offset": 4, "compose": true}],
@@ -1805,12 +1815,557 @@
                 "followLayout": true,
                 "range": "9984-19200"
             },
-            "attributeRef": {"cells": "000000000000000000000001000000000000000000000000000000", "offset": 0, "bytes": 7, "index": 23, "invert": true, "path": "bossAttributeData"},
+            "attributeRef": {"cells": "000000000000000000000001000000000000000000000000000000", "offset": 0, "bytes": 7, "index": 23, "invert": false, "path": "bossAttributeData"},
             "palette": [
                     [{"path": "battlePalettes[208]", "name": "リバイアサン (1) #208", "offset": 0, "compose": true}, {"path": "battlePalettes[247]", "name": "(2) #247", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[247]", "name": "リバイアサン (1) #247, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[208]", "name": "(2) #208", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[248]", "name": "リバイアサン (1) #248", "offset": 0, "compose": true}, {"path": "battlePalettes[249]", "name": "(2) #249", "offset": 4, "compose": true}],
                     [{"path": "battlePalettes[249]", "name": "リバイアサン (1) #249, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[248]", "name": "(2) #248", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics0": {
+            "type": "graphics",
+            "name": "Boss Graphics 0 (ゴモリー, メデューサ)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare4", "offset": 0, "tiles": 144},
+            "attributeRef": {"cells": "111111111111111111111101111111101111111010011111011111", "offset": 0, "bytes": 7, "index": 0, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap0",
+            "palette": [
+                    [{"path": "battlePalettes[185]", "name": "ゴモリー (1) #185", "offset": 0, "compose": true}, {"path": "battlePalettes[181]", "name": "(2) #181", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[181]", "name": "ゴモリー (1) #181, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[185]", "name": "(2) #185", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[29]", "name": "メデューサ (1) #29", "offset": 0, "compose": true}, {"path": "battlePalettes[28]", "name": "(2) #28", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[28]", "name": "メデューサ (1) #28, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[29]", "name": "(2) #29", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics1": {
+            "type": "graphics",
+            "name": "Boss Graphics 1 (バルカン, ピュラリス, サラマンダー)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare3", "offset": 4736, "tiles": 144},
+            "attributeRef": {"cells": "000000000000000100000001110000001110000000000000000000", "offset": 0, "bytes": 7, "index": 1, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap1",
+            "palette": [
+                    [{"path": "battlePalettes[126]", "name": "バルカン (1) #126", "offset": 0, "compose": true}, {"path": "battlePalettes[123]", "name": "(2) #123", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[123]", "name": "バルカン (1) #123, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[126]", "name": "(2) #126", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[184]", "name": "ピュラリス (1) #184", "offset": 0, "compose": true}, {"path": "battlePalettes[54]", "name": "(2) #54", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[54]", "name": "ピュラリス (1) #54, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[184]", "name": "(2) #184", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[64]", "name": "サラマンダー (1) #64", "offset": 0, "compose": true}, {"path": "battlePalettes[86]", "name": "(2) #86", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[86]", "name": "サラマンダー (1) #86, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[64]", "name": "(2) #64", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics2": {
+            "type": "graphics",
+            "name": "Boss Graphics 2 (ガルーダ)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare3", "offset": 0, "tiles": 144},
+            "attributeRef": {"cells": "000000000000000000000000000000010000000011000000011000", "offset": 0, "bytes": 7, "index": 2, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap2",
+            "palette": [
+                    [{"path": "battlePalettes[229]", "name": "ガルーダ (1) #229", "offset": 0, "compose": true}, {"path": "battlePalettes[230]", "name": "(2) #230", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[230]", "name": "ガルーダ (1) #230, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[229]", "name": "(2) #229", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics3": {
+            "type": "graphics",
+            "name": "Boss Graphics 3 (クィーンスキュラ, スキュラ)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare4", "offset": 4096, "tiles": 144},
+            "attributeRef": {"cells": "111111111111111111111111111111100111111101111111100111", "offset": 0, "bytes": 7, "index": 3, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap3",
+            "palette": [
+                    [{"path": "battlePalettes[241]", "name": "クィーンスキュラ (1) #241", "offset": 0, "compose": true}, {"path": "battlePalettes[209]", "name": "(2) #209", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[209]", "name": "クィーンスキュラ (1) #209, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[241]", "name": "(2) #241", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[216]", "name": "クィーンスキュラ (1) #216", "offset": 0, "compose": true}, {"path": "battlePalettes[217]", "name": "(2) #217", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[217]", "name": "クィーンスキュラ (1) #217, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[216]", "name": "(2) #216", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[108]", "name": "スキュラ (1) #108", "offset": 0, "compose": true}, {"path": "battlePalettes[158]", "name": "(2) #158", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[158]", "name": "スキュラ (1) #158, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[108]", "name": "(2) #108", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics4": {
+            "type": "graphics",
+            "name": "Boss Graphics 4 (アーリマン)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare4", "offset": 8704, "tiles": 144},
+            "attributeRef": {"cells": "111111111110000011110010011110010011111010111111111111", "offset": 0, "bytes": 7, "index": 4, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap4",
+            "palette": [
+                    [{"path": "battlePalettes[242]", "name": "アーリマン (1) #242", "offset": 0, "compose": true}, {"path": "battlePalettes[82]", "name": "(2) #82", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[82]", "name": "アーリマン (1) #82, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[242]", "name": "(2) #242", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics5": {
+            "type": "graphics",
+            "name": "Boss Graphics 5 (ドラゴン)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare2", "offset": 0, "tiles": 144},
+            "attributeRef": {"cells": "110000111110000011110011111110010111110010111111011111", "offset": 0, "bytes": 7, "index": 5, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap5",
+            "palette": [
+                    [{"path": "battlePalettes[52]", "name": "ドラゴン (1) #52", "offset": 0, "compose": true}, {"path": "battlePalettes[51]", "name": "(2) #51", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[51]", "name": "ドラゴン (1) #51, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[52]", "name": "(2) #52", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics6": {
+            "type": "graphics",
+            "name": "Boss Graphics 6 (グリーンドラゴン, テリブルドラゴン, イエロードラゴン, レッドドラゴン)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare2", "offset": 5056, "tiles": 144},
+            "attributeRef": {"cells": "111111111111111111110011111111100111111100111111111111", "offset": 0, "bytes": 7, "index": 6, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap6",
+            "palette": [
+                    [{"path": "battlePalettes[109]", "name": "レッドドラゴン (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[106]", "name": "(2) #106", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[106]", "name": "レッドドラゴン (1) #106, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[182]", "name": "グリーンドラゴン (1) #182", "offset": 0, "compose": true}, {"path": "battlePalettes[181]", "name": "(2) #181", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[181]", "name": "グリーンドラゴン (1) #181, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[182]", "name": "(2) #182", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[167]", "name": "イエロードラゴン (1) #167", "offset": 0, "compose": true}, {"path": "battlePalettes[166]", "name": "(2) #166", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[166]", "name": "イエロードラゴン (1) #166, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[167]", "name": "(2) #167", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics7": {
+            "type": "graphics",
+            "name": "Boss Graphics 7 (ザンデクローン, まおうザンデ)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare4", "offset": 12288, "tiles": 144},
+            "attributeRef": {"cells": "110111111111111111100000001100000011100000011110000111", "offset": 0, "bytes": 7, "index": 7, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap7",
+            "palette": [
+                    [{"path": "battlePalettes[101]", "name": "ザンデクローン (1) #101", "offset": 0, "compose": true}, {"path": "battlePalettes[207]", "name": "(2) #207", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[207]", "name": "ザンデクローン (1) #207, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[101]", "name": "(2) #101", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[245]", "name": "まおうザンデ (1) #245", "offset": 0, "compose": true}, {"path": "battlePalettes[246]", "name": "(2) #246", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[246]", "name": "まおうザンデ (1) #246, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[245]", "name": "(2) #245", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[160]", "name": "まおうザンデ (1) #160", "offset": 0, "compose": true}, {"path": "battlePalettes[161]", "name": "(2) #161", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[161]", "name": "まおうザンデ (1) #161, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[160]", "name": "(2) #160", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics8": {
+            "type": "graphics",
+            "name": "Boss Graphics 8 (くらやみのくも)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare4", "offset": 19392, "tiles": 144},
+            "attributeRef": {"cells": "111110001111000001111000000111000000111000000111000000", "offset": 0, "bytes": 7, "index": 8, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap8",
+            "palette": [
+                    [{"path": "battlePalettes[202]", "name": "くらやみのくも (1) #202", "offset": 0, "compose": true}, {"path": "battlePalettes[27]", "name": "(2) #27", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[27]", "name": "くらやみのくも (1) #27, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[202]", "name": "(2) #202", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[78]", "name": "くらやみのくも (1) #78", "offset": 0, "compose": true}, {"path": "battlePalettes[250]", "name": "(2) #250", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[250]", "name": "くらやみのくも (1) #250, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[78]", "name": "(2) #78", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[222]", "name": "くらやみのくも (1) #222", "offset": 0, "compose": true}, {"path": "battlePalettes[223]", "name": "(2) #223", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[223]", "name": "くらやみのくも (1) #223, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[222]", "name": "(2) #222", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics9": {
+            "type": "graphics",
+            "name": "Boss Graphics 9 (フリアイ, ハルピュイア, ディーライ)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare1", "offset": 0, "tiles": 144},
+            "attributeRef": {"cells": "111111111111101111111101111111001111111000111111111111", "offset": 0, "bytes": 7, "index": 9, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap9",
+            "palette": [
+                    [{"path": "battlePalettes[149]", "name": "ハルピュイア (1) #149", "offset": 0, "compose": true}, {"path": "battlePalettes[145]", "name": "(2) #145", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[145]", "name": "ハルピュイア (1) #145, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[149]", "name": "(2) #149", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[152]", "name": "ディーライ (1) #152", "offset": 0, "compose": true}, {"path": "battlePalettes[240]", "name": "(2) #240", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[240]", "name": "ディーライ (1) #240, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[152]", "name": "(2) #152", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[182]", "name": "ディーライ (1) #182", "offset": 0, "compose": true}, {"path": "battlePalettes[183]", "name": "(2) #183", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[183]", "name": "ディーライ (1) #183, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[182]", "name": "(2) #182", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics10": {
+            "type": "graphics",
+            "name": "Boss Graphics 10 (デュラハン, タナトス)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare1", "offset": 2752, "tiles": 144},
+            "attributeRef": {"cells": "100000111100001111111101111111101111111111111111111111", "offset": 0, "bytes": 7, "index": 10, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap10",
+            "palette": [
+                    [{"path": "battlePalettes[116]", "name": "デュラハン (1) #116", "offset": 0, "compose": true}, {"path": "battlePalettes[188]", "name": "(2) #188", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[188]", "name": "デュラハン (1) #188, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[116]", "name": "(2) #116", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[90]", "name": "タナトス (1) #90", "offset": 0, "compose": true}, {"path": "battlePalettes[212]", "name": "(2) #212", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[212]", "name": "タナトス (1) #212, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[90]", "name": "(2) #90", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics11": {
+            "type": "graphics",
+            "name": "Boss Graphics 11 (プラティナル, ゴールドル)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare1", "offset": 8320, "tiles": 144},
+            "attributeRef": {"cells": "111111111110111111111000011111000111111110011111111111", "offset": 0, "bytes": 7, "index": 11, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap11",
+            "palette": [
+                    [{"path": "battlePalettes[73]", "name": "プラティナル (1) #73", "offset": 0, "compose": true}, {"path": "battlePalettes[69]", "name": "(2) #69", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[69]", "name": "プラティナル (1) #69, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[73]", "name": "(2) #73", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[171]", "name": "ゴールドル (1) #171", "offset": 0, "compose": true}, {"path": "battlePalettes[162]", "name": "(2) #162", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[162]", "name": "ゴールドル (1) #162, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[171]", "name": "(2) #171", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics12": {
+            "type": "graphics",
+            "name": "Boss Graphics 12 (おおネズミ)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphics4x4", "offset": 4096, "tiles": 144},
+            "attributeRef": {"cells": "111111111111111111111111111111001111111111111111111111", "offset": 0, "bytes": 7, "index": 12, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap12",
+            "palette": [
+                    [{"path": "battlePalettes[69]", "name": "おおネズミ (1) #69", "offset": 0, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics13": {
+            "type": "graphics",
+            "name": "Boss Graphics 13 (ジン)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphics4x6", "offset": 21504, "tiles": 144},
+            "attributeRef": {"cells": "111111111111000111111000111111111111111111111111111111", "offset": 0, "bytes": 7, "index": 13, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap13",
+            "palette": [
+                    [{"path": "battlePalettes[109]", "name": "ジン (1) #109", "offset": 0, "compose": true}, {"path": "battlePalettes[106]", "name": "(2) #106", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[106]", "name": "ジン (1) #106, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[109]", "name": "(2) #109", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics14": {
+            "type": "graphics",
+            "name": "Boss Graphics 14 (ニンジャ)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphics4x6", "offset": 26112, "tiles": 144},
+            "attributeRef": {"cells": "111111111111111111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 14, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap14",
+            "palette": [
+                    [{"path": "battlePalettes[53]", "name": "ニンジャ (1) #53", "offset": 0, "compose": true}, {"path": "battlePalettes[48]", "name": "(2) #48", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[48]", "name": "ニンジャ (1) #48, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[53]", "name": "(2) #53", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics15": {
+            "type": "graphics",
+            "name": "Boss Graphics 15 (くのいち)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphics4x6", "offset": 27648, "tiles": 144},
+            "attributeRef": {"cells": "111111111111111111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 15, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap15",
+            "palette": [
+                    [{"path": "battlePalettes[227]", "name": "くのいち (1) #227", "offset": 0, "compose": true}, {"path": "battlePalettes[228]", "name": "(2) #228", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[228]", "name": "くのいち (1) #228, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[227]", "name": "(2) #227", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics16": {
+            "type": "graphics",
+            "name": "Boss Graphics 16 (とうぞくグツコー)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphics6x6", "offset": 0, "tiles": 144},
+            "attributeRef": {"cells": "111111111111110111111000111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 16, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap16",
+            "palette": [
+                    [{"path": "battlePalettes[1]", "name": "とうぞくグツコー (1) #1", "offset": 0, "compose": true}, {"path": "battlePalettes[5]", "name": "(2) #5", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[5]", "name": "とうぞくグツコー (1) #5, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[1]", "name": "(2) #1", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics17": {
+            "type": "graphics",
+            "name": "Boss Graphics 17 (ジェネラル)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphics6x6", "offset": 2304, "tiles": 144},
+            "attributeRef": {"cells": "111111111111000111111011111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 17, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap17",
+            "palette": [
+                    [{"path": "battlePalettes[60]", "name": "ジェネラル (1) #60", "offset": 0, "compose": true}, {"path": "battlePalettes[27]", "name": "(2) #27", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[27]", "name": "ジェネラル (1) #27, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[60]", "name": "(2) #60", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics18": {
+            "type": "graphics",
+            "name": "Boss Graphics 18 (バハムート)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphicsSpare2", "offset": 0, "tiles": 144},
+            "attributeRef": {"cells": "110000111110000011110011111110010111110010111111011111", "offset": 0, "bytes": 7, "index": 18, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap18",
+            "palette": [
+                    [{"path": "battlePalettes[9]", "name": "バハムート (1) #9", "offset": 0, "compose": true}, {"path": "battlePalettes[4]", "name": "(2) #4", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[4]", "name": "バハムート (1) #4, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[9]", "name": "(2) #9", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics19": {
+            "type": "graphics",
+            "name": "Boss Graphics 19 (クラーケン)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphics6x6", "offset": 52992, "tiles": 144},
+            "attributeRef": {"cells": "111111111111111111111100111111101111111111111111111111", "offset": 0, "bytes": 7, "index": 19, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap19",
+            "palette": [
+                    [{"path": "battlePalettes[235]", "name": "クラーケン (1) #235", "offset": 0, "compose": true}, {"path": "battlePalettes[72]", "name": "(2) #72", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[72]", "name": "クラーケン (1) #72, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[235]", "name": "(2) #235", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics20": {
+            "type": "graphics",
+            "name": "Boss Graphics 20 (ランドタートル)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphics6x6b", "offset": 27648, "tiles": 144},
+            "attributeRef": {"cells": "111111111111111111111111111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 20, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap20",
+            "palette": [
+                    [{"path": "battlePalettes[34]", "name": "ランドタートル (1) #34", "offset": 0, "compose": true}, {"path": "battlePalettes[71]", "name": "(2) #71", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[71]", "name": "ランドタートル (1) #71, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[34]", "name": "(2) #34", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics21": {
+            "type": "graphics",
+            "name": "Boss Graphics 21 (ケルベロス)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "monsterGraphics6x6b", "offset": 52992, "tiles": 144},
+            "attributeRef": {"cells": "111111111111000111111110111111000111111111111111111111", "offset": 0, "bytes": 7, "index": 21, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap21",
+            "palette": [
+                    [{"path": "battlePalettes[46]", "name": "ケルベロス (1) #46", "offset": 0, "compose": true}, {"path": "battlePalettes[53]", "name": "(2) #53", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[53]", "name": "ケルベロス (1) #53, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[46]", "name": "(2) #46", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[162]", "name": "ケルベロス (1) #162", "offset": 0, "compose": true}, {"path": "battlePalettes[163]", "name": "(2) #163", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[163]", "name": "ケルベロス (1) #163, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[162]", "name": "(2) #162", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics22": {
+            "type": "graphics",
+            "name": "Boss Graphics 22 (オーディン)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "summonGraphics", "offset": 6464, "tiles": 144},
+            "attributeRef": {"cells": "000000000000000000000000000000011000001111000001111000", "offset": 0, "bytes": 7, "index": 22, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap22",
+            "palette": [
+                    [{"path": "battlePalettes[248]", "name": "オーディン (1) #248", "offset": 0, "compose": true}, {"path": "battlePalettes[249]", "name": "(2) #249", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[249]", "name": "オーディン (1) #249, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[248]", "name": "(2) #248", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "bossGraphics23": {
+            "type": "graphics",
+            "name": "Boss Graphics 23 (リバイアサン)",
+            "format": "nes2bpp",
+            "width": 18,
+            "height": 8,
+            "backColor": true,
+            "window": {"path": "summonGraphics", "offset": 9984, "tiles": 144},
+            "attributeRef": {"cells": "000000000000000000000001000000000000000000000000000000", "offset": 0, "bytes": 7, "index": 23, "invert": false, "path": "bossAttributeData"},
+            "layoutFrom": "bossTilemap23",
+            "palette": [
+                    [{"path": "battlePalettes[208]", "name": "リバイアサン (1) #208", "offset": 0, "compose": true}, {"path": "battlePalettes[247]", "name": "(2) #247", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[247]", "name": "リバイアサン (1) #247, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[208]", "name": "(2) #208", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[248]", "name": "リバイアサン (1) #248", "offset": 0, "compose": true}, {"path": "battlePalettes[249]", "name": "(2) #249", "offset": 4, "compose": true}],
+                    [{"path": "battlePalettes[249]", "name": "リバイアサン (1) #249, swapped", "offset": 0, "compose": true}, {"path": "battlePalettes[248]", "name": "(2) #248", "offset": 4, "compose": true}],
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonGraphics0": {
+            "type": "graphics",
+            "name": "Summon Graphics 0 (チョコボ)",
+            "format": "nes2bpp",
+            "width": 3,
+            "height": 3,
+            "backColor": true,
+            "window": {"path": "summonGraphics", "offset": 0, "tiles": 9},
+            "layoutFrom": "summonTilemap0",
+            "palette": [
+                    {"path": "battlePalettes[191]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[192]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[193]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonGraphics1": {
+            "type": "graphics",
+            "name": "Summon Graphics 1 (シヴァ)",
+            "format": "nes2bpp",
+            "width": 4,
+            "height": 5,
+            "backColor": true,
+            "window": {"path": "summonGraphics", "offset": 576, "tiles": 20},
+            "layoutFrom": "summonTilemap1",
+            "palette": [
+                    {"path": "battlePalettes[192]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[193]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[194]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonGraphics2": {
+            "type": "graphics",
+            "name": "Summon Graphics 2 (ラムウ)",
+            "format": "nes2bpp",
+            "width": 4,
+            "height": 5,
+            "backColor": true,
+            "window": {"path": "summonGraphics", "offset": 1600, "tiles": 20},
+            "layoutFrom": "summonTilemap2",
+            "palette": [
+                    {"path": "battlePalettes[194]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[195]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[196]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonGraphics3": {
+            "type": "graphics",
+            "name": "Summon Graphics 3 (イフリート)",
+            "format": "nes2bpp",
+            "width": 6,
+            "height": 7,
+            "backColor": true,
+            "window": {"path": "summonGraphics", "offset": 2624, "tiles": 42},
+            "layoutFrom": "summonTilemap3",
+            "palette": [
+                    {"path": "battlePalettes[196]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[197]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[198]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonGraphics4": {
+            "type": "graphics",
+            "name": "Summon Graphics 4 (タイタン)",
+            "format": "nes2bpp",
+            "width": 5,
+            "height": 7,
+            "backColor": true,
+            "window": {"path": "summonGraphics", "offset": 4544, "tiles": 35},
+            "layoutFrom": "summonTilemap4",
+            "palette": [
+                    {"path": "battlePalettes[199]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[200]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[201]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonGraphics5": {
+            "type": "graphics",
+            "name": "Summon Graphics 5 (オーディン)",
+            "format": "nes2bpp",
+            "width": 8,
+            "height": 9,
+            "backColor": true,
+            "window": {"path": "summonGraphics", "offset": 6464, "tiles": 72},
+            "layoutFrom": "summonTilemap5",
+            "palette": [
+                    {"path": "battlePalettes[202]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[203]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[204]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonGraphics6": {
+            "type": "graphics",
+            "name": "Summon Graphics 6 (リバイアサン)",
+            "format": "nes2bpp",
+            "width": 8,
+            "height": 9,
+            "backColor": true,
+            "window": {"path": "summonGraphics", "offset": 9984, "tiles": 72},
+            "layoutFrom": "summonTilemap6",
+            "palette": [
+                    {"path": "battlePalettes[205]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[206]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[207]", "name": "Sprite palette 3", "offset": 8, "compose": true},
+                    {"path": "battlePalettes"}
+                ]
+        },
+        "summonGraphics7": {
+            "type": "graphics",
+            "name": "Summon Graphics 7 (バハムート)",
+            "format": "nes2bpp",
+            "width": 7,
+            "height": 10,
+            "backColor": true,
+            "window": {"path": "summonGraphics", "offset": 13120, "tiles": 70},
+            "layoutFrom": "summonTilemap7",
+            "palette": [
+                    {"path": "battlePalettes[208]", "name": "Sprite palette 1", "offset": 0, "compose": true},
+                    {"path": "battlePalettes[209]", "name": "Sprite palette 2", "offset": 4, "compose": true},
+                    {"path": "battlePalettes[210]", "name": "Sprite palette 3", "offset": 8, "compose": true},
                     {"path": "battlePalettes"}
                 ]
         },
