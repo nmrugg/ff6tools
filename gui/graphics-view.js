@@ -145,6 +145,14 @@ const self = this;
         });
         document.addEventListener('mouseup', function(e) {
             if (e.button === 1 && self.panning) { self.panning = null; self.updateCursor(); }
+            // A stroke must not stay open when the button is released outside
+            // the canvas: an unclosed action group means there is nothing to
+            // undo, and a stuck `painting` flag blocks every later reload, so
+            // undo appears to do nothing.
+            if (e.button === 0 && (self.painting || self.cellPainting ||
+                                   self.paintStroke || self.paintStart)) {
+                self.finishStroke();
+            }
         });
 
         const endDrag = function(e) {
@@ -498,18 +506,25 @@ const self = this;
         this.mouseUp(e);
     }
 
+    // End a pencil/fill/palette-cell stroke exactly once, whichever handler
+    // notices first (the canvas' own mouseup, or the document-level safety net
+    // for a release outside the canvas).
+    finishStroke() {
+        let active = this.painting || this.cellPainting || this.paintStroke || this.paintStart;
+        if (this.cellPainting) { this.cellPainting = false; this.rom.endAction(); }
+        if (this.painting) { this.painting = false; this.commitPaint(); }
+        else if (this.paintStart || this.paintStroke) { this.commitPaint(); }
+        this.painting = false;
+        this.cellPainting = false;
+        this.paintStroke = false;
+        this.paintStart = null;
+        return active;
+    }
+
     mouseUp(e) {
         if (e.button !== undefined && e.button !== 0) return;
         this.floatDrag = null;
-        if (this.cellPainting) {
-            this.cellPainting = false;
-            this.rom.endAction();
-        }
-        if (this.painting) {
-            this.painting = false;
-            this.commitPaint();
-            return;
-        }
+        this.finishStroke();
         this.clickPoint = null;
     }
 
@@ -792,7 +807,12 @@ const self = this;
     colorRGB(index) {
         const pal = this.paletteView && this.paletteView.palette;
         if (!pal || !pal.length || !isNumber(index)) return '#ffffff';
-        const c = pal[Math.min(index, pal.length - 1)] >>> 0;
+        // the buffer holds the raw index; show it from the palette row that is
+        // currently selected, so the cursor matches what painting will produce
+        const perPalette = this.paletteView.colorsPerPalette || 4;
+        const at = Math.min(index + (this.paletteView.p || 0) * perPalette,
+                            pal.length - 1);
+        const c = pal[at] >>> 0;
         const r = c & 0xFF, g = (c >> 8) & 0xFF, b = (c >> 16) & 0xFF;
         return `rgb(${r},${g},${b})`;
     }
@@ -925,19 +945,18 @@ const self = this;
     pickColor(x, y) {
         const off = this.tileOffset(x, y);
         if (off < 0) return;
+        // the graphics buffer holds the raw NES index (0..colorsPerPalette-1);
+        // which palette row that index is drawn from is a separate selection.
+        // Do NOT fold the row into the index - it puts the paint color out of
+        // range and the eyedropper/cursor render as transparent.
         let c = this.graphics[off];
-        // an object with a per-cell palette table (FF3 NES) picks from the
-        // palette that cell actually uses, so the palette panel follows the
-        // part of the sprite you clicked on
         if (this.paintableCells()) {
             const bits = this.attributeCellBits();
             const obj = this.object || this.cellsObject;
             const cell = attributeCellForPixel(obj, x, y, this.tileWidth, this.tileHeight);
             if (bits && cell >= 0 && bits[cell] !== undefined) {
-                const perPalette = this.paletteView.colorsPerPalette || 4;
-                const row = Number(bits[cell]);
-                this.paletteView.p = row * (perPalette / this.paletteView.colorsPerPalette);
-                c = c + row * perPalette;
+                // follow the palette row this cell actually uses
+                this.paletteView.p = Number(bits[cell]);
             }
         }
         if (this.color === c) return;
@@ -1485,10 +1504,11 @@ const self = this;
             if (ROMPaletteView.isPaletteFormat(object.format)) {
                 this.paletteObject = object;
                 // an array item's `path` is the array itself, so the index has
-                // to be part of it or every entry shows the same palette
+                // to be part of it or every entry shows the same palette.
+                // Keep it a plain string: callers read paletteView.definition.
                 const path = (object.i !== undefined) ?
                              object.path + '[' + object.i + ']' : object.path;
-                this.paletteView.loadDefinition({path: path});
+                this.paletteView.loadDefinition(path);
                 this.paletteView.updateToolbox();
                 this.paletteView.resize();
                 this.paletteView.redraw();

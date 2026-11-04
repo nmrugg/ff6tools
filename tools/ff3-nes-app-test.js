@@ -696,6 +696,151 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
   check(fillCells.shown===fillCells.want,
         'and the picture shows the new palette immediately ('+fillCells.shown+' = '+fillCells.want+')');
 
+  // ---- color picking on a boss window ----------------------------------
+  const refShape=await ev(c,sessionId,`(()=>{
+      const w=rom.bossGraphics22;
+      return {type:typeof w.attributeRef, val:JSON.stringify(w.attributeRef),
+              cells:typeof w.attributeCells, cellsVal:(w.attributeCells||'').slice(0,12),
+              invert:w.attributeCellsInvert, off:w.attributeCellsOffset};
+  })()`);
+  console.log('  window attributeRef shape:',JSON.stringify(refShape));
+  const pickBoss=await ev(c,sessionId,`(()=>{
+      const w=rom.bossGraphics22;
+      romNavigator.selectObject(w); propertyList.select(w);
+      const v=propertyList.activeEditor, pv=v.paletteView;
+      v.color=-1; pv.p=0;
+      v.updateTilemap();
+      const out={w:w.window, paintable:v.paintableCells(), palLen:pv.palette.length,
+                 cpp:pv.colorsPerPalette, dispW:v.width, dispH:v.height, objW:w.width,
+                 objIsW:v.object===w, objType:v.object&&v.object.constructor.name,
+                 objRef:JSON.stringify(v.object&&v.object.attributeRef),
+                 objCells:v.object&&v.object.attributeCells,
+                 bitsNow:JSON.stringify(v.attributeCellBits()),
+                 cellsObj:!!v.cellsObject};
+      // find a display cell that uses a tile and has a non-zero index
+      let found=null;
+      for(let y=0;y<v.height*8&&!found;y++)
+        for(let x=0;x<v.width*8;x++){
+          const off=v.tileOffset(x,y);
+          if(off<0) continue;
+          if(v.graphics[off]>0){ found={x,y,off,idx:v.graphics[off]}; break; }
+        }
+      out.found=found;
+      if(found){
+        try {
+          const cell=attributeCellForPixel(w,found.x,found.y,v.tileWidth,v.tileHeight);
+          const bits=v.attributeCellBits();
+          out.cell=cell; out.bitsType=typeof bits; out.bitsLen=bits?bits.length:undefined;
+          out.bitAtCell=(bits&&cell>=0)?bits[cell]:undefined;
+        } catch(e) { out.err=String(e); }
+        out.objRef=w.attributeRef&&w.attributeRef.path;
+        const cr=v.canvas.getBoundingClientRect();
+        const mk=t=>new MouseEvent(t,{bubbles:true,cancelable:true,
+                     clientX:cr.left+found.x*v.zoom, clientY:cr.top+found.y*v.zoom,
+                     button:0, buttons:1});
+        v.tool=3;
+        v.canvas.dispatchEvent(mk('mousedown'));
+        v.canvas.dispatchEvent(mk('mouseup'));
+        out.pickedColor=v.color; out.pickedRow=pv.p;
+        out.expect={index:found.idx, row:(out.bitAtCell===undefined?-1:Number(out.bitAtCell)),
+                    color:(out.bitAtCell===undefined?-1:found.idx+Number(out.bitAtCell)*pv.colorsPerPalette)};
+      }
+      return out;
+  })()`);
+  console.log('  pick on boss window:',JSON.stringify(pickBoss));
+  check(pickBoss.found&&pickBoss.pickedColor===pickBoss.expect.color&&pickBoss.pickedRow===pickBoss.expect.row,
+        'color picking a boss window reports the palette that cell uses (got color '+
+        pickBoss.pickedColor+' row '+pickBoss.pickedRow+', want '+JSON.stringify(pickBoss.expect)+')');
+
+  // ---- undo/redo through the UI, on a monster and on a boss window ------
+  const uiUndo=await ev(c,sessionId,`(()=>{
+      const run=(obj, hintX, hintY)=>{
+          romNavigator.selectObject(obj); propertyList.select(obj);
+          const v=propertyList.activeEditor;
+          v.updateTilemap();
+          // find a display pixel that maps to a real tile (background cells
+          // have no tile to paint)
+          let pixelX=hintX, pixelY=hintY, off=v.tileOffset(pixelX,pixelY);
+          if (off < 0) {
+              outer:
+              for(let y=0;y<v.height*v.tileHeight;y++)
+                  for(let x=0;x<v.width*v.tileWidth;x++){
+                      off=v.tileOffset(x,y);
+                      if(off>=0){ pixelX=x; pixelY=y; break outer; }
+                  }
+          }
+          if (off < 0) return {noTile:true};
+          const before=Uint8Array.from(rom.data);
+          const stackBefore=rom.undoStack.length;
+          const cr=v.canvas.getBoundingClientRect();
+          const mk=(t,x,y)=>new MouseEvent(t,{bubbles:true,cancelable:true,
+                        clientX:cr.left+x*v.zoom, clientY:cr.top+y*v.zoom, button:0, buttons:1});
+          v.tool=1; v.color=(v.graphics[off]+1)&3;
+          v.canvas.dispatchEvent(mk('mousedown',pixelX,pixelY));
+          v.canvas.dispatchEvent(mk('mousemove',pixelX+3,pixelY));
+          v.canvas.dispatchEvent(mk('mouseup',pixelX+3,pixelY));
+          const stackAfter=rom.undoStack.length;
+          rom.assemble();
+          let painted=0; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) painted++;
+          // the UI undo button path
+          undo();
+          rom.assemble();
+          let afterUndo=0; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) afterUndo++;
+          redo();
+          rom.assemble();
+          let afterRedo=0; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) afterRedo++;
+          undo(); rom.assemble();
+          return {stackBefore, stackAfter, painted, afterUndo, afterRedo,
+                  canUndo:rom.canUndo(), canRedo:rom.canRedo()};
+      };
+      return {monster: run(rom.monsterGraphics4x4.item(11), 10, 26),
+              boss:    run(rom.bossGraphics8, 8, 8)};
+  })()`);
+  console.log('  ui undo/redo:',JSON.stringify(uiUndo));
+  check(uiUndo.monster.stackAfter>uiUndo.monster.stackBefore&&uiUndo.monster.painted>0,
+        'a monster stroke is recorded as one undo step ('+uiUndo.monster.stackBefore+' -> '+
+        uiUndo.monster.stackAfter+', '+uiUndo.monster.painted+' bytes)');
+  check(uiUndo.monster.afterUndo===0&&uiUndo.monster.afterRedo>0,
+        'undo then redo through the UI works on a monster ('+uiUndo.monster.afterUndo+
+        ' bytes after undo, '+uiUndo.monster.afterRedo+' after redo)');
+  check(uiUndo.boss.stackAfter>uiUndo.boss.stackBefore&&uiUndo.boss.painted>0,
+        'a boss window stroke is recorded ('+uiUndo.boss.stackBefore+' -> '+uiUndo.boss.stackAfter+
+        ', '+uiUndo.boss.painted+' bytes)');
+  check(uiUndo.boss.afterUndo===0&&uiUndo.boss.afterRedo>0,
+        'undo then redo through the UI works on a boss window ('+uiUndo.boss.afterUndo+
+        ' after undo, '+uiUndo.boss.afterRedo+' after redo)');
+
+  // releasing the button OUTSIDE the canvas must still close the stroke, or
+  // there is nothing to undo and later reloads are blocked
+  const outside=await ev(c,sessionId,`(()=>{
+      const obj=rom.monsterGraphics4x4.item(11);
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const v=propertyList.activeEditor;
+      v.updateTilemap();
+      const off=v.tileOffset(10,26);
+      const before=Uint8Array.from(rom.data);
+      const stackBefore=rom.undoStack.length;
+      const cr=v.canvas.getBoundingClientRect();
+      v.tool=1; v.color=(v.graphics[off]+1)&3;
+      v.canvas.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,cancelable:true,
+            clientX:cr.left+10*v.zoom, clientY:cr.top+26*v.zoom, button:0, buttons:1}));
+      // release on the document, not on the canvas
+      document.dispatchEvent(new MouseEvent('mouseup',{bubbles:true,cancelable:true,
+            clientX:cr.left-40, clientY:cr.top-40, button:0, buttons:0}));
+      const closed=(!v.painting)&&(!v.cellPainting)&&(!v.paintStroke)&&(!v.paintStart);
+      const stackAfter=rom.undoStack.length;
+      rom.assemble();
+      let painted=0; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) painted++;
+      undo(); rom.assemble();
+      let afterUndo=0; for(let i=0;i<before.length;i++) if(before[i]!==rom.data[i]) afterUndo++;
+      return {closed, stackBefore, stackAfter, painted, afterUndo};
+  })()`);
+  console.log('  release outside canvas:',JSON.stringify(outside));
+  check(outside.closed,'releasing outside the canvas closes the stroke');
+  check(outside.stackAfter>outside.stackBefore&&outside.painted>0&&outside.afterUndo===0,
+        'and the stroke is still one undoable step ('+outside.painted+' bytes, '+
+        outside.afterUndo+' after undo)');
+
   await c.s('Page.captureScreenshot',{format:'png',quality:90},sessionId).then(r=>fs.writeFileSync('/tmp/ff3j-app.png',Buffer.from(r.data,'base64')));
   console.log('  wrote /tmp/ff3j-app.png');
   if(fails) console.log(`\nFAILED: ${fails} check(s)`);

@@ -69,6 +69,16 @@ class ROMTilemapView extends ROMEditor {
             }
         };
 
+        // Releasing the button outside the canvas must still close the stroke:
+        // an unclosed action group leaves nothing to undo.
+        document.addEventListener('mouseup', function(e) {
+            if (e.button === 0 && self.isDragging && self.paintCells) {
+                self.rom.endAction();
+                self.isDragging = false;
+                self.clickPoint = null;
+            }
+        });
+
         this.observer = new ROMObserver(rom, this);
     }
 

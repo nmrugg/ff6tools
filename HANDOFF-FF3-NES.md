@@ -221,6 +221,16 @@ The convenient way to change which palette a part of a sprite uses:
   a boss writes a 0), plus `attributeCellForTile()` for the cell index.
 - `attributeRef` covers both table shapes: one byte per item (monsters) or one
   whole 7-byte record per item (bosses); the first item's `data.length` decides.
+- **The rule now: the palette row you paint with is applied to the 2x2 cell you
+  touch, live, as part of the same gesture.** Pencil paints a pixel *and* moves
+  its cell onto the selected row; Fill does it for every cell the region
+  covers; the Color picker selects the row that cell actually uses (so the
+  panel follows the part of the sprite you clicked). The *Palette cells* tool
+  (key `C`) stays, for re-palettizing a cell without touching any pixel. Boss
+  and summon **graphics windows** get all of it, because a window carries the
+  same `attributeRef` as its tilemap.
+- A stroke is **one** undo step (`beginAction`/`endAction` around pixels and
+  cell writes), and undo/redo revert both the bytes and the picture.
 - **There is deliberately no "Swap palette cells" toggle.** The inversion is a
   ROM fact and is always applied; the equivalent choice (which of the two
   palettes counts as "first") is offered as an extra entry in the *palette*
@@ -230,6 +240,14 @@ The convenient way to change which palette a part of a sprite uses:
   selecting row 2 shifted the whole image - wrong once per-cell bits drive the
   palette. The base is 0 whenever the object has cell bits; the row only says
   what painting will write.
+- Mechanics that bit us, all now asserted in `tools/ff3-nes-app-test.js`:
+  the palette choice is baked into `this.tilemap` by `updateTilemap()`, so a
+  cell write must go through `refreshPaletteCells()` (otherwise the change is
+  in the file but invisible until some other reload - it looked like it only
+  applied on mouse-up); cells are addressed in **tiles**, so pixel callers use
+  `attributeCellForPixel()`; and `paintPixel`/`floodFill` must not early-return
+  when the pixel already holds the paint index (the DiveEagle case: paint the
+  4th color of row 2 over pixels that already hold index 3).
 
 ### B2b. The boss pool panel follows the layout
 
@@ -401,6 +419,34 @@ once; rips are cached in `/tmp/ff3-rips`).
     `this.redraw();\n    }` appears in several methods - a `fs_replace` on that
     pattern hits them all. Factor shared logic into a named method
     (`syncPoolLayout`) and call it from one place.
+22. **Cell coordinates are in TILES, pixels are not.** `attributeCellForTile()`
+    takes tile coordinates (a cell is 2x2 tiles) and is used by the tilemap
+    view's selection; the graphics view works in pixels. Passing pixels gave a
+    cell index past the end of the record, so `setAttributeBit` silently
+    returned false and nothing about the palette tools appeared to work.
+    `attributeCellForPixel()` does the conversion.
+23. **Writing an attribute byte does not repaint anything.** Which palette each
+    tile is drawn with is baked into `this.tilemap` by `updateTilemap()`, so
+    after `setAttributeBit` you must call `refreshPaletteCells()`
+    (`_cellsFor = null; updateTilemap(); redraw()`, plus the tilemap view's
+    `applyPaletteCells()`). Without it the change is in the file but invisible
+    until some other reload happens - which is exactly why it looked like it
+    only applied on mouse-up.
+24. **Do not early-return from `paintPixel`/`floodFill` when the pixel already
+    holds the paint index.** For an object with a per-cell palette table the
+    cell still has to move onto the selected palette row; `floodFill`'s
+    `if (target === this.color) return;` was silently killing whole fills.
+25. **A second assignment block in the same constructor can undo the first.**
+    `ROMGraphics` had the `attributeCells/attributeRef/...` block twice; the
+    later one re-assigned `attributeCells` from `definition` (undefined), which
+    made `attributeCellBits()` return null and color-picking a boss window read
+    index 0 - it looked like it was "picking transparency".
+26. **`paletteView.definition` is part of the contract** (tests read it and call
+    `rom.parsePath` on it) - keep it a plain string path, not `{path}`.
+27. **A summon tilemap with a graphics `range` needs `"tileOffset": 0`.** The
+    range already starts at the summon's block; adding the `summonProperties`
+    graphics index on top pushes every cell past the slice and the center panel
+    goes black.
 
 ---
 

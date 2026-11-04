@@ -820,6 +820,13 @@ function ROMGraphics(rom, definition, parent) {
     this.backColor = (definition.backColor === true); // no transparent color
     this.spriteSheet = definition.spriteSheet;
 
+    // per-2x2-cell palette selection (FF3 NES monster attribute data)
+    this.attributeCells = definition.attributeCells;
+    this.attributeRef = definition.attributeRef;
+    this.attributeCellsOffset = definition.attributeCellsOffset;
+    this.attributeCellsInvert = definition.attributeCellsInvert;
+    applyAttributeRef(this, definition.attributeRef);
+
     // A *window* shows (and edits) a slice of another assembly's bytes without
     // owning them. FF3 NES bosses and summons are assembled from a shared tile
     // pool, and exactly one assembly may own a byte (two assemblies over the
@@ -831,12 +838,6 @@ function ROMGraphics(rom, definition, parent) {
     this.window = definition.window;
     // show the window's tiles in the order this tilemap places them
     this.layoutFrom = definition.layoutFrom;
-
-    // per-2x2-cell palette selection (FF3 NES monster attribute data)
-    this.attributeCells = definition.attributeCells;
-    this.attributeRef = definition.attributeRef;
-    this.attributeCellsOffset = definition.attributeCellsOffset;
-    this.attributeCellsInvert = definition.attributeCellsInvert;
 }
 
 ROMGraphics.prototype = Object.create(ROMAssembly.prototype);
