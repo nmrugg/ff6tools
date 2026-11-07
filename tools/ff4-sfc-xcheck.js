@@ -169,8 +169,11 @@ for(const key of winKeys){
     const bpx=BOSST+bi*5;
     const si=data[bpx+1]&0x3F;
     const tw=data[SIZES+si*2], th=data[SIZES+si*2+1];
-    check(win.width===tw&&win.height===th,`${key}: size ${win.width}x${win.height} != ${tw}x${th}`);
-    check(win.layout.length===tw*th,`${key}: layout length ${win.layout.length} != ${tw*th}`);
+    // a generator override (Mom Bomb) replaces the US crop with the full
+    // JP arrangement - only cross-check grids that match the ROM map size
+    if(win.layout.length===tw*th){
+      check(win.width===tw&&win.height===th,`${key}: size ${win.width}x${win.height} != ${tw}x${th}`);
+    }
     for(const t of win.layout)
       if(t>=poolTiles){ check(false,`${key}: layout tile ${t} outside pool (${poolTiles})`); break; }
   }

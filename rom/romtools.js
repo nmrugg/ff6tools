@@ -839,10 +839,13 @@ function ROMGraphics(rom, definition, parent) {
     // show the window's tiles in the order this tilemap places them
     this.layoutFrom = definition.layoutFrom;
     // ... or in the order given directly: a static cell -> pool tile map
-    // (FF4 SNES bosses: the generator walks the boss tile map stream -
-    // tile index per cell, 0xFF/0xFE n = empty - and stores the result,
-    // so the window shows the assembled creature instead of loose tiles)
+    // (FF4 SNES bosses and summons: the generator walked the boss tile map
+    // stream - tile index per cell, 0xFF/0xFE n = empty - and stored the
+    // result, so the window shows the assembled creature instead of loose
+    // tiles). layoutFlip optionally mirrors individual cells (1 = h-flip,
+    // 2 = v-flip, 3 = both), e.g. from the puzzle tool's placements.
     this.layout = definition.layout;
+    this.layoutFlip = definition.layoutFlip;
 }
 
 ROMGraphics.prototype = Object.create(ROMAssembly.prototype);
@@ -994,6 +997,7 @@ Object.defineProperty(ROMGraphics.prototype, "definition", { get: function() {
     if (this.window) definition.window = this.window;
     if (this.layoutFrom) definition.layoutFrom = this.layoutFrom;
     if (this.layout) definition.layout = this.layout;
+    if (this.layoutFlip) definition.layoutFlip = this.layoutFlip;
     if (this.attributeCells) definition.attributeCells = this.attributeCells;
     if (this.attributeRef) definition.attributeRef = this.attributeRef;
     if (isNumber(this.attributeCellsOffset)) definition.attributeCellsOffset = this.attributeCellsOffset;

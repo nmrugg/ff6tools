@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>FF4 tile puzzle - arrange summon/boss sprites</title>
+<style>
+ body { font-family: sans-serif; background: #25272b; color: #ddd; margin: 1em; }
+ h1 { font-size: 1.1em; }
+ #left { display: inline-block; vertical-align: top; margin-right: 1.5em; }
+ #right { display: inline-block; vertical-align: top; }
+ canvas { image-rendering: pixelated; background: #181a1d; border: 1px solid #555; }
+ .sel { outline: 3px solid #4da3ff; }
+ select, button { font-size: 1em; margin: .25em .25em .25em 0; padding: .3em .7em; }
+ #status { margin-top: .5em; color: #9ab; }
+ .hint { color: #999; font-size: .85em; }
+</style>
+</head>
+<body>
+<h1>FF4 (U) tile puzzle <span class="hint">- drag the creature together, then Save</span></h1>
+<div>
+ <select id="entries"></select>
+ <button id="save">Save placement</button>
+ <button id="clear">Clear grid</button>
+ <label>grid <input id="cols" type="number" min="1" max="24" size="2"> x <input id="rows" type="number" min="1" max="24" size="2"></label>
+ <span class="hint">click tile then click cell to place; click a placed cell to pick that tile up; right-click a cell flips it; shift-click a cell erases</span>
+</div>
+<div id="left"><canvas id="tray"></canvas></div>
+<div id="right"><canvas id="grid"></canvas><div id="status"></div></div>
+<script>
+let E=null, pal=[], tiles=[], sel=-1, cols=0, rows=0, layout=[], flips=[];
+const S=8, ZT=4; // source px, tray zoom
+const tray=document.getElementById('tray'), grid=document.getElementById('grid');
+
+function color(c){ return 'rgb('+(c[0]*8)+','+(c[1]*8)+','+(c[2]*8)+')'; }
+
+function drawTile(ctx,t,x0,y0,z,flip){
+  for(let y=0;y<8;y++)for(let x=0;x<8;x++){
+    let sy=y,sx=x;
+    if(flip&1)sx=7-x; if(flip&2)sy=7-y;
+    const v=t[sy][sx]; if(!v)continue;
+    ctx.fillStyle=color(pal[v]);
+    ctx.fillRect(x0+x*z,y0+y*z,z,z);
+  }
+}
+function drawTray(){
+  const per=Math.max(1,Math.min(16,Math.ceil(Math.sqrt(tiles.length))));
+  tray.width=per*8*ZT; tray.height=Math.ceil(tiles.length/per)*8*ZT;
+  const ctx=tray.getContext('2d');
+  ctx.clearRect(0,0,tray.width,tray.height);
+  tiles.forEach((t,i)=>{
+    const r=Math.floor(i/per),c=i%per;
+    drawTile(ctx,t,c*8*ZT,r*8*ZT,ZT,0);
+    if(i===sel){ctx.strokeStyle='#4da3ff';ctx.lineWidth=2;ctx.strokeRect(c*8*ZT+1,r*8*ZT+1,8*ZT-2,8*ZT-2);}
+    ctx.fillStyle='#888';ctx.font='9px sans-serif';
+    ctx.fillText(i,c*8*ZT+2,r*8*ZT+9);
+  });
+}
+function drawGrid(){
+  grid.width=cols*8*ZT; grid.height=rows*8*ZT;
+  const ctx=grid.getContext('2d');
+  ctx.fillStyle='#101215';ctx.fillRect(0,0,grid.width,grid.height);
+  for(let i=0;i<layout.length;i++){
+    if(layout[i]<0)continue;
+    const r=Math.floor(i/cols),c=i%cols;
+    drawTile(ctx,tiles[layout[i]],c*8*ZT,r*8*ZT,ZT,flips[i]|0);
+  }
+  ctx.strokeStyle='#333';
+  for(let c=0;c<=cols;c++){ctx.beginPath();ctx.moveTo(c*8*ZT,0);ctx.lineTo(c*8*ZT,grid.height);ctx.stroke();}
+  for(let r=0;r<=rows;r++){ctx.beginPath();ctx.moveTo(0,r*8*ZT);ctx.lineTo(grid.width,r*8*ZT);ctx.stroke();}
+}
+function trayIndex(ev){
+  const r=tray.getBoundingClientRect();
+  const per=Math.max(1,Math.min(16,Math.ceil(Math.sqrt(tiles.length))));
+  const x=Math.floor((ev.clientX-r.left)/ZT/8), y=Math.floor((ev.clientY-r.top)/ZT/8);
+  const i=y*per+x; return (i>=0&&i<tiles.length)?i:-1;
+}
+function gridCell(ev){
+  const r=grid.getBoundingClientRect();
+  const x=Math.floor((ev.clientX-r.left)/ZT/8), y=Math.floor((ev.clientY-r.top)/ZT/8);
+  if(x<0||y<0||x>=cols||y>=rows)return -1;
+  return y*cols+x;
+}
+tray.addEventListener('click',e=>{const i=trayIndex(e);if(i>=0){sel=i;drawTray();}});
+grid.addEventListener('click',e=>{
+  const c=gridCell(e);if(c<0)return;
+  if(e.shiftKey){layout[c]=-1;flips[c]=0;}
+  else if(sel>=0){layout[c]=sel;flips[c]=0;}
+  else if(layout[c]>=0){sel=layout[c];layout[c]=-1;flips[c]=0;}
+  drawTray();drawGrid();
+});
+grid.addEventListener('contextmenu',e=>{
+  e.preventDefault();
+  const c=gridCell(e);if(c<0||layout[c]<0)return;
+  flips[c]=((flips[c]|0)+1)&3;drawGrid();
+});
+async function load(key){
+  E=await (await fetch('/api/entry/'+key)).json();
+  pal=E.palette;tiles=E.tiles;cols=E.cols;rows=E.rows;
+  layout=E.layout.slice();flips=(E.layoutFlip||[]).slice();
+  while(layout.length<cols*rows)layout.push(-1);
+  while(flips.length<cols*rows)flips.push(0);
+  sel=-1;
+  document.getElementById('cols').value=cols;
+  document.getElementById('rows').value=rows;
+  drawTray();drawGrid();
+  status('loaded '+E.name+' - '+tiles.length+' tiles');
+}
+function status(t){document.getElementById('status').textContent=t;}
+document.getElementById('entries').addEventListener('change',e=>load(e.target.value));
+document.getElementById('clear').onclick=()=>{layout=layout.map(()=>-1);flips=flips.map(()=>0);drawGrid();};
+document.getElementById('cols').onchange=resize;
+document.getElementById('rows').onchange=resize;
+function resize(){
+  const nc=Math.max(1,+document.getElementById('cols').value||cols);
+  const nr=Math.max(1,+document.getElementById('rows').value||rows);
+  const nl=new Array(nc*nr).fill(-1), nf=new Array(nc*nr).fill(0);
+  for(let r=0;r<Math.min(rows,nr);r++)for(let c=0;c<Math.min(cols,nc);c++)
+    {nl[r*nc+c]=layout[r*cols+c]??-1;nf[r*nc+c]=flips[r*cols+c]??0;}
+  cols=nc;rows=nr;layout=nl;flips=nf;drawGrid();
+}
+document.getElementById('save').onclick=async()=>{
+  const placement=[];
+  layout.forEach((t,i)=>{if(t>=0)placement.push({cell:i,tile:t,flip:flips[i]|0});});
+  const r=await (await fetch('/api/placement',{method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({key:E.key,cols,rows,placement})})).json();
+  status('saved -> '+r.saved+'  (now rerun tools/ff4-sfc-names.py)');
+};
+(async()=>{
+  const es=await (await fetch('/api/entries')).json();
+  const selEl=document.getElementById('entries');
+  es.forEach(e=>{const o=document.createElement('option');o.value=e.key;o.textContent=e.name;selEl.appendChild(o);});
+  if(es.length)await load(es[0].key);
+})();
+</script>
+</body>
+</html>

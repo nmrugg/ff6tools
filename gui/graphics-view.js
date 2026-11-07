@@ -867,11 +867,14 @@ const self = this;
         // display cells onto arbitrary tiles of the pool
         const idx = (this.poolLayout && t < this.poolLayout.length) ? this.poolLayout[t] : t;
         if (idx < 0) return -1;
-        // and a tile shown flipped (the game's horizontal flip table, 3F/F94F)
+        // and a tile shown flipped (the game's horizontal flip table, 3F/F94F/3F/F970)
         // has to be painted mirrored, or the pencil draws the wrong side of it
         let px = x % tw;
-        if (this.poolFlip && this.poolFlip[t]) px = tw - 1 - px;
-        const off = idx * this.bytesPerTile + (y % th) * tw + px;
+        let py = y % th;
+        const fl = this.poolFlip ? (this.poolFlip[t]|0) : 0;
+        if (fl & 1) px = tw - 1 - px;
+        if (fl & 2) py = th - 1 - py;
+        const off = idx * this.bytesPerTile + py * tw + px;
         if (off >= this.graphics.length) return -1;
         return off;
     }
@@ -1154,7 +1157,8 @@ const self = this;
                 for (let t = 0; t < this.tilemap.length; t++) {
                     const idx = this.poolLayout[t];
                     if (idx < 0) continue;
-                    const flip = (this.poolFlip && this.poolFlip[t]) ? 0x10000000 : 0;
+                    const fl = this.poolFlip ? (this.poolFlip[t]|0) : 0;
+                    const flip = (fl & 1 ? 0x10000000 : 0) | (fl & 2 ? 0x20000000 : 0);
                     this.tilemap[t] = idx | flip |
                                       ((p >> 16 | this.paletteBitsForTile(t)) << 16);
                 }
@@ -1191,7 +1195,8 @@ const self = this;
                 if (this.poolLayout && t < this.poolLayout.length) {
                     const idx = this.poolLayout[t];
                     if (idx < 0) continue;
-                    const flip = (this.poolFlip && this.poolFlip[t]) ? 0x10000000 : 0;
+                    const fl = this.poolFlip ? (this.poolFlip[t]|0) : 0;
+                    const flip = (fl & 1 ? 0x10000000 : 0) | (fl & 2 ? 0x20000000 : 0);
                     this.tilemap[t] = idx | flip |
                                       ((p >> 16 | this.paletteBitsForTile(t)) << 16);
                     continue;
@@ -1562,11 +1567,15 @@ const self = this;
         // a window onto a shared pool: show the creature, not the sheet
         this.poolLayout = null;
         this.poolFlip = null;
-        if (object.window && object.layout) {
-            // static cell -> pool tile layout (FF4 SNES bosses): the generator
-            // walked the boss tile map, so the window reads as the creature
+        if (object.layout) {
+            // static cell -> tile layout (FF4 SNES bosses and summons): the
+            // generator walked the game's own map/frame data (or the puzzle
+            // tool's placements), so the object reads as the creature
+            // instead of a sheet of loose tiles
             this.poolLayout = Int32Array.from(object.layout);
-            this.poolFlip = new Int32Array(object.layout.length);
+            this.poolFlip = object.layoutFlip ?
+                Int32Array.from(object.layoutFlip) :
+                new Int32Array(object.layout.length);
             if (object.width) this.width = object.width;
             if (object.height) this.height = object.height;
         }

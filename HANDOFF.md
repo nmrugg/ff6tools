@@ -552,6 +552,10 @@ renders the same regions straight from the ROM for comparison:
 
 ## 6. FF IV (U) SNES ("Final Fantasy II (USA)") — monster / boss / summon graphics — DONE
 
+→ **Superseded for FF4 by `HANDOFF-FF4-SFC.md`** (current state: puzzle
+tool for manual tile arranging, independent summon windows, Mom Bomb
+reuse layout, remaining roadmap). Kept below as history of round 1.
+
 `ff4/ff2u-sfc.json` (crc32 0x65D0A825). The definition used to model monster
 graphics as one opaque 111 KiB blob (`monsterGraphics 0x098000-0x0CB2F8`), not
 even in the navigator tree. It is now 90 individually editable graphics
@@ -656,7 +660,13 @@ Two more fixes this round:
   yet - windows disassembled before the array is touched came up blank.
 - characterGraphics / portraitGraphics now have `itemPalettes` pins
   (`characterPalette[i]`, `portraitPalette[i]`): selecting character #5
-  or portrait #7 used to leave the panel on palette 0.
+  or portrait #7 used to leave the panel on palette 0. Pig/Small/Toad have
+  no palette of their own (they reuse the affected character's at runtime),
+  so their pins list every palette by name - "Kain palette (reused)",
+  "Rosa palette (reused)", ... - instead of one vague array choice.
+- `ROMGraphicsView` honours a static `object.layout` for ordinary graphics
+  objects too (not just windows) - that is how the dedicated summon
+  assemblies render as creatures.
 
 **Round 2 (user feedback - what was still wrong and what fixed it):**
 
@@ -675,22 +685,35 @@ Two more fixes this round:
   the `*` label prefix is gone.
 - **Mom Bomb**: the US properties entry (bossProps 36, 4x4 grid, sequential
   map) places only the top-left 16 tiles of her LINEAR 60-tile sheet - a US
-  version quirk, and why her assembled view looked cropped. The generator's
-  `SHEET_BOSSES` override shows the full 10x6 sheet (matches the zip).
+  version quirk, and why her assembled view looked cropped. The full
+  10x9 arrangement is baked in `SHEET_BOSSES` as a layout; it was
+  reconstructed from ff4monsters.zip by tile assignment (exact mask IoU
+  candidates + a color correspondence learned iteratively from the image:
+  60/60 tiles, 59/60 cells at full color score, visually exact). No ROM map
+  contains it - it is the JP arrangement. Her palette's color 0 is gray
+  (#606060), so the padding inside her silhouette renders gray - that is
+  what the game draws, the zip just shows transparency there.
   **Dummy** (record 214, placeholder using Wyvern's properties over the
   Zeromus pool) is skipped via `SKIP_BOSSES`.
 - **Summons section**: `LoadSummonGfx` (btlgfx/magic.asm @ea82) loads 128
   3bpp tiles from `SummonGfxPtrs[attack-$4d]` (0x0d87f0, 17 entries) with
-  `SummonPalTbl` colors (0x0dfe4c). Blocks 0-3 and 8-16 coincide exactly
-  with monster items (Imp, Bomb, Cockatrice, Mindflayer, Titan, Mist Dragon,
-  Sylph*, Odin, Leviathan, Asura, Bahamut) - the Summons tree entry points
-  at the item directly. Blocks 4-7 (0x0d90b8/0x0d92f8/0x0d9760/0x0d9c40)
-  are Chocobo, Shiva, Ramuh, Ifrit - summon-only art in what was unowned
-  gap space, now dedicated `summonGraphics_*` owning assemblies. Sylph's
-  12-tile block sits inside the D'Mist item, so that item is capped at
-  0x0dea0 and Sylph got her own assembly. (Attack names $4d-$5d - Globe,
-  Fire, Blaze, Thunder... - are the summon *effect* attacks, not the
-  summon's identity; match blocks to Espers by their monster art instead.)
+  `SummonPalTbl` colors (0x0dfe4c); blocks 0-3 and 8-16 coincide exactly
+  with monster items. Entries for the six Espers that are bosses (Titan,
+  Dragon Mist, Odin, Leviathan, Asura, Bahamut) point at their assembled
+  `bossGraphics_*` windows. The four monster-art ones (Imp, Bomb,
+  Cockatrice, Mindflayer) point at their monster items. The five
+  summon-only blocks (Chocobo 0x0d90b8, Shiva 0x0d92f8, Ramuh 0x0d9760,
+  Ifrit 0x0d9c40, Sylph 0x0d0ea0 - Sylph sits inside the old D'Mist item,
+  so that item is capped and she owns her block) are dedicated owning
+  assemblies arranged by the game's own animation data:
+  `SummonTilemapPtrs` (0x0df260) map block tile k -> OBJ VRAM slot,
+  `SummonFramePtrs` (0x0df660) stages list the slot at each grid cell
+  (16x16 OBJ sprites = VRAM slots e..e+3), grid size from
+  `SummonSpritePosTbl`; pick the stage covering the most tiles. The
+  pointer tables are relative to `0x0d0000` (bank byte), not the label.
+  (Attack names $4d-$5d - Globe, Fire, Blaze, Thunder... - are the summon
+  *effect* attacks, not the summon's identity; match blocks to Espers by
+  their monster art or the SummonPalTbl byte instead.)
 - **portraitPalette was 2 entries short** (rom map: "portrait palettes
   (16 * 16 bytes)" 0x0d86d0-0x0d87d0). Extended. Entries 14/15 are empty
   black - Pig/Small/Toad reuse the affected character's palette at runtime,

@@ -200,11 +200,14 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
       const view=propertyList.activeEditor;
       const p16=rom.portraitGraphics.item(16);
       return {pigPal:view.paletteView.palette.length,
-              pigChoices:JSON.stringify(obj.palette).includes('characterPalette'),
-              toadPin:JSON.stringify(p16.palette).includes('portraitPalette')};
+              pigNamed:Array.isArray(obj.palette)&&
+                       obj.palette.some(d=>/Kain palette \\(reused\\)/.test((d&&d.name)||''))&&
+                       obj.palette.some(d=>/Rosa palette \\(reused\\)/.test((d&&d.name)||'')),
+              toadPin:Array.isArray(p16.palette)&&
+                       p16.palette.some(d=>/palom palette \\(reused\\)/i.test((d&&d.name)||''))};
   })()`);
   console.log('  pig/toad palettes:',JSON.stringify(pig));
-  check(pig.pigPal===16&&pig.pigChoices,'Pig character graphics offers the character palettes (reused, not missing)');
+  check(pig.pigPal===16&&pig.pigNamed,'Pig character graphics list every character palette by name ("Kain palette (reused)" etc.)');
   check(pig.toadPin,'Toad portrait offers the portrait palettes');
 
   // Summons section: Chocobo/Shiva/Ramuh/Ifrit/Sylph must exist and be paintable
@@ -220,19 +223,40 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
       view.color=2;
       view.paintPixel(1,1);
       view.commitPaint();
-      const landed=choco.data[8+1];
+      rom.assemble();
+      let painted=0;
+      for(let i=0;i<orig.length;i++) if(rom.data[i]!==orig[i]) painted++;
       while(rom.undoStack.length) rom.undo();
       rom.assemble();
       let diffs=0;
       for(let i=0;i<orig.length;i++) if(rom.data[i]!==orig[i]) diffs++;
       return {count:names.length,
               has:['Chocobo','Shiva','Ramuh','Ifrit','Sylph'].every(n=>names.some(x=>x.includes(n))),
-              landed, diffs, pal:view.paletteView.palette.length};
+              painted, diffs, pal:view.paletteView.palette.length,
+              assembled:!!(choco.layout&&choco.width)};
   })()`);
   console.log('  summons:',JSON.stringify(sum));
   check(!sum.err&&sum.count===15&&sum.has,'Summons section lists 15 summons incl Chocobo/Shiva/Ramuh/Ifrit/Sylph');
-  check(sum.landed===2,'Chocobo summon graphics paint with the pencil');
+  check(sum.assembled,'Chocobo summon graphics are arranged by the game frame data (not a tile sheet)');
+  check(sum.painted>0,'Chocobo summon graphics paint with the pencil');
   check(sum.diffs===0,'undo of the Chocobo paint is byte-exact');
+
+  // every Summons row is its own object (no two tree rows share a path,
+  // which made the navigator highlight the wrong row)
+  const indep=await ev(c,sessionId,`(()=>{
+      const sec=(rom.hierarchy||[]).find(s=>s.name==='Summons');
+      const paths=sec.list.map(i=>i.path);
+      const uniq=new Set(paths).size===paths.length;
+      const allSummon=paths.every(p=>p.startsWith('summonGraphics_'));
+      const titan=rom.parsePath('summonGraphics_Titan');
+      const boss=rom.parsePath('bossGraphics_2');
+      return {uniq, allSummon,
+              titanOk:!!(titan&&titan.window&&titan.layout&&titan.layout.length===boss.layout.length),
+              distinct:titan!==boss};
+  })()`);
+  console.log('  summon independence:',JSON.stringify(indep));
+  check(indep.uniq&&indep.allSummon,'every Summons row is a distinct summonGraphics_* object (no shared tree rows)');
+  check(indep.titanOk&&indep.distinct,'Titan summon is its own window reusing the assembled boss layout');
 
   // boss pools are hidden from the Monster Graphics tree; the assembled
   // Mom Bomb shows her full 60-tile sheet

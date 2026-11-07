@@ -4,6 +4,21 @@
 
 recently added
 --------------
+ * ff4 snes (u): tile puzzle tool - tools/ff4-sfc-puzzle/puzzle_server.py
+   (pattern: MysticForge battle-sprites puzzle_server) serves a drag tiles
+   onto a grid page for the five summon-only blocks (Chocobo, Shiva, Ramuh,
+   Ifrit, Sylph) and Mom Bomb; saved placements in
+   tools/ff4-sfc-puzzle/placements/<key>.json override the generated
+   layouts on the next ff4-sfc-names.py run (flip bits supported)
+ * ff4 snes (u): Mom Bomb center fixed - the reconstruction allows tile
+   reuse (her solid body tile repeats); the gray patches are real, her
+   palette's color 0 is gray
+ * ff4 snes (u): every Summons row is now its own summonGraphics_* object
+   (six reuse the assembled boss layouts as windows, four window over their
+   monster items) - two tree rows on one object made the navigator
+   highlight the wrong row; ROMGraphics layoutFlip + v-flip painting
+ * ff4 snes (u): Pig/Small/Toad palette choices are named per character
+   ("Kain palette (reused)" etc.)
  * ff4 snes (u): Summons section - 15 entries; Chocobo, Shiva, Ramuh, Ifrit
    and Sylph get dedicated owning graphics assemblies (their art sits in
    bank 0d gap space, mapped by the game's own SummonGfxPtrs/SummonPalTbl);
@@ -367,6 +382,10 @@ game specific
  * ff4 advance japanese version
  * ff4-sfc (j): same graphics model as (u) - needs a J ROM to validate; the
    battle code still falls back to the old blob arithmetic for it
+ * ff4-sfc: PENDING - Chocobo / Shiva / Ramuh / Ifrit / Sylph default
+   layouts are partial animation frames (the ROM has no complete static
+   arrangement for them); waiting on the user's puzzle-tool placements,
+   then regenerate the definition
  * ff4-sfc: boss placement is editable only as raw data (monsterBossMap);
    the assembled bossGraphics windows show and paint the tiles, but moving
    tiles between cells (editing the map itself) has no tilemap view yet
