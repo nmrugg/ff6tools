@@ -194,6 +194,35 @@ recently added
  * ff3 nes: the app test now compares all 24 boss + 8 summon graphics windows
    byte-for-byte against the pool bytes the tilemap path reads, and fails any
    that are all black
+ * ff3 nes: PALETTE PAINTING, the final shape - the palette row you have
+   selected is applied to the 2x2 cell you touch, live, as part of the same
+   pencil or fill gesture; the "Palette cells" tool does it without touching a
+   pixel; the color picker selects the row the clicked cell uses
+ * ff3 nes: fixed "pencil only updates on mouse-up" - writing an attribute byte
+   does not repaint anything, because the palette per tile is baked into
+   this.tilemap by updateTilemap(); added refreshPaletteCells()
+ * ff3 nes: fixed "nothing happens when I paint a pixel that already has that
+   index" - paintPixel and floodFill used to early-return when the index was
+   unchanged, but the cell still had to move palette rows
+ * ff3 nes: fixed cell addressing - attributeCellForTile() takes TILE
+   coordinates and the graphics view has pixels, so writes landed past the end
+   of the record and silently did nothing; added attributeCellForPixel()
+ * ff3 nes: fixed color picking on boss windows "picking transparency" -
+   ROMGraphics had the attributeRef block twice in its constructor and the
+   second copy overwrote attributeCells with undefined; also pickColor was
+   folding the palette row into the color index, putting it out of range
+ * ff3 nes: fixed undo/redo looking dead - a stroke released outside the canvas
+   left the action group unclosed and `painting` stuck true, which blocked
+   every reload; finishStroke() now runs from the canvas mouseup and a
+   document-level safety net (same for the tilemap's palette-cell strokes)
+ * ff3 nes: the eyedropper cursor now tints with the selected palette row
+ * ff3 nes: summon tilemaps render correctly again - a graphics "range" already
+   starts at the summon's block, so the definition's tileOffset must be 0
+ * ff3 nes: importing into a boss/summon window maps through the tile layout
+   instead of copying linearly (a linear copy garbled the image)
+ * ff3 nes: the browser tests now run in a fresh Chrome profile
+   (--user-data-dir + --disk-cache-size=1) so a cached JS/JSON can never make a
+   test lie about the current code
  * byte-exact undo: re-encoding is skipped when decoded data matches what was
    loaded, and unchanged-size assemblies are no longer relocated
  * navigator: Up/Down move the selection and expand the next section; fixed

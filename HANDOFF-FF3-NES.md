@@ -230,7 +230,17 @@ The convenient way to change which palette a part of a sprite uses:
   and summon **graphics windows** get all of it, because a window carries the
   same `attributeRef` as its tilemap.
 - A stroke is **one** undo step (`beginAction`/`endAction` around pixels and
-  cell writes), and undo/redo revert both the bytes and the picture.
+  cell writes), and undo/redo revert both the bytes and the picture. It must be
+  closed even when the button is released **outside** the canvas -
+  `finishStroke()` is called from the canvas mouseup *and* a document-level
+  mouseup safety net, because an unclosed group leaves nothing on the undo
+  stack and a stuck `painting` flag makes the reload guard skip every refresh
+  (undo then looks dead).
+- The picker keeps the two concepts separate: `this.color` is the raw NES index
+  in the buffer (0..colorsPerPalette-1) and `paletteView.p` is the palette row.
+  Folding the row into the index puts the color out of range and the eyedropper
+  renders as transparent. The cursor tint reads
+  `palette[p * colorsPerPalette + index]` so it matches what painting produces.
 - **There is deliberately no "Swap palette cells" toggle.** The inversion is a
   ROM fact and is always applied; the equivalent choice (which of the two
   palettes counts as "first") is offered as an extra entry in the *palette*
@@ -328,9 +338,16 @@ once; rips are cached in `/tmp/ff3-rips`).
 - The two summon-backed bosses are displayed the way the game draws them
   (`mirrorX` = per-tile pixel flip), but painting their window edits tiles the
   summons use too - the pool is shared, by design.
-- Summon sprite palettes: summons use 3 sprite palettes
-  (`battlePalettes[byte1 .. byte1+2]`); bosses use 2 BG palettes. Verified for
-  bosses against rips, not for summons.
+- Summon sprite palettes are **known-wrong and deliberately parked** (user's
+  call). What the ROM does: `32/8D32` takes the starting palette id from
+  `summonProperties` byte `1 + summonAttackId` (so each attack has its own
+  triple), `32/8D3A/45/50` load three **consecutive** battle palettes into
+  sprite palettes 0-2 (`$3F10/$3F14/$3F18`), and `32/8CBA` then *cycles* four
+  sprite palettes during the animation (`32/8CDA` shifts each palette's colors,
+  16 steps), with `32/8CA7` fading them. So a still image of a summon in game is
+  an animated derivative of the stored palettes, not the stored palettes - which
+  is most likely why they "don't look close". The generator offers all three
+  attack triples in the dropdown; nobody has verified them against rips.
 - `2F/A820` loads the boss attribute record from monster **slot 0** only
   (`LDA $7D74`, unindexed) - fine, since a type-9 formation has one monster.
 - `ff3-map.js changeLayer('showRooms')` is guarded: FF3 has no `mapPalette`
@@ -447,6 +464,18 @@ once; rips are cached in `/tmp/ff3-rips`).
     range already starts at the summon's block; adding the `summonProperties`
     graphics index on top pushes every cell past the slice and the center panel
     goes black.
+28. **Never fold the palette row into the paint color.** The graphics buffer
+    holds the raw NES index (0..colorsPerPalette-1); the row is `paletteView.p`.
+    `pickColor` used to do `c += row * colorsPerPalette`, which put `color` out
+    of range - the eyedropper cursor and the swatch then rendered as
+    transparent/black. `setColor()` documents the same rule.
+29. **A stroke released outside the canvas stays open** unless something closes
+    it: the canvas' `onmouseup` never fires, so the `beginAction()` group is
+    never pushed to the undo stack (nothing to undo) and `painting` stays true,
+    which makes the reload guard skip every later refresh - undo then *looks*
+    dead even when it works. `ROMGraphicsView.finishStroke()` is called from
+    both the canvas mouseup and a document-level mouseup safety net; the
+    tilemap view has the same net for its palette-cell strokes.
 
 ---
 
