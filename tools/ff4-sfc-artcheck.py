@@ -130,6 +130,94 @@ def main():
                 snes = (v & 0x1f, (v >> 5) & 0x1f, (v >> 10) & 0x1f)
                 print(f'    {c} -> {ti}  (ROM rgb555 {snes})')
 
+    # ---- Odin: the three ripped frames against the baked summon layout ----
+    # (the ROM's animation stages draw 9 of his 100 tiles, so his layout in
+    # tools/ff4-sfc-names.py is reconstructed from these rips - they are the
+    # SNES art at 2x zoom)
+    gifs = [os.path.join(os.path.dirname(args.zip), f'Odin{n}.gif') for n in (1, 2, 3)]
+    entry = asm.get('summonGraphics_Odin')
+    if not all(os.path.exists(g) for g in gifs) or not entry:
+        print('Odin: rips not found, skipping (place Odin1/2/3.gif next to '
+              f'{os.path.basename(args.zip)} to check it)')
+    else:
+        CMAP = {(0,0,0):'K', (88,88,136):7, (120,120,48):6, (184,184,112):5,
+                (120,120,248):4, (248,248,248):2, (176,176,248):3,
+                (192,192,252):None}
+        INV = {0:'K', 1:'K', 2:2, 3:3, 4:4, 5:5, 6:6, 7:7}
+        pool = asm['monsterGraphics']['itemRanges'][
+            int(entry['window']['path'].rsplit('_', 1)[1])]
+        pa, pb = [loROM_map(int(x, 16)) for x in pool.split('-')]
+        ptiles = decode_tiles(rom[pa:pb], (pb - pa) // 24)
+
+        def sc(c, t):
+            ok = known = 0
+            for y in range(8):
+                for x in range(8):
+                    v = c[y][x]
+                    if v is None:
+                        continue
+                    known += 1
+                    if INV[t[y][x]] == v:
+                        ok += 1
+            return ok, known
+
+        W = entry['width']; lay = entry['layout']; H = len(lay)//W
+        for g in gifs:
+            im = Image.open(g).convert('RGB')
+            if im.width > 100:
+                im = im.resize((im.width//2, im.height//2), Image.NEAREST)
+            px = im.load()
+            best = None
+            for ox in range(8):
+                for oy in range(8):
+                    gw = (im.width-ox)//8; gh = (im.height-oy)//8
+                    if gw < 4 or gh < 4:
+                        continue
+                    perf = tot = 0
+                    grid = []
+                    for gy in range(gh):
+                        row = []
+                        for gx in range(gw):
+                            c = [[CMAP.get(px[ox+gx*8+x, oy+gy*8+y], '?')
+                                  for x in range(8)] for y in range(8)]
+                            known = sum(1 for r in c for v in r if v is not None)
+                            if not known:
+                                row.append(-1); continue
+                            tot += 1
+                            m = [i for i, t in enumerate(ptiles) if sc(c, t) == (known, known)]
+                            if m:
+                                perf += 1; row.append(m[0])
+                            else:
+                                row.append(-2)
+                        grid.append(row)
+                    if perf and (best is None or (perf, perf/tot) > best[:2]):
+                        best = (perf, perf/tot, grid)
+            perf, frac, grid = best
+            grid = [r for r in grid if any(v >= 0 for v in r)]
+            while grid and all(v < 0 for v in grid[0]):
+                grid.pop(0)
+            drawn = sum(1 for r in grid for v in r if v != -1)
+            matched = sum(1 for r in grid for v in r if v >= 0)
+            # the frame must appear as a block of the definition's layout
+            gh, gw = len(grid), len(grid[0])
+            found = None
+            for r0 in range(H-gh+1):
+                for c0 in range(W-gw+1):
+                    if all((lay[(r0+r)*W + c0+c] == grid[r][c] or grid[r][c] < 0)
+                           for r in range(gh) for c in range(gw)
+                           if grid[r][c] >= 0):
+                        found = (r0, c0); break
+                if found: break
+            shape_ok = found and all(
+                (lay[(found[0]+r)*W + found[1]+c] >= 0) == (grid[r][c] >= 0)
+                for r in range(gh) for c in range(gw) if grid[r][c] != -2)
+            print(f'{os.path.basename(g)}: {gw}x{gh} frame, {matched}/{drawn} drawn '
+                  f'cells matched a pool tile exactly, present in the layout '
+                  f'at {found}, shape {"ok" if shape_ok else "MISMATCH"}')
+            if not found or not shape_ok:
+                print(f'FAIL: {os.path.basename(g)} is not in summonGraphics_Odin')
+                fails += 1
+
     print('MOM BOMB ARRANGEMENT OK' if not fails else f'{fails} FAILURES')
     return 1 if fails else 0
 

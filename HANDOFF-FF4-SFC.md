@@ -221,13 +221,22 @@ is idempotent and emits:
   Ifrit, Sylph). All 15 carry a `layout`, chosen per Esper from its own data
   (`summon_frames_layout`) — each rule exists because of a specific failure
   the user reported:
-  1. **stages draw almost none of the block (coverage < 20%) → stack the boss
-     battle map over the OBJ grid.** Odin's three stages draw 9 of his 100
-     tiles: the boss map (`bossGraphics_42`) has one whole figure, the grid
-     has the pieces of the other poses. Frames-only Odin was the "almost no
-     tiles" regression; grid-only Odin was "very jumbled". Table:
-     `BOSS_BP_FOR` = {8:Titan→2, 9:Mist Dragon→0, 11:Odin→42,
-     12:Leviathan→46, 13:Asura→54, 16:Bahamut→47}.
+  1. **stages draw almost none of the block (coverage < 20%) → the layout is
+     baked in `SUMMON_FIXES` instead.** Odin's three stages draw 9 of his 100
+     tiles and his OBJ grid holds pieces rather than figures, so nothing the
+     ROM encodes renders him. `SUMMON_FIXES['summonGraphics_Odin']` (22×13)
+     was reconstructed from the ripped sprites the user supplied —
+     `ff-roms/Odin1.gif`, `Odin2.gif`, `Odin3.gif`, which are the **SNES art
+     at 2× zoom** (halve them: 7×10, 8×10, 7×9 tiles) — by matching every
+     non-transparent cell of each frame to a pool tile: all 180 drawn cells
+     matched exactly, so the three frames are the game's own art with the
+     horse/body tiles repeated; a blank row and the 20 tiles no frame uses
+     follow so nothing in the pool becomes unreachable.
+     `tools/ff4-sfc-artcheck.py` re-checks it against those gifs (it skips
+     with a message if they are absent) and reports 60/60, 65/65, 55/55 cells
+     exact and each frame present with the right shape.
+     Table for the other stage-poor Espers: `BOSS_BP_FOR` = {8:Titan→2,
+     9:Mist Dragon→0, 11:Odin→42, 12:Leviathan→46, 13:Asura→54, 16:Bahamut→47}.
   2. **coverage < 75% → the OBJ grid itself.** Bahamut's stages draw 71 of
      118 tiles; the grid holds both of his poses whole (the reference page
      shows 2 frames), so frames-only Bahamut was "missing its second frame".
@@ -248,11 +257,15 @@ is idempotent and emits:
   leaves blank (Leviathan's extra corner piece).
   Result: Imp/Bomb 4×4, Cockatrice 6×4, Mindflayer 6×6, Chocobo 8×4 (32 cells
   from 24 tiles), Shiva 11×6, Ramuh 12×6, Ifrit 16×6, Titan 12×8, Dragon Mist
-  10×8 (grid), Sylph 6×2, **Odin 16×19 (boss map over grid)**, Leviathan
-  12×10, Asura 24×12, **Bahamut 16×8 (grid, both frames)**.
+  10×8 (grid), Sylph 6×2, **Odin 22×13 (baked: three ripped frames + the 20
+  unused tiles)**, Leviathan 12×10, Asura 24×12, **Bahamut 16×8 (grid, both
+  frames)**. The user has since hand-tuned Titan and Mist Dragon with the
+  puzzle tool, so their placements override those two.
   Painting a repeated cell writes the one tile every copy shows.
-  `ff4-sfc-xcheck.js` re-derives all 15 layouts with an independent
-  implementation and compares them, including the boss-map case.
+  `ff4-sfc-xcheck.js` re-derives the layouts with an independent
+  implementation and compares them, skipping keys that are baked
+  (`BAKED` = the SUMMON_FIXES keys, checked by ff4-sfc-artcheck.py) or have a
+  saved puzzle placement (checked by the round trip).
 - `characterGraphics`/`portraitGraphics` `itemPalettes`: per-item pins
   ("5: Rosa"), Pig/Small/Toad list every palette by name
   ("Kain palette (reused)" etc.).

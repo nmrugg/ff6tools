@@ -111,6 +111,30 @@ SHEET_BOSSES = {164: dict(width=10, tiles=60, pal=164, layout=[
     55, 56, 57, 58, 59, -1, -1, -1, -1, -1])}
 SKIP_BOSSES  = {214}
 
+# Odin's summon stages draw 9 of his 100 tiles and his OBJ grid holds pieces
+# rather than figures, so neither the stages nor the grid render him. The
+# layout below was reconstructed from the ripped sprites (Odin1/2/3.gif, the
+# FF4 summon page - they are the SNES art at 2x zoom): every non-transparent
+# cell of all three frames matched a pool tile exactly, so the frames are the
+# game's own art with the horse/body tiles repeated, plus a blank row and the
+# 20 tiles no frame uses so that nothing in the pool becomes unreachable.
+# tools/ff4-sfc-artcheck.py re-checks it against the gifs when they are there.
+SUMMON_FIXES = {
+  'summonGraphics_Odin': dict(width=22, tiles=100, layout=[
+    -1,   0,   1,   2,   3,  -1,  -1,  64,  65,  66,   1,   2,   3,  -1,  -1,  -1,  -1,  85,  86,  87,  88,   0,
+    -1,   4,   5,   6,   7,  -1,  -1,  -1,  -1,  68,  69,   6,   7,  -1,  -1,  -1,  -1,  90,  91,  92,  93,  13,
+    -1,   8,   9,  10,  11,  12,  13,  -1,  -1,   2,  71,  72,  73,  12,  13,  -1,  -1,  95,  96,  97,  98,  19,
+    -1,  14,  15,  16,  17,  18,  19,  -1,  -1,  -1,  74,  16,  17,  18,  19,  -1,  20,  21,  22,  23,  24,  25,
+    -1,  20,  21,  22,  23,  24,  25,  -1,  -1,  20,  21,  22,  23,  24,  25,  -1,  26,  27,  28,  29,  30,  31,
+    -1,  26,  27,  28,  29,  30,  31,  -1,  -1,  26,  27,  28,  29,  30,  31,  33,  34,  35,  36,  37,  38,  39,
+     33,  34,  35,  36,  37,  38,  39,  32,  33,  34,  35,  36,  37,  38,  39,  41,  42,  43,  44,  45,  46,  47,
+     41,  42,  43,  44,  45,  46,  47,  40,  41,  42,  43,  44,  45,  46,  47,  49,  50,  51,  52,  53,  54,  55,
+     49,  50,  51,  52,  53,  54,  55,  30,  49,  50,  51,  52,  53,  54,  55,  57,  58,  56,  56,  56,  62,   0,
+     57,  58,  56,  56,  56,  62,   0,   1,  57,  58,  56,  56,  56,  62,   0,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
+    -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
+     48,  59,  60,  61,  63,  67,  70,  75,  76,  77,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,
+     78,  79,  80,  81,  82,  83,  84,  89,  94,  99,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1,  -1])}
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--def', dest='definition', required=True)
@@ -722,7 +746,11 @@ def main():
         }
         k = item_of.get(start)
         avail = (end - start) // 24
+        fix = SUMMON_FIXES.get(key)
         res = summon_frames_layout(i, avail, start)
+        if fix:
+            res = (fix['width'], len(fix['layout'])//fix['width'],
+                   list(fix['layout']), max(t for t in fix['layout'] if t >= 0), -1)
         if k is not None:
             # the Esper reuses a monster/boss graphics item: a window onto it
             entry['window'] = {
@@ -730,6 +758,8 @@ def main():
                 'offset': 0,
                 'tiles': (res[3] + 1) if res else avail
             }
+            if fix:
+                entry['window']['tiles'] = fix['tiles']
         else:
             # summon-only block (Chocobo/Shiva/Ramuh/Ifrit/Sylph): this
             # assembly owns the bytes

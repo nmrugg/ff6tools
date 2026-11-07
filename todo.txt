@@ -22,8 +22,17 @@ recently added
    grid (Mist Dragon). Cross-stage borrowing of empty cells was removed - it
    invented tiles the game leaves blank (Leviathan's extra corner piece).
    Final: Chocobo 8x4, Shiva 11x6, Ramuh 12x6, Ifrit 16x6, Titan 12x8,
-   Dragon Mist 10x8, Sylph 6x2, Odin 16x19 (boss map + grid), Leviathan
-   12x10, Asura 24x12, Bahamut 16x8 (both frames)
+   Dragon Mist 10x8, Sylph 6x2, Odin 22x13, Leviathan 12x10, Asura 24x12,
+   Bahamut 16x8 (both frames)
+ * ff4 snes (u): Odin's three summon frames are baked in SUMMON_FIXES,
+   reconstructed from the rips the user supplied (ff-roms/Odin1/2/3.gif - the
+   SNES art at 2x zoom): every non-transparent cell of all three frames
+   matched a pool tile exactly (60, 65 and 55 cells), so the layout is the
+   game's own frames with the horse/body tiles repeated, plus the 20 pool
+   tiles no frame uses. ff4-sfc-artcheck.py verifies it against the gifs
+   (60/60, 65/65, 55/55 exact, each frame present with the right shape);
+   ff4-sfc-xcheck.js skips baked and placed keys. The user has hand-tuned
+   Titan and Mist Dragon with the puzzle tool
  * graphics view: a sprite sheet shared by items of different sizes must drop
    tile ids past the end of the selected item (character graphics: Golbez 27
    tiles, Anna 23) - the sheet's 4 cells pointing at tiles 23..26 were the

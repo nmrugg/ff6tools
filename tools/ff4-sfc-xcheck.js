@@ -263,6 +263,10 @@ if(sec){
   for(let i=0;i<17;i++)
     sblk.push(m(0x0D0000+(data[SGFX+i*2]|(data[SGFX+i*2+1]<<8))));
   const BOSS_BP={8:2,9:0,11:42,12:46,13:54,16:47};
+  // layouts the generator bakes from the ripped art instead of deriving from
+  // the ROM (Odin's stages draw 9 of 100 tiles); ff4-sfc-artcheck.py checks
+  // these against the gifs, and a saved puzzle placement overrides any key
+  const BAKED=new Set(['summonGraphics_Odin']);
   const bossByBp={};
   for(const k of Object.keys(rom.assembly)) if(k.startsWith('bossGraphics_')) {
     const bp=Number(k.replace('bossGraphics_','').split('_')[0]);
@@ -314,7 +318,7 @@ if(sec){
     const key=`summonGraphics_${SNAM[i]}`;
     const o=rom.assembly[key];
     if(!o){ check(false,`${key}: missing assembly`); continue; }
-    if(placed.has(key)){ manual++; continue; }
+    if(placed.has(key) || BAKED.has(key)){ manual++; continue; }
     const slots=Object.keys(slot2tile).map(Number);
     const gridLayout=()=>{                       // the OBJ grid placement
       const rows=Math.max(...slots.map(s=>Math.floor(s/16)))+1;
