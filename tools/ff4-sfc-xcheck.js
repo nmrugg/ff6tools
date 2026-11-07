@@ -121,7 +121,9 @@ for(const r of recs){
 }
 console.log('tiles decode-parity checked:',parity);
 
-// palette pinning: first user's palette index must match the pinned path
+// palette pinning: the ROM table is 8-color sub-palettes (16 bytes, exactly
+// the game's LoadMonsterPal unit); each object must be pinned to
+// monsterPalette[p], composing p + p+1 when the graphics are 4bpp
 for(let k=0;k<items.arrayLength;k++){
   const it=items.item(k);
   const off=it.range.begin-BASE;
@@ -130,12 +132,100 @@ for(let k=0;k<items.arrayLength;k++){
   const r=users[0];
   const p=r.isBoss?data[BOSST+r.size*5+2]:r.pal;
   const defs=Array.isArray(it.palette)?it.palette:[it.palette];
-  const first=defs[0];
+  const first=Array.isArray(defs[0])?defs[0][0]:defs[0];
   const mm=typeof first==='string'?first:first.path;
   check(mm===`monsterPalette[${p}]`,`item ${k}: palette ${mm} != monsterPalette[${p}]`);
   if(!r.bpp3){
-    check(defs.length>=2&&defs[1].offset===8,`item ${k}: 4bpp palette not composed with p+1`);
+    const pair=Array.isArray(defs[0])?defs[0]:[];
+    check(pair.length===2&&pair[1].offset===8&&pair[1].path===`monsterPalette[${p+1}]`,
+      `item ${k}: 4bpp palette not composed from p + p+1`);
   }
+}
+
+// ---- 4b. assembled boss windows ------------------------------------------
+// every (boss properties record, graphics pool) pair used by a non-character,
+// non-placeholder monster needs a bossGraphics_* window; windows with a
+// layout must place tiles that exist in the pool
+const SKIP=new Set([214]);            // placeholder "Dummy" over the Zeromus pool
+const bossRecs=recs.filter(r=>r.isBoss&&!r.isChar&&!SKIP.has(r.i));
+const winKeys=Object.keys(rom.assembly).filter(k=>k.startsWith('bossGraphics_'));
+const pairs=new Map();
+for(const r of bossRecs) pairs.set(`${r.size}:${BASE+r.ptr}`, r);
+let windows=0;
+for(const key of winKeys){
+  const win=rom.assembly[key];
+  if(!win.window){ check(false,`${key}: no window`); continue; }
+  windows++;
+  const pool=win.window.path&&rom.parsePath(win.window.path);
+  check(!!pool,`${key}: window path ${win.window.path} unresolvable`);
+  if(!pool) continue;
+  const bi=Number(key.replace('bossGraphics_','').split('_')[0]);
+  const pair=pairs.get(`${bi}:${pool.range.begin}`);
+  check(!!pair,`${key}: window for bossProps ${bi} at ${pool.range.begin.toString(16)} matches no boss record`);
+  if(!pair) continue;
+  const poolTiles=Math.floor(pool.data.length/64);
+  check(win.window.tiles<=poolTiles,`${key}: tiles ${win.window.tiles} > pool ${poolTiles}`);
+  if(Array.isArray(win.layout)){
+    const bpx=BOSST+bi*5;
+    const si=data[bpx+1]&0x3F;
+    const tw=data[SIZES+si*2], th=data[SIZES+si*2+1];
+    check(win.width===tw&&win.height===th,`${key}: size ${win.width}x${win.height} != ${tw}x${th}`);
+    check(win.layout.length===tw*th,`${key}: layout length ${win.layout.length} != ${tw*th}`);
+    for(const t of win.layout)
+      if(t>=poolTiles){ check(false,`${key}: layout tile ${t} outside pool (${poolTiles})`); break; }
+  }
+}
+for(const [pairKey,r] of pairs){
+  const found=winKeys.some(k=>{
+    const w=rom.assembly[k];
+    return k.startsWith(`bossGraphics_${r.size}`)&&w.window&&
+      rom.parsePath(w.window.path)&&rom.parsePath(w.window.path).range.begin===BASE+r.ptr;
+  });
+  check(found,`boss record ${r.i} (bossProps ${r.size}) has no window for its pool`);
+}
+console.log('boss windows checked:',windows,'for',pairs.size,'boss record/pool pairs');
+
+// ---- 4c. hidden boss pools ----------------------------------------------
+// items used only by boss records are hidden from the Monster Graphics tree
+// (the assembled Boss Graphics windows present them instead)
+const hidden=rom.monsterGraphics.hiddenItems||[];
+for(let k=0;k<items.arrayLength;k++){
+  const it=items.item(k);
+  const off=it.range.begin-BASE;
+  const us=recs.filter(r=>!r.isChar&&r.ptr===off);
+  const bossOnly=us.length&&us.every(r=>r.isBoss);
+  check(hidden.includes(k)===!!bossOnly,
+    `item ${k}: hidden=${hidden.includes(k)} but bossOnly=${bossOnly}`);
+}
+console.log('hidden boss-pool items:',hidden.length);
+
+// ---- 4d. summons ----------------------------------------------------------
+// the Summons section lists 15 unique summons; each path must resolve to a
+// 3bpp graphics object, either a monster item or a dedicated assembly, and
+// dedicated ones must not overlap the monster items
+const sec=(rom.hierarchy||[]).find(s=>s.name==='Summons');
+check(!!sec,'no Summons section in the hierarchy');
+if(sec){
+  check(sec.list.length===15,`Summons section has ${sec.list.length} entries, expected 15`);
+  const names=new Set(sec.list.map(i=>i.name));
+  for(const need of ['Summon: Chocobo','Summon: Shiva','Summon: Ramuh','Summon: Ifrit','Summon: Sylph'])
+    check(names.has(need),`Summons section missing ${need}`);
+  for(const item of sec.list){
+    const o=rom.parsePath(item.path);
+    check(!!o&&o.format==='snes3bpp',`${item.name}: path ${item.path} not a 3bpp graphics object`);
+    check(!!o&&!!o.palette,`${item.name}: no palette`);
+  }
+  // dedicated assemblies must not overlap monster items
+  const dedicated=sec.list.map(i=>i.path).filter(p=>p.startsWith('summonGraphics_'));
+  for(const p of dedicated){
+    const o=rom.assembly[p];
+    for(let k=0;k<items.arrayLength;k++){
+      const it=items.item(k);
+      check(o.range.end<=it.range.begin||o.range.begin>=it.range.end,
+        `${p} [${o.range}] overlaps item ${k} [${it.range}]`);
+    }
+  }
+  console.log('summon entries checked:',sec.list.length,'| dedicated:',dedicated.length);
 }
 
 // ---- 5. edit lands on the right bytes; undo is byte-exact ----------------

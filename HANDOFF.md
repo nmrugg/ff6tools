@@ -609,22 +609,103 @@ re-disassembled if the pointer-target pass already decoded it raw), and
 `linkPalette.indexProp`. `itemPalettes` entries set `palettePinned` so the
 generated static entries win over spec linking.
 
-**Palettes.** 3bpp sprites use the first 8 colours of `monsterPalette[p]`
-(pinned as `{"path": "monsterPalette[p]", "range": "0-8"}` — note `range`
-must be a *string*: `ROMRange.parse` returns 0-0 for objects, which silently
-blanked the palette panel). 4bpp composes colours 0-7 of p with 8-15 of p+1,
-exactly as `LoadMonsterPal` loads them — two `compose: true` entries with
-offsets 0 and 8. Only Zeromus (records 201/214) is 4bpp.
+**Palettes - get the units right.** `monsterPalette` entries in the definition
+are 16-byte / **8-color** sub-palettes, which is exactly the game's unit:
+`LoadMonsterPal` (@9150, verified from raw bytes: `lda #$10 / jsr Mult8 /
+lda $1cee00,x`) reads 32 bytes from `MonsterPal + p*16`, i.e. sub-palette p
+for a 3bpp sprite, or the pair p and p+1 for a 4bpp sprite (colors 0-7 from
+p, 8-15 from p+1). So: 3bpp pins `{"path": "monsterPalette[p]"}` (the entry
+IS the palette - no range needed), 4bpp pins a two-entry `compose` list with
+offsets 0 and 8. Only Zeromus (records 201/214) is 4bpp. An earlier attempt
+here assumed 32-byte entries and pinned `p>>1` half-ranges - that blanked
+the panel for odd p (entries only have 8 colors, so range 8-16 is empty).
+Note `ROMRange.parse` only accepts strings ("0-8"); it returns 0-0 for
+objects, which silently blanks a palette panel.
 
-**Bosses and summons.** 44 records set isBoss; the size class field is then a
-`monsterBossProperties` index (position, size, palette, tilemap). Pools are
-shared: Milon + Milon Z + Rubicant + Elements are one 254-tile pool; the boss
-map (monsterBossMap, 0xFF = skip, 0xFE n = run) places a subset per battle,
-with the loaded tile count coming from battleVRAMMap. One pool = one graphics
-object labelled with all its bosses (`*Odin`, `*Bahamut, *Wyvern`, ...). The
-summons everyone remembers (Titan, Odin, Leviathan, Bahamut, Asura) are boss
-records, so they are covered too. Boss *placement* (the tilemaps) is still
-raw data, not a tilemap view — that's the natural next step.
+**Bosses and summons - assembled views.** 44 records set isBoss; the size
+class field is then a `monsterBossProperties` index (position, size, palette,
+tile map). Pools are shared: Milon + Milon Z + Rubicant + Elements are one
+254-tile pool; the boss map (monsterBossMap) places a subset per battle, with
+the loaded tile count coming from battleVRAMMap. A pool alone is just a sheet
+of loose tiles - that reads as "messed up" - so the generator also emits one
+**assembled window per (boss properties, pool) pair**: `bossGraphics_<n>`
+graphics whose `window` looks at the pool item and whose `layout` is the
+generator walking the boss tile map exactly like `DrawBoss`/
+`LoadBossTilemap` (@8ce1: the stream cursor is X and persists across rows,
+sequential cells, 0xFF = 1 empty cell, 0xFE n = n empty cells, any other
+byte = pool tile index into the loaded region). The view turns `layout` into
+`poolLayout`, so the window shows the creature and painting writes through
+to the pool. Verified against ff4monsters.zip (a reference rip of every
+monster): all 39 windows match their reference silhouettes. Note the
+pairing: bossProps 59 is used by two records with *different* pools (Wyvern
+152 and Dummy 214), hence the (properties, pool) key.
+
+The summoned Espers that exist as monster art: Asura(192), Bahamut(190),
+Bomb(85), Cockatrice(36), Imp(0/27), Ifrit(174 - shares the "Cindy" boss
+art), Leviathan(189), Mindflayer(63 - the "Mage" monster), Dragon
+Mist(161 - "D'Mist"), Odin(188), Titan(207). Shiva, Sylph and Chocobo have
+NO monster-table entry at all - their summon animations are BG/sprite
+effects (ShivaAnim/RamuhAnim/SylphAnim/ChocoboAnim in btlgfx/summon.asm),
+so there is nothing monster-shaped to edit; the zip confirms (no images for
+them either). The generator appends Esper aliases to labels (ESPER_ALIAS)
+so searching the tree for "Ifrit" or "Mindflayer" finds the right object.
+
+Two more fixes this round:
+- `ROMGraphics.sourceAssembly()` now wakes the owning array when a window
+  points at a fragment (`monsterGraphics_84`) that has not been created
+  yet - windows disassembled before the array is touched came up blank.
+- characterGraphics / portraitGraphics now have `itemPalettes` pins
+  (`characterPalette[i]`, `portraitPalette[i]`): selecting character #5
+  or portrait #7 used to leave the panel on palette 0.
+
+**Round 2 (user feedback - what was still wrong and what fixed it):**
+
+- **The authoritative region map is `notes/ff4j-sfc-rom-map.txt` in
+  everything8215/ff4.** The .lnk segment names lie (again): bank 0d's
+  "summon_gfx" label is the monster graphics region - the game's own
+  `SummonGfxPtrs` (0x0d87f0) point INTO it. Region boundaries that matter:
+  monster banks 1-4 end at `0x0CB2F7` ("final zeromus graphics" =
+  0x0C96F8-0x0CB2F7, so item 79's end is 0x0CB2F8, NOT the attackGraphics
+  start); bank 0d graphics ("summon graphics") run 0x0D8818-0x0DE817.
+- **Boss pools own everything to the next pointer** (the battle only loads
+  the battleVRAMMap tile count, but the rest of the block is the same
+  creature's art - Mom Bomb proves it). The 24 boss-only pool items are now
+  `hiddenItems` on the array (new generic ROMArray key; the navigator skips
+  them) - bosses are presented assembled under **Boss Graphics** only, and
+  the `*` label prefix is gone.
+- **Mom Bomb**: the US properties entry (bossProps 36, 4x4 grid, sequential
+  map) places only the top-left 16 tiles of her LINEAR 60-tile sheet - a US
+  version quirk, and why her assembled view looked cropped. The generator's
+  `SHEET_BOSSES` override shows the full 10x6 sheet (matches the zip).
+  **Dummy** (record 214, placeholder using Wyvern's properties over the
+  Zeromus pool) is skipped via `SKIP_BOSSES`.
+- **Summons section**: `LoadSummonGfx` (btlgfx/magic.asm @ea82) loads 128
+  3bpp tiles from `SummonGfxPtrs[attack-$4d]` (0x0d87f0, 17 entries) with
+  `SummonPalTbl` colors (0x0dfe4c). Blocks 0-3 and 8-16 coincide exactly
+  with monster items (Imp, Bomb, Cockatrice, Mindflayer, Titan, Mist Dragon,
+  Sylph*, Odin, Leviathan, Asura, Bahamut) - the Summons tree entry points
+  at the item directly. Blocks 4-7 (0x0d90b8/0x0d92f8/0x0d9760/0x0d9c40)
+  are Chocobo, Shiva, Ramuh, Ifrit - summon-only art in what was unowned
+  gap space, now dedicated `summonGraphics_*` owning assemblies. Sylph's
+  12-tile block sits inside the D'Mist item, so that item is capped at
+  0x0dea0 and Sylph got her own assembly. (Attack names $4d-$5d - Globe,
+  Fire, Blaze, Thunder... - are the summon *effect* attacks, not the
+  summon's identity; match blocks to Espers by their monster art instead.)
+- **portraitPalette was 2 entries short** (rom map: "portrait palettes
+  (16 * 16 bytes)" 0x0d86d0-0x0d87d0). Extended. Entries 14/15 are empty
+  black - Pig/Small/Toad reuse the affected character's palette at runtime,
+  so those items get the whole array as a dropdown choice instead of a
+  wrong pin; same for the Pig battle sprite in characterGraphics (item 14;
+  items 15/16 are Golbez/Anna -> characterPalette[14]/[15]).
+- **Attack Graphics**: the tree only had the animation tilemap
+  (16x48 tile sheet, read-only toolbox by design). Added a direct
+  `attackGraphics` entry (already type graphics + snes3bpp + attackPalette)
+  so it opens in the paintable view; the tilemap entry is now named
+  "Attack Tilemap".
+
+Still open: boss *placement* editing (the monsterBossMap streams), summon
+tilemaps/frames (0x0df260/0x0df660), FF4 J def (same treatment, needs a
+J ROM), and the attack tilemap's own toolbox is still read-only.
 
 **Names come from the ROM.** `tools/ff4-sfc-names.py` decodes monster names
 (A-Z = 0x42-0x5B, a-z = 0x5C-0x75, 0xC1 = apostrophe, 0xC2 = space, 0xFF =
@@ -752,13 +833,16 @@ model from the ROM and checks it against the videogamesprites.net rips
 Modified: `ff5/ff5e-gba.json`, `ff3/ff3j-nes.json`, `ff3/ff3u-nes.json`,
 `ff4/ff2u-sfc.json`, `ff4/ff4-battle.js`, `ff4/ff4-battle-vram.js`,
 `ff5/ff5-battle.js`, `rom/romtools.js` (new generic `ROMArray` keys
-`itemPalettes` and `itemAttributes`; `isMapped: false` for `pointerObject`
-arrays; `itemRanges` + `pointerObject` combined; `sizeFrom` spec list with
+`itemPalettes`, `itemAttributes` and `hiddenItems`; `isMapped: false` for
+`pointerObject` arrays; `itemRanges` + `pointerObject` combined; `sizeFrom` spec list with
 `condition`/`indexProp`/`sizeIndexProp`/`noSize`/`formatProp`/`linkPalette.indexProp`;
+`ROMGraphics.layout` + lazy fragment wake in `sourceAssembly`;
 `ff3BossTilemap`/`ff3SummonTilemap` registered), `rom/gfx.js` (`nesFixedPalette` palette format,
 `GFX.closestNESColor`, and the two FF3 tile formats - the summon one carries
 per-tile palette bits), `gui/graphics-view.js` (painting tools, `"whole": true`
-tile pools, per-tile palette cells, forwarding arrow keys to the navigator),
+tile pools, per-tile palette cells, forwarding arrow keys to the navigator,
+static `layout` windows), `gui/navigator.js` (skips `hiddenItems` array
+entries),
 `gui/palette-view.js` (palette composition, `"name"`/`"offset"` entries,
 `paletteSegments`/`targetForColor` so edits land on the right palette,
 resetting the palette selection when a different object is opened),

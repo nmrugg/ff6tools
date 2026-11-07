@@ -1562,7 +1562,15 @@ const self = this;
         // a window onto a shared pool: show the creature, not the sheet
         this.poolLayout = null;
         this.poolFlip = null;
-        if (object.window && object.layoutFrom) this.applyLayoutFrom(object.layoutFrom);
+        if (object.window && object.layout) {
+            // static cell -> pool tile layout (FF4 SNES bosses): the generator
+            // walked the boss tile map, so the window reads as the creature
+            this.poolLayout = Int32Array.from(object.layout);
+            this.poolFlip = new Int32Array(object.layout.length);
+            if (object.width) this.width = object.width;
+            if (object.height) this.height = object.height;
+        }
+        else if (object.window && object.layoutFrom) this.applyLayoutFrom(object.layoutFrom);
 
 const self = this;
         this.observer.startObserving(object, function() {

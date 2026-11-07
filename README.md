@@ -221,13 +221,20 @@ not an artefact.
 
 In Final Fantasy IV (U) on the SNES (labelled *Final Fantasy II (USA)*),
 monster graphics are grouped into 90 shared objects selected by a pointer
-table, and every entry is labelled with the monsters that use it - bosses and
-summons first, marked with `*`. Ordinary monsters display at their size-class
-dimensions; bosses (including summoned bosses like Odin and Bahamut) are tile
-pools that the game arranges with a per-boss tile map, so they open as a sheet
-of tiles. Most monsters are 3bpp and use the first eight colours of their
-palette; the few 4bpp monsters (Zeromus) get two consecutive ROM palettes
-composed into one 16-colour palette automatically.
+table, and every entry is labelled with the monsters that use it. Ordinary
+monsters display at their size-class dimensions. Bosses are built from
+shared tile pools that the game arranges with a per-boss tile map: under
+**Boss Graphics** each boss opens as the assembled creature, and painting
+it writes through to the pool tiles it is built from (the raw pools are
+hidden from the Monster Graphics tree to avoid duplicates). Under
+**Summons** all fifteen Espers are listed: those whose animation reuses
+their monster art point at it directly, and Chocobo, Shiva, Ramuh, Ifrit
+and Sylph - whose summon-only art lives elsewhere in the ROM - get their
+own editable graphics. Most monsters are 3bpp and use one 8-colour
+palette; the few 4bpp ones (Zeromus) get two consecutive ROM palettes
+composed into one 16-colour palette automatically. Attack graphics are
+editable directly under Character (**Attack Graphics**); the animation
+layout itself is under **Attack Tilemap**.
 
 Summon and boss graphics are tilemaps over shared tile pools, so they appear
 under **Summon Graphics** and **Boss Graphics** as editable tile layouts - the

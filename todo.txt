@@ -4,6 +4,45 @@
 
 recently added
 --------------
+ * ff4 snes (u): Summons section - 15 entries; Chocobo, Shiva, Ramuh, Ifrit
+   and Sylph get dedicated owning graphics assemblies (their art sits in
+   bank 0d gap space, mapped by the game's own SummonGfxPtrs/SummonPalTbl);
+   the other Espers' blocks are exactly their monster items, so those
+   Summons entries point at the items directly and are paintable
+ * ff4 snes (u): boss tile pools are hidden from the Monster Graphics tree
+   (new generic hiddenItems key on ROMArray) - they are presented assembled
+   under Boss Graphics only, and the `*` label prefix is gone
+ * ff4 snes (u): Mom Bomb fixed - the US properties entry crops a 4x4
+   corner of her linear 60-tile sheet (US version quirk); the window now
+   shows the full sheet (SHEET_BOSSES in the generator); the Dummy
+   placeholder window is dropped (SKIP_BOSSES)
+ * ff4 snes (u): monster graphics region boundaries corrected against the
+   authoritative notes/ff4j-sfc-rom-map.txt (Zeromus block ends 0cb2f7,
+   bank-0d summon graphics end de817; boss pools own up to the next pointer)
+ * ff4 snes (u): portraitPalette extended to the real 16 entries; Pig /
+   Small / Toad (portraits 14-16) and the Pig battle sprite offer the
+   palette array (they reuse the affected character's palette at runtime)
+   instead of showing nothing; Golbez/Anna portraits point at their own
+ * ff4 snes (u): Attack Graphics is now directly editable with pencil/fill
+   (the tree entry that opened the read-only animation tilemap is renamed
+   Attack Tilemap; the graphics object itself got its own entry)
+ * ff4 snes (u): assembled boss/summon views - 39 bossGraphics_* windows that
+   lay out their tile pool exactly like the game's DrawBoss (0xFF empty,
+   0xFE n empty, else pool tile index), so Odin/Titan/Asura/Milon & friends
+   open as creatures instead of loose tile sheets; painting a window writes
+   through to the pool, undo stays byte-exact; verified against the
+   ff4monsters.zip reference rips
+ * ff4 snes (u): palette units corrected - monsterPalette entries are 8-color
+   (16-byte) sub-palettes exactly as LoadMonsterPal indexes them (p for 3bpp,
+   the pair p + p+1 for 4bpp); #79 (Zeromus) now composes 201+202 correctly
+ * ff4 snes (u): summoned Esper names added to labels (Ifrit=Cindy's art,
+   Mindflayer=Mage, Dragon Mist=D'Mist...); Shiva/Sylph/Chocobo confirmed to
+   have no monster-table art at all (pure summon animations)
+ * ff4 snes (u): character + portrait graphics now update the palette panel
+   per item (itemPalettes pins) instead of always showing palette 0
+ * romtools: window sources wake their owning lazy array (fragment paths like
+   monsterGraphics_84 used to resolve to nothing); ROMGraphics.layout gives a
+   window a static cell->tile layout without needing a tilemap object
  * ff4 snes (u) ("Final Fantasy II (USA)"): monster / boss / summon graphics
    are now editable - the opaque monsterGraphics blob became 90 pointer-
    deduplicated graphics objects with per-object size (monsterSize table, or
@@ -328,11 +367,14 @@ game specific
  * ff4 advance japanese version
  * ff4-sfc (j): same graphics model as (u) - needs a J ROM to validate; the
    battle code still falls back to the old blob arithmetic for it
- * ff4-sfc: boss tilemaps (monsterBossMap: 0xFF skip, 0xFE n run, per-battle
-   tile counts in battleVRAMMap) are editable as raw data, not as a tilemap
-   view yet; a boss "place tile" view over the pool would mirror FF3 NES
- * ff4-sfc: monsterGraphicsMap (small/large per-monster VRAM tile maps) is
-   still raw data
+ * ff4-sfc: boss placement is editable only as raw data (monsterBossMap);
+   the assembled bossGraphics windows show and paint the tiles, but moving
+   tiles between cells (editing the map itself) has no tilemap view yet
+ * ff4-sfc: summon tilemaps/frames (0x0df260 / 0x0df660) are raw data; an
+   assembled per-frame summon view would need a ff4SummonTilemap format
+ * ff4-sfc: the Attack Tilemap toolbox graphics remain read-only (tilemap
+   views never paint their source); editing animation tile *placement* is
+   a tilemap-editor feature, not done
  * ff5-sfc monster graphics (set format automatically)
  * ff5 RPGe dialog strings can't straddle two banks
  * ff1 fiend/chaos tilemaps

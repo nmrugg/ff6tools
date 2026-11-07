@@ -838,6 +838,11 @@ function ROMGraphics(rom, definition, parent) {
     this.window = definition.window;
     // show the window's tiles in the order this tilemap places them
     this.layoutFrom = definition.layoutFrom;
+    // ... or in the order given directly: a static cell -> pool tile map
+    // (FF4 SNES bosses: the generator walks the boss tile map stream -
+    // tile index per cell, 0xFF/0xFE n = empty - and stores the result,
+    // so the window shows the assembled creature instead of loose tiles)
+    this.layout = definition.layout;
 }
 
 ROMGraphics.prototype = Object.create(ROMAssembly.prototype);
@@ -848,7 +853,18 @@ ROMGraphics.prototype.constructor = ROMGraphics;
 ROMGraphics.prototype.sourceAssembly = function() {
     if (!this.window) return null;
     var rom = this.rom || (this.parent && this.parent.rom);
-    return rom ? rom.parsePath(this.window.path, rom) : null;
+    if (!rom) return null;
+    var src = rom.parsePath(this.window.path, rom);
+    if (!src) {
+        // the source may be a fragment of a lazy array (monsterGraphics_84):
+        // the fragment assemblies only exist once the array is disassembled,
+        // so touch the array by name and try again
+        var m = this.window.path.match(/^(.*)_(\d+)$/);
+        if (m && rom.parsePath(m[1], rom)) {
+            src = rom.parsePath(this.window.path, rom);
+        }
+    }
+    return src || null;
 }
 
 ROMGraphics.prototype.windowLength = function() {
@@ -977,6 +993,7 @@ Object.defineProperty(ROMGraphics.prototype, "definition", { get: function() {
     if (this.spriteSheet) definition.spriteSheet = this.spriteSheet;
     if (this.window) definition.window = this.window;
     if (this.layoutFrom) definition.layoutFrom = this.layoutFrom;
+    if (this.layout) definition.layout = this.layout;
     if (this.attributeCells) definition.attributeCells = this.attributeCells;
     if (this.attributeRef) definition.attributeRef = this.attributeRef;
     if (isNumber(this.attributeCellsOffset)) definition.attributeCellsOffset = this.attributeCellsOffset;
@@ -4004,6 +4021,11 @@ function ROMArray(rom, definition, parent) {
     // keeps its own owner)
     if (definition.itemRanges) this.itemRanges = definition.itemRanges;
 
+    // array items to hide from the navigator tree (they still own bytes and
+    // can be referenced by windows) - FF4 SNES hides the raw boss tile pools,
+    // which are presented assembled under Boss Graphics instead
+    this.hiddenItems = definition.hiddenItems;
+
     // copy the display size (in tiles) from a record that points at this array:
     // {"arrayPath": "monsterGraphicsProperties", "pointerPath": "graphicsPointer",
     //  "sizeArrayPath": "monsterSize", "width": "width", "height": "height"}
@@ -4126,6 +4148,7 @@ Object.defineProperty(ROMArray.prototype, "definition", { get: function() {
     }
 
     if (this.itemRanges) definition.itemRanges = this.itemRanges;
+    if (this.hiddenItems) definition.hiddenItems = this.hiddenItems;
 
     if (this.sizeFrom) definition.sizeFrom = this.sizeFrom;
     if (this.itemPalettes) definition.itemPalettes = this.itemPalettes;

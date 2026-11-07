@@ -256,6 +256,8 @@ class ROMNavigator {
 
     liForArrayItem(array, i, pad) {
 
+        if (array.hiddenItems && array.hiddenItems.indexOf(i) >= 0) return null;
+
         const object = array.item(i);
         if (!object) return null;
 

@@ -195,6 +195,228 @@
             ]
         },
         {
+            "name": "Summons",
+            "list": [
+                {
+                    "name": "Summon: Imp",
+                    "path": "monsterGraphics_80"
+                },
+                {
+                    "name": "Summon: Bomb",
+                    "path": "monsterGraphics_81"
+                },
+                {
+                    "name": "Summon: Cockatrice",
+                    "path": "monsterGraphics_82"
+                },
+                {
+                    "name": "Summon: Mindflayer",
+                    "path": "monsterGraphics_83"
+                },
+                {
+                    "name": "Summon: Chocobo",
+                    "path": "summonGraphics_Chocobo"
+                },
+                {
+                    "name": "Summon: Shiva",
+                    "path": "summonGraphics_Shiva"
+                },
+                {
+                    "name": "Summon: Ramuh",
+                    "path": "summonGraphics_Ramuh"
+                },
+                {
+                    "name": "Summon: Ifrit",
+                    "path": "summonGraphics_Ifrit"
+                },
+                {
+                    "name": "Summon: Titan",
+                    "path": "monsterGraphics_84"
+                },
+                {
+                    "name": "Summon: Dragon Mist",
+                    "path": "monsterGraphics_85"
+                },
+                {
+                    "name": "Summon: Sylph",
+                    "path": "summonGraphics_Sylph"
+                },
+                {
+                    "name": "Summon: Odin",
+                    "path": "monsterGraphics_86"
+                },
+                {
+                    "name": "Summon: Leviathan",
+                    "path": "monsterGraphics_87"
+                },
+                {
+                    "name": "Summon: Asura",
+                    "path": "monsterGraphics_89"
+                },
+                {
+                    "name": "Summon: Bahamut",
+                    "path": "monsterGraphics_88"
+                }
+            ]
+        },
+        {
+            "name": "Boss Graphics",
+            "list": [
+                {
+                    "name": "Boss Graphics (D'Mist, Dragon Mist)",
+                    "path": "bossGraphics_0"
+                },
+                {
+                    "name": "Boss Graphics (Titan)",
+                    "path": "bossGraphics_2"
+                },
+                {
+                    "name": "Boss Graphics (Octomamm)",
+                    "path": "bossGraphics_4"
+                },
+                {
+                    "name": "Boss Graphics (Antlion)",
+                    "path": "bossGraphics_12"
+                },
+                {
+                    "name": "Boss Graphics (Milon)",
+                    "path": "bossGraphics_14"
+                },
+                {
+                    "name": "Boss Graphics (Elements, Milon)",
+                    "path": "bossGraphics_15"
+                },
+                {
+                    "name": "Boss Graphics (Rubicant)",
+                    "path": "bossGraphics_16"
+                },
+                {
+                    "name": "Boss Graphics (Kainazzo)",
+                    "path": "bossGraphics_18"
+                },
+                {
+                    "name": "Boss Graphics (Valvalis)",
+                    "path": "bossGraphics_21"
+                },
+                {
+                    "name": "Boss Graphics (Dark)",
+                    "path": "bossGraphics_23"
+                },
+                {
+                    "name": "Boss Graphics (Sandy)",
+                    "path": "bossGraphics_24"
+                },
+                {
+                    "name": "Boss Graphics (Cindy, Ifrit)",
+                    "path": "bossGraphics_25"
+                },
+                {
+                    "name": "Boss Graphics (Mindy)",
+                    "path": "bossGraphics_26"
+                },
+                {
+                    "name": "Boss Graphics (Calbrena)",
+                    "path": "bossGraphics_27"
+                },
+                {
+                    "name": "Boss Graphics (EvilWall)",
+                    "path": "bossGraphics_28"
+                },
+                {
+                    "name": "Boss Graphics (K'Eblan)",
+                    "path": "bossGraphics_29"
+                },
+                {
+                    "name": "Boss Graphics (Q'Eblan)",
+                    "path": "bossGraphics_30"
+                },
+                {
+                    "name": "Boss Graphics (Baigan)",
+                    "path": "bossGraphics_33"
+                },
+                {
+                    "name": "Boss Graphics (RightArm)",
+                    "path": "bossGraphics_34"
+                },
+                {
+                    "name": "Boss Graphics (Left)",
+                    "path": "bossGraphics_35"
+                },
+                {
+                    "name": "Boss Graphics (MomBomb)",
+                    "path": "bossGraphics_36"
+                },
+                {
+                    "name": "Boss Graphics (Dr'Lugae)",
+                    "path": "bossGraphics_37"
+                },
+                {
+                    "name": "Boss Graphics (Balnab)",
+                    "path": "bossGraphics_38"
+                },
+                {
+                    "name": "Boss Graphics (Balnab Z)",
+                    "path": "bossGraphics_39"
+                },
+                {
+                    "name": "Boss Graphics (Golbez)",
+                    "path": "bossGraphics_41"
+                },
+                {
+                    "name": "Boss Graphics (Odin)",
+                    "path": "bossGraphics_42"
+                },
+                {
+                    "name": "Boss Graphics (Leviatan, Leviathan)",
+                    "path": "bossGraphics_46"
+                },
+                {
+                    "name": "Boss Graphics (Bahamut)",
+                    "path": "bossGraphics_47"
+                },
+                {
+                    "name": "Boss Graphics (Elements)",
+                    "path": "bossGraphics_51"
+                },
+                {
+                    "name": "Boss Graphics (Asura)",
+                    "path": "bossGraphics_54"
+                },
+                {
+                    "name": "Boss Graphics (CPU)",
+                    "path": "bossGraphics_56"
+                },
+                {
+                    "name": "Boss Graphics (Zeromus)",
+                    "path": "bossGraphics_57"
+                },
+                {
+                    "name": "Boss Graphics (Defender)",
+                    "path": "bossGraphics_58"
+                },
+                {
+                    "name": "Boss Graphics (Wyvern)",
+                    "path": "bossGraphics_59"
+                },
+                {
+                    "name": "Boss Graphics (Attacker)",
+                    "path": "bossGraphics_60"
+                },
+                {
+                    "name": "Boss Graphics (Ogopogo)",
+                    "path": "bossGraphics_61"
+                },
+                {
+                    "name": "Boss Graphics (Zemus)",
+                    "path": "bossGraphics_62"
+                },
+                {
+                    "name": "Boss Graphics (Zeromus)",
+                    "path": "bossGraphics_63"
+                }
+            ]
+        },
+        {
             "name": "Character",
             "list": [
                 {
@@ -230,8 +452,12 @@
                     "path": "attackProperties"
                 },
                 {
-                    "name": "Attack Graphics",
+                    "name": "Attack Tilemap",
                     "path": "attackTilemap"
+                },
+                {
+                    "name": "Attack Graphics",
+                    "path": "attackGraphics"
                 }
             ]
         },
@@ -1621,7 +1847,159 @@
                     "15": "Golbez",
                     "16": "Anna"
                 }
-            }
+            },
+            "itemPalettes": [
+                [
+                    {
+                        "path": "characterPalette[0]",
+                        "name": "0: Cecil (Dark Knight)"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[1]",
+                        "name": "1: Kain"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[2]",
+                        "name": "2: Rydia (Girl)"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[3]",
+                        "name": "3: Tellah"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[4]",
+                        "name": "4: Edward"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[5]",
+                        "name": "5: Rosa"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[6]",
+                        "name": "6: Yang"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[7]",
+                        "name": "7: Palom"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[8]",
+                        "name": "8: Porom"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[9]",
+                        "name": "9: Cecil (Paladin)"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[10]",
+                        "name": "10: Cid"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[11]",
+                        "name": "11: Rydia (Adult)"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[12]",
+                        "name": "12: Edge"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[13]",
+                        "name": "13: FuSoYa"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette",
+                        "name": "character palette (reused)"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[14]",
+                        "name": "14: Golbez"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalette[15]",
+                        "name": "15: Anna"
+                    },
+                    {
+                        "path": "characterPalette"
+                    }
+                ]
+            ]
         },
         "characterJob": {
             "type": "array",
@@ -5760,17 +6138,17 @@
                 "0x0C8798-0x0C8960",
                 "0x0C8960-0x0C90E0",
                 "0x0C90E0-0x0C96F8",
-                "0x0C96F8-0x0CB6C0",
+                "0x0C96F8-0x0CB2F8",
                 "0x0D8818-0x0D8998",
                 "0x0D8998-0x0D8B18",
                 "0x0D8B18-0x0D8D58",
                 "0x0D8D58-0x0D90B8",
                 "0x0DA420-0x0DAA20",
-                "0x0DAA20-0x0DAFC0",
+                "0x0DAA20-0x0DAEA0",
                 "0x0DAFC0-0x0DB920",
                 "0x0DB920-0x0DC340",
                 "0x0DC340-0x0DCE50",
-                "0x0DCE50-0x0DE638"
+                "0x0DCE50-0x0DE818"
             ],
             "assembly": {
                 "type": "graphics",
@@ -5816,17 +6194,14 @@
                 [
                     {
                         "path": "monsterPalette[8]",
-                        "range": "0-8",
                         "name": "8: TinyMage"
                     },
                     {
                         "path": "monsterPalette[218]",
-                        "range": "0-8",
                         "name": "218: Dummy"
                     },
                     {
                         "path": "monsterPalette[0]",
-                        "range": "0-8",
                         "name": "0: Egg"
                     },
                     {
@@ -5836,7 +6211,6 @@
                 [
                     {
                         "path": "monsterPalette[95]",
-                        "range": "0-8",
                         "name": "95: TinyToad"
                     },
                     {
@@ -5846,17 +6220,14 @@
                 [
                     {
                         "path": "monsterPalette[41]",
-                        "range": "0-8",
                         "name": "41: WaterBug"
                     },
                     {
                         "path": "monsterPalette[96]",
-                        "range": "0-8",
                         "name": "96: HugeCell"
                     },
                     {
                         "path": "monsterPalette[127]",
-                        "range": "0-8",
                         "name": "127: MoonCell"
                     },
                     {
@@ -5866,17 +6237,14 @@
                 [
                     {
                         "path": "monsterPalette[34]",
-                        "range": "0-8",
                         "name": "34: Spirit"
                     },
                     {
                         "path": "monsterPalette[46]",
-                        "range": "0-8",
                         "name": "46: Soul"
                     },
                     {
                         "path": "monsterPalette[84]",
-                        "range": "0-8",
                         "name": "84: Ghost"
                     },
                     {
@@ -5886,17 +6254,14 @@
                 [
                     {
                         "path": "monsterPalette[108]",
-                        "range": "0-8",
                         "name": "108: Last"
                     },
                     {
                         "path": "monsterPalette[135]",
-                        "range": "0-8",
                         "name": "135: Alert"
                     },
                     {
                         "path": "monsterPalette[150]",
-                        "range": "0-8",
                         "name": "150: Searcher"
                     },
                     {
@@ -5906,32 +6271,26 @@
                 [
                     {
                         "path": "monsterPalette[19]",
-                        "range": "0-8",
                         "name": "19: Jelly"
                     },
                     {
                         "path": "monsterPalette[20]",
-                        "range": "0-8",
                         "name": "20: Cream"
                     },
                     {
                         "path": "monsterPalette[28]",
-                        "range": "0-8",
                         "name": "28: Slime"
                     },
                     {
                         "path": "monsterPalette[129]",
-                        "range": "0-8",
                         "name": "129: Tofu"
                     },
                     {
                         "path": "monsterPalette[130]",
-                        "range": "0-8",
                         "name": "130: Pudding"
                     },
                     {
                         "path": "monsterPalette[134]",
-                        "range": "0-8",
                         "name": "134: PinkPuff"
                     },
                     {
@@ -5941,12 +6300,10 @@
                 [
                     {
                         "path": "monsterPalette[14]",
-                        "range": "0-8",
                         "name": "14: EvilShel"
                     },
                     {
                         "path": "monsterPalette[73]",
-                        "range": "0-8",
                         "name": "73: FangShel"
                     },
                     {
@@ -5956,22 +6313,18 @@
                 [
                     {
                         "path": "monsterPalette[71]",
-                        "range": "0-8",
                         "name": "71: Puppet"
                     },
                     {
                         "path": "monsterPalette[100]",
-                        "range": "0-8",
                         "name": "100: EvilDoll"
                     },
                     {
                         "path": "monsterPalette[178]",
-                        "range": "0-8",
                         "name": "178: Cal"
                     },
                     {
                         "path": "monsterPalette[211]",
-                        "range": "0-8",
                         "name": "211: Brena"
                     },
                     {
@@ -5981,17 +6334,14 @@
                 [
                     {
                         "path": "monsterPalette[4]",
-                        "range": "0-8",
                         "name": "4: Larva"
                     },
                     {
                         "path": "monsterPalette[23]",
-                        "range": "0-8",
                         "name": "23: RocLarva"
                     },
                     {
                         "path": "monsterPalette[116]",
-                        "range": "0-8",
                         "name": "116: Crawler"
                     },
                     {
@@ -6001,12 +6351,10 @@
                 [
                     {
                         "path": "monsterPalette[67]",
-                        "range": "0-8",
                         "name": "67: SwordMan"
                     },
                     {
                         "path": "monsterPalette[75]",
-                        "range": "0-8",
                         "name": "75: Warrior"
                     },
                     {
@@ -6016,17 +6364,14 @@
                 [
                     {
                         "path": "monsterPalette[58]",
-                        "range": "0-8",
                         "name": "58: Guard"
                     },
                     {
                         "path": "monsterPalette[78]",
-                        "range": "0-8",
                         "name": "78: BladeMan"
                     },
                     {
                         "path": "monsterPalette[103]",
-                        "range": "0-8",
                         "name": "103: FlameMan"
                     },
                     {
@@ -6036,12 +6381,10 @@
                 [
                     {
                         "path": "monsterPalette[77]",
-                        "range": "0-8",
                         "name": "77: EpeeGirl"
                     },
                     {
                         "path": "monsterPalette[138]",
-                        "range": "0-8",
                         "name": "138: Kary"
                     },
                     {
@@ -6051,17 +6394,14 @@
                 [
                     {
                         "path": "monsterPalette[122]",
-                        "range": "0-8",
                         "name": "122: Witch"
                     },
                     {
                         "path": "monsterPalette[124]",
-                        "range": "0-8",
                         "name": "124: ToadLady"
                     },
                     {
                         "path": "monsterPalette[151]",
-                        "range": "0-8",
                         "name": "151: Warlock"
                     },
                     {
@@ -6071,12 +6411,10 @@
                 [
                     {
                         "path": "monsterPalette[66]",
-                        "range": "0-8",
                         "name": "66: Panther"
                     },
                     {
                         "path": "monsterPalette[109]",
-                        "range": "0-8",
                         "name": "109: BlackCat"
                     },
                     {
@@ -6086,12 +6424,10 @@
                 [
                     {
                         "path": "monsterPalette[143]",
-                        "range": "0-8",
                         "name": "143: Juclyote"
                     },
                     {
                         "path": "monsterPalette[153]",
-                        "range": "0-8",
                         "name": "153: Procyote"
                     },
                     {
@@ -6101,22 +6437,18 @@
                 [
                     {
                         "path": "monsterPalette[3]",
-                        "range": "0-8",
                         "name": "3: FloatEye"
                     },
                     {
                         "path": "monsterPalette[107]",
-                        "range": "0-8",
                         "name": "107: Plague"
                     },
                     {
                         "path": "monsterPalette[115]",
-                        "range": "0-8",
                         "name": "115: Red"
                     },
                     {
                         "path": "monsterPalette[148]",
-                        "range": "0-8",
                         "name": "148: FatalEye"
                     },
                     {
@@ -6126,17 +6458,14 @@
                 [
                     {
                         "path": "monsterPalette[65]",
-                        "range": "0-8",
                         "name": "65: Ogre"
                     },
                     {
                         "path": "monsterPalette[99]",
-                        "range": "0-8",
                         "name": "99: Mad"
                     },
                     {
                         "path": "monsterPalette[221]",
-                        "range": "0-8",
                         "name": "221: Dummy"
                     },
                     {
@@ -6146,12 +6475,10 @@
                 [
                     {
                         "path": "monsterPalette[51]",
-                        "range": "0-8",
                         "name": "51: VampGirl"
                     },
                     {
                         "path": "monsterPalette[69]",
-                        "range": "0-8",
                         "name": "69: VampLady"
                     },
                     {
@@ -6161,12 +6488,10 @@
                 [
                     {
                         "path": "monsterPalette[11]",
-                        "range": "0-8",
                         "name": "11: Sandpede"
                     },
                     {
                         "path": "monsterPalette[113]",
-                        "range": "0-8",
                         "name": "113: Centpede"
                     },
                     {
@@ -6176,12 +6501,10 @@
                 [
                     {
                         "path": "monsterPalette[102]",
-                        "range": "0-8",
                         "name": "102: Arachne"
                     },
                     {
                         "path": "monsterPalette[111]",
-                        "range": "0-8",
                         "name": "111: Talantla"
                     },
                     {
@@ -6191,17 +6514,14 @@
                 [
                     {
                         "path": "monsterPalette[22]",
-                        "range": "0-8",
                         "name": "22: Weeper"
                     },
                     {
                         "path": "monsterPalette[62]",
-                        "range": "0-8",
                         "name": "62: Grudger"
                     },
                     {
                         "path": "monsterPalette[74]",
-                        "range": "0-8",
                         "name": "74: Screamer"
                     },
                     {
@@ -6211,12 +6531,10 @@
                 [
                     {
                         "path": "monsterPalette[68]",
-                        "range": "0-8",
                         "name": "68: Centaur"
                     },
                     {
                         "path": "monsterPalette[145]",
-                        "range": "0-8",
                         "name": "145: Horseman"
                     },
                     {
@@ -6226,12 +6544,10 @@
                 [
                     {
                         "path": "monsterPalette[17]",
-                        "range": "0-8",
                         "name": "17: TrapRose"
                     },
                     {
                         "path": "monsterPalette[33]",
-                        "range": "0-8",
                         "name": "33: Cannibal"
                     },
                     {
@@ -6241,17 +6557,14 @@
                 [
                     {
                         "path": "monsterPalette[52]",
-                        "range": "0-8",
                         "name": "52: CaveNaga"
                     },
                     {
                         "path": "monsterPalette[64]",
-                        "range": "0-8",
                         "name": "64: Naga"
                     },
                     {
                         "path": "monsterPalette[79]",
-                        "range": "0-8",
                         "name": "79: HugeNaga"
                     },
                     {
@@ -6261,7 +6574,6 @@
                 [
                     {
                         "path": "monsterPalette[144]",
-                        "range": "0-8",
                         "name": "144: EvilMask"
                     },
                     {
@@ -6271,7 +6583,6 @@
                 [
                     {
                         "path": "monsterPalette[139]",
-                        "range": "0-8",
                         "name": "139: Molbol"
                     },
                     {
@@ -6281,12 +6592,10 @@
                 [
                     {
                         "path": "monsterPalette[76]",
-                        "range": "0-8",
                         "name": "76: Armadilo"
                     },
                     {
                         "path": "monsterPalette[89]",
-                        "range": "0-8",
                         "name": "89: Ironback"
                     },
                     {
@@ -6296,12 +6605,10 @@
                 [
                     {
                         "path": "monsterPalette[90]",
-                        "range": "0-8",
                         "name": "90: FlameDog"
                     },
                     {
                         "path": "monsterPalette[120]",
-                        "range": "0-8",
                         "name": "120: IceBeast"
                     },
                     {
@@ -6311,17 +6618,14 @@
                 [
                     {
                         "path": "monsterPalette[1]",
-                        "range": "0-8",
                         "name": "1: Basilisk"
                     },
                     {
                         "path": "monsterPalette[25]",
-                        "range": "0-8",
                         "name": "25: BlackLiz"
                     },
                     {
                         "path": "monsterPalette[117]",
-                        "range": "0-8",
                         "name": "117: Ice"
                     },
                     {
@@ -6331,17 +6635,14 @@
                 [
                     {
                         "path": "monsterPalette[10]",
-                        "range": "0-8",
                         "name": "10: SandMoth"
                     },
                     {
                         "path": "monsterPalette[72]",
-                        "range": "0-8",
                         "name": "72: GlomWing"
                     },
                     {
                         "path": "monsterPalette[118]",
-                        "range": "0-8",
                         "name": "118: RockMoth"
                     },
                     {
@@ -6351,12 +6652,10 @@
                 [
                     {
                         "path": "monsterPalette[42]",
-                        "range": "0-8",
                         "name": "42: Aligator"
                     },
                     {
                         "path": "monsterPalette[55]",
-                        "range": "0-8",
                         "name": "55: Crocdile"
                     },
                     {
@@ -6366,22 +6665,18 @@
                 [
                     {
                         "path": "monsterPalette[59]",
-                        "range": "0-8",
                         "name": "59: Lamia"
                     },
                     {
                         "path": "monsterPalette[93]",
-                        "range": "0-8",
                         "name": "93: Lilith"
                     },
                     {
                         "path": "monsterPalette[94]",
-                        "range": "0-8",
                         "name": "94: Q'Lamia"
                     },
                     {
                         "path": "monsterPalette[220]",
-                        "range": "0-8",
                         "name": "220: Dummy"
                     },
                     {
@@ -6391,17 +6686,14 @@
                 [
                     {
                         "path": "monsterPalette[26]",
-                        "range": "0-8",
                         "name": "26: Turtle"
                     },
                     {
                         "path": "monsterPalette[82]",
-                        "range": "0-8",
                         "name": "82: Tortoise"
                     },
                     {
                         "path": "monsterPalette[88]",
-                        "range": "0-8",
                         "name": "88: Carapace"
                     },
                     {
@@ -6411,12 +6703,10 @@
                 [
                     {
                         "path": "monsterPalette[56]",
-                        "range": "0-8",
                         "name": "56: Hydra"
                     },
                     {
                         "path": "monsterPalette[61]",
-                        "range": "0-8",
                         "name": "61: Python"
                     },
                     {
@@ -6426,12 +6716,10 @@
                 [
                     {
                         "path": "monsterPalette[37]",
-                        "range": "0-8",
                         "name": "37: Gargoyle"
                     },
                     {
                         "path": "monsterPalette[39]",
-                        "range": "0-8",
                         "name": "39: Hooligan"
                     },
                     {
@@ -6441,12 +6729,10 @@
                 [
                     {
                         "path": "monsterPalette[80]",
-                        "range": "0-8",
                         "name": "80: Medusa"
                     },
                     {
                         "path": "monsterPalette[91]",
-                        "range": "0-8",
                         "name": "91: Gorgon"
                     },
                     {
@@ -6456,22 +6742,18 @@
                 [
                     {
                         "path": "monsterPalette[29]",
-                        "range": "0-8",
                         "name": "29: Soldier"
                     },
                     {
                         "path": "monsterPalette[30]",
-                        "range": "0-8",
                         "name": "30: Officer"
                     },
                     {
                         "path": "monsterPalette[44]",
-                        "range": "0-8",
                         "name": "44: Fighter"
                     },
                     {
                         "path": "monsterPalette[45]",
-                        "range": "0-8",
                         "name": "45: General"
                     },
                     {
@@ -6481,12 +6763,10 @@
                 [
                     {
                         "path": "monsterPalette[6]",
-                        "range": "0-8",
                         "name": "6: Treant"
                     },
                     {
                         "path": "monsterPalette[125]",
-                        "range": "0-8",
                         "name": "125: DarkTree"
                     },
                     {
@@ -6496,17 +6776,14 @@
                 [
                     {
                         "path": "monsterPalette[35]",
-                        "range": "0-8",
                         "name": "35: Skelton"
                     },
                     {
                         "path": "monsterPalette[47]",
-                        "range": "0-8",
                         "name": "47: Red"
                     },
                     {
                         "path": "monsterPalette[49]",
-                        "range": "0-8",
                         "name": "49: Skull"
                     },
                     {
@@ -6516,17 +6793,14 @@
                 [
                     {
                         "path": "monsterPalette[15]",
-                        "range": "0-8",
                         "name": "15: Zombie"
                     },
                     {
                         "path": "monsterPalette[48]",
-                        "range": "0-8",
                         "name": "48: Ghoul"
                     },
                     {
                         "path": "monsterPalette[50]",
-                        "range": "0-8",
                         "name": "50: Revenant"
                     },
                     {
@@ -6536,17 +6810,14 @@
                 [
                     {
                         "path": "monsterPalette[83]",
-                        "range": "0-8",
                         "name": "83: Dummy"
                     },
                     {
                         "path": "monsterPalette[112]",
-                        "range": "0-8",
                         "name": "112: Gremlin"
                     },
                     {
                         "path": "monsterPalette[142]",
-                        "range": "0-8",
                         "name": "142: Fiend"
                     },
                     {
@@ -6556,7 +6827,6 @@
                 [
                     {
                         "path": "monsterPalette[136]",
-                        "range": "0-8",
                         "name": "136: Machine"
                     },
                     {
@@ -6566,12 +6836,10 @@
                 [
                     {
                         "path": "monsterPalette[9]",
-                        "range": "0-8",
                         "name": "9: Sand"
                     },
                     {
                         "path": "monsterPalette[21]",
-                        "range": "0-8",
                         "name": "21: WaterHag"
                     },
                     {
@@ -6581,17 +6849,14 @@
                 [
                     {
                         "path": "monsterPalette[70]",
-                        "range": "0-8",
                         "name": "70: Marion"
                     },
                     {
                         "path": "monsterPalette[98]",
-                        "range": "0-8",
                         "name": "98: Sorcerer"
                     },
                     {
                         "path": "monsterPalette[121]",
-                        "range": "0-8",
                         "name": "121: Conjurer"
                     },
                     {
@@ -6601,17 +6866,14 @@
                 [
                     {
                         "path": "monsterPalette[5]",
-                        "range": "0-8",
                         "name": "5: Cave"
                     },
                     {
                         "path": "monsterPalette[101]",
-                        "range": "0-8",
                         "name": "101: GiantBat"
                     },
                     {
                         "path": "monsterPalette[119]",
-                        "range": "0-8",
                         "name": "119: Were"
                     },
                     {
@@ -6621,12 +6883,10 @@
                 [
                     {
                         "path": "monsterPalette[13]",
-                        "range": "0-8",
                         "name": "13: CaveToad"
                     },
                     {
                         "path": "monsterPalette[18]",
-                        "range": "0-8",
                         "name": "18: Mad"
                     },
                     {
@@ -6636,17 +6896,14 @@
                 [
                     {
                         "path": "monsterPalette[7]",
-                        "range": "0-8",
                         "name": "7: SwordRat"
                     },
                     {
                         "path": "monsterPalette[31]",
-                        "range": "0-8",
                         "name": "31: Needler"
                     },
                     {
                         "path": "monsterPalette[60]",
-                        "range": "0-8",
                         "name": "60: StingRat"
                     },
                     {
@@ -6656,17 +6913,14 @@
                 [
                     {
                         "path": "monsterPalette[16]",
-                        "range": "0-8",
                         "name": "16: Pike"
                     },
                     {
                         "path": "monsterPalette[43]",
-                        "range": "0-8",
                         "name": "43: Piranha"
                     },
                     {
                         "path": "monsterPalette[54]",
-                        "range": "0-8",
                         "name": "54: ElecFish"
                     },
                     {
@@ -6676,7 +6930,6 @@
                 [
                     {
                         "path": "monsterPalette[104]",
-                        "range": "0-8",
                         "name": "104: Beamer"
                     },
                     {
@@ -6686,12 +6939,10 @@
                 [
                     {
                         "path": "monsterPalette[87]",
-                        "range": "0-8",
                         "name": "87: Chimera"
                     },
                     {
                         "path": "monsterPalette[126]",
-                        "range": "0-8",
                         "name": "126: Mantcore"
                     },
                     {
@@ -6701,12 +6952,10 @@
                 [
                     {
                         "path": "monsterPalette[133]",
-                        "range": "0-8",
                         "name": "133: Green"
                     },
                     {
                         "path": "monsterPalette[141]",
-                        "range": "0-8",
                         "name": "141: Yellow"
                     },
                     {
@@ -6716,17 +6965,14 @@
                 [
                     {
                         "path": "monsterPalette[12]",
-                        "range": "0-8",
                         "name": "12: SandWorm"
                     },
                     {
                         "path": "monsterPalette[57]",
-                        "range": "0-8",
                         "name": "57: AquaWorm"
                     },
                     {
                         "path": "monsterPalette[114]",
-                        "range": "0-8",
                         "name": "114: Red"
                     },
                     {
@@ -6736,17 +6982,14 @@
                 [
                     {
                         "path": "monsterPalette[53]",
-                        "range": "0-8",
                         "name": "53: D'Bone"
                     },
                     {
                         "path": "monsterPalette[81]",
-                        "range": "0-8",
                         "name": "81: D'Fossil"
                     },
                     {
                         "path": "monsterPalette[149]",
-                        "range": "0-8",
                         "name": "149: D'"
                     },
                     {
@@ -6756,12 +6999,10 @@
                 [
                     {
                         "path": "monsterPalette[158]",
-                        "range": "0-8",
                         "name": "158: Pale"
                     },
                     {
                         "path": "monsterPalette[195]",
-                        "range": "0-8",
                         "name": "195: Dark"
                     },
                     {
@@ -6771,7 +7012,6 @@
                 [
                     {
                         "path": "monsterPalette[123]",
-                        "range": "0-8",
                         "name": "123: TrapDoor"
                     },
                     {
@@ -6781,12 +7021,10 @@
                 [
                     {
                         "path": "monsterPalette[128]",
-                        "range": "0-8",
                         "name": "128: Breath"
                     },
                     {
                         "path": "monsterPalette[131]",
-                        "range": "0-8",
                         "name": "131: Mind"
                     },
                     {
@@ -6796,17 +7034,14 @@
                 [
                     {
                         "path": "monsterPalette[92]",
-                        "range": "0-8",
                         "name": "92: Stoneman"
                     },
                     {
                         "path": "monsterPalette[132]",
-                        "range": "0-8",
                         "name": "132: Ironman"
                     },
                     {
                         "path": "monsterPalette[147]",
-                        "range": "0-8",
                         "name": "147: Staleman"
                     },
                     {
@@ -6816,22 +7051,18 @@
                 [
                     {
                         "path": "monsterPalette[140]",
-                        "range": "0-8",
                         "name": "140: Ging Ryu"
                     },
                     {
                         "path": "monsterPalette[156]",
-                        "range": "0-8",
                         "name": "156: King Ryu"
                     },
                     {
                         "path": "monsterPalette[157]",
-                        "range": "0-8",
                         "name": "157: Clapper"
                     },
                     {
                         "path": "monsterPalette[181]",
-                        "range": "0-8",
                         "name": "181: Shadow"
                     },
                     {
@@ -6841,12 +7072,10 @@
                 [
                     {
                         "path": "monsterPalette[137]",
-                        "range": "0-8",
                         "name": "137: MacGiant"
                     },
                     {
                         "path": "monsterPalette[146]",
-                        "range": "0-8",
                         "name": "146: RedGiant"
                     },
                     {
@@ -6856,12 +7085,10 @@
                 [
                     {
                         "path": "monsterPalette[40]",
-                        "range": "0-8",
                         "name": "40: Raven"
                     },
                     {
                         "path": "monsterPalette[97]",
-                        "range": "0-8",
                         "name": "97: Roc"
                     },
                     {
@@ -6871,17 +7098,14 @@
                 [
                     {
                         "path": "monsterPalette[110]",
-                        "range": "0-8",
                         "name": "110: D'Machin"
                     },
                     {
                         "path": "monsterPalette[155]",
-                        "range": "0-8",
                         "name": "155: Blue"
                     },
                     {
                         "path": "monsterPalette[159]",
-                        "range": "0-8",
                         "name": "159: Red"
                     },
                     {
@@ -6891,7 +7115,6 @@
                 [
                     {
                         "path": "monsterPalette[160]",
-                        "range": "0-8",
                         "name": "160: Behemoth"
                     },
                     {
@@ -6901,7 +7124,6 @@
                 [
                     {
                         "path": "monsterPalette[162]",
-                        "range": "0-8",
                         "name": "162: Octomamm (boss)"
                     },
                     {
@@ -6911,7 +7133,6 @@
                 [
                     {
                         "path": "monsterPalette[163]",
-                        "range": "0-8",
                         "name": "163: Antlion (boss)"
                     },
                     {
@@ -6921,7 +7142,6 @@
                 [
                     {
                         "path": "monsterPalette[85]",
-                        "range": "0-8",
                         "name": "85: MomBomb (boss)"
                     },
                     {
@@ -6931,17 +7151,14 @@
                 [
                     {
                         "path": "monsterPalette[165]",
-                        "range": "0-8",
                         "name": "165: Milon (boss)"
                     },
                     {
                         "path": "monsterPalette[166]",
-                        "range": "0-8",
                         "name": "166: Milon (boss)"
                     },
                     {
                         "path": "monsterPalette[187]",
-                        "range": "0-8",
                         "name": "187: Rubicant (boss)"
                     },
                     {
@@ -6951,12 +7168,10 @@
                 [
                     {
                         "path": "monsterPalette[170]",
-                        "range": "0-8",
                         "name": "170: Kainazzo (boss)"
                     },
                     {
                         "path": "monsterPalette[177]",
-                        "range": "0-8",
                         "name": "177: Valvalis (boss)"
                     },
                     {
@@ -6966,7 +7181,6 @@
                 [
                     {
                         "path": "monsterPalette[171]",
-                        "range": "0-8",
                         "name": "171: Dark (boss)"
                     },
                     {
@@ -6976,17 +7190,14 @@
                 [
                     {
                         "path": "monsterPalette[173]",
-                        "range": "0-8",
                         "name": "173: Sandy (boss)"
                     },
                     {
                         "path": "monsterPalette[174]",
-                        "range": "0-8",
                         "name": "174: Cindy (boss)"
                     },
                     {
                         "path": "monsterPalette[175]",
-                        "range": "0-8",
                         "name": "175: Mindy (boss)"
                     },
                     {
@@ -6996,7 +7207,6 @@
                 [
                     {
                         "path": "monsterPalette[179]",
-                        "range": "0-8",
                         "name": "179: Calbrena (boss)"
                     },
                     {
@@ -7006,7 +7216,6 @@
                 [
                     {
                         "path": "monsterPalette[191]",
-                        "range": "0-8",
                         "name": "191: EvilWall (boss)"
                     },
                     {
@@ -7016,12 +7225,10 @@
                 [
                     {
                         "path": "monsterPalette[185]",
-                        "range": "0-8",
                         "name": "185: K'Eblan (boss)"
                     },
                     {
                         "path": "monsterPalette[186]",
-                        "range": "0-8",
                         "name": "186: Q'Eblan (boss)"
                     },
                     {
@@ -7031,17 +7238,14 @@
                 [
                     {
                         "path": "monsterPalette[167]",
-                        "range": "0-8",
                         "name": "167: Baigan (boss)"
                     },
                     {
                         "path": "monsterPalette[169]",
-                        "range": "0-8",
                         "name": "169: RightArm (boss)"
                     },
                     {
                         "path": "monsterPalette[168]",
-                        "range": "0-8",
                         "name": "168: Left (boss)"
                     },
                     {
@@ -7051,12 +7255,10 @@
                 [
                     {
                         "path": "monsterPalette[182]",
-                        "range": "0-8",
                         "name": "182: Dr'Lugae (boss)"
                     },
                     {
                         "path": "monsterPalette[183]",
-                        "range": "0-8",
                         "name": "183: Balnab (boss)"
                     },
                     {
@@ -7066,7 +7268,6 @@
                 [
                     {
                         "path": "monsterPalette[176]",
-                        "range": "0-8",
                         "name": "176: Golbez (boss)"
                     },
                     {
@@ -7076,7 +7277,6 @@
                 [
                     {
                         "path": "monsterPalette[197]",
-                        "range": "0-8",
                         "name": "197: CPU (boss)"
                     },
                     {
@@ -7086,7 +7286,6 @@
                 [
                     {
                         "path": "monsterPalette[197]",
-                        "range": "0-8",
                         "name": "197: Defender (boss)"
                     },
                     {
@@ -7096,7 +7295,6 @@
                 [
                     {
                         "path": "monsterPalette[199]",
-                        "range": "0-8",
                         "name": "199: Zemus (boss)"
                     },
                     {
@@ -7106,7 +7304,6 @@
                 [
                     {
                         "path": "monsterPalette[200]",
-                        "range": "0-8",
                         "name": "200: Zeromus (boss)"
                     },
                     {
@@ -7114,34 +7311,34 @@
                     }
                 ],
                 [
-                    {
-                        "path": "monsterPalette[201]",
-                        "range": "0-8",
-                        "offset": 0,
-                        "compose": true,
-                        "name": "201+202: Zeromus (boss)"
-                    },
-                    {
-                        "path": "monsterPalette[202]",
-                        "range": "0-8",
-                        "offset": 8,
-                        "compose": true,
-                        "name": "201+202: Zeromus (boss)"
-                    },
-                    {
-                        "path": "monsterPalette[152]",
-                        "range": "0-8",
-                        "offset": 0,
-                        "compose": true,
-                        "name": "152+153: Dummy (boss)"
-                    },
-                    {
-                        "path": "monsterPalette[153]",
-                        "range": "0-8",
-                        "offset": 8,
-                        "compose": true,
-                        "name": "152+153: Dummy (boss)"
-                    },
+                    [
+                        {
+                            "path": "monsterPalette[201]",
+                            "offset": 0,
+                            "compose": true,
+                            "name": "201+202: Zeromus (boss)"
+                        },
+                        {
+                            "path": "monsterPalette[202]",
+                            "offset": 8,
+                            "compose": true,
+                            "name": "201+202: Zeromus (boss)"
+                        }
+                    ],
+                    [
+                        {
+                            "path": "monsterPalette[152]",
+                            "offset": 0,
+                            "compose": true,
+                            "name": "152+153: Dummy (boss)"
+                        },
+                        {
+                            "path": "monsterPalette[153]",
+                            "offset": 8,
+                            "compose": true,
+                            "name": "152+153: Dummy (boss)"
+                        }
+                    ],
                     {
                         "path": "monsterPalette"
                     }
@@ -7149,22 +7346,18 @@
                 [
                     {
                         "path": "monsterPalette[0]",
-                        "range": "0-8",
                         "name": "0: Imp"
                     },
                     {
                         "path": "monsterPalette[24]",
-                        "range": "0-8",
                         "name": "24: Dark"
                     },
                     {
                         "path": "monsterPalette[27]",
-                        "range": "0-8",
                         "name": "27: Imp"
                     },
                     {
                         "path": "monsterPalette[32]",
-                        "range": "0-8",
                         "name": "32: Tricker"
                     },
                     {
@@ -7174,22 +7367,18 @@
                 [
                     {
                         "path": "monsterPalette[85]",
-                        "range": "0-8",
                         "name": "85: Bomb"
                     },
                     {
                         "path": "monsterPalette[86]",
-                        "range": "0-8",
                         "name": "86: GrayBomb"
                     },
                     {
                         "path": "monsterPalette[105]",
-                        "range": "0-8",
                         "name": "105: Balloon"
                     },
                     {
                         "path": "monsterPalette[106]",
-                        "range": "0-8",
                         "name": "106: Grenade"
                     },
                     {
@@ -7199,17 +7388,14 @@
                 [
                     {
                         "path": "monsterPalette[2]",
-                        "range": "0-8",
                         "name": "2: Eagle"
                     },
                     {
                         "path": "monsterPalette[36]",
-                        "range": "0-8",
                         "name": "36: Cocktric"
                     },
                     {
                         "path": "monsterPalette[38]",
-                        "range": "0-8",
                         "name": "38: Roc"
                     },
                     {
@@ -7219,7 +7405,6 @@
                 [
                     {
                         "path": "monsterPalette[63]",
-                        "range": "0-8",
                         "name": "63: Mage"
                     },
                     {
@@ -7229,7 +7414,6 @@
                 [
                     {
                         "path": "monsterPalette[209]",
-                        "range": "0-8",
                         "name": "209: Titan (boss)"
                     },
                     {
@@ -7239,7 +7423,6 @@
                 [
                     {
                         "path": "monsterPalette[161]",
-                        "range": "0-8",
                         "name": "161: D'Mist (boss)"
                     },
                     {
@@ -7249,7 +7432,6 @@
                 [
                     {
                         "path": "monsterPalette[188]",
-                        "range": "0-8",
                         "name": "188: Odin (boss)"
                     },
                     {
@@ -7259,12 +7441,10 @@
                 [
                     {
                         "path": "monsterPalette[154]",
-                        "range": "0-8",
                         "name": "154: Ogopogo (boss)"
                     },
                     {
                         "path": "monsterPalette[189]",
-                        "range": "0-8",
                         "name": "189: Leviatan (boss)"
                     },
                     {
@@ -7274,12 +7454,10 @@
                 [
                     {
                         "path": "monsterPalette[152]",
-                        "range": "0-8",
                         "name": "152: Wyvern (boss)"
                     },
                     {
                         "path": "monsterPalette[190]",
-                        "range": "0-8",
                         "name": "190: Bahamut (boss)"
                     },
                     {
@@ -7289,13 +7467,38 @@
                 [
                     {
                         "path": "monsterPalette[192]",
-                        "range": "0-8",
                         "name": "192: Asura (boss)"
                     },
                     {
                         "path": "monsterPalette"
                     }
                 ]
+            ],
+            "hiddenItems": [
+                62,
+                63,
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                78,
+                79,
+                84,
+                85,
+                86,
+                87,
+                88,
+                89
             ],
             "stringTable": {
                 "length": 90,
@@ -7363,34 +7566,34 @@
                     "59": "Raven, Roc",
                     "60": "Blue, D'Machin, Red",
                     "61": "Behemoth",
-                    "62": "*Octomamm",
-                    "63": "*Antlion",
-                    "64": "*MomBomb",
-                    "65": "*Elements, *Milon, *Rubicant",
-                    "66": "*Elements, *Kainazzo, *Valvalis",
-                    "67": "*Dark",
-                    "68": "*Cindy, *Mindy, *Sandy",
-                    "69": "*Calbrena",
-                    "70": "*EvilWall",
-                    "71": "*K'Eblan, *Q'Eblan",
-                    "72": "*Baigan, *Left, *RightArm",
-                    "73": "*Balnab, *Balnab Z, *Dr'Lugae",
-                    "74": "*Golbez",
-                    "75": "*CPU",
-                    "76": "*Attacker, *Defender",
-                    "77": "*Zemus",
-                    "78": "*Zeromus",
-                    "79": "*Dummy, *Zeromus",
+                    "62": "Octomamm (tile pool)",
+                    "63": "Antlion (tile pool)",
+                    "64": "MomBomb (tile pool)",
+                    "65": "Elements, Milon, Rubicant (tile pool)",
+                    "66": "Elements, Kainazzo, Valvalis (tile pool)",
+                    "67": "Dark (tile pool)",
+                    "68": "Cindy, Mindy, Sandy, Ifrit (tile pool)",
+                    "69": "Calbrena (tile pool)",
+                    "70": "EvilWall (tile pool)",
+                    "71": "K'Eblan, Q'Eblan (tile pool)",
+                    "72": "Baigan, Left, RightArm (tile pool)",
+                    "73": "Balnab, Balnab Z, Dr'Lugae (tile pool)",
+                    "74": "Golbez (tile pool)",
+                    "75": "CPU (tile pool)",
+                    "76": "Attacker, Defender (tile pool)",
+                    "77": "Zemus (tile pool)",
+                    "78": "Zeromus (tile pool)",
+                    "79": "Dummy, Zeromus (tile pool)",
                     "80": "Dark, Imp, Tricker",
                     "81": "Balloon, Bomb, Dummy, GrayBomb, Grenade",
-                    "82": "Cocktric, Eagle, Roc",
-                    "83": "Mage",
-                    "84": "*Titan",
-                    "85": "*D'Mist",
-                    "86": "*Odin",
-                    "87": "*Leviatan, *Ogopogo",
-                    "88": "*Bahamut, *Wyvern",
-                    "89": "*Asura"
+                    "82": "Cocktric, Eagle, Roc, Cockatrice",
+                    "83": "Mage, Mindflayer",
+                    "84": "Titan (tile pool)",
+                    "85": "D'Mist, Dragon Mist (tile pool)",
+                    "86": "Odin (tile pool)",
+                    "87": "Leviatan, Ogopogo, Leviathan (tile pool)",
+                    "88": "Bahamut, Wyvern (tile pool)",
+                    "89": "Asura (tile pool)"
                 }
             }
         },
@@ -7713,7 +7916,7 @@
                     "82": "Tortoise",
                     "83": "Dummy",
                     "84": "Ghost",
-                    "85": "Bomb, *MomBomb, Dummy",
+                    "85": "Bomb, MomBomb, Dummy",
                     "86": "GrayBomb",
                     "87": "Chimera",
                     "88": "Carapace",
@@ -7780,49 +7983,49 @@
                     "149": "D'",
                     "150": "Searcher",
                     "151": "Warlock",
-                    "152": "*Wyvern, *Dummy",
+                    "152": "Wyvern, Dummy",
                     "153": "Procyote",
-                    "154": "*Ogopogo",
+                    "154": "Ogopogo",
                     "155": "Blue",
                     "156": "King Ryu",
                     "157": "Clapper",
                     "158": "Pale",
                     "159": "Red",
                     "160": "Behemoth",
-                    "161": "*D'Mist",
-                    "162": "*Octomamm",
-                    "163": "*Antlion",
-                    "165": "*Milon",
-                    "166": "*Milon, *Elements",
-                    "167": "*Baigan",
-                    "168": "*Left",
-                    "169": "*RightArm",
-                    "170": "*Kainazzo, *Elements",
-                    "171": "*Dark",
-                    "173": "*Sandy",
-                    "174": "*Cindy",
-                    "175": "*Mindy",
-                    "176": "*Golbez",
-                    "177": "*Valvalis",
+                    "161": "D'Mist",
+                    "162": "Octomamm",
+                    "163": "Antlion",
+                    "165": "Milon",
+                    "166": "Milon, Elements",
+                    "167": "Baigan",
+                    "168": "Left",
+                    "169": "RightArm",
+                    "170": "Kainazzo, Elements",
+                    "171": "Dark",
+                    "173": "Sandy",
+                    "174": "Cindy",
+                    "175": "Mindy",
+                    "176": "Golbez",
+                    "177": "Valvalis",
                     "178": "Cal, Dummy",
-                    "179": "*Calbrena",
+                    "179": "Calbrena",
                     "181": "Shadow",
-                    "182": "*Dr'Lugae",
-                    "183": "*Balnab, *Balnab Z",
-                    "185": "*K'Eblan",
-                    "186": "*Q'Eblan",
-                    "187": "*Rubicant",
-                    "188": "*Odin",
-                    "189": "*Leviatan",
-                    "190": "*Bahamut",
-                    "191": "*EvilWall",
-                    "192": "*Asura",
+                    "182": "Dr'Lugae",
+                    "183": "Balnab, Balnab Z",
+                    "185": "K'Eblan",
+                    "186": "Q'Eblan",
+                    "187": "Rubicant",
+                    "188": "Odin",
+                    "189": "Leviatan",
+                    "190": "Bahamut",
+                    "191": "EvilWall",
+                    "192": "Asura",
                     "195": "Dark",
-                    "197": "*CPU, *Defender, *Attacker",
-                    "199": "*Zemus",
-                    "200": "*Zeromus",
-                    "201": "*Zeromus",
-                    "209": "*Titan",
+                    "197": "CPU, Defender, Attacker",
+                    "199": "Zemus",
+                    "200": "Zeromus",
+                    "201": "Zeromus",
+                    "209": "Titan",
                     "211": "Brena",
                     "218": "Dummy",
                     "220": "Dummy",
@@ -8677,14 +8880,160 @@
                     "15": "Small",
                     "16": "Toad"
                 }
-            }
+            },
+            "itemPalettes": [
+                [
+                    {
+                        "path": "portraitPalette[0]",
+                        "name": "0: Cecil (Dark Knight)"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[1]",
+                        "name": "1: Kain"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[2]",
+                        "name": "2: Rydia (Child)"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[3]",
+                        "name": "3: Tellah"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[4]",
+                        "name": "4: Edward"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[5]",
+                        "name": "5: Rosa"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[6]",
+                        "name": "6: Yang"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[7]",
+                        "name": "7: Palom"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[8]",
+                        "name": "8: Porom"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[9]",
+                        "name": "9: Cecil (Paladin)"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[10]",
+                        "name": "10: Cid"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[11]",
+                        "name": "11: Rydia (Adult)"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[12]",
+                        "name": "12: Edge"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette[13]",
+                        "name": "13: FuSoYa"
+                    },
+                    {
+                        "path": "portraitPalette"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette",
+                        "name": "portrait palette (reused)"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette",
+                        "name": "portrait palette (reused)"
+                    }
+                ],
+                [
+                    {
+                        "path": "portraitPalette",
+                        "name": "portrait palette (reused)"
+                    }
+                ]
+            ]
         },
         "portraitPalette": {
             "type": "array",
             "name": "Character Portrait Palette",
-            "range": "0x0D86D0-0x0D87B0",
+            "range": "0x0D86D0-0x0D87D0",
             "array": {
-                "length": 14
+                "length": 16
             },
             "assembly": {
                 "type": "assembly",
@@ -9834,6 +10183,3797 @@
                     "begin": "0x009C01",
                     "mask": "0xFFFFFF",
                     "offset": -3
+                }
+            ]
+        },
+        "bossGraphics_0": {
+            "type": "graphics",
+            "name": "Boss Graphics (D'Mist, Dragon Mist)",
+            "format": "snes3bpp",
+            "width": 10,
+            "window": {
+                "path": "monsterGraphics_85",
+                "offset": 0,
+                "tiles": 48
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[161]",
+                    "name": "161: D'Mist, Dragon Mist"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 8,
+            "layout": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                0,
+                1,
+                2,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                3,
+                4,
+                5,
+                6,
+                -1,
+                -1,
+                -1,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                -1,
+                -1,
+                -1,
+                14,
+                15,
+                16,
+                17,
+                18,
+                -1,
+                20,
+                -1,
+                -1,
+                -1,
+                21,
+                22,
+                23,
+                24,
+                25,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                19,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                -1,
+                -1,
+                32,
+                33,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                -1,
+                39,
+                47,
+                42,
+                43,
+                41,
+                42,
+                43,
+                44,
+                45,
+                46
+            ]
+        },
+        "bossGraphics_2": {
+            "type": "graphics",
+            "name": "Boss Graphics (Titan)",
+            "format": "snes3bpp",
+            "width": 6,
+            "window": {
+                "path": "monsterGraphics_84",
+                "offset": 0,
+                "tiles": 35
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[209]",
+                    "name": "209: Titan"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 8,
+            "layout": [
+                -1,
+                -1,
+                0,
+                1,
+                2,
+                -1,
+                -1,
+                3,
+                4,
+                5,
+                6,
+                7,
+                -1,
+                8,
+                9,
+                10,
+                11,
+                12,
+                -1,
+                13,
+                14,
+                15,
+                16,
+                17,
+                -1,
+                18,
+                19,
+                20,
+                21,
+                -1,
+                -1,
+                22,
+                23,
+                24,
+                25,
+                -1,
+                -1,
+                26,
+                27,
+                28,
+                29,
+                -1,
+                -1,
+                30,
+                31,
+                32,
+                33,
+                34
+            ]
+        },
+        "bossGraphics_4": {
+            "type": "graphics",
+            "name": "Boss Graphics (Octomamm)",
+            "format": "snes3bpp",
+            "width": 18,
+            "window": {
+                "path": "monsterGraphics_62",
+                "offset": 0,
+                "tiles": 90
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[162]",
+                    "name": "162: Octomamm"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 12,
+            "layout": [
+                -1,
+                -1,
+                50,
+                51,
+                52,
+                53,
+                -1,
+                5,
+                6,
+                7,
+                8,
+                -1,
+                -1,
+                12,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                54,
+                55,
+                56,
+                57,
+                -1,
+                21,
+                22,
+                23,
+                24,
+                -1,
+                -1,
+                28,
+                29,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                89,
+                -1,
+                76,
+                37,
+                38,
+                -1,
+                -1,
+                39,
+                40,
+                -1,
+                -1,
+                44,
+                45,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                58,
+                59,
+                62,
+                -1,
+                76,
+                77,
+                86,
+                87,
+                60,
+                61,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                64,
+                65,
+                66,
+                67,
+                -1,
+                -1,
+                88,
+                18,
+                78,
+                79,
+                80,
+                81,
+                82,
+                3,
+                4,
+                2,
+                -1,
+                -1,
+                68,
+                69,
+                70,
+                71,
+                -1,
+                -1,
+                -1,
+                -1,
+                34,
+                13,
+                83,
+                84,
+                85,
+                19,
+                20,
+                -1,
+                -1,
+                -1,
+                -1,
+                72,
+                73,
+                74,
+                -1,
+                -1,
+                -1,
+                -1,
+                41,
+                63,
+                -1,
+                -1,
+                -1,
+                35,
+                36,
+                77,
+                -1,
+                -1,
+                -1,
+                75,
+                76,
+                77,
+                -1,
+                -1,
+                0,
+                1,
+                89,
+                77,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                86,
+                87,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                16,
+                17,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                14,
+                15,
+                88,
+                18,
+                -1,
+                9,
+                10,
+                11,
+                -1,
+                32,
+                33,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                30,
+                31,
+                77,
+                -1,
+                -1,
+                25,
+                26,
+                27,
+                -1,
+                48,
+                49,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                46,
+                47,
+                -1,
+                -1,
+                -1,
+                77,
+                42,
+                43,
+                -1,
+                76,
+                77,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+            ]
+        },
+        "bossGraphics_12": {
+            "type": "graphics",
+            "name": "Boss Graphics (Antlion)",
+            "format": "snes3bpp",
+            "width": 8,
+            "window": {
+                "path": "monsterGraphics_63",
+                "offset": 0,
+                "tiles": 45
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[163]",
+                    "name": "163: Antlion"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 6,
+            "layout": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                32,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                -1,
+                -1,
+                -1,
+                40,
+                41,
+                42,
+                43,
+                44
+            ]
+        },
+        "bossGraphics_14": {
+            "type": "graphics",
+            "name": "Boss Graphics (Milon)",
+            "format": "snes3bpp",
+            "width": 5,
+            "window": {
+                "path": "monsterGraphics_65",
+                "offset": 0,
+                "tiles": 215
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[165]",
+                    "name": "165: Milon"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 5,
+            "layout": [
+                -1,
+                32,
+                38,
+                39,
+                55,
+                70,
+                71,
+                102,
+                0,
+                109,
+                86,
+                87,
+                118,
+                16,
+                214,
+                174,
+                175,
+                6,
+                7,
+                8,
+                190,
+                191,
+                22,
+                23,
+                5
+            ]
+        },
+        "bossGraphics_15": {
+            "type": "graphics",
+            "name": "Boss Graphics (Elements, Milon)",
+            "format": "snes3bpp",
+            "width": 8,
+            "window": {
+                "path": "monsterGraphics_65",
+                "offset": 0,
+                "tiles": 254
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[166]",
+                    "name": "166: Elements, Milon"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 8,
+            "layout": [
+                -1,
+                14,
+                15,
+                46,
+                47,
+                78,
+                79,
+                -1,
+                -1,
+                30,
+                31,
+                62,
+                63,
+                94,
+                95,
+                45,
+                110,
+                111,
+                142,
+                143,
+                224,
+                225,
+                226,
+                -1,
+                126,
+                127,
+                158,
+                159,
+                240,
+                241,
+                242,
+                -1,
+                227,
+                228,
+                229,
+                230,
+                231,
+                232,
+                233,
+                234,
+                243,
+                244,
+                245,
+                246,
+                247,
+                248,
+                249,
+                250,
+                235,
+                236,
+                237,
+                238,
+                239,
+                205,
+                206,
+                207,
+                251,
+                252,
+                253,
+                173,
+                223,
+                221,
+                222,
+                -1
+            ]
+        },
+        "bossGraphics_16": {
+            "type": "graphics",
+            "name": "Boss Graphics (Rubicant)",
+            "format": "snes3bpp",
+            "width": 7,
+            "window": {
+                "path": "monsterGraphics_65",
+                "offset": 0,
+                "tiles": 214
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[187]",
+                    "name": "187: Rubicant"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 14,
+            "layout": [
+                -1,
+                1,
+                2,
+                3,
+                4,
+                -1,
+                -1,
+                -1,
+                17,
+                18,
+                19,
+                20,
+                21,
+                -1,
+                -1,
+                33,
+                34,
+                35,
+                36,
+                37,
+                -1,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                -1,
+                80,
+                81,
+                82,
+                83,
+                84,
+                85,
+                -1,
+                96,
+                97,
+                98,
+                99,
+                100,
+                101,
+                -1,
+                112,
+                113,
+                114,
+                115,
+                116,
+                117,
+                -1,
+                128,
+                129,
+                130,
+                131,
+                132,
+                133,
+                134,
+                144,
+                145,
+                146,
+                147,
+                148,
+                149,
+                150,
+                160,
+                161,
+                162,
+                163,
+                164,
+                165,
+                166,
+                176,
+                177,
+                178,
+                179,
+                180,
+                181,
+                182,
+                192,
+                193,
+                194,
+                195,
+                196,
+                197,
+                198,
+                208,
+                209,
+                210,
+                211,
+                212,
+                213,
+                -1
+            ]
+        },
+        "bossGraphics_18": {
+            "type": "graphics",
+            "name": "Boss Graphics (Kainazzo)",
+            "format": "snes3bpp",
+            "width": 10,
+            "window": {
+                "path": "monsterGraphics_66",
+                "offset": 0,
+                "tiles": 90
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[170]",
+                    "name": "170: Kainazzo"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 6,
+            "layout": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                -1,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                32,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                -1,
+                81,
+                82,
+                83,
+                84,
+                85,
+                86,
+                87,
+                88,
+                89
+            ]
+        },
+        "bossGraphics_21": {
+            "type": "graphics",
+            "name": "Boss Graphics (Valvalis)",
+            "format": "snes3bpp",
+            "width": 8,
+            "window": {
+                "path": "monsterGraphics_66",
+                "offset": 0,
+                "tiles": 231
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[177]",
+                    "name": "177: Valvalis"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 10,
+            "layout": [
+                -1,
+                97,
+                98,
+                99,
+                100,
+                101,
+                -1,
+                -1,
+                112,
+                113,
+                114,
+                115,
+                116,
+                117,
+                118,
+                119,
+                128,
+                129,
+                130,
+                131,
+                132,
+                133,
+                134,
+                135,
+                144,
+                145,
+                146,
+                147,
+                148,
+                149,
+                150,
+                151,
+                -1,
+                161,
+                162,
+                163,
+                164,
+                165,
+                166,
+                -1,
+                -1,
+                177,
+                178,
+                179,
+                180,
+                181,
+                182,
+                183,
+                192,
+                193,
+                194,
+                195,
+                196,
+                197,
+                198,
+                199,
+                208,
+                209,
+                210,
+                211,
+                212,
+                213,
+                214,
+                215,
+                224,
+                225,
+                226,
+                227,
+                228,
+                229,
+                230,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+            ]
+        },
+        "bossGraphics_23": {
+            "type": "graphics",
+            "name": "Boss Graphics (Dark)",
+            "format": "snes3bpp",
+            "width": 6,
+            "window": {
+                "path": "monsterGraphics_67",
+                "offset": 0,
+                "tiles": 36
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[171]",
+                    "name": "171: Dark"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 6,
+            "layout": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                32,
+                33,
+                34,
+                35
+            ]
+        },
+        "bossGraphics_24": {
+            "type": "graphics",
+            "name": "Boss Graphics (Sandy)",
+            "format": "snes3bpp",
+            "width": 4,
+            "window": {
+                "path": "monsterGraphics_68",
+                "offset": 0,
+                "tiles": 84
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[173]",
+                    "name": "173: Sandy"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 11,
+            "layout": [
+                10,
+                11,
+                12,
+                13,
+                26,
+                27,
+                28,
+                29,
+                42,
+                43,
+                44,
+                45,
+                58,
+                59,
+                60,
+                61,
+                74,
+                75,
+                76,
+                77,
+                64,
+                65,
+                66,
+                77,
+                80,
+                81,
+                82,
+                83,
+                -1,
+                14,
+                15,
+                78,
+                -1,
+                30,
+                31,
+                79,
+                -1,
+                46,
+                47,
+                77,
+                -1,
+                62,
+                63,
+                67
+            ]
+        },
+        "bossGraphics_25": {
+            "type": "graphics",
+            "name": "Boss Graphics (Cindy, Ifrit)",
+            "format": "snes3bpp",
+            "width": 6,
+            "window": {
+                "path": "monsterGraphics_68",
+                "offset": 0,
+                "tiles": 74
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[174]",
+                    "name": "174: Cindy, Ifrit"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 6,
+            "layout": [
+                -1,
+                5,
+                6,
+                7,
+                8,
+                -1,
+                -1,
+                21,
+                22,
+                23,
+                24,
+                -1,
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                25,
+                9,
+                20,
+                4,
+                48,
+                -1
+            ]
+        },
+        "bossGraphics_26": {
+            "type": "graphics",
+            "name": "Boss Graphics (Mindy)",
+            "format": "snes3bpp",
+            "width": 4,
+            "window": {
+                "path": "monsterGraphics_68",
+                "offset": 0,
+                "tiles": 52
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[175]",
+                    "name": "175: Mindy"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 4,
+            "layout": [
+                0,
+                1,
+                2,
+                3,
+                16,
+                17,
+                18,
+                19,
+                32,
+                33,
+                34,
+                35,
+                -1,
+                49,
+                50,
+                51
+            ]
+        },
+        "bossGraphics_27": {
+            "type": "graphics",
+            "name": "Boss Graphics (Calbrena)",
+            "format": "snes3bpp",
+            "width": 6,
+            "window": {
+                "path": "monsterGraphics_69",
+                "offset": 0,
+                "tiles": 61
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[179]",
+                    "name": "179: Calbrena"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 12,
+            "layout": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                -1,
+                7,
+                8,
+                9,
+                10,
+                -1,
+                -1,
+                16,
+                17,
+                18,
+                19,
+                -1,
+                -1,
+                32,
+                33,
+                34,
+                35,
+                -1,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                42,
+                43,
+                44,
+                45,
+                46,
+                47,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                58,
+                -1,
+                -1,
+                59,
+                60,
+                6,
+                11,
+                -1,
+                -1,
+                12,
+                13,
+                14,
+                15,
+                -1
+            ]
+        },
+        "bossGraphics_28": {
+            "type": "graphics",
+            "name": "Boss Graphics (EvilWall)",
+            "format": "snes3bpp",
+            "width": 16,
+            "window": {
+                "path": "monsterGraphics_70",
+                "offset": 0,
+                "tiles": 97
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[191]",
+                    "name": "191: EvilWall"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 18,
+            "layout": [
+                71,
+                71,
+                87,
+                71,
+                71,
+                71,
+                66,
+                66,
+                67,
+                66,
+                67,
+                82,
+                83,
+                84,
+                88,
+                79,
+                87,
+                71,
+                71,
+                87,
+                87,
+                71,
+                67,
+                82,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                95,
+                71,
+                87,
+                71,
+                87,
+                71,
+                71,
+                88,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                79,
+                87,
+                71,
+                87,
+                71,
+                87,
+                87,
+                72,
+                32,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                95,
+                71,
+                87,
+                71,
+                87,
+                71,
+                87,
+                72,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                64,
+                87,
+                87,
+                71,
+                87,
+                71,
+                87,
+                0,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                65,
+                80,
+                71,
+                71,
+                87,
+                71,
+                87,
+                71,
+                69,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                81,
+                -1,
+                71,
+                87,
+                87,
+                87,
+                71,
+                87,
+                40,
+                41,
+                42,
+                43,
+                44,
+                45,
+                46,
+                47,
+                -1,
+                -1,
+                71,
+                71,
+                87,
+                71,
+                71,
+                71,
+                56,
+                57,
+                58,
+                59,
+                60,
+                61,
+                62,
+                -1,
+                -1,
+                -1,
+                87,
+                71,
+                87,
+                71,
+                87,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                78,
+                -1,
+                -1,
+                -1,
+                71,
+                87,
+                71,
+                87,
+                71,
+                71,
+                88,
+                89,
+                90,
+                91,
+                92,
+                93,
+                -1,
+                -1,
+                -1,
+                -1,
+                87,
+                71,
+                71,
+                87,
+                71,
+                87,
+                40,
+                85,
+                68,
+                69,
+                70,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                71,
+                87,
+                71,
+                71,
+                87,
+                71,
+                72,
+                56,
+                85,
+                64,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                87,
+                87,
+                71,
+                87,
+                87,
+                87,
+                88,
+                85,
+                65,
+                80,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                71,
+                87,
+                71,
+                87,
+                87,
+                71,
+                85,
+                63,
+                81,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                87,
+                71,
+                71,
+                87,
+                71,
+                87,
+                85,
+                86,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                71,
+                71,
+                87,
+                71,
+                87,
+                71,
+                96,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                94,
+                94,
+                94,
+                94,
+                94,
+                94,
+                78,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+            ]
+        },
+        "bossGraphics_29": {
+            "type": "graphics",
+            "name": "Boss Graphics (K'Eblan)",
+            "format": "snes3bpp",
+            "width": 8,
+            "window": {
+                "path": "monsterGraphics_71",
+                "offset": 0,
+                "tiles": 88
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[185]",
+                    "name": "185: K'Eblan"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 10,
+            "layout": [
+                0,
+                1,
+                2,
+                -1,
+                -1,
+                5,
+                6,
+                -1,
+                -1,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                -1,
+                -1,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                -1,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                -1,
+                3,
+                14,
+                15,
+                30,
+                31,
+                46,
+                47,
+                -1,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                -1,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                -1,
+                39,
+                40,
+                41,
+                42,
+                43,
+                44,
+                45,
+                -1,
+                55,
+                56,
+                57,
+                58,
+                59,
+                60,
+                -1,
+                -1,
+                87,
+                4,
+                32,
+                63,
+                61,
+                62,
+                -1,
+                -1
+            ]
+        },
+        "bossGraphics_30": {
+            "type": "graphics",
+            "name": "Boss Graphics (Q'Eblan)",
+            "format": "snes3bpp",
+            "width": 8,
+            "window": {
+                "path": "monsterGraphics_71",
+                "offset": 0,
+                "tiles": 109
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[186]",
+                    "name": "186: Q'Eblan"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 8,
+            "layout": [
+                -1,
+                -1,
+                -1,
+                106,
+                107,
+                108,
+                -1,
+                -1,
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                -1,
+                80,
+                81,
+                82,
+                83,
+                84,
+                85,
+                86,
+                -1,
+                96,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                -1,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                -1,
+                -1,
+                88,
+                89,
+                90,
+                91,
+                92,
+                93,
+                -1,
+                -1,
+                -1,
+                -1,
+                78,
+                79,
+                94,
+                95,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                103,
+                104,
+                105,
+                -1
+            ]
+        },
+        "bossGraphics_33": {
+            "type": "graphics",
+            "name": "Boss Graphics (Baigan)",
+            "format": "snes3bpp",
+            "width": 6,
+            "window": {
+                "path": "monsterGraphics_72",
+                "offset": 0,
+                "tiles": 50
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[167]",
+                    "name": "167: Baigan"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 8,
+            "layout": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                49,
+                16,
+                17,
+                18,
+                19,
+                20,
+                8,
+                48,
+                33,
+                34,
+                35,
+                36,
+                -1,
+                -1,
+                -1,
+                10,
+                11,
+                -1,
+                -1,
+                -1,
+                25,
+                26,
+                27,
+                28,
+                -1,
+                40,
+                41,
+                42,
+                43,
+                44,
+                -1,
+                13,
+                14,
+                -1,
+                15,
+                46,
+                -1,
+                29,
+                30,
+                45,
+                31,
+                47,
+                -1
+            ]
+        },
+        "bossGraphics_34": {
+            "type": "graphics",
+            "name": "Boss Graphics (RightArm)",
+            "format": "snes3bpp",
+            "width": 4,
+            "window": {
+                "path": "monsterGraphics_72",
+                "offset": 0,
+                "tiles": 40
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[169]",
+                    "name": "169: RightArm"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 3,
+            "layout": [
+                -1,
+                -1,
+                12,
+                32,
+                -1,
+                37,
+                38,
+                39,
+                -1,
+                24,
+                9,
+                -1
+            ]
+        },
+        "bossGraphics_35": {
+            "type": "graphics",
+            "name": "Boss Graphics (Left)",
+            "format": "snes3bpp",
+            "width": 4,
+            "window": {
+                "path": "monsterGraphics_72",
+                "offset": 0,
+                "tiles": 24
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[168]",
+                    "name": "168: Left"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 4,
+            "layout": [
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                5,
+                6,
+                7,
+                -1,
+                21,
+                22,
+                23,
+                -1
+            ]
+        },
+        "bossGraphics_36": {
+            "type": "graphics",
+            "name": "Boss Graphics (MomBomb)",
+            "format": "snes3bpp",
+            "width": 10,
+            "window": {
+                "path": "monsterGraphics_64",
+                "offset": 0,
+                "tiles": 60
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[164]",
+                    "name": "164: MomBomb"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ]
+        },
+        "bossGraphics_37": {
+            "type": "graphics",
+            "name": "Boss Graphics (Dr'Lugae)",
+            "format": "snes3bpp",
+            "width": 4,
+            "window": {
+                "path": "monsterGraphics_73",
+                "offset": 0,
+                "tiles": 99
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[182]",
+                    "name": "182: Dr'Lugae"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 4,
+            "layout": [
+                15,
+                80,
+                81,
+                -1,
+                31,
+                96,
+                97,
+                -1,
+                47,
+                82,
+                -1,
+                -1,
+                63,
+                98,
+                -1,
+                -1
+            ]
+        },
+        "bossGraphics_38": {
+            "type": "graphics",
+            "name": "Boss Graphics (Balnab)",
+            "format": "snes3bpp",
+            "width": 5,
+            "window": {
+                "path": "monsterGraphics_73",
+                "offset": 0,
+                "tiles": 80
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[183]",
+                    "name": "183: Balnab"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 9,
+            "layout": [
+                -1,
+                53,
+                54,
+                55,
+                -1,
+                56,
+                57,
+                77,
+                78,
+                79,
+                0,
+                1,
+                2,
+                3,
+                4,
+                16,
+                17,
+                18,
+                19,
+                20,
+                32,
+                33,
+                34,
+                35,
+                36,
+                48,
+                49,
+                50,
+                51,
+                52,
+                5,
+                6,
+                7,
+                8,
+                9,
+                21,
+                22,
+                23,
+                24,
+                25,
+                37,
+                38,
+                39,
+                40,
+                41
+            ]
+        },
+        "bossGraphics_39": {
+            "type": "graphics",
+            "name": "Boss Graphics (Balnab Z)",
+            "format": "snes3bpp",
+            "width": 5,
+            "window": {
+                "path": "monsterGraphics_73",
+                "offset": 0,
+                "tiles": 103
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[183]",
+                    "name": "183: Balnab Z"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 9,
+            "layout": [
+                -1,
+                83,
+                80,
+                81,
+                -1,
+                -1,
+                99,
+                100,
+                101,
+                102,
+                10,
+                11,
+                12,
+                13,
+                14,
+                26,
+                27,
+                28,
+                29,
+                30,
+                42,
+                43,
+                44,
+                45,
+                46,
+                58,
+                59,
+                60,
+                61,
+                62,
+                64,
+                65,
+                66,
+                67,
+                -1,
+                68,
+                69,
+                70,
+                71,
+                -1,
+                72,
+                73,
+                74,
+                75,
+                76
+            ]
+        },
+        "bossGraphics_41": {
+            "type": "graphics",
+            "name": "Boss Graphics (Golbez)",
+            "format": "snes3bpp",
+            "width": 9,
+            "window": {
+                "path": "monsterGraphics_74",
+                "offset": 0,
+                "tiles": 83
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[176]",
+                    "name": "176: Golbez"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 13,
+            "layout": [
+                -1,
+                -1,
+                0,
+                1,
+                2,
+                -1,
+                -1,
+                -1,
+                -1,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                -1,
+                -1,
+                -1,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                -1,
+                -1,
+                -1,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                -1,
+                -1,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                -1,
+                -1,
+                -1,
+                -1,
+                28,
+                29,
+                30,
+                31,
+                32,
+                33,
+                -1,
+                -1,
+                -1,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                -1,
+                -1,
+                -1,
+                40,
+                41,
+                42,
+                43,
+                44,
+                45,
+                46,
+                -1,
+                -1,
+                47,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                -1,
+                55,
+                56,
+                57,
+                58,
+                59,
+                64,
+                60,
+                61,
+                -1,
+                62,
+                63,
+                64,
+                65,
+                66,
+                67,
+                64,
+                68,
+                -1,
+                69,
+                70,
+                64,
+                71,
+                72,
+                73,
+                74,
+                75,
+                -1,
+                76,
+                77,
+                78,
+                79,
+                80,
+                81,
+                82,
+                -1
+            ]
+        },
+        "bossGraphics_42": {
+            "type": "graphics",
+            "name": "Boss Graphics (Odin)",
+            "format": "snes3bpp",
+            "width": 8,
+            "window": {
+                "path": "monsterGraphics_86",
+                "offset": 0,
+                "tiles": 64
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[188]",
+                    "name": "188: Odin"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 10,
+            "layout": [
+                -1,
+                -1,
+                0,
+                1,
+                2,
+                3,
+                -1,
+                -1,
+                -1,
+                -1,
+                4,
+                5,
+                6,
+                7,
+                -1,
+                -1,
+                -1,
+                -1,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                -1,
+                -1,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                -1,
+                -1,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                -1,
+                -1,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                32,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                42,
+                43,
+                44,
+                45,
+                46,
+                47,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                58,
+                59,
+                60,
+                61,
+                62,
+                63
+            ]
+        },
+        "bossGraphics_46": {
+            "type": "graphics",
+            "name": "Boss Graphics (Leviatan, Leviathan)",
+            "format": "snes3bpp",
+            "width": 6,
+            "window": {
+                "path": "monsterGraphics_87",
+                "offset": 0,
+                "tiles": 108
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[189]",
+                    "name": "189: Leviatan, Leviathan"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 10,
+            "layout": [
+                55,
+                56,
+                -1,
+                -1,
+                -1,
+                -1,
+                57,
+                58,
+                59,
+                60,
+                61,
+                -1,
+                62,
+                63,
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                78,
+                79,
+                80,
+                81,
+                82,
+                83,
+                84,
+                85,
+                86,
+                87,
+                88,
+                89,
+                90,
+                91,
+                92,
+                93,
+                94,
+                95,
+                96,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                107,
+                -1,
+                -1
+            ]
+        },
+        "bossGraphics_47": {
+            "type": "graphics",
+            "name": "Boss Graphics (Bahamut)",
+            "format": "snes3bpp",
+            "width": 6,
+            "window": {
+                "path": "monsterGraphics_88",
+                "offset": 0,
+                "tiles": 47
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[190]",
+                    "name": "190: Bahamut"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 8,
+            "layout": [
+                -1,
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                32,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                42,
+                43,
+                44,
+                45,
+                46
+            ]
+        },
+        "bossGraphics_51": {
+            "type": "graphics",
+            "name": "Boss Graphics (Elements)",
+            "format": "snes3bpp",
+            "width": 11,
+            "window": {
+                "path": "monsterGraphics_66",
+                "offset": 0,
+                "tiles": 251
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[170]",
+                    "name": "170: Elements"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 7,
+            "layout": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                -1,
+                -1,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                11,
+                -1,
+                12,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                40,
+                13,
+                14,
+                27,
+                28,
+                50,
+                29,
+                52,
+                53,
+                54,
+                55,
+                56,
+                30,
+                46,
+                80,
+                96,
+                102,
+                110,
+                111,
+                160,
+                167,
+                176,
+                231,
+                232,
+                233,
+                234,
+                235,
+                236,
+                237,
+                238,
+                239,
+                240,
+                241,
+                242,
+                243,
+                244,
+                -1,
+                -1,
+                -1,
+                245,
+                246,
+                -1,
+                247,
+                248,
+                249,
+                250,
+                -1
+            ]
+        },
+        "bossGraphics_54": {
+            "type": "graphics",
+            "name": "Boss Graphics (Asura)",
+            "format": "snes3bpp",
+            "width": 8,
+            "window": {
+                "path": "monsterGraphics_89",
+                "offset": 0,
+                "tiles": 82
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[192]",
+                    "name": "192: Asura"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 12,
+            "layout": [
+                -1,
+                0,
+                -1,
+                68,
+                69,
+                -1,
+                -1,
+                -1,
+                -1,
+                3,
+                70,
+                71,
+                72,
+                73,
+                8,
+                -1,
+                9,
+                10,
+                74,
+                75,
+                76,
+                77,
+                15,
+                -1,
+                16,
+                17,
+                78,
+                79,
+                80,
+                81,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                -1,
+                32,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                -1,
+                39,
+                40,
+                41,
+                42,
+                43,
+                44,
+                45,
+                -1,
+                46,
+                47,
+                48,
+                49,
+                50,
+                51,
+                52,
+                -1,
+                53,
+                54,
+                55,
+                56,
+                57,
+                58,
+                -1,
+                -1,
+                59,
+                60,
+                61,
+                62,
+                63,
+                -1,
+                -1,
+                -1,
+                -1,
+                64,
+                65,
+                66,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                67,
+                -1,
+                -1,
+                -1,
+                -1
+            ]
+        },
+        "bossGraphics_56": {
+            "type": "graphics",
+            "name": "Boss Graphics (CPU)",
+            "format": "snes3bpp",
+            "width": 9,
+            "window": {
+                "path": "monsterGraphics_75",
+                "offset": 0,
+                "tiles": 81
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[197]",
+                    "name": "197: CPU"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 9,
+            "layout": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                32,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                42,
+                43,
+                44,
+                45,
+                46,
+                47,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                58,
+                59,
+                60,
+                61,
+                62,
+                63,
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                78,
+                79,
+                80
+            ]
+        },
+        "bossGraphics_57": {
+            "type": "graphics",
+            "name": "Boss Graphics (Zeromus)",
+            "format": "snes4bpp",
+            "width": 19,
+            "window": {
+                "path": "monsterGraphics_79",
+                "offset": 0,
+                "tiles": 215
+            },
+            "palette": [
+                [
+                    {
+                        "path": "monsterPalette[201]",
+                        "offset": 0,
+                        "compose": true,
+                        "name": "201+202: Zeromus"
+                    },
+                    {
+                        "path": "monsterPalette[202]",
+                        "offset": 8,
+                        "compose": true,
+                        "name": "201+202: Zeromus"
+                    }
+                ],
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 16,
+            "layout": [
+                -1,
+                -1,
+                207,
+                0,
+                1,
+                2,
+                -1,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                -1,
+                -1,
+                12,
+                13,
+                14,
+                15,
+                -1,
+                208,
+                209,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                -1,
+                -1,
+                210,
+                32,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                42,
+                43,
+                44,
+                45,
+                46,
+                47,
+                -1,
+                -1,
+                211,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                58,
+                59,
+                60,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                212,
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                213,
+                80,
+                81,
+                82,
+                83,
+                84,
+                85,
+                86,
+                87,
+                88,
+                89,
+                90,
+                91,
+                92,
+                93,
+                -1,
+                -1,
+                214,
+                61,
+                62,
+                96,
+                97,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                107,
+                108,
+                109,
+                110,
+                -1,
+                -1,
+                63,
+                77,
+                112,
+                113,
+                114,
+                115,
+                116,
+                117,
+                118,
+                119,
+                120,
+                121,
+                122,
+                123,
+                124,
+                -1,
+                126,
+                -1,
+                -1,
+                78,
+                79,
+                128,
+                129,
+                130,
+                131,
+                132,
+                133,
+                134,
+                135,
+                136,
+                137,
+                138,
+                139,
+                140,
+                -1,
+                -1,
+                -1,
+                -1,
+                94,
+                95,
+                144,
+                145,
+                146,
+                147,
+                148,
+                149,
+                150,
+                151,
+                152,
+                153,
+                154,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                111,
+                155,
+                156,
+                157,
+                158,
+                159,
+                160,
+                161,
+                162,
+                163,
+                164,
+                165,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                127,
+                166,
+                167,
+                168,
+                169,
+                170,
+                171,
+                172,
+                173,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                143,
+                174,
+                175,
+                176,
+                177,
+                178,
+                179,
+                180,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                3,
+                181,
+                182,
+                183,
+                184,
+                185,
+                186,
+                187,
+                188,
+                189,
+                190,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                141,
+                142,
+                191,
+                192,
+                193,
+                194,
+                195,
+                196,
+                197,
+                198,
+                199,
+                200,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                201,
+                -1,
+                202,
+                203,
+                204,
+                205,
+                206,
+                -1,
+                10,
+                11,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+            ]
+        },
+        "bossGraphics_58": {
+            "type": "graphics",
+            "name": "Boss Graphics (Defender)",
+            "format": "snes3bpp",
+            "width": 3,
+            "window": {
+                "path": "monsterGraphics_76",
+                "offset": 0,
+                "tiles": 9
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[197]",
+                    "name": "197: Defender"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 3,
+            "layout": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+            ]
+        },
+        "bossGraphics_59": {
+            "type": "graphics",
+            "name": "Boss Graphics (Wyvern)",
+            "format": "snes3bpp",
+            "width": 10,
+            "window": {
+                "path": "monsterGraphics_88",
+                "offset": 0,
+                "tiles": 118
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[152]",
+                    "name": "152: Wyvern"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 8,
+            "layout": [
+                -1,
+                -1,
+                -1,
+                47,
+                48,
+                49,
+                50,
+                51,
+                -1,
+                -1,
+                -1,
+                52,
+                53,
+                54,
+                55,
+                56,
+                57,
+                58,
+                59,
+                60,
+                61,
+                62,
+                63,
+                64,
+                65,
+                66,
+                67,
+                68,
+                69,
+                70,
+                71,
+                72,
+                73,
+                74,
+                75,
+                76,
+                77,
+                78,
+                79,
+                80,
+                81,
+                82,
+                83,
+                84,
+                85,
+                86,
+                87,
+                88,
+                89,
+                90,
+                91,
+                92,
+                93,
+                94,
+                95,
+                96,
+                97,
+                -1,
+                -1,
+                98,
+                99,
+                100,
+                101,
+                102,
+                103,
+                104,
+                105,
+                106,
+                107,
+                -1,
+                108,
+                109,
+                110,
+                111,
+                112,
+                113,
+                114,
+                115,
+                116,
+                117
+            ]
+        },
+        "bossGraphics_60": {
+            "type": "graphics",
+            "name": "Boss Graphics (Attacker)",
+            "format": "snes3bpp",
+            "width": 3,
+            "window": {
+                "path": "monsterGraphics_76",
+                "offset": 0,
+                "tiles": 9
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[197]",
+                    "name": "197: Attacker"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 3,
+            "layout": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8
+            ]
+        },
+        "bossGraphics_61": {
+            "type": "graphics",
+            "name": "Boss Graphics (Ogopogo)",
+            "format": "snes3bpp",
+            "width": 6,
+            "window": {
+                "path": "monsterGraphics_87",
+                "offset": 0,
+                "tiles": 55
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[154]",
+                    "name": "154: Ogopogo"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 10,
+            "layout": [
+                -1,
+                -1,
+                -1,
+                0,
+                1,
+                2,
+                -1,
+                -1,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                26,
+                27,
+                28,
+                29,
+                30,
+                31,
+                32,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                40,
+                41,
+                42,
+                43,
+                44,
+                45,
+                46,
+                47,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54
+            ]
+        },
+        "bossGraphics_62": {
+            "type": "graphics",
+            "name": "Boss Graphics (Zemus)",
+            "format": "snes3bpp",
+            "width": 11,
+            "window": {
+                "path": "monsterGraphics_77",
+                "offset": 0,
+                "tiles": 80
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[199]",
+                    "name": "199: Zemus"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 16,
+            "layout": [
+                -1,
+                -1,
+                -1,
+                -1,
+                48,
+                49,
+                32,
+                -1,
+                -1,
+                26,
+                -1,
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                16,
+                17,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                25,
+                -1,
+                -1,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                40,
+                -1,
+                -1,
+                -1,
+                -1,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                -1,
+                -1,
+                -1,
+                -1,
+                11,
+                51,
+                51,
+                30,
+                15,
+                12,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                27,
+                28,
+                51,
+                30,
+                51,
+                13,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                43,
+                44,
+                51,
+                46,
+                51,
+                29,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                59,
+                60,
+                61,
+                62,
+                63,
+                45,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                64,
+                65,
+                66,
+                67,
+                68,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                69,
+                70,
+                71,
+                72,
+                73,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                74,
+                75,
+                76,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                77,
+                78,
+                79,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                41,
+                42,
+                31,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                57,
+                58,
+                47,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                14,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+            ]
+        },
+        "bossGraphics_63": {
+            "type": "graphics",
+            "name": "Boss Graphics (Zeromus)",
+            "format": "snes3bpp",
+            "width": 12,
+            "window": {
+                "path": "monsterGraphics_78",
+                "offset": 0,
+                "tiles": 65
+            },
+            "palette": [
+                {
+                    "path": "monsterPalette[200]",
+                    "name": "200: Zeromus"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ],
+            "height": 8,
+            "layout": [
+                -1,
+                -1,
+                -1,
+                3,
+                4,
+                5,
+                6,
+                7,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                18,
+                19,
+                20,
+                21,
+                22,
+                23,
+                24,
+                -1,
+                -1,
+                -1,
+                -1,
+                33,
+                34,
+                35,
+                36,
+                37,
+                38,
+                39,
+                40,
+                16,
+                17,
+                -1,
+                48,
+                49,
+                50,
+                51,
+                52,
+                53,
+                54,
+                55,
+                56,
+                0,
+                1,
+                2,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                25,
+                26,
+                -1,
+                -1,
+                -1,
+                -1,
+                27,
+                28,
+                29,
+                30,
+                31,
+                41,
+                42,
+                43,
+                -1,
+                -1,
+                -1,
+                44,
+                45,
+                46,
+                47,
+                57,
+                58,
+                59,
+                60,
+                -1,
+                -1,
+                -1,
+                -1,
+                61,
+                62,
+                63,
+                64,
+                8,
+                32,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1,
+                -1
+            ]
+        },
+        "summonGraphics_Chocobo": {
+            "type": "graphics",
+            "name": "Summon Graphics (Chocobo)",
+            "format": "snes3bpp",
+            "width": 8,
+            "range": "0x0D90B8-0x0D92F8",
+            "palette": [
+                {
+                    "path": "monsterPalette[205]",
+                    "name": "205: Chocobo"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ]
+        },
+        "summonGraphics_Shiva": {
+            "type": "graphics",
+            "name": "Summon Graphics (Shiva)",
+            "format": "snes3bpp",
+            "width": 8,
+            "range": "0x0D92F8-0x0D9760",
+            "palette": [
+                {
+                    "path": "monsterPalette[206]",
+                    "name": "206: Shiva"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ]
+        },
+        "summonGraphics_Ramuh": {
+            "type": "graphics",
+            "name": "Summon Graphics (Ramuh)",
+            "format": "snes3bpp",
+            "width": 8,
+            "range": "0x0D9760-0x0D9C40",
+            "palette": [
+                {
+                    "path": "monsterPalette[207]",
+                    "name": "207: Ramuh"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ]
+        },
+        "summonGraphics_Ifrit": {
+            "type": "graphics",
+            "name": "Summon Graphics (Ifrit)",
+            "format": "snes3bpp",
+            "width": 8,
+            "range": "0x0D9C40-0x0DA420",
+            "palette": [
+                {
+                    "path": "monsterPalette[208]",
+                    "name": "208: Ifrit"
+                },
+                {
+                    "path": "monsterPalette"
+                }
+            ]
+        },
+        "summonGraphics_Sylph": {
+            "type": "graphics",
+            "name": "Summon Graphics (Sylph)",
+            "format": "snes3bpp",
+            "width": 8,
+            "range": "0x0DAEA0-0x0DAFC0",
+            "palette": [
+                {
+                    "path": "monsterPalette[210]",
+                    "name": "210: Sylph"
+                },
+                {
+                    "path": "monsterPalette"
                 }
             ]
         }

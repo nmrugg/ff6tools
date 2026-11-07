@@ -124,6 +124,19 @@ class FF4BattleVRAM extends ROMToolbox {
         this.redraw();
     }
 
+    loadMonsterPalette(p) {
+        // the game's LoadMonsterPal reads 32 bytes from MonsterPal + p*16:
+        // the table is 8-color (16-byte) sub-palettes and p selects a pair of
+        // them; a 3bpp sprite uses only the first, a 4bpp sprite uses both
+        // (colors 0-7 from p, colors 8-15 from p+1)
+        const palette = new Uint32Array(16);
+        const lo = this.rom.monsterPalette.item(p);
+        if (lo) palette.set(lo.data.subarray(0, 8), 0);
+        const hi = this.rom.monsterPalette.item(p + 1);
+        if (hi) palette.set(hi.data.subarray(0, 8), 8);
+        return palette;
+    }
+
     loadSlot(s) {
         const slot = {};
         slot.key = `monster${s}`;
@@ -183,11 +196,7 @@ class FF4BattleVRAM extends ROMToolbox {
             const b = slot.gfxProperties.bossProperties.value;
             const bossProperties = this.rom.monsterBossProperties.item(b);
             const p = bossProperties.palette.value;
-            slot.palette = new Uint32Array(16);
-            slot.palette.set(this.rom.monsterPalette.item(p).data);
-            if (this.rom.isGBA || !slot.gfxProperties.is3bpp.value) {
-                slot.palette.set(this.rom.monsterPalette.item(p + 1).data, 8);
-            }
+            slot.palette = this.loadMonsterPalette(p);
 
             // decode the graphics
             if (slot.vramOffset !== 0) {
@@ -208,11 +217,7 @@ class FF4BattleVRAM extends ROMToolbox {
 
             // load palette
             const p = slot.gfxProperties.palette.value;
-            slot.palette = new Uint32Array(16);
-            slot.palette.set(this.rom.monsterPalette.item(p).data);
-            if (this.rom.isGBA || !slot.gfxProperties.is3bpp.value) {
-                slot.palette.set(this.rom.monsterPalette.item(p + 1).data, 8);
-            }
+            slot.palette = this.loadMonsterPalette(p);
 
             // decode the graphics
             if (slot.vramOffset !== 0) {

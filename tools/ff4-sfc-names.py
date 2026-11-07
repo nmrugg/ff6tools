@@ -4,30 +4,38 @@
 # Adds (or refreshes) the FF4 SNES battle graphics model in a definition
 # file, computing everything from the ROM itself:
 #
-#   * monsterGraphics becomes a pointer-deduplicated array of graphics
-#     objects (one per unique graphics pointer in monsterGraphicsProperties),
-#     exactly like the FF6 definitions already do
-#   * graphicsPointer gains "offset" + "pointerTo" so the tool resolves
-#     pointers to array items
-#   * sizeFrom specs give each object its display width/height (from the
-#     monster size table, or the boss properties record for bosses) and its
-#     per-object graphics format (snes3bpp / snes4bpp from the is3bpp flag)
-#   * itemPalettes pins each object to the palette its own monsters use
-#     (4bpp objects compose palette[p] colors 0-7 with palette[p+1] colors
-#     8-15, the way the game loads them); every other palette a user monster
-#     has is offered in the dropdown, plus the whole monsterPalette array
+#   * monsterGraphics becomes a fragmented array of 90ish graphics objects
+#     (one per unique pointer in monsterGraphicsProperties), each owning
+#     exactly its own bytes (capped so unrelated data in bank 0d keeps its
+#     own owner)
+#   * per-object display size from the monster size table (or the boss
+#     properties record for bosses), per-object format from the is3bpp flag
+#   * palettes: the game indexes the ROM palette table in 16-byte
+#     sub-palette units (LoadMonsterPal reads 32 bytes from MonsterPal+p*16),
+#     while the definition models 32-byte entries; each object is pinned to
+#     the right entry and half-offset, composing a pair when p is odd
+#   * boss graphics are assembled views: for every boss properties record
+#     in use, a window object (bossGraphics_<n>) shows the boss's tile pool
+#     laid out by its tile map (0xFF = empty, 0xFE n = n empty cells), which
+#     is what the game places into VRAM - the creature, not loose tiles
 #   * string tables: every graphics object is labelled with the monster
-#     names that use it (bosses first, marked with *), and every monster
-#     palette with the monsters that use it
+#     names that use it (bosses first, marked *), every palette with its
+#     users, and known summon/Esper aliases are appended (Ifrit, Mindflayer,
+#     Dragon Mist...) so summons are findable by name
 #
-#   python3 tools/ff4-sfc-names.py --def ff4/ff2u-sfc.json --rom "Final Fantasy II (USA).sfc"
+#   python3 tools/ff4-sfc-names.py --def ff4/ff2u-sfc.json \
+#           --rom "/storage/romhacking/ff-roms/Final Fantasy II (USA).sfc"
 #
-# Re-running is idempotent: the assembly is rebuilt from scratch each time.
+# Re-running is idempotent: the assemblies are rebuilt from scratch each time.
 
 import argparse, json, sys
 
 def loROM_map(a):
     return ((a & 0xFF0000) >> 1) + (a & 0x7FFF)
+
+def unmap(file_addr):
+    bank = (file_addr << 1) & 0xFF0000
+    return bank | (file_addr & 0x7FFF) | 0x8000
 
 # FF4 name encoding: A-Z = 0x42-0x5B, a-z = 0x5C-0x75, 0xC1 = "'", 0xC2 = ' ',
 # 0xFF = pad (derived from the ROM's own strings: Imp, Basilisk, Kainazzo...)
@@ -43,6 +51,49 @@ def decode_name(raw):
         else: s += '?'
     return s.rstrip()
 
+# Esper/summon aliases by monster id, so summoning Espers that reuse boss or
+# monster art are findable by their summon name (ff4monsters.zip confirms
+# which art belongs to which Esper)
+ESPER_ALIAS = {
+    0:   'Imp',
+    27:  'Imp',
+    36:  'Cockatrice',
+    63:  'Mindflayer',
+    85:  'Bomb',
+    152: 'Wyvern',
+    161: 'Dragon Mist',
+    174: 'Ifrit',
+    188: 'Odin',
+    189: 'Leviathan',
+    190: 'Bahamut',
+    192: 'Asura',
+    207: 'Titan',
+}
+
+# Summon tables, read straight from the ROM (btlgfx_data.asm: SummonGfxPtrs
+# at 0x0d87f0, SummonPalTbl at 0x0dfe4c; LoadSummonGfx indexes them by
+# attack-$4d). Names per the MagicAnim_* comments in btlgfx/magic.asm.
+SUMMON_PTRS_F  = 0x687f0
+SUMMON_PAL_F   = 0x6fe4c
+SUMMON_NAMES   = ['Imp', 'Bomb', 'Cockatrice', 'Mindflayer', 'Chocobo',
+                  'Shiva', 'Ramuh', 'Ifrit', 'Titan', 'Dragon Mist',
+                  'Sylph', 'Odin', 'Leviathan', 'Asura', 'Asura', 'Asura',
+                  'Bahamut']
+# summon graphics (bank 0d) ends here (rom map: 0d8818-0de817)
+SUMMON_GFX_END = 0x6e818
+# monster graphics banks 1-4 end here (rom map: "final zeromus graphics"
+# ends 0cb2f7; 0cb2f8-0cb6bf is unused)
+MONSTER_GFX_END = 0x632f8
+
+# Boss window fixes:
+#  - Mom Bomb (record 164): the US properties entry (bossProps 36) places a
+#    4x4 grid over the top-left of a 60-tile LINEAR sheet, so the assembled
+#    view crops her head off. The full art is a 10x6 sheet - show that.
+#  - Dummy (record 214): a placeholder that reuses Wyvern's properties over
+#    the Zeromus pool; the game never draws it. Skip the window.
+SHEET_BOSSES = {164: dict(width=10, tiles=60, pal=164)}
+SKIP_BOSSES  = {214}
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--def', dest='definition', required=True)
@@ -53,41 +104,38 @@ def main():
     defj = json.load(open(args.definition))
     asm = defj['assembly']
 
-    # ---- required existing assemblies -------------------------------------
     props_def = asm['monsterGraphicsProperties']
     blob_def  = asm['monsterGraphics']
     sizes_def = asm['monsterSize']
     boss_def  = asm['monsterBossProperties']
     pal_def   = asm['monsterPalette']
     name_def  = asm['monsterName']
+    bmap_def  = asm['monsterBossMap']
+    battle_def = asm['battleProperties']
+    vram_def  = asm['battleVRAMMap']
 
     blob_begin = int(blob_def['range'].split('-')[0], 16) if 'range' in blob_def \
         else int(blob_def['itemRanges'][0].split('-')[0], 16)
-    blob_end = int(blob_def['range'].split('-')[1], 16) if 'range' in blob_def \
-        else int(blob_def['itemRanges'][-1].split('-')[1], 16)
     props_f  = loROM_map(int(props_def['range'].split('-')[0], 16))
     sizes_f  = loROM_map(int(sizes_def['range'].split('-')[0], 16))
     boss_f   = loROM_map(int(boss_def['range'].split('-')[0], 16))
     names_f  = loROM_map(int(name_def['range'].split('-')[0], 16))
     nprops   = props_def['array']['length']
-    nboss    = boss_def['array']['length']
     npal     = pal_def['array']['length']
 
-    blob_begin_f = loROM_map(blob_begin)
-    blob_end_f   = loROM_map(blob_end)
+    base_f = loROM_map(blob_begin)
 
     # ---- read the tables ---------------------------------------------------
     names = [decode_name(rom[names_f+i*8:names_f+i*8+8]) for i in range(nprops)]
 
     recs = []
     for i in range(nprops):
-        b0, b1, lo, hi = rom[props_f+i*4:props_f+i*4+4]
+        b0, b1, lo, hi = rom[props_f+i*4: props_f+i*4+4]
         w2 = lo | (hi << 8)
         recs.append(dict(i=i, size=b0 & 0x3F, isChar=bool(b0 & 0x40),
                          isBoss=bool(b0 & 0x80), pal=b1,
                          ptr=(w2 & 0x7FFF) * 8, bpp3=bool(w2 & 0x8000)))
 
-    # ---- unique pointers, ascending -> array item order --------------------
     offsets = sorted(set(r['ptr'] for r in recs))
     item_of = {off: k for k, off in enumerate(offsets)}
     users = {off: [] for off in offsets}
@@ -95,13 +143,9 @@ def main():
         users[r['ptr']].append(r)
 
     def size_tiles(si):
-        w, h = rom[sizes_f + si*2], rom[sizes_f + si*2 + 1]
-        return w, h
+        return rom[sizes_f + si*2], rom[sizes_f + si*2 + 1]
 
-    # ---- battle VRAM map: largest tile count loaded per monster ----------
-    # (boss graphics load a per-battle tile count, not width*height)
-    battle_def = asm['battleProperties']
-    vram_def = asm['battleVRAMMap']
+    # ---- battle VRAM map: largest tile count loaded per monster ------------
     bp_f = loROM_map(int(battle_def['range'].split('-')[0], 16))
     bp_e = loROM_map(int(battle_def['range'].split('-')[1], 16))
     nbat = battle_def['array']['length']
@@ -122,105 +166,111 @@ def main():
             if tc > max_tc.get(mo, 0):
                 max_tc[mo] = tc
 
-    # ---- sanity ------------------------------------------------------------
-    blob_len = blob_end_f - blob_begin_f
+    # ---- boss tile maps -----------------------------------------------------
+    bmap_ptr_f = loROM_map(int(bmap_def['pointerTable']['range'].split('-')[0], 16))
+    bmap_base  = int(bmap_def['pointerTable']['offset'], 16)
+    nbmaps = bmap_def['array']['length']
+    bmap_offs = []
+    for i in range(nbmaps):
+        p = rom[bmap_ptr_f + i*2] | (rom[bmap_ptr_f + i*2 + 1] << 8)
+        bmap_offs.append(loROM_map(bmap_base + p))
+    bmap_end = loROM_map(int(bmap_def['range'].split('-')[1], 16))
+
+    # ---- sanity -------------------------------------------------------------
+    blob_len = None
     for k, off in enumerate(offsets):
-        end = offsets[k+1] if k+1 < len(offsets) else blob_len
+        end = offsets[k+1] if k+1 < len(offsets) else None
         for r in users[off]:
             if r['isChar'] or r['isBoss']:
-                # bosses load a per-battle tile count that may run past the
-                # pool; the game reads whatever is there, the editor owns the
-                # gap and the battle VRAM viewer reads raw ROM bytes
                 continue
-            if r['isBoss']:
-                bi = r['size']
-                tw, th = size_tiles(rom[boss_f + bi*5 + 1] & 0x3F)
-            else:
-                tw, th = size_tiles(r['size'])
+            tw, th = size_tiles(r['size'])
             need = tw * th * (24 if r['bpp3'] else 32)
-            if need > (end - off):
-                sys.exit(f'monster {r["i"]}: graphics needs {need} bytes but only {end-off} available')
+            avail = (end - off) if end is not None else None
+            if avail is not None and need > avail:
+                sys.exit(f'monster {r["i"]}: graphics needs {need} bytes but only {avail} available')
     for off in offsets:
         fmts = set(r['bpp3'] for r in users[off] if not r['isChar'])
         if len(fmts) > 1:
             sys.exit(f'pointer {off:#x}: users disagree on 3bpp flag')
 
     # ---- palette pinning ----------------------------------------------------
+    # The definition's monsterPalette entries are 8-color (16-byte)
+    # sub-palettes, exactly the game's units: LoadMonsterPal reads 32 bytes
+    # from MonsterPal + p*16, i.e. sub-palette p for a 3bpp sprite, or the
+    # pair p + p+1 for a 4bpp sprite (colors 0-7 and 8-15).
     def pal_index(r):
         if r['isBoss']:
             return rom[boss_f + r['size']*5 + 2]
         return r['pal']
 
+    def pal_choice(p, bpp3, label):
+        if bpp3:
+            return {'path': f'monsterPalette[{p}]', 'name': f'{p}: {label}'}
+        return [
+            {'path': f'monsterPalette[{p}]', 'offset': 0,
+             'compose': True, 'name': f'{p}+{p+1}: {label}'},
+            {'path': f'monsterPalette[{p+1}]', 'offset': 8,
+             'compose': True, 'name': f'{p}+{p+1}: {label}'},
+        ]
+
     itemPalettes = []
     for off in offsets:
-        us = [r for r in users[off] if not r['isChar']]
-        if not us:
-            us = users[off]
+        us = [r for r in users[off] if not r['isChar']] or users[off]
         bpp3 = us[0]['bpp3']
-        # order palette choices: bosses first, then by monster id; dedupe
         order = sorted(us, key=lambda r: (0 if r['isBoss'] else 1, r['i']))
         defs, seen = [], set()
         for r in order:
             p = pal_index(r)
-            if p in seen or p >= npal:
+            if p in seen or p >= npal or (not r['bpp3'] and p + 1 >= npal):
                 continue
             seen.add(p)
             label = names[r['i']] + (' (boss)' if r['isBoss'] else '')
-            if bpp3:
-                defs.append({'path': f'monsterPalette[{p}]',
-                             'range': '0-8',
-                             'name': f'{p}: {label}'})
-            else:
-                # 4bpp: colors 0-7 from palette p, 8-15 from palette p+1
-                q = min(p + 1, npal - 1)
-                defs.append({'path': f'monsterPalette[{p}]',
-                             'range': '0-8', 'offset': 0,
-                             'compose': True, 'name': f'{p}+{q}: {label}'})
-                defs.append({'path': f'monsterPalette[{q}]',
-                             'range': '0-8', 'offset': 8,
-                             'compose': True, 'name': f'{p}+{q}: {label}'})
+            defs.append(pal_choice(p, bpp3, label))
         defs.append({'path': 'monsterPalette'})
         itemPalettes.append(defs)
 
     # ---- labels -------------------------------------------------------------
+    def label_for(rs):
+        bosses = sorted(set(names[r['i']] for r in rs if r['isBoss']))
+        others = sorted(set(names[r['i']] for r in rs if not r['isBoss']))
+        alias = set(ESPER_ALIAS[r['i']] for r in rs if r['i'] in ESPER_ALIAS)
+        known = set(bosses) | set(others)
+        extra = sorted(alias - known)
+        parts = bosses + others + extra
+        return ', '.join(parts)
+
     strings = {}
     for k, off in enumerate(offsets):
         us = [r for r in users[off] if not r['isChar']]
-        bosses = sorted(set(names[r['i']] for r in us if r['isBoss']))
-        others = sorted(set(names[r['i']] for r in us if not r['isBoss']))
-        label = ', '.join(['*' + b for b in bosses] + others)
-        strings[k] = label or f'Monster Graphics {k}'
+        lab = label_for(us)
+        if us and all(r['isBoss'] for r in us):
+            lab += ' (tile pool)'
+        strings[k] = lab or f'Monster Graphics {k}'
 
-    # monster palette names: which monsters use each palette
+    # monster palette names: which monsters use each sub-palette
     pal_users = [[] for _ in range(npal)]
     for r in recs:
         if r['isChar']:
             continue
         p = pal_index(r)
         if p < npal:
-            tag = '*' + names[r['i']] if r['isBoss'] else names[r['i']]
+            tag = names[r['i']]
             if tag not in pal_users[p]:
                 pal_users[p].append(tag)
-    pal_strings = {str(p): ', '.join(pal_users[p]) for p in range(npal) if pal_users[p]}
+    pal_strings = {str(k): ', '.join(pal_users[k]) for k in range(npal) if pal_users[k]}
 
-    # ---- write the definition ----------------------------------------------
-    #
-    # The graphics are a fragmented array: each object owns exactly its own
-    # bytes (capped at the next pointer, and at the largest tile count any
-    # battle loads for it), so unrelated data that lives *between* graphics
-    # blocks in bank 0d (map sprite palettes etc.) keeps its own owner and
-    # nothing is ever double-owned or destroyed on repack.
-    #
-    # Pointers address the region linearly in FILE space from the array base,
-    # so the array is "isMapped": false and graphicsPointer.offset is the file
-    # address of the region start.
-    def unmap(file_addr):
-        bank = (file_addr << 1) & 0xFF0000
-        return bank | (file_addr & 0x7FFF) | 0x8000
+    # ---- item ranges --------------------------------------------------------
+    others = []
+    for key, v in asm.items():
+        if key == 'monsterGraphics' or not isinstance(v, dict):
+            continue
+        r = v.get('range')
+        if not r:
+            continue
+        b, e = [int(x, 16) for x in r.split('-')]
+        others.append((key, loROM_map(b), loROM_map(e)))
+    others.sort(key=lambda t: t[1])
 
-    base_f = loROM_map(blob_begin)
-
-    # largest load any user performs at this pointer, in bytes
     max_load = {}
     for r in recs:
         if r['isChar']:
@@ -235,36 +285,55 @@ def main():
             tiles = tw * th
         max_load[r['ptr']] = max(max_load.get(r['ptr'], 0), tiles * by)
 
-    # other assemblies' file ranges: an item may never swallow them
-    others = []
-    for key, v in asm.items():
-        if key == 'monsterGraphics' or not isinstance(v, dict):
-            continue
-        r = v.get('range')
-        if not r:
-            continue
-        b, e = [int(x, 16) for x in r.split('-')]
-        others.append((key, loROM_map(b), loROM_map(e)))
-    # sub-ranges of the properties tables etc. too: everything except our own
-    others.sort(key=lambda t: t[1])
+    # ---- summon blocks (read from the ROM) ----------------------------------
+    # LoadSummonGfx reads 128 3bpp tiles from SummonGfxPtrs[attack-$4d] with
+    # SummonPalTbl colors (btlgfx_data.asm); the blocks live in the bank-0d
+    # ("summon graphics") region of the monster pointer space
+    summon_starts = []
+    for i in range(17):
+        word = rom[SUMMON_PTRS_F + i*2] | (rom[SUMMON_PTRS_F + i*2 + 1] << 8)
+        summon_starts.append(word + 0x18000)   # in-bank 0d -> region offset
+    summon_pals = [rom[SUMMON_PAL_F + i] for i in range(17)]
+    summon_block_starts = set(summon_starts)
 
+    # ---- item ranges ---------------------------------------------------------
     item_ranges = []
+    item_ends = []
+    hidden_items = []
     for k, off in enumerate(offsets):
         nxt = offsets[k+1] if k+1 < len(offsets) else None
         lo = base_f + off
-        end = off + max_load[off]
-        if nxt is not None:
-            end = min(end, nxt)
-        # cap at the start of the next foreign assembly after this item
+        # region end: monster graphics banks end at the Zeromus boundary;
+        # the bank-0d ("summon graphics") region runs to its own end, and the
+        # last block (Asura) extends to it - the summon animation frames use
+        # tiles beyond what the monster battle draw loads
+        if lo < MONSTER_GFX_END:
+            cap = MONSTER_GFX_END - base_f
+        else:
+            cap = SUMMON_GFX_END - base_f
+        if nxt is None:
+            end = cap if lo >= MONSTER_GFX_END else min(off + max_load[off], cap)
+        else:
+            end = min(off + max_load[off], nxt, cap)
+        # a boss-only pool holds the boss's complete art; the battle only
+        # loads part of it (tile count from battleVRAMMap), but the rest is
+        # the same creature (Mom Bomb's full 60-tile sheet proves this), so
+        # boss pools own everything up to the next pointer
+        us0 = [r for r in users[off] if not r['isChar']]
+        if us0 and all(r['isBoss'] for r in us0):
+            end = min(nxt, cap) if nxt is not None else cap
+        # a summon block that starts inside this item's range is owned by the
+        # summon instead (Chocobo/Shiva/Ramuh/Ifrit/Sylph are not monsters)
+        for s2 in summon_block_starts:
+            if s2 > off and s2 < end:
+                end = s2
         for key, ob, oe in others:
             if ob >= lo and ob < base_f + end:
                 end = ob - base_f
         hi = base_f + end
-        # verify disjoint ownership
         for key, ob, oe in others:
             if lo < oe and ob < hi:
                 sys.exit(f'item {k} [{lo:#x},{hi:#x}) overlaps {key} [{ob:#x},{oe:#x})')
-        # every non-boss user must fit entirely
         for r in recs:
             if r['isChar'] or r['isBoss'] or r['ptr'] != off:
                 continue
@@ -273,7 +342,186 @@ def main():
             if need > hi - lo:
                 sys.exit(f'item {k}: monster {r["i"]} needs {need} bytes, only {hi-lo}')
         item_ranges.append('0x%06X-0x%06X' % (unmap(lo), unmap(hi)))
+        item_ends.append(end)
+        us = [r for r in users[off] if not r['isChar']]
+        if us and all(r['isBoss'] for r in us):
+            hidden_items.append(k)
 
+    # ---- assembled boss views -----------------------------------------------
+    # one window per (boss properties record, graphics pool) pair; the layout
+    # walks the boss tile map exactly like the game's DrawBoss
+    # (LoadBossTilemap): sequential cells, 0xFF = empty, 0xFE n = n empty,
+    # anything else = pool tile index
+    boss_windows = {}
+    for r in recs:
+        if r['isChar'] or not r['isBoss'] or r['i'] in SKIP_BOSSES:
+            continue
+        bi = r['size']
+        bx = boss_f + bi*5
+        si = rom[bx+1] & 0x3F
+        tw, th = size_tiles(si)
+        mp = rom[bx+4]
+        wkey = (bi, r['ptr'])
+        if wkey in boss_windows:
+            boss_windows[wkey]['recs'].append(r)
+            continue
+        if r['i'] in SHEET_BOSSES:
+            sh = SHEET_BOSSES[r['i']]
+            boss_windows[wkey] = dict(tw=sh['width'], th=None, cells=None,
+                                      maxtile=sh['tiles']-1, ptr=r['ptr'],
+                                      recs=[r], pal=sh['pal'])
+            continue
+        if mp >= nbmaps:
+            continue
+        cells = []
+        k = bmap_offs[mp]
+        limit = bmap_offs[mp+1] if mp+1 < nbmaps else bmap_end
+        while len(cells) < tw*th and k < limit:
+            b = rom[k]; k += 1
+            if b == 0xFE:
+                n = rom[k]; k += 1
+                cells += [-1]*n
+            elif b == 0xFF:
+                cells.append(-1)
+            else:
+                cells.append(b)
+        while len(cells) < tw*th:
+            cells.append(-1)
+        maxtile = max((c for c in cells if c >= 0), default=0)
+        boss_windows[wkey] = dict(tw=tw, th=th, cells=cells, maxtile=maxtile,
+                                  ptr=r['ptr'], recs=[r], pal=None)
+
+    def window_defs_for(rs, pal_override=None):
+        defs, seen = [], set()
+        for r in sorted(rs, key=lambda r: r['i']):
+            p = pal_override if pal_override is not None else pal_index(r)
+            if p in seen:
+                continue
+            seen.add(p)
+            defs.append(pal_choice(p, r['bpp3'], label_for(rs)))
+        defs.append({'path': 'monsterPalette'})
+        return defs
+
+    boss_keys = []
+    seen_bi = {}
+    for (bi, ptr) in sorted(boss_windows):
+        w = boss_windows[(bi, ptr)]
+        k = item_of[ptr]
+        bpp3 = w['recs'][0]['bpp3']
+        us = sorted(w['recs'], key=lambda r: r['i'])
+        label = label_for(us) or f'Boss {bi}'
+        n = seen_bi.get(bi, 0)
+        seen_bi[bi] = n + 1
+        key = f'bossGraphics_{bi}' + (f'_{n}' if n else '')
+        boss_keys.append(key)
+        entry = {
+            'type': 'graphics',
+            'name': f'Boss Graphics ({label})',
+            'format': 'snes3bpp' if bpp3 else 'snes4bpp',
+            'width': w['tw'],
+            'window': {
+                'path': f'monsterGraphics_{k}',
+                'offset': 0,
+                'tiles': w['maxtile'] + 1
+            },
+            'palette': window_defs_for(us, w['pal'])
+        }
+        if w['th'] is not None:
+            entry['height'] = w['th']
+            entry['layout'] = w['cells']
+        asm[key] = entry
+
+    # ---- summon entries -------------------------------------------------------
+    # Where a summon's graphics block is exactly a monster item (Imp, Titan,
+    # Odin...), the Summons tree entry points at that item; summon-only blocks
+    # (Chocobo, Shiva, Ramuh, Ifrit, Sylph) get their own owning assembly.
+    def block_end(start):
+        end = SUMMON_GFX_END - base_f
+        for s2 in summon_block_starts:
+            if s2 > start and s2 < end:
+                end = s2
+        return end
+
+    summon_entries = []
+    seen_block = set()
+    for i in range(17):
+        start = summon_starts[i]
+        if start in seen_block:
+            continue
+        seen_block.add(start)
+        end = block_end(start)
+        name = SUMMON_NAMES[i]
+        k = item_of.get(start)
+        if k is not None and item_ends[k] == end:
+            summon_entries.append((name, f'monsterGraphics_{k}'))
+            continue
+        key = f'summonGraphics_{name.replace(" ", "")}'
+        summon_entries.append((name, key))
+        p = summon_pals[i]
+        defs = [pal_choice(p, True, name)]
+        for j in range(17):
+            if j != i and summon_starts[j] == start:
+                defs.append(pal_choice(summon_pals[j], True, SUMMON_NAMES[j]))
+        defs.append({'path': 'monsterPalette'})
+        asm[key] = {
+            'type': 'graphics',
+            'name': f'Summon Graphics ({name})',
+            'format': 'snes3bpp',
+            'width': 8,
+            'range': '0x%06X-0x%06X' % (unmap(base_f + start), unmap(base_f + end)),
+            'palette': defs
+        }
+
+    # ---- character / portrait palette pins ----------------------------------
+    # characterPalette has 16 entries (0-13 characters, 14 Golbez, 15 Anna);
+    # the Pig battle sprite reuses whichever character's palette is active,
+    # so it gets the whole array as a dropdown instead of a wrong pin.
+    cg = asm.get('characterGraphics')
+    if cg:
+        n = cg.get('arrayLength') or (cg.get('array') or {}).get('length') or 0
+        palNames = ((asm.get('characterPalette') or {}).get('stringTable') or {}) \
+            .get('string') or {}
+        char_pin = {14: None, 15: 14, 16: 15}   # graphics item -> palette entry
+        pins = []
+        for i in range(n):
+            pi = char_pin.get(i, i)
+            if pi is None:
+                pins.append([{'path': 'characterPalette',
+                              'name': 'character palette (reused)'}])
+            else:
+                nm = palNames.get(str(pi)) or palNames.get(pi) or ''
+                pins.append([{'path': f'characterPalette[{pi}]',
+                              'name': (f'{pi}: {nm}') if nm else f'characterPalette[{pi}]'},
+                             {'path': 'characterPalette'}])
+        cg['itemPalettes'] = pins
+
+    # portraitPalette: the rom map says 16 sub-palettes (0x0d86d0-0x0d87d0);
+    # the two extra ones are empty - Pig/Small/Toad portraits reuse the
+    # affected character's own palette at runtime, so offer the array
+    pp = asm.get('portraitPalette')
+    if pp:
+        pp['range'] = '0x0D86D0-0x0D87D0'
+        pp['array'] = {'length': 16}
+    pgr = asm.get('portraitGraphics')
+    if pgr:
+        n = (pgr.get('array') or {}).get('length') or 0
+        st = pgr.get('stringTable')
+        if isinstance(st, str):
+            st = (asm.get(st) or {}).get('stringTable')
+        palNames = (st or {}).get('string') or {}
+        pins = []
+        for i in range(n):
+            if i >= 14:
+                pins.append([{'path': 'portraitPalette',
+                              'name': 'portrait palette (reused)'}])
+            else:
+                nm = palNames.get(str(i)) or palNames.get(i) or ''
+                pins.append([{'path': f'portraitPalette[{i}]',
+                              'name': (f'{i}: {nm}') if nm else f'portraitPalette[{i}]'},
+                             {'path': 'portraitPalette'}])
+        pgr['itemPalettes'] = pins
+
+    # ---- write the definition -------------------------------------------------
     asm['monsterGraphics'] = {
         'type': 'array',
         'name': 'Monster Graphics',
@@ -317,6 +565,7 @@ def main():
             }
         ],
         'itemPalettes': itemPalettes,
+        'hiddenItems': hidden_items,
         'stringTable': {
             'length': len(offsets),
             'default': 'Monster Graphics %i',
@@ -324,21 +573,17 @@ def main():
         }
     }
 
-    # graphicsPointer: a real pointer into monsterGraphics. The offset is the
-    # file address of the graphics region because FF4 loROM graphics pointers
-    # address the region linearly in file space ("isMapped": false above).
     gp = props_def['assembly']['assembly']['graphicsPointer']
     gp['offset'] = hex(base_f)
     gp['pointerTo'] = 'monsterGraphics'
 
-    # monster palette names
     pal_def['stringTable'] = {
         'length': npal,
         'default': 'Monster Palette %i',
         'string': pal_strings
     }
 
-    # hierarchy: expose everything in the tree
+    # hierarchy
     def ensure(section, name, path):
         for sec in defj['hierarchy']:
             if sec.get('name') == section:
@@ -353,9 +598,63 @@ def main():
     ensure('Monster', 'Monster Palettes', 'monsterPalette')
     ensure('Battle', 'Boss Graphics Properties', 'monsterBossProperties')
     ensure('Battle', 'Boss Graphics Maps', 'monsterBossMap')
+    # replace the Boss Graphics section wholesale (keys change between runs)
+    def replace_section(title, keys):
+        sec = None
+        for s in defj['hierarchy']:
+            if s.get('name') == title:
+                sec = s
+                break
+        if sec is None:
+            sec = {'name': title, 'list': []}
+            for idx, s in enumerate(defj['hierarchy']):
+                if s.get('name') == 'Monster':
+                    defj['hierarchy'].insert(idx+1, sec)
+                    break
+            else:
+                defj['hierarchy'].append(sec)
+        sec['list'] = [{'name': asm[k]['name'], 'path': k} for k in keys]
+    replace_section('Boss Graphics', boss_keys)
+    # Summons: entries point either at a monster item or at a dedicated
+    # summonGraphics_* assembly
+    sec = None
+    for s in defj['hierarchy']:
+        if s.get('name') == 'Summons':
+            sec = s
+            break
+    if sec is None:
+        sec = {'name': 'Summons', 'list': []}
+        for idx, s in enumerate(defj['hierarchy']):
+            if s.get('name') == 'Boss Graphics':
+                defj['hierarchy'].insert(idx+1, sec)
+                break
+        else:
+            defj['hierarchy'].append(sec)
+    sec['list'] = [{'name': f'Summon: {name}', 'path': path}
+                   for name, path in summon_entries]
+
+    # Attack Graphics: expose the raw (paintable) graphics object as well as
+    # the animation tilemap that already lived in the tree
+    for sec in defj['hierarchy']:
+        for item in sec.get('list', []):
+            if item.get('path') == 'attackTilemap' and item.get('name') == 'Attack Graphics':
+                item['name'] = 'Attack Tilemap'
+    ensure('Character', 'Attack Graphics', 'attackGraphics')
+
+    # drop stale bossGraphics_*/summonGraphics_* assemblies from previous runs
+    live_keys = set(boss_keys) | {p for _, p in summon_entries}
+    for key in list(asm.keys()):
+        if (key.startswith('bossGraphics_') or key.startswith('summonGraphics_')) \
+                and key not in live_keys:
+            del asm[key]
 
     json.dump(defj, open(args.definition, 'w'), indent=4)
-    print(f'{args.definition}: {len(offsets)} graphics objects, '
+    print(f'{args.definition}: {len(offsets)} graphics objects '
+          f'({len(hidden_items)} boss pools hidden from the tree), '
+          f'{len(boss_keys)} assembled boss views, '
+          f'{len(summon_entries)} summon entries '
+          f'({sum(1 for _, p in summon_entries if p.startswith("summonGraphics_"))} '
+          f'dedicated), '
           f'{sum(1 for r in recs if r["isBoss"])} boss records, '
           f'{len(pal_strings)} named palettes')
 
