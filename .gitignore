@@ -3,3 +3,7 @@
 *.sh
 __pycache__/
 *.pyc
+*.sfc
+*.gba
+*.nes
+*.zip
