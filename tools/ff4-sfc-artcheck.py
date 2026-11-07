@@ -175,8 +175,12 @@ def main():
                 im = im.resize((im.width//2, im.height//2), Image.NEAREST)
             px = im.load()
             best = None
-            for ox in range(8):
-                for oy in range(8):
+            # an image that is already a whole number of tiles needs no search:
+            # sliding it lets near-identical tiles win the tie and shifts the
+            # frame a row or column out of its real place
+            offs = [(0, 0)] if (im.width % 8 == 0 and im.height % 8 == 0) \
+                else [(ox, oy) for ox in range(8) for oy in range(8)]
+            for ox, oy in offs:
                     gw = (im.width-ox)//8; gh = (im.height-oy)//8
                     if gw < 4 or gh < 4:
                         continue
@@ -189,45 +193,51 @@ def main():
                                   for x in range(8)] for y in range(8)]
                             known = sum(1 for r in c for v in r if v is not None)
                             if not known:
-                                row.append(-1); continue
+                                row.append(None); continue
                             tot += 1
                             m = [i for i, t in enumerate(ptiles) if sc(c, t) == (known, known)]
                             if m:
-                                perf += 1; row.append(m[0])
-                            else:
-                                row.append(-2)
+                                perf += 1
+                            row.append(m)       # every tile the rip accepts here
                         grid.append(row)
-                    if perf and (best is None or (perf, perf/tot) > best[:2]):
-                        best = (perf, perf/tot, grid)
-            perf, frac, grid = best
-            grid = [r for r in grid if any(v >= 0 for v in r)]
-            while grid and all(v < 0 for v in grid[0]):
-                grid.pop(0)
-            drawn = sum(1 for r in grid for v in r if v != -1)
-            matched = sum(1 for r in grid for v in r if v >= 0)
-            # the frame must appear as a block of the definition's layout
+                    if perf and (best is None or
+                                 (perf, perf/tot, -(ox+oy)) > best[:3]):
+                        best = (perf, perf/tot, -(ox+oy), grid, ox, oy)
+            perf, frac, _neg, grid, gox, goy = best
+            drawn = sum(1 for r in grid for v in r if v is not None)
+            matched = sum(1 for r in grid for v in r if v)
+            # slide the ripped frame over the layout and take the alignment with
+            # the fewest mismatches: a hand-placed layout may fill cells the rip
+            # leaves transparent, which is not an error - a cell holding a tile
+            # the rip rejects is
             gh, gw = len(grid), len(grid[0])
-            found = None
+            best_at, best_bad = None, None
             for r0 in range(H-gh+1):
                 for c0 in range(W-gw+1):
-                    if all((lay[(r0+r)*W + c0+c] == grid[r][c] or grid[r][c] < 0)
-                           for r in range(gh) for c in range(gw)
-                           if grid[r][c] >= 0):
-                        found = (r0, c0); break
-                if found: break
-            shape_ok = found and all(
-                (lay[(found[0]+r)*W + found[1]+c] >= 0) == (grid[r][c] >= 0)
-                for r in range(gh) for c in range(gw) if grid[r][c] != -2)
+                    bad = 0
+                    for r in range(gh):
+                        for c in range(gw):
+                            cands = grid[r][c]
+                            if not cands:
+                                continue
+                            got = lay[(r0+r)*W + c0+c]
+                            # the cell must hold one of the tiles the rip
+                            # accepts at that spot (several can look the same:
+                            # the pool holds duplicates and Odin's palette
+                            # repeats black)
+                            if got not in cands:
+                                bad += 1
+                    if best_bad is None or bad < best_bad:
+                        best_bad, best_at = bad, (r0, c0)
             print(f'{os.path.basename(g)}: {gw}x{gh} frame, {matched}/{drawn} drawn '
-                  f'cells matched a pool tile exactly, present in the layout '
-                  f'at {found}, shape {"ok" if shape_ok else "MISMATCH"}')
-            if not found or not shape_ok:
+                  f'cells matched a pool tile exactly; best fit at {best_at} '
+                  f'with {best_bad} cell(s) holding a tile the rip rejects')
+            if best_bad:
                 if hand:
                     print(f'  note: summonGraphics_Odin is overridden by a saved '
-                          f'puzzle placement ({placement}), so the ripped frame '
-                          f'not lining up is not a failure')
+                          f'puzzle placement, so this is a heads-up, not a failure')
                 else:
-                    print(f'FAIL: {os.path.basename(g)} is not in summonGraphics_Odin')
+                    print(f'FAIL: {os.path.basename(g)} disagrees with summonGraphics_Odin')
                     fails += 1
 
     print('MOM BOMB ARRANGEMENT OK' if not fails else f'{fails} FAILURES')

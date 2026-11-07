@@ -428,6 +428,18 @@ if(sec){
     check(JSON.stringify(o.layout)===JSON.stringify(layout),
       `${key}: layout does not match the composed ROM animation frames`);
   }
+  // a saved placement must actually be in the definition: forgetting to re-run
+  // the generator after editing silently shows the old layout in the app
+  for(const f of [...placed]){
+    const o=rom.assembly[f];
+    if(!o){ check(false,`placement for ${f} but no such assembly`); continue; }
+    const p=JSON.parse(fs.readFileSync(path.join(PLDIR,f+'.json'),'utf8'));
+    const cells=p.cols*p.rows, want=new Array(cells).fill(-1);
+    for(const e of p.placement) want[e.cell]=e.tile;
+    check(o.width===p.cols&&o.height===p.rows&&
+          JSON.stringify(o.layout)===JSON.stringify(want),
+      `${f}: the definition is stale - run tools/ff4-sfc-names.py to apply the saved placement`);
+  }
   console.log('summon entries checked:',sec.list.length,'| dedicated:',dedicated.length,
               '| frame layouts re-derived:',composed,
               `(${frameCount} frames, ${repeated} of them sharing tiles)`,
