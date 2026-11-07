@@ -89,9 +89,14 @@ MONSTER_GFX_END = 0x632f8
 #  - Mom Bomb (record 164): the US properties entry (bossProps 36) places a
 #    4x4 grid over the top-left of a 60-tile LINEAR sheet, so the assembled
 #    view crops her head off. The full arrangement below was reconstructed
-#    from ff4monsters.zip by exact tile-mask matching (every cell matched at
-#    IoU 1.00, all 60 pool tiles used exactly once); no ROM map contains it
-#    (it is the JP version's arrangement).
+#    from ff4monsters.zip by exact tile-mask matching; no ROM map contains it
+#    (it is the JP version's arrangement). tools/ff4-sfc-artcheck.py verifies
+#    it against the ripped art every run: motherbomb.png is exactly 10x9
+#    tiles, and with this layout the reference's 12 fully-transparent cells
+#    are the 12 -1 cells and 4991 of its 4992 pixels agree with the pool
+#    tiles through the identity colour map (the one exception is a stray
+#    pixel in the rip). An earlier revision was one cell out of place from
+#    row 6 on - the sheet has a blank at row 6 col 0, not row 6 col 8.
 #  - Dummy (record 214): a placeholder that reuses Wyvern's properties over
 #    the Zeromus pool; the game never draws it. Skip the window.
 SHEET_BOSSES = {164: dict(width=10, tiles=60, pal=164, layout=[
@@ -101,9 +106,9 @@ SHEET_BOSSES = {164: dict(width=10, tiles=60, pal=164, layout=[
     28, 20, 29, 30, 31, 32, 33, 34, 20, 35,
     36, 46, 20, 20, 37, 38, 20, 39, 40, 41,
     42, 43, 20, 20, 20, 20, 20, 20, 44, -1,
-    45, 46, 20, 20, 20, 47, 48, 49, -1, 50,
-    51, 20, 38, 52, 53, 54, -1, -1, -1, 55,
-    56, 57, 58, 59, -1, -1, -1, -1, -1, -1])}
+    -1, 45, 46, 20, 20, 20, 47, 48, 49, -1,
+    50, 51, 20, 38, 52, 53, 54, -1, -1, -1,
+    55, 56, 57, 58, 59, -1, -1, -1, -1, -1])}
 SKIP_BOSSES  = {214}
 
 def main():
@@ -448,22 +453,33 @@ def main():
     # ---- summon entries -------------------------------------------------------
     # Every Esper gets its own summonGraphics_<Name> assembly so the Summons
     # tree rows are independent objects (two tree rows pointing at one object
-    # make the navigator highlight the wrong row).
-    #   * the six that are bosses reuse their assembled boss window's layout,
-    #     as windows onto the same pool
-    #   * the four normal-monster ones are windows onto their monster item
-    #   * Chocobo, Shiva, Ramuh, Ifrit and Sylph have summon-only blocks:
-    #     owning assemblies arranged by the game's animation data
-    #     (SummonTilemapPtrs map block tile k -> OBJ VRAM slot;
-    #     SummonFramePtrs stages list the slot at each grid cell, 16x16
-    #     sprites = VRAM slots e..e+3; grid from SummonSpritePosTbl)
-    # Placements saved by tools/ff4-sfc-puzzle (manual tile arranging)
+    # make the navigator highlight the wrong row). The Esper art lives in the
+    # bank-0d ("summon graphics") region: 17 SummonGfxPtrs blocks, 10 of which
+    # are the same bytes as a monster/boss graphics item (those entries are
+    # windows onto that item) and 5 of which are summon-only (Chocobo, Shiva,
+    # Ramuh, Ifrit, Sylph - owning assemblies).
+    #
+    # The layout comes from the SummonTilemap stream, which is the game's own
+    # OBJ-VRAM placement (TfrSummonGfx, btlgfx.asm): one byte per 8x8 tile
+    # slot in slot order, $80-$FE = a blank slot (low 7 bits = slot number,
+    # no tile consumed), $FF = end. Slots are coordinates in a 16-tile-wide
+    # OBJ grid - slot = row*16 + col - and the animation (DrawSummon +
+    # _03f7e8, summon.asm) draws w*h 16x16 cells per stage, naming the
+    # top-left slot of each cell from SummonFramePtrs/SummonSpritePosTbl, so
+    # every frame of the summon's animation sits in the grid at the same
+    # time. Laying the stream out on that grid is therefore the one view that
+    # holds all of them: Chocobo 2 frames, Shiva/Ramuh/Ifrit/Titan/Bahamut 2,
+    # Asura 3, Sylph 3 16x16 frames - hence canvases up to 16 tiles wide.
+    # (Verified by rendering: every Esper comes out as a complete creature.)
+    # A tilemap is sometimes shared by two Espers (Imp/Bomb, Cockatrice/
+    # Mindflayer, Asura x3), and the shared stream can run past one of their
+    # blocks - the Cockatrice tilemap consumes 36 tiles but the Cockatrice
+    # block is 24, the extra 12 are the Mindflayer's art and are never drawn
+    # by a Cockatrice frame - so slots whose tile falls outside the block are
+    # dropped before cropping.
+    # Placements saved by tools/ff4-sfc-puzzle (manual tile arranging) still
     # override the computed layout for any key.
     SUMMON_TMP_F   = 0x6f260    # SummonTilemapPtrs (words + 0x0d0000)
-    SUMMON_SFP_F   = 0x6f660    # SummonFramePtrs   (words + 0x0d0000)
-    SUMMON_FSETS_F = loROM_map(0x13fa9d)  # stage set per summon (4 each)
-    SUMMON_POS_F   = loROM_map(0x13fa59)  # x, y, w, h in 16px units
-    BOSS_BP_FOR    = {8: 2, 9: 0, 11: 42, 12: 46, 13: 54, 16: 47}
 
     PLACEMENT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                  'ff4-sfc-puzzle', 'placements')
@@ -494,57 +510,37 @@ def main():
                 end = s2
         return end
 
-    def summon_stage_layout(i):
+    def summon_tilemap(i):
+        """{OBJ slot: block tile} plus the number of tiles the stream loads."""
         w1 = rom[SUMMON_TMP_F + i*2] | (rom[SUMMON_TMP_F + i*2 + 1] << 8)
-        tmp = loROM_map(0x0d0000 + w1)
-        slot2tile = {}
-        k = 0
-        p2 = tmp
+        p = loROM_map(0x0d0000 + w1)
+        slot2tile, k = {}, 0
         while True:
-            b = rom[p2]; p2 += 1
+            b = rom[p]; p += 1
             if b == 0xff:
                 break
             if b < 0x80:
                 slot2tile[b] = k
                 k += 1
-        w, h = rom[SUMMON_POS_F + i*4 + 2], rom[SUMMON_POS_F + i*4 + 3]
-        best = None
-        for stageno in range(4):
-            fset = rom[SUMMON_FSETS_F + i*4 + stageno]
-            w2 = rom[SUMMON_SFP_F + fset*2] | (rom[SUMMON_SFP_F + fset*2 + 1] << 8)
-            fp = loROM_map(0x0d0000 + w2)
-            entries = []
-            q = fp
-            while len(entries) < w*h:
-                b = rom[q]; q += 1
-                if b == 0xff:
-                    break
-                if b == 0xfe:
-                    n = rom[q]; q += 1
-                    entries += [None]*n
-                elif b < 0x80:
-                    entries.append(b)
-                else:
-                    entries.append(None)
-            GW, GH = w*2, h*2
-            layout = [-1]*(GW*GH)
-            for e_i, e in enumerate(entries[:w*h]):
-                if e is None:
-                    continue
-                r, c = divmod(e_i, w)
-                for sub in range(4):
-                    sr, sc = divmod(sub, 2)
-                    t = slot2tile.get(e + sub)
-                    layout[(r*2+sr)*GW + (c*2+sc)] = -1 if t is None else t
-            n = sum(1 for t in layout if t >= 0)
-            if best is None or n > best[0]:
-                best = (n, GW, GH, layout)
-        return best
+        return slot2tile, k
 
-    # index the boss windows by bossProps so summons can reuse their layout
-    boss_window_by_bp = {}
-    for (bi, ptr), w in boss_windows.items():
-        boss_window_by_bp.setdefault(bi, (w, item_of[ptr]))
+    def summon_canvas_layout(i, avail_tiles):
+        """SummonTilemap laid out on the 16-wide OBJ grid, cropped."""
+        slot2tile, _ = summon_tilemap(i)
+        cells = {s: t for s, t in slot2tile.items() if t < avail_tiles}
+        if not cells:
+            return None
+        cols, rows = 16, max(s // 16 for s in cells) + 1
+        grid = [-1]*(cols*rows)
+        for s, t in cells.items():
+            grid[s] = t
+        used = [c for c in range(cols)
+                if any(grid[r*cols + c] >= 0 for r in range(rows))]
+        c0, c1 = min(used), max(used)
+        layout = []
+        for r in range(rows):
+            layout += grid[r*cols + c0: r*cols + c1 + 1]
+        return c1 - c0 + 1, rows, layout, max(cells.values())
 
     summon_entries = []
     seen_block = set()
@@ -570,37 +566,23 @@ def main():
             'format': 'snes3bpp',
             'palette': defs
         }
-        if i in BOSS_BP_FOR:
-            bw, bk = boss_window_by_bp[BOSS_BP_FOR[i]]
+        k = item_of.get(start)
+        avail = (end - start) // 24
+        res = summon_canvas_layout(i, avail)
+        if k is not None:
+            # the Esper reuses a monster/boss graphics item: a window onto it
             entry['window'] = {
-                'path': f'monsterGraphics_{bk}',
+                'path': f'monsterGraphics_{k}',
                 'offset': 0,
-                'tiles': bw['maxtile'] + 1
+                'tiles': (res[3] + 1) if res else avail
             }
-            entry['width'] = bw['tw']
-            if bw['th'] is not None:
-                entry['height'] = bw['th']
-                entry['layout'] = list(bw['cells'])
         else:
-            k = item_of.get(start)
-            if k is not None and item_ends[k] == end:
-                # normal-monster Esper: a window over its own item
-                entry['window'] = {
-                    'path': f'monsterGraphics_{k}',
-                    'offset': 0,
-                    'tiles': (end - start) // 24
-                }
-                entry['width'] = size_tiles(users[start][0]['size'])[0] if users[start] else 8
-            else:
-                # summon-only block: owning assembly, arranged by frame data
-                entry['range'] = ('0x%06X-0x%06X'
-                                  % (unmap(base_f + start), unmap(base_f + end)))
-                res = summon_stage_layout(i)
-                if res:
-                    n, GW, GH, layout = res
-                    entry['width'] = GW
-                    entry['height'] = GH
-                    entry['layout'] = layout
+            # summon-only block (Chocobo/Shiva/Ramuh/Ifrit/Sylph): this
+            # assembly owns the bytes
+            entry['range'] = ('0x%06X-0x%06X'
+                              % (unmap(base_f + start), unmap(base_f + end)))
+        if res:
+            entry['width'], entry['height'], entry['layout'] = res[:3]
         # manual placements win
         pl = load_placement(key)
         if pl:

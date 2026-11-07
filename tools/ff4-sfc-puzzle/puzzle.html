@@ -21,6 +21,7 @@
  <select id="entries"></select>
  <button id="save">Save placement</button>
  <button id="clear">Clear grid</button>
+ <button id="revert" title="remove placements/<key>.json so the generator uses the ROM's own layout again">Delete placement</button>
  <label>grid <input id="cols" type="number" min="1" max="24" size="2"> x <input id="rows" type="number" min="1" max="24" size="2"></label>
  <span class="hint">click tile then click cell to place; click a placed cell to pick that tile up; right-click a cell flips it; shift-click a cell erases</span>
 </div>
@@ -103,11 +104,21 @@ async function load(key){
   document.getElementById('cols').value=cols;
   document.getElementById('rows').value=rows;
   drawTray();drawGrid();
-  status('loaded '+E.name+' - '+tiles.length+' tiles');
+  document.getElementById('revert').disabled=!E.placed;
+  status('loaded '+E.name+' - '+tiles.length+' tiles'+
+         (E.placed?'  [grid comes from a saved placement]':'  [grid is the ROM layout]'));
 }
 function status(t){document.getElementById('status').textContent=t;}
 document.getElementById('entries').addEventListener('change',e=>load(e.target.value));
 document.getElementById('clear').onclick=()=>{layout=layout.map(()=>-1);flips=flips.map(()=>0);drawGrid();};
+document.getElementById('revert').onclick=async()=>{
+  const r=await (await fetch('/api/delete_placement',{method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({key:E.key})})).json();
+  status(r.deleted?('deleted '+r.deleted+' - rerun tools/ff4-sfc-names.py, then reload this page')
+                  :(r.error||'nothing to delete'));
+  document.getElementById('revert').disabled=true;
+};
 document.getElementById('cols').onchange=resize;
 document.getElementById('rows').onchange=resize;
 function resize(){

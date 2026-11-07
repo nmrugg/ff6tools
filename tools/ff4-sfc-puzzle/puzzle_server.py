@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Local server for arranging FF4 (U) SNES summon/boss tile puzzles.
 
-Some FF4 summon sprites have no map in the ROM (the JP arrangement was lost
-or the animation data only gives partial frames), so this tool lets you
-drag tiles onto a grid by eye; the saved placement is picked up by
-tools/ff4-sfc-names.py on the next definition generation.
+Every summon and boss layout now comes out of the ROM (the boss tile maps and
+the SummonTilemap OBJ-VRAM placement), so this tool is for *tuning*: the grid
+starts with the ROM's arrangement and the tray holds the object's tiles, and
+the saved placement overrides the generator on the next definition run.
+(The one arrangement the US ROM does not contain, Mom Bomb's full sheet, is
+baked in tools/ff4-sfc-names.py and verified by tools/ff4-sfc-artcheck.py.)
 
 Serves puzzle.html and a JSON API:
   GET  /                       -> puzzle.html
@@ -25,10 +27,10 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 PLACEMENTS = os.path.join(HERE, 'placements')
 os.makedirs(PLACEMENTS, exist_ok=True)
 
-# entries offered for manual arranging: the five summon-only blocks whose
-# in-ROM animation frames never show the whole creature, plus Mom Bomb
-# (whose US boss map crops the JP arrangement). Add bossGraphics_* keys to
-# let a boss layout be tuned by hand too.
+# entries offered for manual arranging: the five summon-only blocks plus
+# Mom Bomb (the only arrangement the US ROM does not contain). Any
+# summonGraphics_* / bossGraphics_* key works - add one to this list to let
+# its layout be tuned by hand.
 PUZZLE_KEYS = ['summonGraphics_Chocobo', 'summonGraphics_Shiva',
                'summonGraphics_Ramuh', 'summonGraphics_Ifrit',
                'summonGraphics_Sylph', 'bossGraphics_36']
@@ -90,6 +92,10 @@ class Data:
         stride = 24 if fmt == 'snes3bpp' else 32
         out = []
         n = (hi - lo) // stride
+        # a window only sees the tiles its definition asks for
+        win = entry.get('window') or {}
+        if win.get('tiles'):
+            n = min(n, int(win['tiles']))
         for t in range(n):
             p = self.rom[lo + t*stride: lo + (t+1)*stride]
             mat = []
@@ -120,6 +126,7 @@ class Data:
             'palette': self.palbytes(e),
             'layout': e.get('layout', [-1] * (e.get('width', 8) * e.get('height', 8))),
             'layoutFlip': e.get('layoutFlip', []),
+            'placed': os.path.exists(os.path.join(PLACEMENTS, key + '.json')),
         }
 
 D = None
@@ -161,6 +168,17 @@ class H(BaseHTTPRequestHandler):
             fp = os.path.join(PLACEMENTS, key + '.json')
             json.dump(o, open(fp, 'w'), indent=1)
             return self._send(200, {'saved': fp})
+        if p == '/api/delete_placement':
+            o = self._read_body()
+            key = o['key']
+            if not key.replace('_', '').isalnum():
+                return self._send(400, {'error': 'bad key'})
+            fp = os.path.join(PLACEMENTS, key + '.json')
+            try:
+                os.remove(fp)
+                return self._send(200, {'deleted': fp})
+            except OSError:
+                return self._send(404, {'error': f'no placement for {key}'})
         return self._send(404, {'error': 'not found'})
 
 def main():

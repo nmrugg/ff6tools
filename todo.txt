@@ -4,6 +4,24 @@
 
 recently added
 --------------
+ * ff4 snes (u): summons are arranged by the ROM's SummonTilemap instead of
+   guessed frame stages - the stream is OBJ-VRAM placement (TfrSummonGfx):
+   one byte per 8x8 tile slot in a 16-tile-wide grid, and the animation
+   stages (SummonFramePtrs + SummonSpritePosTbl, cells = slots n,n+1,n+16,
+   n+17) draw 16x16 cells inside that grid, so every frame of an Esper is
+   in the grid at once. Laid out and cropped: Imp/Bomb 4x4, Cockatrice 6x4,
+   Mindflayer 6x6, Chocobo 8x4 (2 frames), Shiva/Ramuh 12x6, Ifrit 16x6,
+   Titan 14x8, Dragon Mist 10x8, Sylph 6x2 (3 frames), Odin/Leviathan/
+   Asura/Bahamut 16x8 - every one renders as a complete creature
+ * ff4 snes (u): ff4-sfc-xcheck.js re-derives all 15 summon canvases from
+   the ROM and compares them (keys with a saved puzzle placement are skipped)
+ * ff4 snes (u): Mom Bomb's baked sheet had one cell out of place from row 6
+   on - the empty cell is row 6 col 0, not row 6 col 8, which shifted her
+   bottom right; new tools/ff4-sfc-artcheck.py checks that sheet against
+   ff4monsters.zip (12 empty cells match the rip, 4992/4992 pixels agree;
+   the previous arrangement scored 4220/4992)
+ * ff4 snes (u): puzzle tool starts the grid from the ROM layout, caps the
+   tray to a window's tiles, and "Delete placement" reverts a key
  * ff4 snes (u): tile puzzle tool - tools/ff4-sfc-puzzle/puzzle_server.py
    (pattern: MysticForge battle-sprites puzzle_server) serves a drag tiles
    onto a grid page for the five summon-only blocks (Chocobo, Shiva, Ramuh,

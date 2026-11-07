@@ -228,7 +228,76 @@ if(sec){
         `${p} [${o.range}] overlaps item ${k} [${it.range}]`);
     }
   }
-  console.log('summon entries checked:',sec.list.length,'| dedicated:',dedicated.length);
+  // a summon window must stay inside the graphics item it reads
+  for(const item of sec.list){
+    const o=rom.assembly[item.path];
+    if(!o||!o.window) continue;
+    const pool=rom.parsePath(o.window.path);
+    check(!!pool,`${item.path}: window path ${o.window.path} unresolvable`);
+    if(!pool) continue;
+    const poolTiles=Math.floor(pool.data.length/64);
+    check(o.window.tiles<=poolTiles,
+      `${item.path}: window tiles ${o.window.tiles} > pool ${poolTiles}`);
+    if(Array.isArray(o.layout)){
+      const hi=Math.max(...o.layout);
+      check(hi<o.window.tiles,`${item.path}: layout tile ${hi} >= window tiles ${o.window.tiles}`);
+      check(o.layout.length===o.width*o.height,
+        `${item.path}: layout ${o.layout.length} != ${o.width}x${o.height}`);
+    }
+  }
+  // re-derive every SummonTilemap canvas from the ROM and require the
+  // definition to match: the stream is OBJ-VRAM placement (TfrSummonGfx),
+  // one byte per 8x8 tile slot in a 16-tile-wide grid ($80-$FE = blank slot,
+  // $FF = end); slots whose tile falls outside the block are dropped
+  const SGFX=m(0x0D87F0), STMP=m(0x0DF260), SEND=m(0x0DE818);
+  const SNAM=['Imp','Bomb','Cockatrice','Mindflayer','Chocobo','Shiva','Ramuh',
+              'Ifrit','Titan','DragonMist','Sylph','Odin','Leviathan','Asura',
+              'Asura','Asura','Bahamut'];
+  const sblk=[];
+  for(let i=0;i<17;i++)
+    sblk.push(m(0x0D0000+(data[SGFX+i*2]|(data[SGFX+i*2+1]<<8))));
+  const seenBlk=new Set();
+  let canvases=0, manual=0;
+  // a saved puzzle placement deliberately overrides the ROM canvas
+  const PLDIR=path.join(ROOT,'tools/ff4-sfc-puzzle/placements');
+  const placed=new Set(fs.existsSync(PLDIR)
+    ? fs.readdirSync(PLDIR).filter(f=>f.endsWith('.json')).map(f=>f.slice(0,-5)) : []);
+  for(let i=0;i<17;i++){
+    if(seenBlk.has(sblk[i])) continue;
+    seenBlk.add(sblk[i]);
+    const nxt=sblk.filter(b=>b>sblk[i]);
+    const end=nxt.length?Math.min(...nxt):SEND;
+    const avail=Math.floor((end-sblk[i])/24);
+    let p=m(0x0D0000+(data[STMP+i*2]|(data[STMP+i*2+1]<<8))), k=0;
+    const cells={};
+    for(;;){
+      const b=data[p]; p++;
+      if(b===0xff) break;
+      if(b<0x80){ if(k<avail) cells[b]=k; k++; }
+    }
+    const slots=Object.keys(cells).map(Number);
+    const cols=16, rows=Math.max(...slots.map(s=>Math.floor(s/16)))+1;
+    const grid=new Array(cols*rows).fill(-1);
+    for(const s of slots) grid[s]=cells[s];
+    const used=[];
+    for(let c=0;c<cols;c++)
+      if(grid.some((v,j)=>j%cols===c&&v>=0)) used.push(c);
+    const c0=Math.min(...used), c1=Math.max(...used);
+    const layout=[];
+    for(let r=0;r<rows;r++) layout.push(...grid.slice(r*cols+c0,r*cols+c1+1));
+    const key=`summonGraphics_${SNAM[i]}`;
+    const o=rom.assembly[key];
+    if(!o){ check(false,`${key}: missing assembly`); continue; }
+    if(placed.has(key)){ manual++; continue; }
+    canvases++;
+    check(o.width===c1-c0+1&&o.height===rows,
+      `${key}: ${o.width}x${o.height} != SummonTilemap canvas ${c1-c0+1}x${rows}`);
+    check(JSON.stringify(o.layout)===JSON.stringify(layout),
+      `${key}: layout does not match the SummonTilemap canvas`);
+  }
+  console.log('summon entries checked:',sec.list.length,'| dedicated:',dedicated.length,
+              '| tilemap canvases re-derived:',canvases,
+              '| overridden by puzzle placements:',manual);
 }
 
 // ---- 5. edit lands on the right bytes; undo is byte-exact ----------------

@@ -233,11 +233,15 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
       return {count:names.length,
               has:['Chocobo','Shiva','Ramuh','Ifrit','Sylph'].every(n=>names.some(x=>x.includes(n))),
               painted, diffs, pal:view.paletteView.palette.length,
-              assembled:!!(choco.layout&&choco.width)};
+              canvas:{w:choco.width,h:choco.height,cells:choco.layout.length,
+                      filled:choco.layout.filter(t=>t>=0).length,
+                      tiles:choco.data.length/64}};
   })()`);
   console.log('  summons:',JSON.stringify(sum));
   check(!sum.err&&sum.count===15&&sum.has,'Summons section lists 15 summons incl Chocobo/Shiva/Ramuh/Ifrit/Sylph');
-  check(sum.assembled,'Chocobo summon graphics are arranged by the game frame data (not a tile sheet)');
+  check(sum.canvas.w===8&&sum.canvas.h===4&&sum.canvas.cells===32&&sum.canvas.filled===24
+        &&sum.canvas.tiles===24,
+        'Chocobo shows the SummonTilemap canvas (8x4 = both animation frames, all 24 tiles)');
   check(sum.painted>0,'Chocobo summon graphics paint with the pencil');
   check(sum.diffs===0,'undo of the Chocobo paint is byte-exact');
 
@@ -251,12 +255,17 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
       const titan=rom.parsePath('summonGraphics_Titan');
       const boss=rom.parsePath('bossGraphics_2');
       return {uniq, allSummon,
-              titanOk:!!(titan&&titan.window&&titan.layout&&titan.layout.length===boss.layout.length),
+              titanPool:!!(titan.window&&boss.window)&&titan.window.path===boss.window.path,
+              titanCanvas:!!(titan.layout&&titan.width===14&&titan.height===8&&
+                             titan.layout.length===112&&titan.window.tiles===62),
+              ownLayout:JSON.stringify(titan.layout)!==JSON.stringify(boss.layout),
               distinct:titan!==boss};
   })()`);
   console.log('  summon independence:',JSON.stringify(indep));
   check(indep.uniq&&indep.allSummon,'every Summons row is a distinct summonGraphics_* object (no shared tree rows)');
-  check(indep.titanOk&&indep.distinct,'Titan summon is its own window reusing the assembled boss layout');
+  check(indep.titanPool&&indep.titanCanvas&&indep.distinct,
+        'Titan summon is its own window onto the boss pool, arranged by the SummonTilemap (14x8, 62 tiles)');
+  check(indep.ownLayout,'the Titan summon canvas is the Esper cutscene placement, not the battle map');
 
   // boss pools are hidden from the Monster Graphics tree; the assembled
   // Mom Bomb shows her full 60-tile sheet
@@ -268,11 +277,14 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
       const shown=ul?ul.querySelectorAll('li').length:-1;
       const mom=rom.parsePath('bossGraphics_36');
       return {shown, hidden:(rom.monsterGraphics.hiddenItems||[]).length,
-              momTiles:mom.window.tiles, momW:mom.width, momData:mom.data.length};
+              momTiles:mom.window.tiles, momW:mom.width, momData:mom.data.length,
+              momBlanks:mom.layout.map((t,i)=>t<0?i:-1).filter(i=>i>=0)};
   })()`);
   console.log('  hidden/mombomb:',JSON.stringify(hid));
   check(hid.shown===66,'Monster Graphics tree shows only the 66 monster-owned objects (24 boss pools hidden)');
   check(hid.momTiles===60&&hid.momData===3840,'Mom Bomb window shows her full 60-tile art (the US map only places a 4x4 crop)');
+  check(hid.momBlanks.join()==='0,59,60,69,77,78,79,85,86,87,88,89',
+        'Mom Bomb sheet has exactly the 12 empty cells of the ripped art (blank at row 6 col 0, not col 8)');
 
   // Attack Graphics must be directly editable
   const atk=await ev(c,sessionId,`(()=>{
