@@ -550,7 +550,110 @@ renders the same regions straight from the ROM for comparison:
 
 ---
 
-## 6. How to test anything you change
+## 6. FF IV (U) SNES ("Final Fantasy II (USA)") — monster / boss / summon graphics — DONE
+
+`ff4/ff2u-sfc.json` (crc32 0x65D0A825). The definition used to model monster
+graphics as one opaque 111 KiB blob (`monsterGraphics 0x098000-0x0CB2F8`), not
+even in the navigator tree. It is now 90 individually editable graphics
+objects named after their monsters, with per-object size/format/palette, plus
+named monster palettes. Character graphics (`characterGraphics`, sprite sheets)
+and portraits were already editable and stayed untouched.
+
+**The pointer model — the trap of this game.** `monsterGraphicsProperties` is
+224 records of 4 bytes: byte0 = size class (0x3F) / isCharacter (0x40) /
+isBoss (0x80); byte1 = palette index; bytes2-3 = 15-bit graphics pointer, bit
+15 = 3bpp. The game (LoadMonsterGfx, @8eca in everything8215/ff4) computes
+`bank = $09 + bits4-6` and `offset = $8000 + (low 12 bits)*8` — which is
+algebraically `FILE(0x48000) + (p & 0x7FFF)*8`: **the pointer space is linear
+in FILE space, not in bus space**. FF6's hiROM definitions hide this because
+there bus == file. So:
+
+- the array is `"isMapped": false` (new: ROMArray now honours it for
+  `pointerObject` in readPointerObjects, pointer-target init and
+  updatePointerOffset — readPointerTable already did), and
+- `graphicsPointer` gets `"offset": "0x48000"` — a *file* address — plus
+  `"pointerTo": "monsterGraphics"`.
+
+**The region is interleaved with other data.** Pointers ≥ 0x20000 land in
+bank 0d, where the ROM also holds mapSpritePalettes, npcPalettes,
+portraitPalette, windowPalette (and attackGraphics/attackTilemap sit in the
+hole after the last bank-0C pointer). A gap-tiled array would swallow them,
+so the array is **fragmented** (`isFragmented: true`, it owns no range) with
+static **`itemRanges`** the generator computes per unique pointer:
+
+    end = min(next pointer, ptr + max load)
+    max load = w*h*tileBytes                     (normal monsters)
+             = max(battleVRAMMap bossTileCount over all battles, w*h) * tileBytes  (bosses)
+
+tileBytes = 24 (3bpp) / 32 (4bpp). Verified: no normal monster's load ever
+crosses its gap; bosses DO over-read their pools in the game (garbage tiles
+the boss map never places) — the cap keeps ownership clean. Every byte still
+has exactly one owner; `tools/ff4-sfc-xcheck.js` asserts it.
+
+Two romtools fixes made this work:
+- `itemRanges` + `pointerObject` combine: the itemRanges branch now builds
+  `pointerRanges` from the sorted unique pointers so pointer targets,
+  `sizeFrom` and the property list still resolve.
+- fragmented items are registered as direct children of the ROM, whose
+  constructor maps the definition range — the creation loop now hands them
+  the **unmapped** range (FF5 GBA only worked because GBA `mapAddress` is the
+  identity below 0x08000000).
+
+**sizeFrom is now a list of specs** with new fields (FF5's single-spec form is
+unchanged): `condition` (JS over `record`), `indexProp`+`indexArrayPath`
+(boss records route through `monsterBossProperties[b]`), `sizeIndexProp` (the
+size table is indexed by a property value, not the record index), `noSize`
+(boss pools: display as a 16-wide sheet, the game places tiles with the boss
+map), `formatProp`+`formats` (is3bpp -> snes3bpp/snes4bpp; the item is
+re-disassembled if the pointer-target pass already decoded it raw), and
+`linkPalette.indexProp`. `itemPalettes` entries set `palettePinned` so the
+generated static entries win over spec linking.
+
+**Palettes.** 3bpp sprites use the first 8 colours of `monsterPalette[p]`
+(pinned as `{"path": "monsterPalette[p]", "range": "0-8"}` — note `range`
+must be a *string*: `ROMRange.parse` returns 0-0 for objects, which silently
+blanked the palette panel). 4bpp composes colours 0-7 of p with 8-15 of p+1,
+exactly as `LoadMonsterPal` loads them — two `compose: true` entries with
+offsets 0 and 8. Only Zeromus (records 201/214) is 4bpp.
+
+**Bosses and summons.** 44 records set isBoss; the size class field is then a
+`monsterBossProperties` index (position, size, palette, tilemap). Pools are
+shared: Milon + Milon Z + Rubicant + Elements are one 254-tile pool; the boss
+map (monsterBossMap, 0xFF = skip, 0xFE n = run) places a subset per battle,
+with the loaded tile count coming from battleVRAMMap. One pool = one graphics
+object labelled with all its bosses (`*Odin`, `*Bahamut, *Wyvern`, ...). The
+summons everyone remembers (Titan, Odin, Leviathan, Bahamut, Asura) are boss
+records, so they are covered too. Boss *placement* (the tilemaps) is still
+raw data, not a tilemap view — that's the natural next step.
+
+**Names come from the ROM.** `tools/ff4-sfc-names.py` decodes monster names
+(A-Z = 0x42-0x5B, a-z = 0x5C-0x75, 0xC1 = apostrophe, 0xC2 = space, 0xFF =
+pad — "Jhk" is Imp, "P^ojh5C8" is Octomamm), computes the item order (sorted
+unique pointers), the capped itemRanges, per-item palette pins and the
+monsterPalette names, and rewrites the definition (idempotent).
+
+**Battle code.** `ff4-battle.js` / `ff4-battle-vram.js` resolve
+`graphicsPointer.target` when the definition has the array model, and fall
+back to the old `range.begin + value` arithmetic when it doesn't — so
+`ff4j-sfc.json`, which still has the blob (and which I cannot validate, no
+J ROM), keeps working unchanged. `updateBattleStrings` keys the graphics
+string table by `target.i` and no longer appends duplicate names to
+pre-generated labels.
+
+Fixed on the way: `ROMGraphicsView.selectObject` crashed on objects with no
+format (`formatKey.includes` on undefined) — a raw blob is now viewable.
+
+Same tests as FF3, same guarantees: `node tools/ff4-sfc-xcheck.js` (pointer
+resolution, one-owner rule, decode parity vs an independent from-spec
+decoder for 6536 tiles, palette pins, paint lands on the right bytes, undo
+byte-exact) and `node tools/ff4-sfc-app-test.js` (real browser: auto-detect,
+open/paint/undo, boss pool, 4bpp compose, FF4Battle + VRAM still draw).
+`tools/app-shots.js` is the generalized screenshot tool (`SHOT_ROM=... node
+tools/app-shots.js 'monsterGraphics_80' ...`).
+
+---
+
+## 7. How to test anything you change
 
 ```bash
 # serve the app (XHR of definition JSON is blocked under file://)
@@ -573,6 +676,18 @@ node tools/ff3-nes-map-smoke.js # FF3J map/world editors still open without thro
 FF5E_ROM="Final Fantasy III (Japan) (fixed).nes" \
   node tools/rom-harness.js ff3/ff3j-nes.json   # FF3J round trip must be 0 diffs
 node tools/ff3-nes-shots.js 'monsterGraphics6x6[3]' 'bossTilemap8'  # screenshots
+FF3J_ROM="Final Fantasy III (Japan) (fixed) (English).nes" \
+  node tools/rom-harness.js ff3/ff3u-nes.json   # FF3U round trip too
+
+# FF4 (U) SNES - "Final Fantasy II (USA).sfc"
+python3 tools/ff4-sfc-names.py --def ff4/ff2u-sfc.json \
+        --rom "/storage/romhacking/ff-roms/Final Fantasy II (USA).sfc"
+FF5E_ROM="/storage/romhacking/ff-roms/Final Fantasy II (USA).sfc" \
+  node tools/rom-harness.js ff4/ff2u-sfc.json   # must be 0 diffs
+node tools/ff4-sfc-xcheck.js                    # model + decode parity + edit/undo
+node tools/ff4-sfc-app-test.js                  # real browser: paint, boss, battle VRAM
+SHOT_ROM="/storage/romhacking/ff-roms/Final Fantasy II (USA).sfc" \
+  node tools/app-shots.js 'monsterGraphics_80' 'monsterGraphics_88' 'battleProperties[223]'
 
 # the English translation dump (crc32 fa04837f) gets the same treatment
 FF5E_ROM="Final Fantasy III (Japan) (fixed) (English).nes" \
@@ -602,7 +717,7 @@ bugs during this work were harness artefacts, not product bugs.
 
 ---
 
-## 7. Files added on this branch
+## 8. Files added on this branch
 
 ```
 patches/ff5e-europe-strip-boot-patch.ips   # user's FF5E -> reference dump
@@ -617,6 +732,11 @@ tools/  node-dom-stub.js rom-harness.js ff5e-xcheck.js ff5e-pallink.js
         ff3-nes-probe.py ff3-nes-classify.py ff3-nes-tilesheet.py
         ff3-nes-montage.py ff3-nes-diff.py ff3-nes-dump.py
         ff3-nes-names.py ff3-nes-add-graphics.py ff3-nes-attrcheck.py
+        ff3-nes-palcheck.py
+        app-shots.js            # generic: SHOT_ROM=rom node tools/app-shots.js <path...>
+        ff4-sfc-names.py        # generates the FF4 SNES graphics model from the ROM
+        ff4-sfc-xcheck.js       # FF4 SNES: pointers, ownership, parity, edit/undo
+        ff4-sfc-app-test.js     # FF4 SNES: browser paint + boss + battle VRAM
 ```
 
 `ff3-nes-dump.py` renders any monster size class / character block straight from
@@ -630,9 +750,12 @@ model from the ROM and checks it against the videogamesprites.net rips
 (cached in `/tmp/ff3-rips`), scoring the wrong variants alongside it.
 
 Modified: `ff5/ff5e-gba.json`, `ff3/ff3j-nes.json`, `ff3/ff3u-nes.json`,
+`ff4/ff2u-sfc.json`, `ff4/ff4-battle.js`, `ff4/ff4-battle-vram.js`,
 `ff5/ff5-battle.js`, `rom/romtools.js` (new generic `ROMArray` keys
-`itemPalettes` and `itemAttributes`; `ff3BossTilemap`/`ff3SummonTilemap`
-registered), `rom/gfx.js` (`nesFixedPalette` palette format,
+`itemPalettes` and `itemAttributes`; `isMapped: false` for `pointerObject`
+arrays; `itemRanges` + `pointerObject` combined; `sizeFrom` spec list with
+`condition`/`indexProp`/`sizeIndexProp`/`noSize`/`formatProp`/`linkPalette.indexProp`;
+`ff3BossTilemap`/`ff3SummonTilemap` registered), `rom/gfx.js` (`nesFixedPalette` palette format,
 `GFX.closestNESColor`, and the two FF3 tile formats - the summon one carries
 per-tile palette bits), `gui/graphics-view.js` (painting tools, `"whole": true`
 tile pools, per-tile palette cells, forwarding arrow keys to the navigator),

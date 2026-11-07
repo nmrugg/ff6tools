@@ -193,7 +193,13 @@ class FF4BattleVRAM extends ROMToolbox {
             if (slot.vramOffset !== 0) {
                 const format = slot.gfxProperties.is3bpp.value ? GFX.graphicsFormat.snes3bpp : GFX.graphicsFormat.snes4bpp;
                 const bytesPerTile = slot.gfxProperties.is3bpp.value ? 24 : 32;
-                const begin = this.rom.monsterGraphics.range.begin + slot.gfxProperties.graphicsPointer.value;
+                // the definition may model the graphics as a pointer-deduped
+                // array (FF4 US); resolve through the pointer's target. Older
+                // definitions (FF4 J) still have a single blob, so fall back
+                // to manual pointer arithmetic.
+                const gfxTarget = slot.gfxProperties.graphicsPointer.target;
+                const begin = gfxTarget ? gfxTarget.range.begin
+                    : this.rom.monsterGraphics.range.begin + slot.gfxProperties.graphicsPointer.value;
                 const end = begin + slot.tileCount * bytesPerTile;
                 slot.graphics = format.decode(this.rom.data.subarray(begin, end))[0];
             }
@@ -212,7 +218,9 @@ class FF4BattleVRAM extends ROMToolbox {
             if (slot.vramOffset !== 0) {
                 const format = slot.gfxProperties.is3bpp.value ? GFX.graphicsFormat.snes3bpp : GFX.graphicsFormat.snes4bpp;
                 const bytesPerTile = slot.gfxProperties.is3bpp.value ? 24 : 32;
-                const begin = this.rom.monsterGraphics.range.begin + slot.gfxProperties.graphicsPointer.value;
+                const gfxTarget = slot.gfxProperties.graphicsPointer.target;
+                const begin = gfxTarget ? gfxTarget.range.begin
+                    : this.rom.monsterGraphics.range.begin + slot.gfxProperties.graphicsPointer.value;
                 const size = this.rom.monsterSize.item(slot.gfxProperties.size.value);
                 if (size) {
                     const w = size.width.value;

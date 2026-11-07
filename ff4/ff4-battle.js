@@ -83,11 +83,17 @@ class FF4Battle extends ROMEditor {
                 paletteStringTable.setString(p, `<stringTable.monsterName[${m}]>`);
             }
 
-            const g = this.rom.monsterGraphicsProperties.item(m).graphicsPointer.value;
+            const ptrProp = this.rom.monsterGraphicsProperties.item(m).graphicsPointer;
+            const target = ptrProp.target;
+            // when the definition models the graphics as a pointer-deduped
+            // array (FF4 US), the string table is keyed by graphics object and
+            // pre-generated from the ROM; older definitions (FF4 J) key it by
+            // raw pointer value and are named here
+            const g = target ? target.i : ptrProp.value;
             const graphicsString = graphicsStringTable.string[g];
             if (!graphicsString) {
                 graphicsStringTable.setString(g, `<stringTable.monsterName[${m}]>`);
-            } else {
+            } else if (!target) {
                 // duplicate monsters using the same graphics
                 graphicsString.value += `, <stringTable.monsterName[${m}]>`;
             }

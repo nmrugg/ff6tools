@@ -3978,7 +3978,10 @@ function ROMArray(rom, definition, parent) {
     if (definition.pointerObject) {
         // custom pointers in an external object
         this.pointerObject = definition.pointerObject;
-        this.isMapped = true;
+        // pointer values are mapped through the ROM's bank mapping by default.
+        // Some systems (FF4 SNES loROM) address graphics linearly in *file*
+        // space, where the bank mapping must be skipped: "isMapped": false.
+        this.isMapped = (definition.isMapped !== false);
 
     } else if (definition.pointerTable) {
         // standard pointer table
@@ -3994,9 +3997,12 @@ function ROMArray(rom, definition, parent) {
             this.isMapped = true;
         }
         this.pointerOffset = offset;
-    } else if (definition.itemRanges) {
-        this.itemRanges = definition.itemRanges;
     }
+
+    // static item ranges can combine with external pointers (FF4 SNES: the
+    // pointer table caps each item so unrelated data between graphics blocks
+    // keeps its own owner)
+    if (definition.itemRanges) this.itemRanges = definition.itemRanges;
 
     // copy the display size (in tiles) from a record that points at this array:
     // {"arrayPath": "monsterGraphicsProperties", "pointerPath": "graphicsPointer",
@@ -4099,6 +4105,7 @@ Object.defineProperty(ROMArray.prototype, "definition", { get: function() {
     if (this.pointerObject) {
         // custom pointers in an external object
         definition.pointerObject = this.pointerObject;
+        if (!this.isMapped) definition.isMapped = false;
 
     } else if (this.pointerTable) {
         // standard pointer table
@@ -4116,9 +4123,9 @@ Object.defineProperty(ROMArray.prototype, "definition", { get: function() {
             pointerTableDefinition.offset = hexString(offset);
         }
         definition.pointerTable = pointerTableDefinition;
-    } else if (this.itemRanges) {
-        definition.itemRanges = this.itemRanges;
     }
+
+    if (this.itemRanges) definition.itemRanges = this.itemRanges;
 
     if (this.sizeFrom) definition.sizeFrom = this.sizeFrom;
     if (this.itemPalettes) definition.itemPalettes = this.itemPalettes;
@@ -4286,6 +4293,22 @@ ROMArray.prototype.disassemble = function(data) {
             itemRanges.push(range);
         }
 
+        if (this.pointerObject) {
+            // static ranges plus external pointers (FF4 SNES): the ranges are
+            // capped per item so the array never swallows unrelated data that
+            // sits between graphics blocks (bank 0d holds palettes between
+            // monster graphics). Match each unique pointer, in ascending
+            // order, to its static range so pointer targets still resolve.
+            var pointerRanges = {};
+            var pvals = this.readPointerObjects();
+            var uniq = [];
+            for (p = 0; p < pvals.length; p++)
+                if (uniq.indexOf(pvals[p]) < 0) uniq.push(pvals[p]);
+            uniq.sort(function(a, b) { return a - b; });
+            for (p = 0; p < uniq.length && p < itemRanges.length; p++)
+                pointerRanges[uniq[p]] = { range: itemRanges[p], i: p };
+        }
+
     } else if (!this.pointerTable && !this.pointerObject) {
         // fixed-length items
         var length = this.assembly.range.length || 1;
@@ -4395,6 +4418,10 @@ ROMArray.prototype.disassemble = function(data) {
         var assembly;
         if (this.isFragmented) {
             definition.key = this.key + "_" + i;
+            // fragments become direct children of the ROM, whose constructor
+            // maps the definition range; hand it the *definition*-space range
+            // (itemRanges above are already in mapped/file space)
+            definition.range = this.rom.unmapRange(range).toString();
             assembly = this.parent.addAssembly(definition);
             assembly.fragment = true;
 //            assembly.canRelocate = true;
@@ -4423,6 +4450,7 @@ ROMArray.prototype.disassemble = function(data) {
             var pal = this.itemPalettes[i];
             if (pal === undefined || pal === null) continue;
             this.array[i].palette = pal;
+            this.array[i].palettePinned = true;
         }
     }
 
@@ -4448,7 +4476,7 @@ ROMArray.prototype.disassemble = function(data) {
                 assembly = this.item(i);
             } else {
                 var pointerValue = pointer.value;
-                if (this.parent.mapAddress) {
+                if (this.isMapped && this.parent.mapAddress) {
                     pointerValue = this.parent.mapAddress(pointerValue);
                 }
                 pointerValue -= this.relativeTo.range.begin;
@@ -4466,38 +4494,114 @@ ROMArray.prototype.disassemble = function(data) {
         }
     }
 
-    // copy the display size (in tiles) from the record that points here
+    // copy the display size (in tiles), format and palette from the records
+    // that point here. "sizeFrom" is one spec or an array of specs (FF4 SNES
+    // needs one spec for ordinary monsters and another for bosses, whose size
+    // and palette live in a second table). Each spec:
+    //   arrayPath, pointerPath  - the pointer records to walk
+    //   condition               - JS expression over `record`; skip if false
+    //   indexProp/indexArrayPath - follow record[indexProp].value into
+    //                             indexArrayPath and use that record instead
+    //                             (bossProperties -> monsterBossProperties)
+    //   width/height            - property names on the size record (pixels)
+    //   sizeIndexProp           - property (on the record) holding the index
+    //                             into sizeArrayPath; without it the record's
+    //                             own array index is used (FF5 GBA)
+    //   sizeArrayPath           - the size table
+    //   noSize                  - skip width/height (shared boss tile pools)
+    //   formatProp + formats    - boolean property -> per-item graphics format
+    //                             (FF4: is3bpp -> snes3bpp / snes4bpp)
+    //   linkPalette             - pin the palette: {"pointerPath": ...} for a
+    //                             pointer property, or {"indexProp": ...} for
+    //                             a plain palette-index property
     if (this.sizeFrom) {
-        var sizeArray = this.parsePath(this.sizeFrom.arrayPath);
-        if (sizeArray && sizeArray instanceof ROMArray) {
-            for (var s = 0; s < sizeArray.arrayLength; s++) {
-                var record = sizeArray.item(s);
-                if (!record) continue;
-                var ptr = this.parsePath(this.sizeFrom.pointerPath, record);
-                if (!ptr || !ptr.target) continue;
-                var target = ptr.target;
-                if (target.width && target.height) continue; // first one wins
-                var wProp = record[this.sizeFrom.width];
-                var hProp = record[this.sizeFrom.height];
-                if ((!wProp || !hProp) && this.sizeFrom.sizeArrayPath) {
-                    var sizeArr = this.parsePath(this.sizeFrom.sizeArrayPath);
-                    var sizeRecord = sizeArr && sizeArr.item ? sizeArr.item(s) : null;
-                    if (sizeRecord) { wProp = sizeRecord[this.sizeFrom.width]; hProp = sizeRecord[this.sizeFrom.height]; }
+        var specs = isArray(this.sizeFrom) ? this.sizeFrom : [this.sizeFrom];
+        for (var sp = 0; sp < specs.length; sp++) this.applySizeFromSpec(specs[sp]);
+    }
+}
+
+ROMArray.prototype.applySizeFromSpec = function(spec) {
+
+    var sizeArray = this.parsePath(spec.arrayPath);
+    if (!(sizeArray && sizeArray instanceof ROMArray)) return;
+
+    var test = null;
+    if (spec.condition) {
+        try { test = new Function('record', 'return (' + spec.condition + ');'); }
+        catch (e) { this.rom.log('Invalid sizeFrom condition: ' + spec.condition); return; }
+    }
+
+    for (var s = 0; s < sizeArray.arrayLength; s++) {
+        var record = sizeArray.item(s);
+        if (!record) continue;
+        if (test && !test(record)) continue;
+        var ptr = this.parsePath(spec.pointerPath, record);
+        if (!ptr || !ptr.target) continue;
+        var target = ptr.target;
+
+        // optional indirection through a linked record (FF4 bosses)
+        var src = record;
+        if (spec.indexProp && spec.indexArrayPath) {
+            var linkProp = record[spec.indexProp];
+            var linkArray = this.parsePath(spec.indexArrayPath);
+            if (!linkProp || !linkArray || !linkArray.item) continue;
+            src = linkArray.item(linkProp.value);
+            if (!src) continue;
+        }
+
+        // per-item graphics format from a boolean property (FF4 is3bpp)
+        if (spec.formatProp && spec.formats && !target.format) {
+            var fprop = src[spec.formatProp] || record[spec.formatProp];
+            if (fprop) {
+                var fmt = fprop.value ? spec.formats[1] : spec.formats[0];
+                target.format = fmt;
+                // the pointer-target pass may already have lazily decoded the
+                // item with the prototype format; re-decode with the real one
+                if (target.isLoaded && target.data) {
+                    target.disassemble(this.relativeTo.data);
                 }
-                if (!wProp || !hProp) continue;
+            }
+        }
+
+        // display size in tiles (first spec/record to claim the object wins)
+        if (!spec.noSize && !(target.width && target.height)) {
+            var sizeRecord = src;
+            if (spec.sizeIndexProp) {
+                var sizeArr = this.parsePath(spec.sizeArrayPath);
+                var idxProp = src[spec.sizeIndexProp];
+                if (!sizeArr || !sizeArr.item || !idxProp) continue;
+                sizeRecord = sizeArr.item(idxProp.value);
+                if (!sizeRecord) continue;
+            }
+            var wProp = sizeRecord[spec.width];
+            var hProp = sizeRecord[spec.height];
+            if ((!wProp || !hProp) && spec.sizeArrayPath && !spec.sizeIndexProp) {
+                var sizeArr2 = this.parsePath(spec.sizeArrayPath);
+                var rec2 = sizeArr2 && sizeArr2.item ? sizeArr2.item(s) : null;
+                if (rec2) { wProp = rec2[spec.width]; hProp = rec2[spec.height]; }
+            }
+            if (wProp && hProp) {
                 var tw = target.tileWidth || 8;
                 var th = target.tileHeight || 8;
                 target.width = Math.max(1, Math.round(wProp.value / tw));
                 target.height = Math.max(1, Math.round(hProp.value / th));
+            }
+        }
 
-                // optionally pin this object's palette to the exact palette
-                // object referenced by the same record:
-                // "linkPalette": {"pointerPath": "palettePointer", "arrayKey": "monsterPalettes"}
-                if (this.sizeFrom.linkPalette) {
-                    var palProp = record[this.sizeFrom.linkPalette.pointerPath];
-                    if (palProp && palProp.target) {
-                        target.palette = `${this.sizeFrom.linkPalette.arrayKey}[${palProp.target.i}]`;
-                    }
+        // pin the palette to the exact palette object/index the record uses
+        if (spec.linkPalette && !target.palettePinned) {
+            var lp = spec.linkPalette;
+            if (lp.pointerPath) {
+                var palProp = src[lp.pointerPath] || record[lp.pointerPath];
+                if (palProp && palProp.target) {
+                    target.palette = `${lp.arrayKey}[${palProp.target.i}]`;
+                    target.palettePinned = true;
+                }
+            } else if (lp.indexProp) {
+                var palIdx = src[lp.indexProp];
+                if (palIdx) {
+                    target.palette = `${lp.arrayKey}[${palIdx.value}]`;
+                    target.palettePinned = true;
                 }
             }
         }
@@ -4638,7 +4742,7 @@ ROMArray.prototype.updatePointerOffset = function(offset) {
         var pointers = this.getPointerObjects(true);
         for (var p = 0; p < pointers.length; p++) {
             var pointer = pointers[p];
-            if (pointer.offset) pointer.offset = rawOffset
+            if (pointer.offset) pointer.offset = this.isMapped ? rawOffset : offset;
         }
     }
 }
@@ -4693,7 +4797,7 @@ ROMArray.prototype.readPointerObjects = function() {
         // skip special values
         if (pointer.special[pointerValue]) continue;
 
-        if (this.parent.mapAddress) pointerValue = this.parent.mapAddress(pointerValue);
+        if (this.isMapped && this.parent.mapAddress) pointerValue = this.parent.mapAddress(pointerValue);
         pointerValue -= this.relativeTo.range.begin;
         unsorted.push(pointerValue);
     }

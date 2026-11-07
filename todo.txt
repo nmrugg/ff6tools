@@ -4,6 +4,32 @@
 
 recently added
 --------------
+ * ff4 snes (u) ("Final Fantasy II (USA)"): monster / boss / summon graphics
+   are now editable - the opaque monsterGraphics blob became 90 pointer-
+   deduplicated graphics objects with per-object size (monsterSize table, or
+   the boss properties record for bosses), format (snes3bpp/snes4bpp from the
+   is3bpp flag) and palette (3bpp = first 8 colors of monsterPalette[p];
+   4bpp = p + p+1 composed); every object and palette is named from the ROM's
+   own monster names, bosses marked with *
+ * ff4 snes (u): the graphics region is fragmented in the ROM (bank 0d
+   interleaves monster pools with map/npc/portrait/window palettes), so the
+   array is fragmented with capped static itemRanges - every byte has exactly
+   one owner; graphics pointers for this game are linear in FILE space, which
+   needed the new "isMapped": false pointerObject option in romtools.js
+ * ff4 snes (u): battle editor and VRAM viewer updated to resolve
+   graphicsPointer.target (with a fallback so the FF4 J blob definition keeps
+   working); Monster/Battle tree sections now expose the graphics, the
+   properties tables and the palettes
+ * romtools: sizeFrom accepts a list of specs with condition/indexProp
+   indirection/sizeIndexProp/noSize/formatProp+formats/linkPalette.indexProp;
+   itemRanges can combine with pointerObject; fragmented items get definition-
+   space ranges (fixes latent double-mapping outside GBA)
+ * graphics view: objects with no format no longer crash selectObject
+ * new tests: ff4-sfc-xcheck.js (pointer resolution, one-owner rule, decode
+   parity vs an independent decoder, palette pins, paint + byte-exact undo),
+   ff4-sfc-app-test.js (browser: paint, boss pool, 4bpp compose, battle VRAM),
+   ff4-sfc-names.py (generates the whole model from the ROM), app-shots.js
+   (generic screenshot tool)
  * in-app graphics painting: pencil, flood fill, eyedropper (tool menu, keys
    V/B/G/I, right-click is always the eyedropper), copy/paste with a movable
    floating layer, Delete to clear a selection, middle-click pan, wheel zoom
@@ -300,7 +326,13 @@ game specific
  * battle vram viewer for ff5
  * draw enemy characters in ff4 advance
  * ff4 advance japanese version
- * ff4-sfc monster/summon graphics (fragmented)
+ * ff4-sfc (j): same graphics model as (u) - needs a J ROM to validate; the
+   battle code still falls back to the old blob arithmetic for it
+ * ff4-sfc: boss tilemaps (monsterBossMap: 0xFF skip, 0xFE n run, per-battle
+   tile counts in battleVRAMMap) are editable as raw data, not as a tilemap
+   view yet; a boss "place tile" view over the pool would mirror FF3 NES
+ * ff4-sfc: monsterGraphicsMap (small/large per-monster VRAM tile maps) is
+   still raw data
  * ff5-sfc monster graphics (set format automatically)
  * ff5 RPGe dialog strings can't straddle two banks
  * ff1 fiend/chaos tilemaps

@@ -1552,11 +1552,12 @@ const self = this;
         // for assemblies with multiple formats, the graphics format is the first one
         if (isArray(formatKey)) formatKey = formatKey[0];
 
-        // ignore format parameters
-        if (formatKey.includes('(')) {
+        // ignore format parameters (an object may have no format at all,
+        // e.g. a raw graphics blob - then the view falls back to its default)
+        if (formatKey && formatKey.includes('(')) {
             formatKey = formatKey.substring(0, formatKey.indexOf('('));
         }
-        this.format = GFX.graphicsFormat[formatKey];
+        this.format = GFX.graphicsFormat[formatKey] || this.format;
 
         // a window onto a shared pool: show the creature, not the sheet
         this.poolLayout = null;
