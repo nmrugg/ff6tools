@@ -235,13 +235,15 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
               painted, diffs, pal:view.paletteView.palette.length,
               canvas:{w:choco.width,h:choco.height,cells:choco.layout.length,
                       filled:choco.layout.filter(t=>t>=0).length,
+                      uniq:new Set(choco.layout.filter(t=>t>=0)).size,
                       tiles:choco.data.length/64}};
   })()`);
   console.log('  summons:',JSON.stringify(sum));
   check(!sum.err&&sum.count===15&&sum.has,'Summons section lists 15 summons incl Chocobo/Shiva/Ramuh/Ifrit/Sylph');
-  check(sum.canvas.w===8&&sum.canvas.h===4&&sum.canvas.cells===32&&sum.canvas.filled===24
-        &&sum.canvas.tiles===24,
-        'Chocobo shows the SummonTilemap canvas (8x4 = both animation frames, all 24 tiles)');
+  check(sum.canvas.w===8&&sum.canvas.h===4&&sum.canvas.filled===32&&sum.canvas.tiles===24,
+        'Chocobo shows both animation frames side by side (8x4, 32 cells from 24 tiles)');
+  check(sum.canvas.filled>sum.canvas.uniq,
+        'the frames repeat the tiles the animation shares (Chocobo keeps his head in both poses)');
   check(sum.painted>0,'Chocobo summon graphics paint with the pencil');
   check(sum.diffs===0,'undo of the Chocobo paint is byte-exact');
 
@@ -256,16 +258,149 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
       const boss=rom.parsePath('bossGraphics_2');
       return {uniq, allSummon,
               titanPool:!!(titan.window&&boss.window)&&titan.window.path===boss.window.path,
-              titanCanvas:!!(titan.layout&&titan.width===14&&titan.height===8&&
-                             titan.layout.length===112&&titan.window.tiles===62),
+              titanCanvas:!!(titan.layout&&titan.width===12&&titan.height===8&&
+                             titan.layout.length===96&&
+                             new Set(titan.layout.filter(t=>t>=0)).size===62),
               ownLayout:JSON.stringify(titan.layout)!==JSON.stringify(boss.layout),
               distinct:titan!==boss};
   })()`);
   console.log('  summon independence:',JSON.stringify(indep));
   check(indep.uniq&&indep.allSummon,'every Summons row is a distinct summonGraphics_* object (no shared tree rows)');
   check(indep.titanPool&&indep.titanCanvas&&indep.distinct,
-        'Titan summon is its own window onto the boss pool, arranged by the SummonTilemap (14x8, 62 tiles)');
-  check(indep.ownLayout,'the Titan summon canvas is the Esper cutscene placement, not the battle map');
+        'Titan summon is its own window onto the boss pool: its frames plus every tile of the pool (12x10, 62 tiles)');
+  check(indep.ownLayout,'the Titan summon layout is the Esper cutscene, not the battle map');
+
+  // painting/picking must follow what the canvas SHOWS: character graphics are
+  // displayed through a sprite sheet (cells repeat and reorder tiles), bosses
+  // and summons through a layout - a linear cell->tile offset painted the
+  // wrong tile (cell 4 of Cecil's sheet shows tile 0)
+  const sheet=await ev(c,sessionId,`(()=>{
+      const item=rom.characterGraphics.item(0);          // Cecil (Dark Knight)
+      romNavigator.selectObject(item); propertyList.select(item);
+      const view=propertyList.activeEditor;
+      const cell=4, shown=view.spriteSheet.tilemap[cell];
+      const before=Uint8Array.from(item.data);
+      view.paintStart=view.graphics.slice(); view.color=6;
+      view.paintPixel(cell*8+4, 4);                      // middle of cell 4
+      view.commitPaint();
+      const changed=new Set();
+      for(let i=0;i<before.length;i++) if(item.data[i]!==before[i]) changed.add(Math.floor(i/64));
+      // picking the same spot must report the colour of the tile that is shown
+      const picked=view.pickColorAt ? view.pickColorAt(cell*8+4,4) : null;
+      const shownPixel=item.data[shown*64+4*8+4];
+      while(rom.undoStack.length) rom.undo();
+      rom.assemble();
+      let diffs=0; const orig=Uint8Array.from(rom.data);
+      return {sheet:view.spriteSheet.name, cell, shown, changed:[...changed], shownPixel};
+  })()`);
+  console.log('  sprite sheet paint:',JSON.stringify(sheet));
+  check(sheet.changed.length===1&&sheet.changed[0]===sheet.shown,
+        'pencil on a sprite-sheet cell writes the tile it displays (cell '+sheet.cell+' shows tile '+sheet.shown+')');
+
+  // Image bounds has to shade the cells the LAYOUT leaves empty, not the last
+  // N cells of the grid
+  const bounds=await ev(c,sessionId,`(()=>{
+      const w=rom.parsePath('summonGraphics_Shiva');
+      romNavigator.selectObject(w); propertyList.select(w);
+      const view=propertyList.activeEditor;
+      view.showBounds=true; view.redraw();
+      const ctx=view.cursorCanvas.getContext('2d');
+      const at=cell=>ctx.getImageData((cell%w.width)*8*view.zoom+4,
+                                      Math.floor(cell/w.width)*8*view.zoom+4,1,1).data;
+      const empty=w.layout.findIndex(t=>t<0), filled=w.layout.findIndex(t=>t>=0);
+      // an out-of-bounds cell is dimmed, an in-bounds one is left clear
+      const dim=p=>p[3]>0, clear=p=>p[3]===0;
+      const lastCell=w.layout.length-1;
+      const r={emptyCell:empty, filledCell:filled,
+               emptyDim:dim(at(empty)), filledClear:clear(at(filled)),
+               lastCellTile:w.layout[lastCell], lastDim:dim(at(lastCell))};
+      view.showBounds=false; view.redraw();
+      return r;
+  })()`);
+  console.log('  image bounds:',JSON.stringify(bounds));
+  check(bounds.emptyDim&&bounds.filledClear,
+        'Image Bounds shades the empty cells of a layout and clears the filled ones');
+
+  // ... and for a sprite sheet, where cells repeat and reorder tiles: the
+  // shaded cells must be exactly the sheet's -1 holes, not the tail of the
+  // grid (a 64-tile block shown in 84 cells used to shade cells 64-83)
+  const sheetBounds=await ev(c,sessionId,`(()=>{
+      const item=rom.characterGraphics.item(0);
+      romNavigator.selectObject(item); propertyList.select(item);
+      const view=propertyList.activeEditor;
+      view.showBounds=true; view.updateTilemap(); view.redraw();
+      const ctx=view.cursorCanvas.getContext('2d');
+      let shaded=0, holes=0, mismatch=0;
+      for(let t=0;t<view.width*view.height;t++){
+        const r=Math.floor(t/view.width), c=t%view.width;
+        const dim=ctx.getImageData(c*8*view.zoom+4, r*8*view.zoom+4,1,1).data[3]>0;
+        const hole=(view.spriteSheet.tilemap[t]===-1);
+        shaded+=dim?1:0; holes+=hole?1:0; if(dim!==hole) mismatch++;
+      }
+      view.showBounds=false;
+      const g16=rom.characterGraphics.item(16);
+      romNavigator.selectObject(g16); propertyList.select(g16);
+      const v2=propertyList.activeEditor;
+      // the sheet is shared by Golbez (27 tiles) and Anna (23): cells that
+      // point past the end of this item's data must stay empty, not show a
+      // tile that is not there
+      const annaTiles=g16.data.length/64;
+      const beyond=(v2.spriteSheet.tilemap||[]).filter(t=>t>=annaTiles).length;
+      const shownBeyond=(v2.cellTile?Array.from(v2.cellTile):[]).filter(t=>t>=annaTiles).length;
+      const out={shaded,holes,mismatch, annaSheet:v2.spriteSheet&&v2.spriteSheet.name,
+                 annaTiles, sheetCellsBeyond:beyond, viewShowsBeyond:shownBeyond};
+      romNavigator.selectObject(item); propertyList.select(item);
+      return out;
+  })()`);
+  console.log('  sheet bounds:',JSON.stringify(sheetBounds));
+  check(sheetBounds.mismatch===0&&sheetBounds.holes>0,
+        'Image Bounds on a sprite sheet shades exactly the sheet holes ('+
+        sheetBounds.holes+' cells), not the tail of the grid');
+  check(sheetBounds.annaSheet==='Golbez/Anna',
+        'the Golbez/Anna item selects its own sprite sheet (not Cecil\'s)');
+  check(sheetBounds.sheetCellsBeyond>0&&sheetBounds.viewShowsBeyond===0,
+        'sheet cells pointing past Anna\'s '+sheetBounds.annaTiles+' tiles stay empty ('+
+        sheetBounds.sheetCellsBeyond+' such cells in the sheet)');
+
+  // undo of a window paint has to refresh the canvas too: the bytes went back
+  // but the pixels stayed painted, which reads as "undo does nothing on Boss
+  // Graphics"
+  const winUndo=await ev(c,sessionId,`(()=>{
+      const w=rom.parsePath('bossGraphics_36');   // Mom Bomb
+      romNavigator.selectObject(w); propertyList.select(w);
+      const view=propertyList.activeEditor;
+      const cell=w.layout.findIndex(t=>t>=0);
+      const off=w.layout[cell]*64+3*8+3;
+      const was=view.graphics[off];
+      view.paintStart=view.graphics.slice(); view.color=(was+1)&7;
+      view.paintPixel((cell%w.width)*8+3, Math.floor(cell/w.width)*8+3);
+      view.commitPaint();
+      const painted=view.graphics[off];
+      rom.undo();
+      return {was, painted, afterUndo:view.graphics[off],
+              romOk:(()=>{ const o=Uint8Array.from(rom.data); rom.assemble();
+                 let d=0; for(let i=0;i<o.length;i++) if(rom.data[i]!==o[i]) d++;
+                 return d; })()};
+  })()`);
+  console.log('  window undo repaint:',JSON.stringify(winUndo));
+  check(winUndo.painted!==winUndo.was&&winUndo.afterUndo===winUndo.was&&winUndo.romOk===0,
+        'undo of a Boss Graphics paint reverts the canvas as well as the ROM bytes');
+
+  // a stroke that changes nothing must not queue an undo step, or the user's
+  // next Ctrl+Z silently eats it and undo looks dead
+  const noop=await ev(c,sessionId,`(()=>{
+      const obj=rom.monsterGraphicsProperties.item(0).graphicsPointer.target;
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const view=propertyList.activeEditor;
+      const depth0=rom.undoStack.length;
+      view.paintStart=view.graphics.slice();      // no pixel change at all
+      view.paintStroke=true; rom.beginAction(); rom.endAction();
+      return {depth0, depth1:rom.undoStack.length,
+              top:rom.undoStack.length?rom.undoStack[rom.undoStack.length-1]:null};
+  })()`);
+  console.log('  no-op stroke:',JSON.stringify(noop));
+  check(noop.depth1===noop.depth0,
+        'a stroke that changes nothing leaves the undo stack untouched');
 
   // boss pools are hidden from the Monster Graphics tree; the assembled
   // Mom Bomb shows her full 60-tile sheet

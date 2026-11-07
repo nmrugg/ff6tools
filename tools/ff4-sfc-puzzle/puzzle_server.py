@@ -12,8 +12,9 @@ Serves puzzle.html and a JSON API:
   GET  /                       -> puzzle.html
   GET  /api/entries            -> [{key,name,cols,rows,tiles,palette,layout}]
   GET  /api/entry/<key>        -> one entry
-  POST /api/placement          -> {key, cols, rows, placement:[{cell,tile,flip}]}
+  POST /api/placement          -> {key, cols, rows, placement:[{cell,tile}]}
                                   saves to placements/<key>.json
+  POST /api/delete_placement   -> {key}   removes that placement (ROM layout wins)
 
 Run:  python3 tools/ff4-sfc-puzzle/puzzle_server.py [--def ff4/ff2u-sfc.json]
                                                       [--rom "Final Fantasy II (USA).sfc"]
@@ -27,10 +28,11 @@ ROOT = os.path.dirname(os.path.dirname(HERE))
 PLACEMENTS = os.path.join(HERE, 'placements')
 os.makedirs(PLACEMENTS, exist_ok=True)
 
-# entries offered for manual arranging: the five summon-only blocks plus
-# Mom Bomb (the only arrangement the US ROM does not contain). Any
-# summonGraphics_* / bossGraphics_* key works - add one to this list to let
-# its layout be tuned by hand.
+# entries offered first when arranging by hand: the five summon-only blocks
+# and Mom Bomb (the only arrangement the US ROM does not contain). After these
+# the server offers EVERY summonGraphics_* / bossGraphics_* in the definition,
+# so any layout can be tuned by hand - a saved placement overrides the
+# generator for that key.
 PUZZLE_KEYS = ['summonGraphics_Chocobo', 'summonGraphics_Shiva',
                'summonGraphics_Ramuh', 'summonGraphics_Ifrit',
                'summonGraphics_Sylph', 'bossGraphics_36']
@@ -125,7 +127,6 @@ class Data:
             'tiles': tiles,
             'palette': self.palbytes(e),
             'layout': e.get('layout', [-1] * (e.get('width', 8) * e.get('height', 8))),
-            'layoutFlip': e.get('layoutFlip', []),
             'placed': os.path.exists(os.path.join(PLACEMENTS, key + '.json')),
         }
 
@@ -149,7 +150,13 @@ class H(BaseHTTPRequestHandler):
             except OSError:
                 return self._send(500, {'error': 'puzzle.html missing'})
         if p == '/api/entries':
-            return self._send(200, [D.entry(k) for k in PUZZLE_KEYS if k in D.asm])
+            # the hand-picked keys first, then every other assembled view the
+            # definition has, so any of them can be re-arranged by hand
+            keys = list(PUZZLE_KEYS)
+            keys += [k for k in sorted(D.asm)
+                     if (k.startswith('summonGraphics_') or k.startswith('bossGraphics_'))
+                     and k not in keys]
+            return self._send(200, [D.entry(k) for k in keys if k in D.asm])
         if p.startswith('/api/entry/'):
             key = p.rsplit('/', 1)[1]
             e = D.entry(key)

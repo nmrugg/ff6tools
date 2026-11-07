@@ -19,26 +19,27 @@
 <h1>FF4 (U) tile puzzle <span class="hint">- drag the creature together, then Save</span></h1>
 <div>
  <select id="entries"></select>
+ <label>tool <select id="tool"><option value="place">Place</option><option value="erase">Erase</option></select></label>
  <button id="save">Save placement</button>
  <button id="clear">Clear grid</button>
  <button id="revert" title="remove placements/<key>.json so the generator uses the ROM's own layout again">Delete placement</button>
  <label>grid <input id="cols" type="number" min="1" max="24" size="2"> x <input id="rows" type="number" min="1" max="24" size="2"></label>
- <span class="hint">click tile then click cell to place; click a placed cell to pick that tile up; right-click a cell flips it; shift-click a cell erases</span>
+ <span class="hint">click tile then click cell to place; Erase tool (or shift-click) removes a tile from a cell; click a placed cell with Place to pick that tile up</span>
 </div>
 <div id="left"><canvas id="tray"></canvas></div>
 <div id="right"><canvas id="grid"></canvas><div id="status"></div></div>
 <script>
-let E=null, pal=[], tiles=[], sel=-1, cols=0, rows=0, layout=[], flips=[];
+let E=null, pal=[], tiles=[], sel=-1, cols=0, rows=0, layout=[];
 const S=8, ZT=4; // source px, tray zoom
 const tray=document.getElementById('tray'), grid=document.getElementById('grid');
 
 function color(c){ return 'rgb('+(c[0]*8)+','+(c[1]*8)+','+(c[2]*8)+')'; }
 
-function drawTile(ctx,t,x0,y0,z,flip){
+// FF4's boss/summon maps never flip a pooled tile, so tiles are always drawn
+// as stored (the old right-click flip was removed once that was verified).
+function drawTile(ctx,t,x0,y0,z){
   for(let y=0;y<8;y++)for(let x=0;x<8;x++){
-    let sy=y,sx=x;
-    if(flip&1)sx=7-x; if(flip&2)sy=7-y;
-    const v=t[sy][sx]; if(!v)continue;
+    const v=t[y][x]; if(!v)continue;
     ctx.fillStyle=color(pal[v]);
     ctx.fillRect(x0+x*z,y0+y*z,z,z);
   }
@@ -48,12 +49,17 @@ function drawTray(){
   tray.width=per*8*ZT; tray.height=Math.ceil(tiles.length/per)*8*ZT;
   const ctx=tray.getContext('2d');
   ctx.clearRect(0,0,tray.width,tray.height);
+  const used={}; layout.forEach(t=>{ if(t>=0) used[t]=(used[t]|0)+1; });
   tiles.forEach((t,i)=>{
     const r=Math.floor(i/per),c=i%per;
-    drawTile(ctx,t,c*8*ZT,r*8*ZT,ZT,0);
+    drawTile(ctx,t,c*8*ZT,r*8*ZT,ZT);
     if(i===sel){ctx.strokeStyle='#4da3ff';ctx.lineWidth=2;ctx.strokeRect(c*8*ZT+1,r*8*ZT+1,8*ZT-2,8*ZT-2);}
-    ctx.fillStyle='#888';ctx.font='9px sans-serif';
-    ctx.fillText(i,c*8*ZT+2,r*8*ZT+9);
+    // a tile that is not on the grid at all gets a dim corner, so it is
+    // obvious what still needs placing (and repeats show their count)
+    if(!used[i]){ctx.fillStyle='rgba(0,0,0,0.55)';ctx.fillRect(c*8*ZT,r*8*ZT,8*ZT,8*ZT-1);
+                 drawTile(ctx,t,c*8*ZT,r*8*ZT,ZT);}
+    ctx.fillStyle=used[i]?'#ffd24d':'#888';ctx.font='9px sans-serif';
+    ctx.fillText(used[i]?i+'x'+used[i]:''+i,c*8*ZT+2,r*8*ZT+9);
   });
 }
 function drawGrid(){
@@ -63,7 +69,7 @@ function drawGrid(){
   for(let i=0;i<layout.length;i++){
     if(layout[i]<0)continue;
     const r=Math.floor(i/cols),c=i%cols;
-    drawTile(ctx,tiles[layout[i]],c*8*ZT,r*8*ZT,ZT,flips[i]|0);
+    drawTile(ctx,tiles[layout[i]],c*8*ZT,r*8*ZT,ZT);
   }
   ctx.strokeStyle='#333';
   for(let c=0;c<=cols;c++){ctx.beginPath();ctx.moveTo(c*8*ZT,0);ctx.lineTo(c*8*ZT,grid.height);ctx.stroke();}
@@ -84,22 +90,18 @@ function gridCell(ev){
 tray.addEventListener('click',e=>{const i=trayIndex(e);if(i>=0){sel=i;drawTray();}});
 grid.addEventListener('click',e=>{
   const c=gridCell(e);if(c<0)return;
-  if(e.shiftKey){layout[c]=-1;flips[c]=0;}
-  else if(sel>=0){layout[c]=sel;flips[c]=0;}
-  else if(layout[c]>=0){sel=layout[c];layout[c]=-1;flips[c]=0;}
-  drawTray();drawGrid();
-});
-grid.addEventListener('contextmenu',e=>{
-  e.preventDefault();
-  const c=gridCell(e);if(c<0||layout[c]<0)return;
-  flips[c]=((flips[c]|0)+1)&3;drawGrid();
+  const erase=document.getElementById('tool').value==='erase'||e.shiftKey;
+  if(erase){ layout[c]=-1; }
+  else if(sel>=0){ layout[c]=sel; }
+  else if(layout[c]>=0){ sel=layout[c]; layout[c]=-1; }
+  drawTray();drawGrid();status(`${layout.filter(t=>t>=0).length} placed, `+
+    `${new Set(layout.filter(t=>t>=0)).size} distinct tiles of ${tiles.length}`);
 });
 async function load(key){
   E=await (await fetch('/api/entry/'+key)).json();
   pal=E.palette;tiles=E.tiles;cols=E.cols;rows=E.rows;
-  layout=E.layout.slice();flips=(E.layoutFlip||[]).slice();
+  layout=E.layout.slice();
   while(layout.length<cols*rows)layout.push(-1);
-  while(flips.length<cols*rows)flips.push(0);
   sel=-1;
   document.getElementById('cols').value=cols;
   document.getElementById('rows').value=rows;
@@ -110,7 +112,7 @@ async function load(key){
 }
 function status(t){document.getElementById('status').textContent=t;}
 document.getElementById('entries').addEventListener('change',e=>load(e.target.value));
-document.getElementById('clear').onclick=()=>{layout=layout.map(()=>-1);flips=flips.map(()=>0);drawGrid();};
+document.getElementById('clear').onclick=()=>{layout=layout.map(()=>-1);drawGrid();};
 document.getElementById('revert').onclick=async()=>{
   const r=await (await fetch('/api/delete_placement',{method:'POST',
     headers:{'Content-Type':'application/json'},
@@ -124,14 +126,14 @@ document.getElementById('rows').onchange=resize;
 function resize(){
   const nc=Math.max(1,+document.getElementById('cols').value||cols);
   const nr=Math.max(1,+document.getElementById('rows').value||rows);
-  const nl=new Array(nc*nr).fill(-1), nf=new Array(nc*nr).fill(0);
+  const nl=new Array(nc*nr).fill(-1);
   for(let r=0;r<Math.min(rows,nr);r++)for(let c=0;c<Math.min(cols,nc);c++)
-    {nl[r*nc+c]=layout[r*cols+c]??-1;nf[r*nc+c]=flips[r*cols+c]??0;}
-  cols=nc;rows=nr;layout=nl;flips=nf;drawGrid();
+    nl[r*nc+c]=layout[r*cols+c]??-1;
+  cols=nc;rows=nr;layout=nl;drawGrid();
 }
 document.getElementById('save').onclick=async()=>{
   const placement=[];
-  layout.forEach((t,i)=>{if(t>=0)placement.push({cell:i,tile:t,flip:flips[i]|0});});
+  layout.forEach((t,i)=>{if(t>=0)placement.push({cell:i,tile:t});});
   const r=await (await fetch('/api/placement',{method:'POST',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({key:E.key,cols,rows,placement})})).json();

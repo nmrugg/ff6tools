@@ -223,14 +223,30 @@ const self = this;
             ctx.fillStyle = 'rgba(20, 20, 25, 0.55)';
             for (let row = 0; row < this.height; row++) {
                 for (let col = 0; col < this.width; col++) {
-                    if (row * this.width + col < tileCount) continue;
+                    const t = row * this.width + col;
+                    // Which tile does this cell actually show? Use the same
+                    // mapping painting uses (cellTile: pool layouts, sprite
+                    // sheets and view flips all folded in), otherwise a sprite
+                    // sheet - which repeats and reorders tiles - shades cells
+                    // that are perfectly full and leaves real holes bright.
+                    let idx;
+                    if (this.cellTile && t < this.cellTile.length) {
+                        idx = this.cellTile[t];
+                    } else if (this.poolLayout && t < this.poolLayout.length) {
+                        idx = this.poolLayout[t];
+                    } else {
+                        idx = t;
+                    }
+                    if (idx >= 0 && idx < tileCount) continue;
                     ctx.fillRect(col * tw * this.zoom, row * th * this.zoom,
                                  tw * this.zoom, th * this.zoom);
                 }
             }
-            // also shade any partial tile at the end of the data
+            // also shade any partial tile at the end of the data (only for a
+            // plain linear view - a layout or sprite sheet has no "tail")
             const extra = this.graphics.length % bytesPerTile;
-            if (extra && tileCount < this.width * this.height) {
+            if (!this.poolLayout && !this.spriteSheet && extra &&
+                tileCount < this.width * this.height) {
                 const col = tileCount % this.width, row = Math.floor(tileCount / this.width);
                 ctx.fillRect(col * tw * this.zoom, row * th * this.zoom,
                              tw * this.zoom, th * this.zoom);
@@ -863,15 +879,26 @@ const self = this;
         const col = Math.floor(x / tw), row = Math.floor(y / th);
         const t = row * this.width + col;
         if (col < 0 || row < 0 || col >= this.width || row >= this.height) return -1;
-        // a window onto a shared pool (FF3 boss/summon graphics) maps its
-        // display cells onto arbitrary tiles of the pool
-        const idx = (this.poolLayout && t < this.poolLayout.length) ? this.poolLayout[t] : t;
+        // Which tile of the data does this display cell actually show?
+        // cellTile is what the canvas was drawn from (see updateTilemap), so
+        // pool windows, sprite sheets and the view's own flips all resolve
+        // correctly here; the older poolLayout path stays as the fallback for
+        // views that have not rebuilt their tilemap yet.
+        let idx, fl = 0;
+        if (this.cellTile && t < this.cellTile.length) {
+            idx = this.cellTile[t];
+            fl = this.cellFlip[t];
+        } else if (this.poolLayout && t < this.poolLayout.length) {
+            idx = this.poolLayout[t];
+            fl = this.poolFlip ? (this.poolFlip[t]|0) : 0;
+        } else {
+            idx = t;
+        }
         if (idx < 0) return -1;
         // and a tile shown flipped (the game's horizontal flip table, 3F/F94F/3F/F970)
         // has to be painted mirrored, or the pencil draws the wrong side of it
         let px = x % tw;
         let py = y % th;
-        const fl = this.poolFlip ? (this.poolFlip[t]|0) : 0;
         if (fl & 1) px = tw - 1 - px;
         if (fl & 2) py = th - 1 - py;
         const off = idx * this.bytesPerTile + py * tw + px;
@@ -1175,9 +1202,14 @@ const self = this;
             this.tilemap = new Uint32Array(tileCount);
             this.tilemap.fill(0xFFFFFFFF);
             if (this.spriteSheet.fixedPalette) p = 0;
+            // a sheet is shared by every item of the array, but the items can
+            // be different sizes (character graphics: Golbez has 27 tiles,
+            // Anna 23), so a cell pointing past the end of this item's data
+            // stays empty instead of showing a tile that isn't there
+            const dataTiles = Math.floor(this.graphics.length / this.bytesPerTile);
             for (let t = 0; t < this.tilemap.length; t++) {
                 var tile = Number(this.spriteSheet.tilemap[t]);
-                if (isNumber(tile) && tile !== -1) this.tilemap[t] = tile | p;
+                if (isNumber(tile) && tile !== -1 && tile < dataTiles) this.tilemap[t] = tile | p;
             }
 
         } else {
@@ -1233,6 +1265,23 @@ const self = this;
                 }
             }
             this.tilemap = hTilemap;
+        }
+
+        // Display cell -> data tile, for the painting and picking offsets.
+        // This is the mapping the canvas was just drawn with, so it covers
+        // every case at once: a plain sheet (cell t = tile t), a pool window's
+        // layout (FF4 bosses/summons, where cells repeat and skip tiles), a
+        // sprite sheet (character graphics - cell 4 may show tile 0), and the
+        // view's own h/v flip. Without it a pencil stroke on a sprite sheet
+        // writes to the linear tile and lands somewhere else entirely.
+        this.cellTile = new Int32Array(this.tilemap.length);
+        this.cellFlip = new Int32Array(this.tilemap.length);
+        for (let t = 0; t < this.tilemap.length; t++) {
+            const word = this.tilemap[t];
+            if (word === 0xFFFFFFFF) { this.cellTile[t] = -1; continue; }
+            this.cellTile[t] = word & 0xFFFF;
+            this.cellFlip[t] = ((word & 0x10000000) ? 1 : 0) |
+                               ((word & 0x20000000) ? 2 : 0);
         }
 
         // update ppu and off-screen canvas size
@@ -1567,15 +1616,34 @@ const self = this;
         // a window onto a shared pool: show the creature, not the sheet
         this.poolLayout = null;
         this.poolFlip = null;
+        // rebuilt from the tilemap in updateTilemap; clear it so a paint can
+        // never use the previous object's cell -> tile mapping
+        this.cellTile = null;
+        this.cellFlip = null;
+
+        // Pick the sprite sheet that belongs to this item. An array can carry
+        // more than one sheet (character graphics: the 14 standard characters
+        // and the Golbez/Anna pair), and leaving the first one selected showed
+        // Golbez and Anna through the wrong arrangement.
+        if (object.spriteSheet) {
+            const sheets = isArray(object.spriteSheet) ? object.spriteSheet
+                                                       : [object.spriteSheet];
+            if (sheets.length > 1 && isNumber(object.i)) {
+                const mine = sheets.findIndex(s => s.itemRange &&
+                                 object.i >= s.itemRange[0] &&
+                                 object.i <= s.itemRange[1]);
+                if (mine >= 0) this.ss = mine;
+            }
+        }
         if (object.layout) {
             // static cell -> tile layout (FF4 SNES bosses and summons): the
             // generator walked the game's own map/frame data (or the puzzle
             // tool's placements), so the object reads as the creature
-            // instead of a sheet of loose tiles
+            // instead of a sheet of loose tiles. Cells repeat tiles when the
+            // game reuses them, and the paint writes through to the one tile
+            // every copy shows.
             this.poolLayout = Int32Array.from(object.layout);
-            this.poolFlip = object.layoutFlip ?
-                Int32Array.from(object.layoutFlip) :
-                new Int32Array(object.layout.length);
+            this.poolFlip = null;   // flips come from the tilemap itself
             if (object.width) this.width = object.width;
             if (object.height) this.height = object.height;
         }

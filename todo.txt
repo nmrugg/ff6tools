@@ -4,24 +4,79 @@
 
 recently added
 --------------
- * ff4 snes (u): summons are arranged by the ROM's SummonTilemap instead of
-   guessed frame stages - the stream is OBJ-VRAM placement (TfrSummonGfx):
-   one byte per 8x8 tile slot in a 16-tile-wide grid, and the animation
-   stages (SummonFramePtrs + SummonSpritePosTbl, cells = slots n,n+1,n+16,
-   n+17) draw 16x16 cells inside that grid, so every frame of an Esper is
-   in the grid at once. Laid out and cropped: Imp/Bomb 4x4, Cockatrice 6x4,
-   Mindflayer 6x6, Chocobo 8x4 (2 frames), Shiva/Ramuh 12x6, Ifrit 16x6,
-   Titan 14x8, Dragon Mist 10x8, Sylph 6x2 (3 frames), Odin/Leviathan/
-   Asura/Bahamut 16x8 - every one renders as a complete creature
- * ff4 snes (u): ff4-sfc-xcheck.js re-derives all 15 summon canvases from
-   the ROM and compares them (keys with a saved puzzle placement are skipped)
+ * ff4 snes (u): summon stages are read RIGHT TO LEFT - DrawSummon steps
+   x += 16 per byte and the ROM fills its stages backwards through the OBJ
+   grid columns, so reading them forwards mirrored every row and broke the
+   creatures apart ("jumbled or shifted"); reading them reversed reproduces
+   the boss-battle arrangement exactly (checked against Titan and Asura)
+ * ff4 snes (u): summon layout decided per Esper from its own data, each rule
+   answering a specific report: stages drawing under 20% of the block stack
+   the boss battle map over the OBJ grid (Odin: 9 of 100 tiles drawn by his
+   stages - the boss map has one whole figure, the grid the pieces of the
+   other poses); under 75% use the OBJ grid (Bahamut 71/118 - the grid holds
+   both of his poses whole, frames-only Bahamut was "missing its second
+   frame"); otherwise one rectangle per stage, cells read right to left, side
+   by side with no gutter, and tiles no cell covers attach to the nearest
+   cell only when there are <= 8 of them (Asura's 4 dress-hem tiles, Titan's
+   1 loincloth tile); frames that scatter more than they fill fall back to the
+   grid (Mist Dragon). Cross-stage borrowing of empty cells was removed - it
+   invented tiles the game leaves blank (Leviathan's extra corner piece).
+   Final: Chocobo 8x4, Shiva 11x6, Ramuh 12x6, Ifrit 16x6, Titan 12x8,
+   Dragon Mist 10x8, Sylph 6x2, Odin 16x19 (boss map + grid), Leviathan
+   12x10, Asura 24x12, Bahamut 16x8 (both frames)
+ * graphics view: a sprite sheet shared by items of different sizes must drop
+   tile ids past the end of the selected item (character graphics: Golbez 27
+   tiles, Anna 23) - the sheet's 4 cells pointing at tiles 23..26 were the
+   "fourth Anna tile that is redundant"; they now stay empty
+ * ff4 snes (u): puzzle server offers EVERY summonGraphics_*/bossGraphics_*
+   (53 entries), has an Erase tool (shift-click too), dims tray tiles that are
+   not placed and labels placed ones with their repeat count, and shows
+   placed/distinct/total in the status line
+ * ff4 snes (u): OPEN - the Golbez/Anna sprite sheet is still wrong (flattening
+   it to tile order read worse, so the original is back). It was authored
+   against a 64-tile character block; those blocks are 27 and 23 tiles. Fixing
+   it needs the character pose loader decoded (CharTileTbl and
+   CharSpriteOffsetTbl address OBJ VRAM char slots, not the block). Reference
+   art: videogamesprites.net FF4 NPCs > Individuals > Villains (Golbez),
+   Other (Anna)
+ * ff4 snes (u): the saved Sylph puzzle placement is gone (deleted at the
+   user's request); every summon now comes from the ROM layout
+ * graphics view: Image Bounds used the same linear cell test painting used,
+   so a sprite sheet shaded the tail of the grid (cells 64-83 of a 64-tile
+   character shown in 84 cells) instead of the sheet's holes. It now asks the
+   same question as paintPixel (view.cellTile) - checked against the sheet:
+   shaded cells == sheet holes, exactly
+ * ff4 snes (u): the Golbez/Anna sprite sheet was authored against a 64-tile
+   character block, but those blocks are 27 and 23 tiles - it referenced
+   tiles that do not exist and shuffled the rest. It is now an in-order grid,
+   and each sheet carries an itemRange so selecting Golbez or Anna picks its
+   own sheet instead of Cecil's. The assembled-with-repeats view for them
+   still needs the character pose loader decoded (CharTileTbl and
+   CharSpriteOffsetTbl address OBJ VRAM char slots, not the block) - todo
+ * ff4 snes (u): ff4-sfc-xcheck.js re-derives all 14 non-placed summon
+   layouts from the ROM independently and compares them
+ * graphics view: painting a sprite-sheet or laid-out cell wrote the wrong
+   tile - cell 4 of the character sheets *shows* tile 0 but wrote tile 4.
+   The view now keeps cellTile/cellFlip built from the tilemap it just drew
+   (covers sprite sheets, pool layouts and the view's own h/v flip) and
+   tileOffset uses it for pencil, fill and colour picker
+ * graphics view: Image Bounds shaded the last N cells of the grid instead of
+   the cells a layout leaves empty
+ * undo: a window (FF4 boss/summon graphics, FF3 boss graphics) re-read its
+   pool on undo but never notified its own observers, so the bytes went back
+   while the canvas kept the painted pixels - "undo works except on Boss
+   Graphics"
+ * undo: a stroke that changes nothing queued an empty action group, which
+   ate the user's next Ctrl+Z (endAction now only pushes a non-empty group)
+ * ff4 snes (u): the puzzle tool's tile flipping is gone - no FF4 boss or
+   summon map flips a pooled tile, no definition carried layoutFlip and no
+   placement used it (poolFlip stays for FF3 NES tilemap flip bits/mirrorX);
+   "Delete placement" reverts a key to the ROM layout
  * ff4 snes (u): Mom Bomb's baked sheet had one cell out of place from row 6
    on - the empty cell is row 6 col 0, not row 6 col 8, which shifted her
    bottom right; new tools/ff4-sfc-artcheck.py checks that sheet against
    ff4monsters.zip (12 empty cells match the rip, 4992/4992 pixels agree;
    the previous arrangement scored 4220/4992)
- * ff4 snes (u): puzzle tool starts the grid from the ROM layout, caps the
-   tray to a window's tiles, and "Delete placement" reverts a key
  * ff4 snes (u): tile puzzle tool - tools/ff4-sfc-puzzle/puzzle_server.py
    (pattern: MysticForge battle-sprites puzzle_server) serves a drag tiles
    onto a grid page for the five summon-only blocks (Chocobo, Shiva, Ramuh,

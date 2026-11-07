@@ -840,12 +840,12 @@ function ROMGraphics(rom, definition, parent) {
     this.layoutFrom = definition.layoutFrom;
     // ... or in the order given directly: a static cell -> pool tile map
     // (FF4 SNES bosses and summons: the generator walked the boss tile map
-    // stream - tile index per cell, 0xFF/0xFE n = empty - and stored the
+    // stream - tile index per cell, 0xFF/0xFE n = empty - or composed the
+    // summon's animation frames from its OBJ-VRAM placement, and stored the
     // result, so the window shows the assembled creature instead of loose
-    // tiles). layoutFlip optionally mirrors individual cells (1 = h-flip,
-    // 2 = v-flip, 3 = both), e.g. from the puzzle tool's placements.
+    // tiles). Cells may repeat a tile (the game reuses tiles across frames)
+    // and -1 marks an empty cell.
     this.layout = definition.layout;
-    this.layoutFlip = definition.layoutFlip;
 }
 
 ROMGraphics.prototype = Object.create(ROMAssembly.prototype);
@@ -914,6 +914,14 @@ ROMGraphics.prototype.disassemble = function(data) {
     this.data = Uint8Array.from(bytes.subarray(off, off + this.windowLength()));
     this.isLoaded = true;
 
+    // The window mirrors bytes somebody else owns, so when the owner changes -
+    // a paint through this window, a paint through another window on the same
+    // pool, or an UNDO of either - the view has to be told. It observes the
+    // window, not the pool: without this notify an undo of a Boss Graphics
+    // paint puts the bytes back in the ROM but the canvas keeps showing the
+    // painted pixels, which reads as "undo does nothing on Boss Graphics".
+    this.notifyObservers();
+
     // the window is a mirror of bytes somebody else owns: when they change
     // (an edit, or an undo of one) the window has to re-read them. For an
     // array source the edits land on the items, so watch those too.
@@ -975,8 +983,9 @@ ROMGraphics.prototype.replaceData = function(newData, offset, newLength) {
     } else {
         src.replaceData(Uint8Array.from(newData), base + offset);
     }
-    this.disassemble();
-    this.notifyObservers();
+    // no disassemble/notify here: the write went to the owner, and the owner's
+    // notification re-reads this window and notifies its observers (see
+    // ROMGraphics.disassemble) - doing it twice just redraws twice.
 }
 
 ROMGraphics.prototype.setData = function(data) {
@@ -997,7 +1006,6 @@ Object.defineProperty(ROMGraphics.prototype, "definition", { get: function() {
     if (this.window) definition.window = this.window;
     if (this.layoutFrom) definition.layoutFrom = this.layoutFrom;
     if (this.layout) definition.layout = this.layout;
-    if (this.layoutFlip) definition.layoutFlip = this.layoutFlip;
     if (this.attributeCells) definition.attributeCells = this.attributeCells;
     if (this.attributeRef) definition.attributeRef = this.attributeRef;
     if (isNumber(this.attributeCellsOffset)) definition.attributeCellsOffset = this.attributeCellsOffset;
@@ -3406,7 +3414,12 @@ ROM.prototype.endAction = function() {
     this.actionDepth--;
     if (this.actionDepth > 0) return;
     this.actionDepth = 0;
-    if (this.action) this.undoStack.push(this.action);
+    // Only queue the group if the stroke actually did something. A pencil
+    // click that lands on a pixel already holding the selected color (or on a
+    // blank cell of a laid-out window) produces no ROMAction, and pushing the
+    // empty group would eat the user's next Ctrl+Z with a no-op - which reads
+    // as "undo is broken".
+    if (this.action && this.action.length) this.undoStack.push(this.action);
     this.action = null;
 }
 

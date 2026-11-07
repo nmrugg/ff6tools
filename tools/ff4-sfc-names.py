@@ -459,27 +459,45 @@ def main():
     # windows onto that item) and 5 of which are summon-only (Chocobo, Shiva,
     # Ramuh, Ifrit, Sylph - owning assemblies).
     #
-    # The layout comes from the SummonTilemap stream, which is the game's own
-    # OBJ-VRAM placement (TfrSummonGfx, btlgfx.asm): one byte per 8x8 tile
-    # slot in slot order, $80-$FE = a blank slot (low 7 bits = slot number,
-    # no tile consumed), $FF = end. Slots are coordinates in a 16-tile-wide
-    # OBJ grid - slot = row*16 + col - and the animation (DrawSummon +
-    # _03f7e8, summon.asm) draws w*h 16x16 cells per stage, naming the
-    # top-left slot of each cell from SummonFramePtrs/SummonSpritePosTbl, so
-    # every frame of the summon's animation sits in the grid at the same
-    # time. Laying the stream out on that grid is therefore the one view that
-    # holds all of them: Chocobo 2 frames, Shiva/Ramuh/Ifrit/Titan/Bahamut 2,
-    # Asura 3, Sylph 3 16x16 frames - hence canvases up to 16 tiles wide.
-    # (Verified by rendering: every Esper comes out as a complete creature.)
+    # The layout comes from the game's own placement data, frame by frame:
+    # `SummonTilemapPtrs` is OBJ-VRAM placement (TfrSummonGfx, btlgfx.asm) -
+    # one byte per 8x8 tile slot in slot order, $80-$FE = a blank slot (low 7
+    # bits = slot number, no tile consumed), $FF = end - where a slot is a
+    # coordinate in the 16-tile-wide OBJ grid (slot = row*16 + col).
+    # `SummonFramePtrs` + the stage sets at 0x13fa9d + `SummonSpritePosTbl`
+    # then say what each animation stage *draws*: w*h 16x16 cells, each byte
+    # naming the top-left slot of the cell (so the cell covers slots n, n+1,
+    # n+16, n+17 - not n..n+3), $80+/$FE n/$FF = blank cells, and the pointer
+    # restarts at the stage's start every frame, so a stage is one static
+    # picture. The stages are the Esper's animation frames, and they *share*
+    # cells: Chocobo's two poses use the same head slots, Asura's three the
+    # same body, Shiva/Ramuh/Titan the same legs. Laying the tilemap out on
+    # the grid therefore shows each tile once and the poses come out with
+    # pieces missing (the user's "missing head / legs / disembodied heads");
+    # composing each frame and placing the frames side by side repeats the
+    # shared tiles and every frame reads as a complete creature.
+    # Each frame is trimmed to the box of cells it actually fills (Sylph's
+    # 1x5 grid draws one 16x16 sprite, so its frames are 2x2, not 2x10),
+    # identical stages are listed once, and a blank column separates frames.
+    # Tiles no stage draws stay reachable through the Esper's Boss Graphics
+    # window (all five cases - Titan, Dragon Mist, Asura, Odin, Bahamut - are
+    # boss pools; the summon-only blocks and the monster-based Espers use
+    # every tile of their block).
     # A tilemap is sometimes shared by two Espers (Imp/Bomb, Cockatrice/
     # Mindflayer, Asura x3), and the shared stream can run past one of their
     # blocks - the Cockatrice tilemap consumes 36 tiles but the Cockatrice
     # block is 24, the extra 12 are the Mindflayer's art and are never drawn
-    # by a Cockatrice frame - so slots whose tile falls outside the block are
-    # dropped before cropping.
+    # by a Cockatrice cell - so slots whose tile falls outside the block are
+    # dropped.
     # Placements saved by tools/ff4-sfc-puzzle (manual tile arranging) still
     # override the computed layout for any key.
     SUMMON_TMP_F   = 0x6f260    # SummonTilemapPtrs (words + 0x0d0000)
+    SUMMON_SFP_F   = 0x6f660    # SummonFramePtrs   (words + 0x0d0000)
+    SUMMON_FSETS_F = loROM_map(0x13fa9d)  # 4 animation stages per summon
+    SUMMON_POS_F   = loROM_map(0x13fa59)  # x, y, w, h (w/h in 16px units)
+    # Esper index -> boss properties record, for the Esper whose summon stages
+    # do not draw its art (Odin): reuse that boss's battle map instead
+    BOSS_BP_FOR    = {8: 2, 9: 0, 11: 42, 12: 46, 13: 54, 16: 47}
 
     PLACEMENT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                  'ff4-sfc-puzzle', 'placements')
@@ -510,8 +528,8 @@ def main():
                 end = s2
         return end
 
-    def summon_tilemap(i):
-        """{OBJ slot: block tile} plus the number of tiles the stream loads."""
+    def summon_tilemap(i, avail_tiles):
+        """{OBJ slot: block tile}, capped to tiles this Esper's block owns."""
         w1 = rom[SUMMON_TMP_F + i*2] | (rom[SUMMON_TMP_F + i*2 + 1] << 8)
         p = loROM_map(0x0d0000 + w1)
         slot2tile, k = {}, 0
@@ -520,27 +538,163 @@ def main():
             if b == 0xff:
                 break
             if b < 0x80:
-                slot2tile[b] = k
+                if k < avail_tiles:
+                    slot2tile[b] = k
                 k += 1
-        return slot2tile, k
+        return slot2tile
 
-    def summon_canvas_layout(i, avail_tiles):
-        """SummonTilemap laid out on the 16-wide OBJ grid, cropped."""
-        slot2tile, _ = summon_tilemap(i)
-        cells = {s: t for s, t in slot2tile.items() if t < avail_tiles}
-        if not cells:
-            return None
-        cols, rows = 16, max(s // 16 for s in cells) + 1
-        grid = [-1]*(cols*rows)
-        for s, t in cells.items():
+    def summon_stage_cells(i, stage):
+        """The stage's cell list (OBJ slot of each cell's top-left tile)."""
+        gw, gh = rom[SUMMON_POS_F + i*4 + 2], rom[SUMMON_POS_F + i*4 + 3]
+        fset = rom[SUMMON_FSETS_F + i*4 + stage]
+        w2 = rom[SUMMON_SFP_F + fset*2] | (rom[SUMMON_SFP_F + fset*2 + 1] << 8)
+        q = loROM_map(0x0d0000 + w2)
+        cells = []
+        while len(cells) < gw*gh:
+            b = rom[q]; q += 1
+            if b == 0xff:
+                break
+            if b == 0xfe:
+                cells += [None]*rom[q]; q += 1
+            elif b < 0x80:
+                cells.append(b)
+            else:
+                cells.append(None)
+        while len(cells) < gw*gh:
+            cells.append(None)
+        return cells, gw, gh
+
+    def summon_grid_layout(slot2tile):
+        """The OBJ grid placement itself, cropped to the tiles it uses."""
+        rows = max(s // 16 for s in slot2tile) + 1
+        grid = [-1]*(16*rows)
+        for s, t in slot2tile.items():
             grid[s] = t
-        used = [c for c in range(cols)
-                if any(grid[r*cols + c] >= 0 for r in range(rows))]
+        used = [c for c in range(16)
+                if any(grid[r*16 + c] >= 0 for r in range(rows))]
         c0, c1 = min(used), max(used)
         layout = []
         for r in range(rows):
-            layout += grid[r*cols + c0: r*cols + c1 + 1]
-        return c1 - c0 + 1, rows, layout, max(cells.values())
+            layout += grid[r*16 + c0: r*16 + c1 + 1]
+        return c1 - c0 + 1, rows, layout
+
+    def summon_stacked(boss, grid):
+        """The boss battle map on top, the OBJ grid below, padded to one width.
+
+        For the Esper whose animation stages draw almost nothing (Odin: 9 of
+        100 tiles) - the grid has all of his poses but as pieces, the boss
+        map has one whole figure, so show both.
+        """
+        bw, bl = boss
+        gw, gl = grid
+        cols = max(bw, gw)
+        rows = []
+        for r in range(len(bl)//bw):
+            rows.append(bl[r*bw:(r+1)*bw] + [-1]*(cols-bw))
+        rows.append([-1]*cols)
+        for r in range(len(gl)//gw):
+            rows.append(gl[r*gw:(r+1)*gw] + [-1]*(cols-gw))
+        return cols, len(rows), [t for row in rows for t in row]
+
+    def summon_frames_layout(i, avail_tiles, start):
+        """How to lay an Esper out, decided from its own data (each rule
+        answers a specific failure the user reported):
+
+        1. stages draw almost none of the block (Odin, 9 of 100 tiles) ->
+           the boss battle map plus the OBJ grid, so there is a whole figure
+           AND every tile of the other poses;
+        2. stages cover under three quarters of it (Bahamut, 71 of 118) ->
+           the OBJ grid, which holds all of his poses whole;
+        3. otherwise one rectangle per distinct stage, cells read right to
+           left, each covering slots n, n+1, n+16, n+17, side by side with no
+           gutter; tiles no cell covers attach to the nearest cell only when
+           there are <= 8 of them (Asura's 4 dress-hem tiles, Titan's 1
+           loincloth tile - Bahamut's 47 are whole poses and attaching them
+           shredded the picture);
+        4. if those frames scatter more than they fill (Mist Dragon's second
+           stage jumps around the grid) use the OBJ grid instead.
+        """
+        slot2tile = summon_tilemap(i, avail_tiles)
+        if not slot2tile:
+            return None
+        stages = []
+        for stage in range(4):
+            cells, gw, gh = summon_stage_cells(i, stage)
+            if any(c is not None for c in cells) and \
+                    not any(c == cells for c, _, _ in stages):
+                stages.append((cells, gw, gh))
+        drawn = set()
+        for cells, gw, gh in stages:
+            for c in cells:
+                if c is not None:
+                    drawn |= {c, c+1, c+16, c+17}
+        cover = len(drawn & set(slot2tile)) / len(slot2tile)
+        if cover * 5 < 1 and i in BOSS_BP_FOR:
+            bw = boss_windows.get((BOSS_BP_FOR[i], start))
+            if bw:
+                gc, gr, gl = summon_grid_layout(slot2tile)
+                cols, rows, layout = summon_stacked(
+                    (bw['tw'], list(bw['cells'])), (gc, gl))
+                return cols, rows, layout, max(slot2tile.values()), -1
+        if cover * 4 < 3:
+            cols, rows, layout = summon_grid_layout(slot2tile)
+            return cols, rows, layout, max(slot2tile.values()), 0
+        orph = sorted(((s, t) for s, t in slot2tile.items() if s not in drawn),
+                      key=lambda kv: kv[1])
+        frames = []
+        for cells, gw, gh in stages:
+            rect = {}
+            for idx, anchor in enumerate(cells):
+                if anchor is None:
+                    continue
+                cr, cc = divmod(idx, gw)
+                cc = gw - 1 - cc
+                for dr in range(2):
+                    for dc in range(2):
+                        t = slot2tile.get(anchor + 16*dr + dc, -1)
+                        if t >= 0:
+                            rect[(cr*2 + dr, cc*2 + dc)] = t
+            if len(orph) <= 8:
+                for s, t in orph:
+                    near = None
+                    for idx, anchor in enumerate(cells):
+                        if anchor is None:
+                            continue
+                        d = abs(s//16 - anchor//16) + abs(s % 16 - anchor % 16)
+                        if near is None or d < near[0]:
+                            near = (d, idx, anchor)
+                    if not near:
+                        continue
+                    cr, cc = divmod(near[1], gw)
+                    cc = gw - 1 - cc
+                    r = max(0, min(cr*2 + (s//16 - near[2]//16), 2*gh + 1))
+                    c = max(0, min(cc*2 + (s % 16 - near[2] % 16), 2*gw - 1))
+                    while (r, c) in rect and rect[(r, c)] != t:
+                        c += 1
+                        if c > 2*gw - 1:
+                            c, r = 0, r + 1
+                        if r > 2*gh + 1:
+                            break
+                    rect[(r, c)] = t
+            if not rect:
+                continue
+            frames.append((max(k[1] for k in rect) + 1,
+                           max(k[0] for k in rect) + 1, rect))
+        if not frames:
+            return None
+        if sum(len(r) for _, _, r in frames) * 3 < \
+                sum(w*h for w, h, _ in frames) * 2:
+            cols, rows, layout = summon_grid_layout(slot2tile)
+            return cols, rows, layout, max(slot2tile.values()), 0
+        cols = sum(f[0] for f in frames)
+        rows = max(f[1] for f in frames)
+        layout = [-1]*(cols*rows)
+        ox = 0
+        for fw, fh, rect in frames:
+            for (r, c), t in rect.items():
+                layout[r*cols + ox + c] = t
+            ox += fw
+        return cols, rows, layout, max(t for t in layout if t >= 0), len(frames)
 
     summon_entries = []
     seen_block = set()
@@ -568,7 +722,7 @@ def main():
         }
         k = item_of.get(start)
         avail = (end - start) // 24
-        res = summon_canvas_layout(i, avail)
+        res = summon_frames_layout(i, avail, start)
         if k is not None:
             # the Esper reuses a monster/boss graphics item: a window onto it
             entry['window'] = {
@@ -591,7 +745,9 @@ def main():
             entry['height'] = rows
             entry['layout'] = layout
             if any(flips):
-                entry['layoutFlip'] = flips
+                print(f'  note: {key} placement has flipped cells; FF4 never '
+                      f'flips a pool tile in its boss/summon maps, so the '
+                      f'flip is ignored')
             if 'window' in entry:
                 entry['window']['tiles'] = max(entry['window']['tiles'],
                                                max(layout) + 1, 0)
@@ -611,11 +767,28 @@ def main():
                 asm[key]['height'] = rows
                 asm[key]['layout'] = layout
                 if any(flips):
-                    asm[key]['layoutFlip'] = flips
+                    print(f'  note: {key} placement has flipped cells; ignored '
+                          f'(see the summon note above)')
                 if max(layout, default=-1) >= asm[key]['window']['tiles']:
                     asm[key]['window']['tiles'] = max(layout) + 1
 
     # ---- character / portrait palette pins ----------------------------------
+    # Each character sprite sheet says which array items it belongs to, so the
+    # view selects it automatically instead of showing Golbez and Anna through
+    # the 14 standard characters' arrangement.
+    # NOTE (open): the "Golbez/Anna" sheet itself is still wrong - it was
+    # authored against a 64-tile character block while those two blocks are 27
+    # and 23 tiles, so it points at tiles that are not there and repeats too
+    # little. Replacing it needs the character pose loader decoded
+    # (CharTileTbl / CharSpriteOffsetTbl address OBJ VRAM char slots, not the
+    # block); flattening it to tile order was tried and reads worse, so the
+    # original is left alone until that is done.
+    cg0 = asm.get('characterGraphics')
+    if cg0:
+        sheets = cg0.get('assembly', {}).get('spriteSheet')
+        if isinstance(sheets, list) and len(sheets) > 1:
+            sheets[0].setdefault('itemRange', [0, 14])
+            sheets[1]['itemRange'] = [15, 16]
     # characterPalette has 16 entries (0-13 characters, 14 Golbez, 15 Anna);
     # the Pig battle sprite reuses whichever character's palette is active,
     # so it gets the whole array as a dropdown instead of a wrong pin.

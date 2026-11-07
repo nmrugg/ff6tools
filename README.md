@@ -230,11 +230,11 @@ hidden from the Monster Graphics tree to avoid duplicates). Under
 **Summons** all fifteen Espers are listed: those whose animation reuses
 their monster art point at it directly, and Chocobo, Shiva, Ramuh, Ifrit
 and Sylph - whose summon-only art lives elsewhere in the ROM - get their
-own editable graphics. Each summon is displayed the way the game places it
-in sprite VRAM, and that is where all of an Esper's animation frames live
-at once, so the wider views (up to 16 tiles across) show the frames side by
-side - Sylph's three 16x16 poses, Ifrit's idle and attacking poses, and so
-on - instead of a fragment of one. Most monsters are 3bpp and use one 8-colour
+own editable graphics. Each one is displayed as the game's own animation
+stages composed one by one: the stages share cells (Chocobo's poses use the
+same head, Asura's three use the same body), so the shared tiles are
+repeated and every frame reads as a whole creature, laid out side by side -
+Sylph's three 16x16 poses, Ifrit's idle and attacking poses, and so on. Most monsters are 3bpp and use one 8-colour
 palette; the few 4bpp ones (Zeromus) get two consecutive ROM palettes
 composed into one 16-colour palette automatically. Attack graphics are
 editable directly under Character (**Attack Graphics**); the animation

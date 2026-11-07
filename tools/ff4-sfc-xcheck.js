@@ -245,20 +245,32 @@ if(sec){
         `${item.path}: layout ${o.layout.length} != ${o.width}x${o.height}`);
     }
   }
-  // re-derive every SummonTilemap canvas from the ROM and require the
-  // definition to match: the stream is OBJ-VRAM placement (TfrSummonGfx),
-  // one byte per 8x8 tile slot in a 16-tile-wide grid ($80-$FE = blank slot,
-  // $FF = end); slots whose tile falls outside the block are dropped
-  const SGFX=m(0x0D87F0), STMP=m(0x0DF260), SEND=m(0x0DE818);
+  // re-derive every summon layout from the ROM and require the definition to
+  // match. Independent implementation of the same walk: SummonTilemap places
+  // block tiles into the 16-wide OBJ tile grid ($80-$FE = blank slot, $FF =
+  // end, slots outside the Esper's own block dropped), each of the four
+  // animation stages (0x13fa9d -> SummonFramePtrs) draws w*h 16x16 cells from
+  // SummonSpritePosTbl where a cell byte names its top-left slot (so the cell
+  // covers n, n+1, n+16, n+17), identical stages collapse to one frame, each
+  // frame is trimmed to the cells it fills, and frames sit side by side with
+  // a blank column between them.
+  const SGFX=m(0x0D87F0), STMP=m(0x0DF260), SFRM=m(0x0DF660),
+        SPOS=m(0x13FA59), SSETS=m(0x13FA9D), SEND=m(0x0DE818);
   const SNAM=['Imp','Bomb','Cockatrice','Mindflayer','Chocobo','Shiva','Ramuh',
               'Ifrit','Titan','DragonMist','Sylph','Odin','Leviathan','Asura',
               'Asura','Asura','Bahamut'];
   const sblk=[];
   for(let i=0;i<17;i++)
     sblk.push(m(0x0D0000+(data[SGFX+i*2]|(data[SGFX+i*2+1]<<8))));
+  const BOSS_BP={8:2,9:0,11:42,12:46,13:54,16:47};
+  const bossByBp={};
+  for(const k of Object.keys(rom.assembly)) if(k.startsWith('bossGraphics_')) {
+    const bp=Number(k.replace('bossGraphics_','').split('_')[0]);
+    if(bossByBp[bp]===undefined) bossByBp[bp]=rom.assembly[k];
+  }
   const seenBlk=new Set();
-  let canvases=0, manual=0;
-  // a saved puzzle placement deliberately overrides the ROM canvas
+  let composed=0, manual=0, frameCount=0, repeated=0;
+  // a saved puzzle placement deliberately overrides the ROM layout
   const PLDIR=path.join(ROOT,'tools/ff4-sfc-puzzle/placements');
   const placed=new Set(fs.existsSync(PLDIR)
     ? fs.readdirSync(PLDIR).filter(f=>f.endsWith('.json')).map(f=>f.slice(0,-5)) : []);
@@ -269,34 +281,152 @@ if(sec){
     const end=nxt.length?Math.min(...nxt):SEND;
     const avail=Math.floor((end-sblk[i])/24);
     let p=m(0x0D0000+(data[STMP+i*2]|(data[STMP+i*2+1]<<8))), k=0;
-    const cells={};
+    const slot2tile={};
     for(;;){
       const b=data[p]; p++;
       if(b===0xff) break;
-      if(b<0x80){ if(k<avail) cells[b]=k; k++; }
+      if(b<0x80){ if(k<avail) slot2tile[b]=k; k++; }
     }
-    const slots=Object.keys(cells).map(Number);
-    const cols=16, rows=Math.max(...slots.map(s=>Math.floor(s/16)))+1;
-    const grid=new Array(cols*rows).fill(-1);
-    for(const s of slots) grid[s]=cells[s];
-    const used=[];
-    for(let c=0;c<cols;c++)
-      if(grid.some((v,j)=>j%cols===c&&v>=0)) used.push(c);
-    const c0=Math.min(...used), c1=Math.max(...used);
-    const layout=[];
-    for(let r=0;r<rows;r++) layout.push(...grid.slice(r*cols+c0,r*cols+c1+1));
+    const gw=data[SPOS+i*4+2], gh=data[SPOS+i*4+3];
+    const stageCells=(stage)=>{
+      const fset=data[SSETS+i*4+stage];
+      let q=m(0x0D0000+(data[SFRM+fset*2]|(data[SFRM+fset*2+1]<<8)));
+      const cells=[];
+      while(cells.length<gw*gh){
+        const b=data[q]; q++;
+        if(b===0xff) break;
+        if(b===0xfe){ const n=data[q]; q++; for(let j=0;j<n;j++) cells.push(null); }
+        else if(b<0x80) cells.push(b);
+        else cells.push(null);
+      }
+      while(cells.length<gw*gh) cells.push(null);
+      return cells;
+    };
+    const stages=[];
+    for(let st=0;st<4;st++){
+      const c=stageCells(st);
+      if(c.some(x=>x!==null) && !stages.some(s=>JSON.stringify(s)===JSON.stringify(c)))
+        stages.push(c);
+    }
+    const drawn=new Set();
+    for(const c of stages) for(const x of c) if(x!==null)
+      [x,x+1,x+16,x+17].forEach(s=>drawn.add(s));
     const key=`summonGraphics_${SNAM[i]}`;
     const o=rom.assembly[key];
     if(!o){ check(false,`${key}: missing assembly`); continue; }
     if(placed.has(key)){ manual++; continue; }
-    canvases++;
-    check(o.width===c1-c0+1&&o.height===rows,
-      `${key}: ${o.width}x${o.height} != SummonTilemap canvas ${c1-c0+1}x${rows}`);
+    const slots=Object.keys(slot2tile).map(Number);
+    const gridLayout=()=>{                       // the OBJ grid placement
+      const rows=Math.max(...slots.map(s=>Math.floor(s/16)))+1;
+      const g=new Array(16*rows).fill(-1);
+      for(const s of slots) g[s]=slot2tile[s];
+      const gc=[];
+      for(let c=0;c<16;c++) if(g.some((v,j)=>j%16===c&&v>=0)) gc.push(c);
+      const c0=Math.min(...gc), c1=Math.max(...gc), lay=[];
+      for(let r=0;r<rows;r++) lay.push(...g.slice(r*16+c0,r*16+c1+1));
+      return {cols:c1-c0+1, layout:lay};
+    };
+    // stages that draw almost none of the block (Odin: 9 of 100 tiles): the
+    // boss battle map has one whole figure, the OBJ grid has the other poses,
+    // so the definition stacks them
+    const cover=slots.filter(s=>drawn.has(s)).length/slots.length;
+    if(cover*5<1){
+      const bp=BOSS_BP[i];
+      const bw=bossByBp[bp];
+      check(!!bw, `${key}: stages draw nothing and have no boss map`);
+      const gl=gridLayout();
+      const cols=Math.max(bw.width, gl.cols), rows=[];
+      for(let r=0;r<bw.layout.length/bw.width;r++)
+        rows.push([...bw.layout.slice(r*bw.width,(r+1)*bw.width), ...new Array(cols-bw.width).fill(-1)]);
+      rows.push(new Array(cols).fill(-1));
+      for(let r=0;r<gl.layout.length/gl.cols;r++)
+        rows.push([...gl.layout.slice(r*gl.cols,(r+1)*gl.cols), ...new Array(cols-gl.cols).fill(-1)]);
+      const layout=rows.flat();
+      check(o.width===cols&&o.height===rows.length&&
+            JSON.stringify(o.layout)===JSON.stringify(layout),
+        `${key}: should stack the boss battle map (bossProps ${bp}) over the OBJ grid`);
+      composed++; continue;
+    }
+    // stages that cover under three quarters of the block (Bahamut 71/118):
+    // the OBJ grid holds all of his poses whole
+    if(cover*4<3){
+      const gl=gridLayout();
+      check(o.width===gl.cols&&o.height===gl.layout.length/gl.cols&&
+            JSON.stringify(o.layout)===JSON.stringify(gl.layout),
+        `${key}: stages cover ${(cover*100).toFixed(0)}% of the block, should use the OBJ grid`);
+      composed++; continue;
+    }
+    const orph=slots.filter(s=>!drawn.has(s)).map(s=>[s,slot2tile[s]])
+                    .sort((a,b)=>a[1]-b[1]);
+    const rects=stages.map(cells=>{
+      const rect={};
+      cells.forEach((anchor,idx)=>{
+        if(anchor===null) return;
+        const cr=Math.floor(idx/gw), cc=gw-1-(idx%gw);
+        for(let dr=0;dr<2;dr++)for(let dc=0;dc<2;dc++){
+          const t=slot2tile[anchor+16*dr+dc];
+          if(t!==undefined) rect[(cr*2+dr)+','+(cc*2+dc)]=t;
+        }
+      });
+      // tiles no cell covers attach at their offset from the nearest cell -
+      // but only when there are few (Asura's dress hem, Titan's loincloth);
+      // many of them are whole extra poses and attaching them shreds the
+      // picture (Bahamut)
+      if(orph.length<=8) for(const [s,t] of orph){
+        const sr=Math.floor(s/16), sc=s%16;
+        let near=null;
+        cells.forEach((anchor,idx)=>{
+          if(anchor===null) return;
+          const d=Math.abs(sr-Math.floor(anchor/16))+Math.abs(sc-anchor%16);
+          if(!near||d<near[0]) near=[d,idx,anchor];
+        });
+        if(!near) continue;
+        const cr=Math.floor(near[1]/gw), cc=gw-1-(near[1]%gw);
+        let r=Math.max(0,Math.min(cr*2+(sr-Math.floor(near[2]/16)), 2*gh+1));
+        let c=Math.max(0,Math.min(cc*2+(sc-near[2]%16), 2*gw-1));
+        while(rect[r+','+c]!==undefined && rect[r+','+c]!==t){
+          c++; if(c>2*gw-1){ c=0; r++; }
+          if(r>2*gh+1) break;
+        }
+        rect[r+','+c]=t;
+      }
+      return rect;
+    }).filter(r=>Object.keys(r).length);
+    if(!rects.length){ check(false,`${key}: no frames composed`); continue; }
+    const grids=rects.map(r=>{
+      const ks=Object.keys(r).map(k=>k.split(',').map(Number));
+      return {W:Math.max(...ks.map(k=>k[1]))+1, H:Math.max(...ks.map(k=>k[0]))+1, r};
+    });
+    let colsN, layout;
+    // frames that scatter more than they fill (Dragon Mist's second stage
+    // jumps around the grid) read worse than the OBJ grid itself
+    if(grids.reduce((a,g)=>a+Object.keys(g.r).length,0)*3 <
+       grids.reduce((a,g)=>a+g.W*g.H,0)*2){
+      const gl=gridLayout(); colsN=gl.cols; layout=gl.layout;
+    } else {
+      colsN=grids.reduce((a,g)=>a+g.W,0);
+      const rowsN=Math.max(...grids.map(g=>g.H));
+      layout=new Array(colsN*rowsN).fill(-1);
+      let ox=0;
+      for(const g of grids){
+        for(const [k,t] of Object.entries(g.r)){
+          const [rr,cc]=k.split(',').map(Number);
+          layout[rr*colsN+ox+cc]=t;
+        }
+        ox+=g.W;
+      }
+    }
+    composed++; frameCount+=grids.length;
+    const filled=layout.filter(t=>t>=0).length;
+    if(filled>new Set(layout.filter(t=>t>=0)).size) repeated++;
+    check(o.width===colsN&&o.height===layout.length/colsN,
+      `${key}: ${o.width}x${o.height} != ROM layout ${colsN}x${layout.length/colsN}`);
     check(JSON.stringify(o.layout)===JSON.stringify(layout),
-      `${key}: layout does not match the SummonTilemap canvas`);
+      `${key}: layout does not match the composed ROM animation frames`);
   }
   console.log('summon entries checked:',sec.list.length,'| dedicated:',dedicated.length,
-              '| tilemap canvases re-derived:',canvases,
+              '| frame layouts re-derived:',composed,
+              `(${frameCount} frames, ${repeated} of them sharing tiles)`,
               '| overridden by puzzle placements:',manual);
 }
 

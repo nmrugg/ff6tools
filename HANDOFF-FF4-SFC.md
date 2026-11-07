@@ -66,15 +66,59 @@ ROMGraphics:
   fragmented array when the path is a fragment (`monsterGraphics_84`) that
   doesn't exist yet — without this, windows disassembled before the array
   came up blank.
-- `layout` (static cell→tile map, -1=empty) + `layoutFlip` (bit1 h, bit2 v)
-  — the view renders any object with `layout` as the assembled creature
+- `layout` (static cell→tile map, -1=empty, cells may repeat a tile) — the
+  view renders any object with `layout` as the assembled creature
   (poolLayout/poolFlip), paint writes through `tileOffset` (flip-aware).
+  (`layoutFlip` was removed again: no ROM map flips a pooled tile, no def
+  used it, and no puzzle placement ever set a non-zero flip — verified.
+  `poolFlip` stays, because FF3 NES `layoutFrom` windows derive it from the
+  tilemap word's flip bit / `mirrorX`.)
 GUI gotchas: `ROMRange.parse` only accepts STRINGS ("0-8"), returns 0-0 for
 objects; `GFX.graphicsFormat[formatKey] || this.format` guard for format-less
 blobs; two tree rows pointing at the SAME object path make the navigator
 highlight the wrong row (`this.node[path]` first-wins) — give every tree row
 its own assembly (this was the user-visible "clicking Mist Dragon selects
 Summons" bug; fixed by making all 15 `summonGraphics_*` their own windows).
+- **`view.cellTile` / `view.cellFlip` are the only correct answer to "which
+  tile of the data does this display cell show?"** They are rebuilt at the end
+  of `updateTilemap()` from `this.tilemap` (tile = `word & 0xFFFF`, empty =
+  0xFFFFFFFF, h/v flip = bits 28/29), so they already fold together the pool
+  layout, the sprite sheet (`characterGraphics`'s `spriteSheet.tilemap` repeats
+  and reorders tiles), and the view's own h/v flip. `tileOffset()` must use
+  them: with the old linear/poolLayout-only lookup, painting Cecil's sheet
+  cell 4 (which *shows* tile 0) wrote tile 4 — "draws pixels in the wrong
+  spots". Same trap for any new display mapping.
+- **A window must notify its own observers when it re-reads its source**
+  (`ROMGraphics.disassemble`): the graphics view observes the *window*, not
+  the pool, so without that notify an undo of a Boss Graphics paint restored
+  the ROM bytes but left the painted pixels on the canvas — "undo works
+  except on Boss Graphics". `ROMGraphics.replaceData` therefore does not call
+  disassemble/notify itself (the owner's notification already does).
+- **`rom.endAction()` must not push an empty action group.** A pencil stroke
+  that changes nothing (clicking a pixel that already has the chosen color, or
+  a blank cell of a laid-out window) opened a group, produced no action, and
+  queued the empty array anyway — the user's next Ctrl+Z silently consumed it
+  and undo looked dead.
+- **Image Bounds shades cells, not a tile count**: it must ask the same
+  question painting does (`view.cellTile`), so a layout's holes are dimmed and
+  a sprite sheet's repeated/reordered cells are not. The old `t < tileCount`
+  test shaded the tail of the grid (a 64-tile character shown in 84 cells
+  dimmed cells 64-83) and left real holes bright.
+- **Sprite sheets belong to items, and must be clamped to the item**:
+  `characterGraphics` carries two sheets (the 14 standard characters, and the
+  Golbez/Anna pair). The generator tags each with `itemRange` and
+  `selectObject` picks the one covering the selected item — otherwise
+  Golbez/Anna are shown through Cecil's arrangement. One sheet shared by
+  items of different sizes must also drop ids past the end of the selected
+  item's data (Golbez has 27 tiles, Anna 23): the sheet's 4 cells pointing at
+  tiles 23-26 were the user's "fourth Anna tile that is redundant";
+  `updateTilemap` now leaves them empty (`tile < dataTiles`).
+  **Open**: the "Golbez/Anna" sheet still under-repeats compared with the
+  in-game sprites. Fixing it needs the character pose loader decoded
+  (CharTileTbl / CharSpriteOffsetTbl address OBJ VRAM char slots, not the
+  block); flattening it to tile order was tried and reads worse, so the
+  original is kept. Reference art: videogamesprites.net FF4 NPCs →
+  Individuals → Villains (Golbez) and Other (Anna).
 
 ## 3. FF4 SNES data map (bus → file = `(bus>>1)+(bus&0x7FFF)` for 00-3F… loROM)
 
@@ -112,23 +156,34 @@ Summons" bug; fixed by making all 15 `summonGraphics_*` their own windows).
   MistDragon,Sylph*,Odin,Leviathan,Asura×3,Bahamut); summon-only: Chocobo
   0x0d90b8(24t), Shiva 0x0d92f8(47t), Ramuh 0x0d9760(52t), Ifrit
   0x0d9c40(84t), Sylph 0x0dea0(12t, carved out of the D'Mist item).
-  **`SummonTilemapPtrs` 0x0df260 is the OBJ-VRAM placement, and the only
-  complete picture of an Esper** (`TfrSummonGfx` @0x028409): one byte per 8×8
-  tile *slot*, in slot order, where slot = row*16 + col of the 16-tile-wide
-  OBJ tile grid (slots $00-$7F are used); byte<0x80 = the next block tile
-  goes to that slot, $80-$FE = blank slot (low 7 bits = slot, no tile
-  consumed), $FF = end. Every animation frame of the summon sits in that
-  grid at the same time, so laying the stream out on the grid is the sheet
-  that holds them all (rendering each one gives a complete Esper — verified
-  for all 17). `SummonFramePtrs` 0x0df660 + the stage sets at 0x13fa9d (4
+  **`SummonTilemapPtrs` 0x0df260 is the OBJ-VRAM placement** (`TfrSummonGfx`
+  @0x028409): one byte per 8×8 tile *slot*, in slot order, where slot =
+  row*16 + col of the 16-tile-wide OBJ tile grid (slots $00-$7F are used);
+  byte<0x80 = the next block tile goes to that slot, $80-$FE = blank slot
+  (low 7 bits = slot, no tile consumed), $FF = end. Laying that stream out on
+  the grid puts every tile somewhere once — but the animation frames *share*
+  cells (Chocobo's two poses use the same head slots, Asura's three the same
+  body, Shiva/Ramuh/Titan the same legs), so the grid view shows each pose
+  with pieces missing: the user's "missing head / legs / disembodied heads".
+  The complete view comes from composing the frames (below).
+  `SummonFramePtrs` 0x0df660 + the stage sets at 0x13fa9d (4
   per summon, chosen by (`$f326`>>3)&3 in DrawSummon @0x01fdf9) feed w*h
   16×16 cells from `SummonSpritePosTbl` 0x13fa59 (x,y,w,h in 16px units);
   each stream byte (`_03f7e8` @0x03f7e8) = the OBJ slot of the cell's
   top-left tile, so a cell covers slots n, n+1, n+16, n+17 — **not n..n+3**,
   which is what the first version of the generator assumed and why its
-  summon layouts looked like overlapping fragments. $80+/$FE n/$FF = blank
+  summon layouts looked like overlapping fragments. **The bytes of a stage
+  run right to left** (DrawSummon steps x += 16 per byte, and the ROM's
+  stages are filled backwards through the OBJ grid columns): reading them
+  forwards mirrors every row and breaks the creature apart ("jumbled or
+  shifted"); reading them reversed reproduces the boss-battle arrangement
+  exactly for Titan and Asura — that comparison is what settles it.
+  $80+/$FE n/$FF = blank
   cells, and the pointer is reloaded from the stage's start on every frame,
-  so a stage is one static picture, not a timeline. Streams are shared
+  so a stage is one static picture, not a timeline (26 distinct stages over
+  the 15 Espers). Cells whose slot the tilemap never wrote stay empty —
+  those are the effect sprites the attack animation loads into OBJ VRAM
+  separately, not art this block owns. Streams are shared
   between Esper grid sizes, and tilemaps are shared too (Imp/Bomb,
   Cockatrice/Mindflayer, Asura×3) — a shared stream can run past one
   Esper's block (the Cockatrice tilemap consumes 36 tiles but the block is
@@ -163,13 +218,41 @@ is idempotent and emits:
 - `summonGraphics_<Name>` (15, all independent objects → no cross-highlight
   weirdness): 10 are windows over the monster/boss graphics item that holds
   the Esper's art, 5 own their summon-only block (Chocobo, Shiva, Ramuh,
-  Ifrit, Sylph). All 15 carry a `layout` = the SummonTilemap stream laid out
-  on the 16-wide OBJ grid and cropped, so every animation frame of the Esper
-  appears side by side: Imp/Bomb 4×4, Cockatrice 6×4, Mindflayer 6×6,
-  Chocobo 8×4, Shiva/Ramuh 12×6, Ifrit 16×6, Titan 14×8, Dragon Mist 10×8,
-  Sylph 6×2, Odin/Leviathan/Asura 16×8, Bahamut 16×8. `ff4-sfc-xcheck.js`
-  re-derives every canvas from the ROM and compares (it skips keys that have
-  a puzzle placement).
+  Ifrit, Sylph). All 15 carry a `layout`, chosen per Esper from its own data
+  (`summon_frames_layout`) — each rule exists because of a specific failure
+  the user reported:
+  1. **stages draw almost none of the block (coverage < 20%) → stack the boss
+     battle map over the OBJ grid.** Odin's three stages draw 9 of his 100
+     tiles: the boss map (`bossGraphics_42`) has one whole figure, the grid
+     has the pieces of the other poses. Frames-only Odin was the "almost no
+     tiles" regression; grid-only Odin was "very jumbled". Table:
+     `BOSS_BP_FOR` = {8:Titan→2, 9:Mist Dragon→0, 11:Odin→42,
+     12:Leviathan→46, 13:Asura→54, 16:Bahamut→47}.
+  2. **coverage < 75% → the OBJ grid itself.** Bahamut's stages draw 71 of
+     118 tiles; the grid holds both of his poses whole (the reference page
+     shows 2 frames), so frames-only Bahamut was "missing its second frame".
+  3. **otherwise one rectangle per distinct stage**, cells read **right to
+     left** (DrawSummon steps x += 16 per byte while the ROM fills its stages
+     backwards through the OBJ grid columns — reading them forwards mirrors
+     every row: "jumbled or shifted"), each cell covering slots
+     n, n+1, n+16, n+17 (**not n..n+3**), frames directly side by side, no
+     gutter column.
+  4. **tiles no cell covers attach to the nearest cell, but only when there
+     are ≤ 8 of them** — Asura's 4 dress-hem tiles land at the bottom of
+     every Asura, Titan's 1 loincloth tile inside the second Titan; the many
+     leftovers of a grid-case Esper are whole poses (handled by rule 2).
+  5. **if the frames scatter more than they fill** (< 2/3 of their own
+     rectangles occupied — Mist Dragon's second stage jumps around the grid),
+     use the OBJ grid, which gives one clean dragon.
+  No cross-stage "borrowing" of empty cells: it invented tiles the game
+  leaves blank (Leviathan's extra corner piece).
+  Result: Imp/Bomb 4×4, Cockatrice 6×4, Mindflayer 6×6, Chocobo 8×4 (32 cells
+  from 24 tiles), Shiva 11×6, Ramuh 12×6, Ifrit 16×6, Titan 12×8, Dragon Mist
+  10×8 (grid), Sylph 6×2, **Odin 16×19 (boss map over grid)**, Leviathan
+  12×10, Asura 24×12, **Bahamut 16×8 (grid, both frames)**.
+  Painting a repeated cell writes the one tile every copy shows.
+  `ff4-sfc-xcheck.js` re-derives all 15 layouts with an independent
+  implementation and compares them, including the boss-map case.
 - `characterGraphics`/`portraitGraphics` `itemPalettes`: per-item pins
   ("5: Rosa"), Pig/Small/Toad list every palette by name
   ("Kain palette (reused)" etc.).
@@ -184,20 +267,28 @@ is idempotent and emits:
 `/storage/romhacking/MysticForge/etc/battle-sprites/puzzle_server.py`):
 `python3 tools/ff4-sfc-puzzle/puzzle_server.py [--def D] [--rom R] [8139]`
 → http://localhost:8139 — tray of palette-colored tiles + editable grid,
-click-place, right-click cycles flip (0/1/2/3), shift-click erases, Save
-POSTs to `tools/ff4-sfc-puzzle/placements/<key>.json`
-(`{key,cols,rows,placement:[{cell,tile,flip}]}`, tile reuse allowed).
-The generator reads those and overrides computed layouts (verified
-round-trip; delete file + regenerate to revert). The grid now starts from
-the ROM's own arrangement (the SummonTilemap canvases are correct, see §3),
-so the tool is for tuning rather than rescuing; offered keys are the 5
-dedicated summons + `bossGraphics_36` (MomBomb), and any other
-`summonGraphics_*`/`bossGraphics_*` key can be added to `PUZZLE_KEYS`.
-**The only placement on disk is the user's Sylph (12 tiles in a 2x10 strip),
-saved while the automatic arrangement was still wrong - placements win, so
-that is still what the def shows; delete
-`placements/summonGraphics_Sylph.json` and regenerate for the ROM's 6x2
-three-frame canvas.**
+click-place, shift-click erases, Save POSTs to
+`tools/ff4-sfc-puzzle/placements/<key>.json`
+(`{key,cols,rows,placement:[{cell,tile}]}`, tile reuse allowed), and "Delete
+placement" POSTs /api/delete_placement to remove one so the ROM layout wins
+again. The right-click tile flip was removed: no FF4 boss/summon map flips a
+pooled tile, no definition ever carried `layoutFlip`, and no placement had a
+non-zero flip.
+The generator reads placements and overrides computed layouts (verified
+round-trip; delete file + regenerate to revert). The grid starts from the
+ROM's own arrangement (see §3), so the tool is for tuning rather than
+rescuing. `/api/entries` offers the hand-picked keys (the 5 dedicated summons
++ `bossGraphics_36`) and then **every** `summonGraphics_*` / `bossGraphics_*`
+in the definition (53 today), so any assembled view can be re-arranged by
+hand. Tools: Place, **Erase** (shift-click does the same), Clear grid, Save,
+and "Delete placement" (`/api/delete_placement`) to revert a key to the ROM
+layout. The tray dims tiles that are not on the grid and labels placed ones
+with their repeat count (`12x2`), and the status line shows
+placed / distinct / total.
+**There are no placements on disk now** — the user's Sylph strip (saved while
+the automatic layout was wrong) was deleted at their request once the ROM
+layout was right, so every summon shows the composed frames. A placement of
+their own still overrides if they save one.
 Shell gotcha: each of your commands runs in a NEW shell — `kill %1` won't
 work; use `pkill -f puzzle_server.py`, and beware "Address already in use"
 races (sleep before rebind).
@@ -209,6 +300,9 @@ FF5E_ROM="/storage/romhacking/ff-roms/Final Fantasy II (USA).sfc" \
   node tools/rom-harness.js ff4/ff2u-sfc.json            # 0 diffs
 node tools/ff4-sfc-xcheck.js                             # model/parity/undo
 node tools/ff4-sfc-app-test.js                           # browser: paint, windows, pins
+  # ... and the regression trio for the shared view machinery: sprite-sheet
+  # cell->tile painting, Image Bounds over a layout, undo repainting a window,
+  # and a no-op stroke not queueing an empty undo step
 python3 tools/ff4-sfc-names.py --def ff4/ff2u-sfc.json --rom "..."   # regen
 python3 tools/ff4-sfc-artcheck.py     # baked Mom Bomb sheet vs ff4monsters.zip
 SHOT_ROM="/storage/romhacking/ff-roms/Final Fantasy II (USA).sfc" \
