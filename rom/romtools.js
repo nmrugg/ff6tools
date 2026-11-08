@@ -3003,7 +3003,7 @@ ROM.dataFormat = {
             if (mode !== 3) console.log("Invalid TOSE palette format " + mode);
             var count = header[1]; // number of 16-bit colors
             var dest = data.slice(8, 8 + count * 2);
-            return [dest, 8 + count << 1];
+            return [dest, 8 + (count << 1)];
         }
     },
     "ff5a-world": {

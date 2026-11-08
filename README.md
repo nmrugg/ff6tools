@@ -248,6 +248,18 @@ the graphics each tilemap points at. Most bosses are ordinary-sized monsters and
 are found under Monster Graphics; only 32 of the 127 boss monsters use the
 tilemap mechanism.
 
+In Final Fantasy IV Advance (U) on the GBA, each monster has a record in
+**Monster Graphics Properties** holding a palette pointer and a graphics
+pointer (in that order, unlike FF V Advance). Those point at 275 shared
+graphics objects and 271 palettes under **Monster Graphics** and **Monster
+Palettes**, each labelled with the monsters that use it, each displayed at the
+width and height from the monster size table, and each opening with its own
+palette in the Palette panel. Graphics are LZSS-compressed TOSE blocks of
+4bpp tiles, so painting re-compresses them and undo restores the original
+compressed bytes. The 22 biggest monsters (Zeromus EG, the Lunar espers) are
+drawn from a tile pool with a per-tile palette bank out of a 48-colour
+palette; they currently display using the first bank for every tile.
+
 In the navigator, `Up`/`Down` move the selection between entries instead of
 scrolling; running off the end of a section expands the next one and steps into
 it. The graphics tiles which are availableare displayed in the toolbox in the right pane and can be imported and exported

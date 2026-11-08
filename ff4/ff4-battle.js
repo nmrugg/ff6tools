@@ -643,10 +643,33 @@ class FF4Battle extends ROMEditor {
         }
     }
 
+    monsterGraphicsRecord(rom, m) {
+
+        // FF4 Advance models the graphics/palette pointers as records
+        // (monsterGraphicsProperties[m] = {palettePointer, graphicsPointer});
+        // older definitions keep a flat 724-entry pointerTable array where the
+        // palette is item(m*2) and the graphics item(m*2+1).
+        const props = rom.monsterGraphicsProperties;
+        if (props && props.item) {
+            const record = props.item(m);
+            if (record && record.graphicsPointer && record.graphicsPointer.target
+                    && record.palettePointer && record.palettePointer.target)
+                return {
+                    graphics: record.graphicsPointer.target,
+                    palette: record.palettePointer.target,
+                };
+        }
+        return {
+            graphics: rom.monsterGraphics.item(m * 2 + 1),
+            palette: rom.monsterGraphics.item(m * 2),
+        };
+    }
+
     drawMonsterGBA(monster) {
 
         // decode the graphics
-        const graphicsData = this.rom.monsterGraphics.item(monster.m * 2 + 1);
+        const record = this.monsterGraphicsRecord(this.rom, monster.m);
+        const graphicsData = record.graphics;
         if (!graphicsData.format) {
             if (graphicsData.data[0] === 0x10) {
                 graphicsData.format = ['linear4bpp', 'tose-graphics', 'gba-lzss'];
@@ -668,7 +691,7 @@ class FF4Battle extends ROMEditor {
         for (let t = 0; t < tiles.length; t++) tiles[t] = t;
 
         // load palette
-        const paletteData = this.rom.monsterGraphics.item(monster.m * 2);
+        const paletteData = record.palette;
         if (!paletteData.format) {
             paletteData.format = ['bgr555', 'tose-palette'];
             paletteData.disassemble(paletteData.parent.data);

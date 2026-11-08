@@ -14,7 +14,7 @@ https://everything8215.github.io/ff6tools). Goal: per-game *sprite graphics*
 editors — monsters, bosses, summons, characters — viewable AND paintable in
 the app (pencil/fill/eyedropper/palette-cell tools), with objects named from
 the ROM itself. Done so far: FF5 Advance (U/E) GBA, FF3 (J/U) NES, FF4 (U)
-SNES ("Final Fantasy II (USA)"). Validate with the user's legal ROMs in
+SNES ("Final Fantasy II (USA)"), and FF IV Advance (U) GBA (see §7). Validate with the user's legal ROMs in
 `/storage/romhacking/ff-roms/` (CRCs match the built-in defs; `patches/*.ips`
 fix mislabelled dumps). Reference art the user provided:
 `/storage/romhacking/ff-roms/ff4monsters.zip` (214 PNGs, GBA-era colors,
@@ -323,8 +323,16 @@ SHOT_ROM="/storage/romhacking/ff-roms/Final Fantasy II (USA).sfc" \
 # regressions:
 node tools/ff3-nes-xcheck.js ; node tools/ff3-nes-app-test.js ; node tools/ff3-nes-map-smoke.js
 FF5E_ROM=... node tools/ff5e-xcheck.js   # slow (~4 min), background it
+mkdir -p /tmp/ff5e-demo    # the UI tests write screenshots there; ENOENT otherwise
 node tools/ui-edit-test.js ; node tools/ui-features-test.js ; node tools/map-smoke-test.js
 node tools/demo-paint.js
+# FF4 Advance (GBA):
+python3 tools/ff4-gba-names.py --def ff4/ff4u-gba.json --rom "..."   # regen
+FF5E_ROM="/storage/romhacking/ff-roms/Final Fantasy IV Advance (USA).gba" \
+  node tools/rom-harness.js ff4/ff4u-gba.json         # 0 diffs
+node tools/ff4-gba-xcheck.js                          # ownership/parity/pins/undo
+node tools/ff4-gba-app-test.js                        # browser: paint, palettes, battle
+python3 tools/ff4-gba-dump.py --ids 280-361 -o /tmp/ff4gba   # render from the ROM
 # other defs round-trip with user ROMs (ff6/ff3u-sfc, ff1/ff1u-nes, ff4/ff4u-gba, ff4/ff4j-sfc)
 ```
 Browser-test traps: set `view.paintStart = view.graphics.slice()` before
@@ -332,7 +340,91 @@ driving paint tools directly; use `rom.parsePath(key)` not `rom.assembly.key`
 (the latter skips the lazy getter); fresh Chrome profile + `--disk-cache-size=1`
 already in the harnesses; pixel-offset math: `tileOffset = idx*64 + py*8 + px`.
 
-## 7. Remaining work / ideas, in priority order
+## 7. FF4 Advance (GBA) — monster graphics — DONE
+
+`ff4/ff4u-gba.json` (crc32 0xFEEEBDE4, "Final Fantasy IV Advance (USA).gba").
+Same job as FF5 (§2 of HANDOFF.md), but FF4's tables are laid out differently
+and one upstream format bug had to die first.
+
+**The pointer table is 362 records, not 724 items.** `monsterGraphics` used to
+be a 724-entry `pointerTable` array of raw bytes at `0x080F6FC8-0x080F7B18`.
+Those 724 u32 absolute GBA pointers are really `m*2` = **palette**,
+`m*2+1` = **graphics** — the opposite order from FF5 (which is
+`m*2` graphics / `m*2+1` palette). Verified from the ROM: all 362 even
+entries are TOSE mode 3 (palettes, 16 or 48 colours), all 362 odd entries are
+LZSS-wrapped TOSE mode 1 (graphics). So the def now has
+`monsterGraphicsProperties` (362 records of 8: `palettePointer`@0,
+`graphicsPointer`@4) over exactly the old pointer-table range, and
+`monsterGraphics` (275 objects) / `monsterPalettes` (271) are fragmented
+`pointerObject` arrays. `ff4-battle.js drawMonsterGBA` resolves through
+`.target` and falls back to `item(m*2)`/`item(m*2+1)` for definitions that
+still use the flat array (`ff4e-gba.json`).
+
+**Palettes and graphics are interleaved, so `itemRanges` are mandatory.**
+A plain pointer-deduped array sizes each item to the next pointer *of the same
+array*, so every palette would swallow the graphics block after it (this is
+the FF5 wart — 293 phantom overlaps) and the last item would run to the end of
+the ROM. The region `0x0818857C-0x081DA7F8` turns out to be *exactly* tiled by
+the union of all 724 pointers (min == region begin, and the block at the
+largest pointer ends exactly at the region end), so the generator emits static
+`itemRanges` computed from that union: 275 + 271 objects own all 336 508
+bytes with no overlap and 400 bytes of decoder-trimmed alignment padding
+unowned.
+**Gotcha: in a GBA definition `itemRanges` are FILE addresses** (`0x18857C-`,
+no `0x08` bank). `ROMArray.disassemble` only runs `mapRange` on them when
+`isMapped` is false — and GBA pointers *are* mapped, so `isMapped` must stay
+true and the ranges must already be mapped. (FF4 SNES writes bus addresses
+because it sets `"isMapped": false`.)
+
+**`monsterSize` is indexed by monster id, and hides a tilemap pointer.**
+362 records of 12: `? ? ? w h w h ? ptr32`. `sizeFrom` uses the record's own
+index (like FF5) and `linkPalette` pins each graphic to the palette its record
+points at — all 362 slots decode, size and pin correctly.
+**bytes 8-11 are a pointer to a TOSE *layout* (mode 2)** — 12-byte header
+(mode, count, w, h) then `w*h` u16 GBA tile entries — present for exactly 22
+records: ids 260-269 (Zeromus EG + the nine Lunar espers) and 339-350. In
+those maps bits 12-13 are a **palette bank (0/1/2)** — that is why 22 palettes
+have **48 colours** — and the tile indices run sequentially (0,1,2,…) so the
+block is a raster-ordered pool and the map only chooses the bank. For those 22
+the TOSE graphics header's tile count is *not* `w*h` (Zeromus EG says 64 and
+the LZSS payload holds 320), so trust the payload length. `tilemapPointer` is
+now an editable property on `monsterSize`. **Open:** those 22 still display
+with bank 0 for every tile; they want assembled windows (a `layout` plus
+per-tile palette offsets, the FF3-NES `itemAttributes` idea) like
+`bossGraphics_*`.
+
+**Slots 283-361 are real art with no ROM name.** `monsterProperties` has 282
+records and `monsterName` 283 entries, and `battleMonster` only uses ids
+0-282, but the size/graphics tables have 362 slots. They are not garbage:
+314-320 are seven 18×12 blocks sharing one palette, 327-336 ten 16×14 sharing
+another (summon/attack animation frames), and 283-285 etc. are placeholders
+pointing at another monster's block. They render and paint fine; the generator
+labels them `Slot N (WxH)` or appends `slot N` to the owning monster's label.
+`monsterProperties` may also be one record short — battle id 282 ("Specter")
+exists but the array ends at 282 records.
+
+**Upstream bug fixed: `tose-palette` decode.** It returned
+`[dest, 8 + count << 1]`, which JS parses as `(8+count)<<1` — 48 bytes for a
+16-colour palette instead of 40. Every GBA palette assembly therefore claimed
+8 bytes of the following graphics block (the source of FF5's overlapping
+ranges). Now `8 + (count << 1)`; FF5 round-trips and xchecks exactly as
+before, and FF4's ownership test can demand one owner per byte.
+
+Generated by `tools/ff4-gba-names.py` (idempotent), verified by
+`tools/ff4-gba-xcheck.js` (pointer pairing, one-owner-per-byte, decode parity
+against an independent LZSS/TOSE/4bpp/bgr555 decoder for all 362 slots,
+sizes, palette pins, paint-lands-right-bytes, no collateral damage, byte-exact
+undo) and `tools/ff4-gba-app-test.js` (real browser: detect, open, pencil,
+palette edit, 48-colour panels, shared blocks, battle editor).
+`tools/ff4-gba-dump.py` renders any slot straight from the ROM
+(`python3 tools/ff4-gba-dump.py --ids 0-63 -o /tmp/ff4gba`).
+Screenshot trap: fragmented objects only exist once the array has been
+touched, so list `'monsterGraphics'` before `'monsterGraphics_15'` in
+`tools/app-shots.js`.
+
+---
+
+## 8. Remaining work / ideas, in priority order
 
 1. **FF4 follow-ups**: summon layouts now come straight from the
    SummonTilemap (§3) and show every animation frame side by side, so the
@@ -348,14 +440,28 @@ already in the harnesses; pixel-offset math: `tileOffset = idx*64 + py*8 + px`.
    blob model — same generator treatment needs a JP ROM (ask the user).
    Note the JP MomBomb arrangement (bossProps 13, 10×9) is probably the JP
    ROM's real map — verify with a JP ROM instead of the baked layout.
-2. **FF4 Advance GBA** (`ff4/ff4u-gba.json`, ROM available): `monsterGraphics`
-   is a 724-item pointerTable array of RAW items (battle code decodes
-   per-item tose/lzss formats at draw time). Apply the FF5-GBA treatment:
-   `pointerObject` + `sizeFrom` (its `monsterSize` is indexed per monster:
-   width/height at begin 3/4 ×8) + graphics type + palette pins; the
-   interleaved item layout (m*2 palette / m*2+1 graphics) must survive
-   (see HANDOFF §2 for the FF5 pattern; battle code `drawMonsterGBA` uses
-   `item(m*2+1)` — verify pointer order == monster order before changing).
+2. **FF4 Advance GBA follow-ups** (`ff4/ff4u-gba.json`) — the flat model is
+   done (§7): 362 pointer records, 275 graphics + 271 palette objects, one
+   owner per byte, sizes and palette pins from the ROM, names from the ROM,
+   paintable and byte-exact-undoable. Still open, in order of value:
+   * **the 22 tilemap monsters** (ids 260-269, 339-350) draw from a pool with
+     a per-tile **palette bank** (bits 12-13 of the TOSE layout entry) out of
+     a 48-colour palette; the app currently shows them with bank 0 for every
+     tile, so Zeromus EG and the Lunar espers look monochrome. They want
+     assembled windows like `bossGraphics_*` (a `layout` from the layout
+     block, which is raster-order, plus per-tile palette offsets — the
+     FF3-NES `itemAttributes` machinery is the closest precedent) and
+     `ff4-battle.js drawMonsterGBA` needs the same bank per tile.
+   * **names for slots 283-361.** They are real art (seven 18×12 frames
+     sharing a palette, ten 16×14 sharing another, placeholders that reuse a
+     monster's block) but nothing in `monsterProperties`/`monsterName` covers
+     them, so they are labelled `Slot N (WxH)`. Find the table the summon /
+     attack-effect code uses to index them and name them properly.
+   * `monsterProperties` looks one record short (battle id 282 "Specter"
+     exists; the array holds 282 records).
+   * `ff4e-gba.json` (FF IV Advance Europe) has the same layout — run
+     `tools/ff4-gba-names.py` on it once the user supplies that ROM; the
+     battle code still falls back to the flat array until then.
 3. **FF5 SNES** (`ff5/ff5j-sfc.json`, `ff5u-sfc.json` — RPGe US def exists;
    user has NO FF5-SFC ROM though — ask, or validate only structure):
    todo says "monster graphics (set format automatically)" — def already has
@@ -376,7 +482,7 @@ already in the harnesses; pixel-offset math: `tileOffset = idx*64 + py*8 + px`.
 7. Long tail from todo.txt: FF6 Steam string tables, FF6 GBA extras, battle
    animation editor, WSC/PSP/PSX versions.
 
-## 8. Files and commits
+## 9. Files and commits
 
 Committed by the user so far: `e25dc5c` (FF4 graphics round 1),
 `70fc075` (ips patches), `9ee10a7` ("fixing some issues with graphics,

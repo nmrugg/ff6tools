@@ -4,6 +4,46 @@
 
 recently added
 --------------
+ * ff4 advance (u, gba): the 724-entry monsterGraphics pointerTable is really
+   362 records of {palettePointer@0, graphicsPointer@4} - palette FIRST, the
+   opposite order from FF5 Advance. Now modelled that way, with the graphics
+   and palettes as fragmented pointerObject arrays (275 + 271 objects after
+   de-duplication) and ff4-battle.js resolving through .target
+ * ff4 advance (u, gba): palettes and graphics INTERLEAVE in the data region,
+   so pointer-deduped arrays alone let every palette swallow the graphics
+   block after it; static itemRanges from the union of all 724 pointers give
+   every byte exactly one owner (the region is tiled exactly: first pointer ==
+   region begin, last block ends at the region end)
+ * definitions: itemRanges in a GBA def are FILE addresses (0x18857C-, no
+   0x08 bank) - ROMArray only applies mapRange to them when isMapped is false,
+   and GBA pointers must stay mapped
+ * format bug: tose-palette decode returned "8 + count << 1" = (8+count)*2,
+   eight bytes more than the palette, so every GBA palette object claimed 8
+   bytes of the following graphics block (293 phantom overlaps in FF5). Now
+   8 + (count << 1)
+ * ff4 advance (u, gba): monsterSize records are 12 bytes: w/h at 3/4 (x8),
+   repeated at 5/6, and a TOSE *layout* (mode 2) pointer at bytes 8-11 for
+   exactly 22 slots - Zeromus EG, the nine Lunar espers (260-269) and the
+   esper slots 339-350. Their tilemap entries carry a palette BANK in bits
+   12-13, which is why 22 monster palettes hold 48 colours, and for those 22
+   the TOSE graphics header's tile count is not w*h (Zeromus EG says 64, the
+   LZSS payload holds 320)
+ * ff4 advance (u, gba): OPEN - those 22 tilemap monsters still display with
+   bank 0 for every tile (they look monochrome); they want assembled windows
+   with per-tile palette offsets, like bossGraphics_* on the SNES
+ * ff4 advance (u, gba): slots 283-361 exist in the size/graphics tables but
+   not in monsterProperties (282 records) or monsterName (283 entries), and
+   battleMonster only uses ids 0-282. They are real art (seven 18x12 frames
+   sharing a palette, ten 16x14 sharing another, plus placeholders reusing a
+   monster's block), labelled "Slot N (WxH)" until the table that indexes them
+   is found
+ * ff4 advance (u, gba): tools/ff4-gba-names.py generates the model,
+   ff4-gba-xcheck.js and ff4-gba-app-test.js verify it, ff4-gba-dump.py
+   renders any slot from the ROM
+ * screenshot trap: fragmented objects (monsterGraphics_15) only exist once
+   the array has been touched, so ask app-shots.js for 'monsterGraphics' first
+ * test trap: the UI tests write screenshots to /tmp/ff5e-demo and fail with
+   ENOENT if that directory does not exist
  * ff4 snes (u): summon stages are read RIGHT TO LEFT - DrawSummon steps
    x += 16 per byte and the ROM fills its stages backwards through the OBJ
    grid columns, so reading them forwards mirrored every row and broke the
