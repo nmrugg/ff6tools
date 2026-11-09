@@ -463,16 +463,47 @@ applies the bank while `updateTilemap` suppresses the palette panel's own row
 shift (same contract as the FF3 NES palette-cell table).
 
 **Character sprites were missing entirely.** `0x080F7B18-0x080F8018` is a
-second 320-pointer table: **20 groups of 16 pointers = 15 animation frames
-(2x3 tiles, 16x24 px) + the group's palette last**. These are the party/enemy
--class sprites - the enemy "monsters" Dragoon, Bard, Monk, Dark Knight, Girl
-and Dark Kain (slots 202-206, 280) are exactly the records whose `nextFrame`
-is below 32, i.e. character groups 1, 6, 7, 0, 3 and 19. Modelled as
+second 320-pointer table: **20 groups of 16 pointers = 15 animation frames +
+the group's palette last**. These are the party/enemy-class sprites - the
+enemy "monsters" Dragoon, Bard, Monk, Dark Knight, Girl and Dark Kain (slots
+202-206, 280) are exactly the records whose `nextFrame` is below 32, i.e.
+character groups 1, 6, 7, 0, 3 and 19. Modelled as
 `characterSpriteProperties` (20 records of 64 bytes: `graphicsPointer0..14` +
-`palettePointer`), `characterGraphics` (226 objects after de-duplication,
-2x3, `pointerObject` as a *list* of the 15 frame pointers) and
-`characterPalettes` (20), all under the Character section, labelled with the
-`characterTitle` strings (D. Knight, Dragoon, W. Mage, Summoner, ...).
+`palettePointer`), `characterGraphics` (226 objects after de-duplication) and
+`characterPalettes` (20), all under the Character section.
+
+**Frames are not all the same shape, and there is no size table.** Measured
+payload tile counts: 235 frames are 6 tiles and 65 are 9. Frames 11, 14 and
+15 (and frames 3-15 of Anna) are 9 tiles = **3x3**; frame 10 is the **death
+pose** - the sprite lies down, so its six tiles are **3 wide x 2 tall**, not
+2x3 like the standing frames. There is no per-frame dimension table anywhere
+in the ROM (I searched for the signature), so the arrangement lives in the
+animation code; the generator bakes the sizes through `itemSizes`.
+
+**A frame shared by several classes cannot have one palette pin.** Frames
+repeat heavily across groups, so pinning such a block to one class showed the
+wrong colours for the others (the user's "the palette does not change when
+selecting a sprite"). Shared blocks now get a **named choice list** of every
+sharing class's palette plus the whole array - the same pattern as the FF4
+SNES Pig/Small/Toad choices - and single-class frames stay pinned.
+
+**Golbez and Anna really do look thin, and it is the ROM.** Anna's frames
+3-15 all point at the *same* block, and Golbez's frames 1,2,4,5,6,7,8,11,14,15
+all point at one block too. Their distinct art is two frames each; the rest is
+the game reusing a stock block. Their class names are not in `characterTitle`
+(which stops at 15 entries and calls 14 "None"), so they are baked in
+`CLASS_NAMES`: 14 Small, 15 Frog, 16 Pig, 17 Golbez, 18 Anna.
+
+**Portraits.** Two more pointer tables, `0x080F2D48` (225 entries) and
+`0x080F3100` (83). Walking them shows the pattern **12 graphics then 12
+palettes** - one set of expressions per character. Each block is 16 tiles
+(4x4 = 32x32 px) with a **32-colour** palette, and **colour 0 is opaque** (it
+is the backdrop of the face, so `backColor: true`). Modelled as
+`portraitGraphics` (82 objects), `portraitPalettes` (72) and the two pointer
+tables as plain arrays; the pairing is positional, so the objects are placed
+by static `itemRanges` and pinned with `itemPalettes` rather than resolved
+through `pointerObject`. They render correctly against
+`ff4-portraits.png` (Cecil's helmeted face is the first one).
 
 ---
 
@@ -512,9 +543,16 @@ is below 32, i.e. character groups 1, 6, 7, 0, 3 and 19. Modelled as
      composite of the 11 frames, so the per-frame arrangement is the game's
      own and still undecoded. No other slot in 283-361 is known to be wrong.
    * **character frames are not composed into poses.** Each group is 15
-     separate 2x3 blocks; the game assembles them (idle/walk/attack/cast/hit/
-     dead) with a pose table that has not been found. A `spriteSheet` per
-     group would make them read like the FF4 SNES `characterGraphics` items.
+     separate blocks and the sizes are baked (2x3 / 3x2 death / 3x3 poses);
+     the game assembles them with a pose/OBJ descriptor that has not been
+     found, so a `spriteSheet` per group is still possible but needs that
+     table. Frame 10's 3x2 and frames 11/14/15's 3x3 were confirmed by eye,
+     not derived.
+   * **portrait expression sets are numbered, not named.** The 12-block sets
+     map to characters in table order but nothing in the tables says which
+     character; `characterNames`/`characterTitle` cover 13/15 of them. The
+     reference sheet `ff4-portraits.png` is 12 columns x 6 rows of faces plus
+     a row of pigs, so the mapping is readable off it — bake it in.
    * `monsterProperties` looks one record short (battle id 282 "Specter"
      exists; the array holds 282 records).
    * `ff4e-gba.json` (FF IV Advance Europe) has the same layout — run

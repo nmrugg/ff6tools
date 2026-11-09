@@ -25,6 +25,26 @@ recently added
    ROMArray key itemTilePalettes gives each pooled graphic tilePaletteCells
    {path,index,at:12,stride:2,shift:12,mask:3}; ROMGraphics.tilePaletteBank
    reads it live so editing a layout repaints the sprite
+ * ff4 advance (u, gba): character frames are NOT all 2x3 - 235 frames are 6
+   tiles and 65 are 9. Frames 11/14/15 (and 3-15 of Anna) are 3x3; frame 10 is
+   the DEATH pose, lying down, so its six tiles are 3 wide x 2 tall. There is
+   no per-frame dimension table in the ROM (searched for the signature) - the
+   arrangement lives in the animation code, so the sizes are baked via
+   itemSizes
+ * ff4 advance (u, gba): a character frame shared by several classes cannot be
+   pinned to one palette - that is why the palette did not change when
+   selecting a sprite. Shared frames now get a named dropdown of every sharing
+   class's palette (same pattern as the FF4 SNES Pig/Small/Toad choices)
+ * ff4 advance (u, gba): Golbez and Anna look thin because the ROM reuses
+   blocks: Anna's frames 3-15 all point at the same block, Golbez's
+   1,2,4,5,6,7,8,11,14,15 do too. Their names are not in characterTitle, so
+   CLASS_NAMES bakes 14 Small, 15 Frog, 16 Pig, 17 Golbez, 18 Anna
+ * ff4 advance (u, gba): portraits found - two more pointer tables
+   (0x080F2D48, 225 entries; 0x080F3100, 83). The pattern is 12 graphics then
+   12 palettes = one set of expressions per character. Each block is 16 tiles
+   (4x4, 32x32 px) with a 32-colour palette, and colour 0 is OPAQUE (it is the
+   backdrop of the face). Now portraitGraphics (82) / portraitPalettes (72)
+   plus the two pointer tables
  * ff4 advance (u, gba): character sprites were missing. 0x080F7B18-0x080F8018
    is a second 320-pointer table: 20 groups of 16 = 15 animation frames (2x3
    tiles) + the group's palette. The enemy "monsters" Dragoon, Bard, Monk,

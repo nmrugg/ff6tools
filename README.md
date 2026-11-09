@@ -268,9 +268,17 @@ palette; the layouts are under **Monster Tilemaps** and the app reads the bank
 straight from them, so Zeromus EG and the Lunar espers get their real colours
 and editing a layout recolours the sprite.
 
-Under **Character**, the 20 playable/enemy classes (Dark Knight, Dragoon,
-W. Mage, Summoner, …) each have 15 battle animation frames and their own
-palette, all editable.
+Under **Character**, the 20 playable/enemy classes (D. Knight, Dragoon,
+W. Mage, Summoner, Engineer, Sage, Prince, Monk, B. Mage, Ninja, Lunarian,
+Paladin, Small, Frog, Pig, Golbez, Anna, …) each have 15 battle animation
+frames and their own palette, all editable. Frames are not all the same
+shape: standing poses are 2×3 tiles, the death pose (frame 10) lies down at
+3×2, and the wider poses (frames 11, 14, 15) are 3×3. A frame shared by
+several classes lists each class's palette in the Palette dropdown.
+
+**Portraits** are also editable: 4×4 tiles (32×32 px) with a 32-colour
+palette, grouped as sets of 12 expressions. Colour 0 is opaque there — it is
+the backdrop of the face, not transparency.
 
 In the navigator, `Up`/`Down` move the selection between entries instead of
 scrolling; running off the end of a section expands the next one and steps into

@@ -56,6 +56,12 @@ CHAR_N    = 320
 CHAR_GROUPS = 20
 CHAR_FRAMES = 15
 CHAR_END  = 0x080F8018
+# dialogue portraits: two tables of 4-byte pointers, each block 16 tiles
+# (4x4, 32x32 px) with a 32-colour palette; the tables run 12 graphics then
+# 12 palettes, i.e. one set of expressions per character
+PORT_TBL1, PORT_N1 = 0x080F2D48, 225
+PORT_TBL2, PORT_N2 = 0x080F3100, 83
+PORT_SET = 12
 NAME_PTRS = 0x082E3680      # text pointer table
 NAME_OFF  = 0x082E3670      # ...pointers are relative to this
 NAME_BASE = 0x112B          # monsterName stringTable link: text[%i+0x112B]
@@ -366,34 +372,145 @@ def main():
     users = {}
     for m in range(SLOTS):
         n = next_of(m)
-        if 0 <= n < CHAR_GROUPS:
+        # only a real reference counts: an identity record (next == itself) is
+        # just a monster whose animation has one frame, not a character lookup
+        if n != m and 0 <= n < CHAR_GROUPS:
             users.setdefault(n, []).append(names[m] if m < len(names) and names[m]
                                           else 'slot %d' % m)
+    # the party/enemy classes, from the ROM's own characterTitle strings where
+    # they exist and from the game otherwise (14-18 are the transformed forms
+    # and the two non-party sprites that appear in battle)
+    CLASS_NAMES = {14: 'Small', 15: 'Frog', 16: 'Pig', 17: 'Golbez', 18: 'Anna'}
+    class_label = {}
     for g in range(CHAR_GROUPS):
-        title = titles[g] if g < len(titles) else None
+        title = CLASS_NAMES.get(g) or (titles[g] if g < len(titles) and titles[g]
+                                       and titles[g] != 'None' else None)
         who = ', '.join(dict.fromkeys(users.get(g, [])))
-        label = 'Character %d' % g
-        if title:
-            label += ' (%s)' % title
+        label = ('Character %d: %s' % (g, title)) if title else 'Character %d' % g
         if who:
-            label += ' - used by ' + who
+            label += ' (%s)' % who
+        class_label[g] = label
+
+    # A block can be used by several frames of the same group, or by the same
+    # frame number of several groups (poses are shared), so collect every
+    # (group, frame) that uses it and say so once, rather than letting the
+    # last writer name it "frame 15/15" when the user opened frame 11.
+    frames_of = {}
+    for g in range(CHAR_GROUPS):
         for f in range(CHAR_FRAMES):
-            char_labels[cg_index[cgfx[g * CHAR_FRAMES + f]]] = \
-                '%s, frame %d/%d' % (label, f + 1, CHAR_FRAMES)
-        cpal_labels[cp_index[cpal[g]]] = label
-    # frames repeat (a pose reuses tiles), so several groups can share art;
-    # merge those labels instead of letting one overwrite another
-    merged = {}
+            frames_of.setdefault(cg_index[cgfx[g * CHAR_FRAMES + f]], []).append((g, f + 1))
+    char_labels = {}
+    for i, uses in frames_of.items():
+        parts = {}
+        for g, f in uses:
+            parts.setdefault(class_label[g], []).append(f)
+        def fmt(lab, fs):
+            return '%s, frame%s %s/%d' % (lab, 's' if len(fs) > 1 else '',
+                                          ','.join(str(x) for x in sorted(fs)), CHAR_FRAMES)
+        if len(parts) > 4:
+            # a piece shared by nearly every class is a blank or a stock pose;
+            # naming all of them buries the useful part of the label
+            first = list(parts.items())[:2]
+            char_labels[i] = '%s (and %d other character groups)' % (
+                '; '.join(fmt(l, fs) for l, fs in first), len(parts) - 2)
+        else:
+            char_labels[i] = '; '.join(fmt(l, fs) for l, fs in parts.items())
+        cpal_labels[i] = ('; '.join(sorted({class_label[g] for g, _ in uses}))
+                          if len(uses) <= 4 else
+                          '%d character groups (blank/stock frame)' % len({g for g, _ in uses}))
+    for g in range(CHAR_GROUPS):
+        cpal_labels.setdefault(cp_index[cpal[g]], class_label[g])
+
+    # per-frame size: most frames are 2x3 tiles, the pose frames (11, 14, 15
+    # and almost all of Anna's) are 3x3, and frame 10 is the death pose - the
+    # sprite lies down, so its six tiles go 3 wide by 2 tall.  Forcing one
+    # size on all of them jumbled them.
+    def tiles_at(a):
+        p = a - GBA
+        if rom[p] == 0x10:
+            blob = lzss(rom, p)
+            return (len(blob) - 8) // 32
+        m, cnt = struct.unpack_from('<II', rom, p)
+        return cnt
+
+    DEATH_FRAME = 9
+    char_sizes, char_pins = [None] * len(cg_uniq), [None] * len(cg_uniq)
     for g in range(CHAR_GROUPS):
         for f in range(CHAR_FRAMES):
             i = cg_index[cgfx[g * CHAR_FRAMES + f]]
-            lab = char_labels[i]
-            if i in merged and lab not in merged[i]:
-                merged[i] = merged[i] + ' / ' + lab.split(', frame')[0] + \
-                    ', frame %d/%d' % (f + 1, CHAR_FRAMES)
+            n = tiles_at(cgfx[g * CHAR_FRAMES + f])
+            if n == 9:
+                w, h = 3, 3
+            elif f == DEATH_FRAME:
+                w, h = 3, 2
             else:
-                merged[i] = lab
-    char_labels = merged
+                w, h = 2, 3
+            char_sizes[i] = [w, h]
+    # A frame shared by several classes is drawn with whichever class is on
+    # screen, so it cannot be pinned to one palette: offer the sharing groups
+    # as a named dropdown (the same pattern as the FF4 SNES Pig/Small/Toad
+    # choices) and default to the first.
+    for i, uses in frames_of.items():
+        groups = sorted({g for g, _ in uses})
+        pin = lambda g: {'path': 'characterPalettes[%d]' % cp_index[cpal[g]],
+                         'name': class_label[g]}
+        char_pins[i] = pin(groups[0]) if len(groups) == 1 else \
+            [pin(g) for g in groups] + [{'path': 'characterPalettes'}]
+
+    # ---- portraits ---------------------------------------------------------
+    # Two tables of 4-byte pointers.  Walking each table shows the pattern
+    # 12 graphics then 12 palettes: one set of expressions per character.
+    # Each block is 16 tiles (4x4 = 32x32 px) with a 32-colour palette, and
+    # colour 0 is a real colour (the backdrop of the face), so these are
+    # backColor: true.
+    def is_pal(a):
+        return rom[a - GBA] != 0x10 and struct.unpack_from('<I', rom, a - GBA)[0] == 3
+
+    port_gfx, port_pal, port_label = [], [], []
+    setno = {'Dialogue': 1, 'Battle': 1}
+    for tbl, n, tag in ((PORT_TBL1, PORT_N1, 'Dialogue'), (PORT_TBL2, PORT_N2, 'Battle')):
+        entries = [struct.unpack_from('<I', rom, tbl - GBA + i * 4)[0] for i in range(n)]
+        runs, kind, run = [], None, []
+        for a in entries:
+            k = 'pal' if is_pal(a) else 'gfx'
+            if kind is not None and k != kind:
+                runs.append((kind, run)); run = []
+            kind = k; run.append(a)
+        runs.append((kind, run))
+        i = 0
+        while i < len(runs):
+            k, run = runs[i]
+            if k != 'gfx':
+                i += 1; continue
+            pals = runs[i + 1][1] if i + 1 < len(runs) and runs[i + 1][0] == 'pal' else []
+            total = max(len(run), len(pals) or 1)
+            for j, a in enumerate(run):
+                port_gfx.append(a)
+                port_pal.append(pals[j] if j < len(pals) else
+                                (pals[-1] if pals else None))
+                port_label.append('%s portrait set %d, expression %d/%d'
+                                  % (tag, setno[tag], j + 1, total))
+            setno[tag] += 1
+            i += 2
+    pall = sorted(set(a for a in port_pal if a))
+    allp2 = sorted(set(port_gfx) | set(pall))
+    pends = {}
+    for i, a in enumerate(allp2):
+        pends[a] = allp2[i + 1] if i + 1 < len(allp2) else a + 8 + 16 * 32
+    pg_index = {a: i for i, a in enumerate(sorted(set(port_gfx)))}
+    pp_index = {a: i for i, a in enumerate(pall)}
+    port_g_ranges = ['0x%X-0x%X' % (a - GBA, pends[a] - GBA)
+                     for a in sorted(set(port_gfx))]
+    port_p_ranges = ['0x%X-0x%X' % (a - GBA, pends[a] - GBA) for a in pall]
+    port_pins = [None] * len(pg_index)
+    port_labels, port_plabels = {}, {}
+    for n, (a, pa) in enumerate(zip(port_gfx, port_pal)):
+        if pa is not None:
+            port_pins[pg_index[a]] = 'portraitPalettes[%d]' % pp_index[pa]
+        if port_label[n] and pg_index[a] not in port_labels:
+            port_labels[pg_index[a]] = port_label[n]
+    for i, a in enumerate(pall):
+        port_plabels[pp_index[a]] = 'Portrait palette %d' % (i + 1)
 
     # ---- the assemblies ----------------------------------------------------
     asm = defj['assembly']
@@ -527,9 +644,7 @@ def main():
             'assembly': {},
         },
         'stringTable': str_table('Character Sprite Properties', CHAR_GROUPS,
-                                 'Character %i',
-                                 {g: (titles[g] if g < len(titles) else 'Character %d' % g)
-                                  for g in range(CHAR_GROUPS)}),
+                                 'Character %i', class_label),
     }
     for f in range(CHAR_FRAMES):
         charprops['assembly']['assembly']['graphicsPointer%d' % f] = {
@@ -562,6 +677,10 @@ def main():
                            'pointerPath': 'graphicsPointer%d' % f}
                           for f in range(CHAR_FRAMES)],
         'itemRanges': cg_ranges,
+        # per-frame size (2x3 or 3x3) and the group's palette, so selecting a
+        # frame opens with the colours that frame actually uses
+        'itemSizes': char_sizes,
+        'itemPalettes': char_pins,
         'stringTable': str_table('Character Graphics', len(cg_uniq),
                                  'Character Graphics %i', char_labels),
     }
@@ -593,6 +712,65 @@ def main():
     asm['characterGraphics'] = chgfx
     asm['characterPalettes'] = chpal
 
+    # portraits: the pointer tables are modelled as plain pointer arrays (the
+    # graphics/palette pairing is positional - 12 expressions then 12
+    # palettes - so the objects are placed by static ranges and pinned)
+    for tbl, n, name, key in ((PORT_TBL1, PORT_N1, 'Dialogue Portrait Pointers',
+                               'dialoguePortraitPointers'),
+                              (PORT_TBL2, PORT_N2, 'Battle Portrait Pointers',
+                               'battlePortraitPointers')):
+        asm[key] = {
+            'type': 'array',
+            'name': name,
+            'range': hx(tbl) + '-' + hx(tbl + n * 4),
+            'arrayLength': n,
+            'assembly': {
+                'type': 'data',
+                'length': 4,
+                'assembly': {
+                    'pointer': {'type': 'property', 'name': 'Pointer',
+                                'begin': 0, 'mask': '0x7FFFFFFF'},
+                },
+            },
+        }
+    asm['portraitGraphics'] = {
+        'type': 'array',
+        'name': 'Portraits',
+        'isFragmented': True,
+        'canRelocate': True,
+        'arrayLength': len(pg_index),
+        'assembly': {
+            'type': 'graphics',
+            'name': 'Portrait',
+            'format': ['linear4bpp', 'tose-graphics', 'gba-lzss'],
+            'align': 4,
+            'width': 4,
+            'height': 4,
+            # colour 0 is the backdrop of the face, not transparency
+            'backColor': True,
+            'palette': 'portraitPalettes',
+        },
+        'itemRanges': port_g_ranges,
+        'itemPalettes': port_pins,
+        'stringTable': str_table('Portraits', len(pg_index), 'Portrait %i', port_labels),
+    }
+    asm['portraitPalettes'] = {
+        'type': 'array',
+        'name': 'Portrait Palette',
+        'isFragmented': True,
+        'canRelocate': True,
+        'arrayLength': len(pall),
+        'assembly': {
+            'type': 'assembly',
+            'name': 'Portrait Palette',
+            'format': ['bgr555', 'tose-palette'],
+            'align': 4,
+        },
+        'itemRanges': port_p_ranges,
+        'stringTable': str_table('Portrait Palette', len(pall),
+                                 'Portrait Palette %i', port_plabels),
+    }
+
     # ---- hierarchy ---------------------------------------------------------
     battle = next((s for s in defj['hierarchy'] if s.get('name') == 'Battle'), None)
     if battle is not None:
@@ -615,7 +793,11 @@ def main():
                   len(character['list'])) + 1
         for name, path in reversed([('Character Graphics', 'characterGraphics'),
                                     ('Character Palettes', 'characterPalettes'),
-                                    ('Character Sprites', 'characterSpriteProperties')]):
+                                    ('Character Sprites', 'characterSpriteProperties'),
+                                    ('Portraits', 'portraitGraphics'),
+                                    ('Portrait Palettes', 'portraitPalettes'),
+                                    ('Dialogue Portrait Pointers', 'dialoguePortraitPointers'),
+                                    ('Battle Portrait Pointers', 'battlePortraitPointers')]):
             if path not in have:
                 character['list'].insert(at, {'name': name, 'path': path})
 

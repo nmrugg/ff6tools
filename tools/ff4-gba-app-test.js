@@ -210,6 +210,71 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
         'Demon Wall\'s 11-frame cycle is named by frame: '+chains.dw.join(' | '));
   check(/Mom Bomb/.test(chains.bomb),'slot 324 is named Mom Bomb: '+chains.bomb);
 
+  // the palette panel must follow the selected frame's group palette
+  const palFollow=await ev(c,sessionId,`(()=>{
+      const csp=rom.characterSpriteProperties;
+      const seen=[];
+      for(const g of [0,1,17]){
+          const obj=csp.item(g).graphicsPointer0.target;
+          romNavigator.selectObject(obj); propertyList.select(obj);
+          const v=propertyList.activeEditor;
+          const groups=[];
+          for(let k=0;k<20;k++) if(csp.item(k).graphicsPointer0.target===obj) groups.push(k);
+          const wantPal=csp.item(groups[0]).palettePointer.target;
+          seen.push({g, groups,
+                     shared:groups.length>1,
+                     first:Array.from(v.paletteView.palette.slice(0,3)).map(x=>x.toString(16)).join(),
+                     want:Array.from(wantPal.data.slice(0,3)).map(x=>x.toString(16)).join(),
+                     choices:Array.isArray(obj.palette)?obj.palette.length:1});
+      }
+      return seen;
+  })()`);
+  console.log('  character palettes:',JSON.stringify(palFollow));
+  check(palFollow.every(s=>s.first===s.want),
+        'selecting a character frame opens its class palette (default = first class that uses it)');
+  const multi=palFollow.find(s=>s.shared);
+  check(!!multi&&multi.choices>=multi.groups.length,
+        'a frame shared by '+
+        (multi?multi.groups.length:0)+' classes offers each class palette by name');
+
+  // frames are 2x3, but the pose frames are 3x3 - forcing one size jumbled them
+  const frameSizes=await ev(c,sessionId,`(()=>{
+      const csp=rom.characterSpriteProperties;
+      const sz=g=>Array.from({length:15},(_,f)=>{const t=csp.item(g)['graphicsPointer'+f].target;return t.width+'x'+t.height;});
+      return {g0:sz(0), g18:sz(18)};
+  })()`);
+  console.log('  frame sizes:',JSON.stringify(frameSizes));
+  check(frameSizes.g0[10]==='3x3'&&frameSizes.g0[13]==='3x3'&&frameSizes.g0[14]==='3x3'&&frameSizes.g0[0]==='2x3',
+        'character frames 11/14/15 display 3x3, the rest 2x3: '+frameSizes.g0.join(' '));
+  check(frameSizes.g18.slice(2).every(s=>s==='3x3'),'Anna\'s frames are 3x3: '+frameSizes.g18.join(' '));
+
+  // portraits: 4x4 tiles, 32-colour palette, colour 0 opaque
+  const port=await ev(c,sessionId,`(()=>{
+      const pg=rom.portraitGraphics, pp=rom.portraitPalettes;
+      const obj=pg.item(0);
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const v=propertyList.activeEditor;
+      const orig=Uint8Array.from(rom.data);
+      v.paintStart=v.graphics.slice(); v.color=3;
+      v.paintPixel(2,2); v.commitPaint();
+      const landed=obj.data[2*8+2];
+      while(rom.undoStack.length) rom.undo();
+      rom.assemble();
+      let diffs=0; for(let i=0;i<orig.length;i++) if(rom.data[i]!==orig[i]) diffs++;
+      return {n:pg.arrayLength, pals:pp.arrayLength, w:obj.width, h:obj.height,
+              back:obj.backColor, palCount:v.paletteView.palette.length,
+              pin:obj.palette, landed, diffs,
+              label:rom.stringTable['portraitGraphics'].string[obj.i].value,
+              d1:rom.dialoguePortraitPointers.arrayLength, d2:rom.battlePortraitPointers.arrayLength};
+  })()`);
+  console.log('  portraits:',JSON.stringify(port));
+  check(port.n>60&&port.pals>50&&port.d1===225&&port.d2===83,
+        port.n+' portraits / '+port.pals+' portrait palettes, both pointer tables owned');
+  check(port.w===4&&port.h===4&&port.palCount===32,'portraits display 4x4 tiles with a 32-colour palette');
+  check(port.back===true,'portraits keep colour 0 opaque (it is the backdrop of the face)');
+  check(/portrait set/.test(port.label),'portraits are labelled: '+port.label);
+  check(port.landed===3&&port.diffs===0,'portraits paint and undo byte-exactly');
+
   console.log(fails?`${fails} FAILURES`:'all FF4 GBA browser checks passed');
   process.exitCode=fails?1:0;
  } finally { ch.kill(); srv.kill(); }

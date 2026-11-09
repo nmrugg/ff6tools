@@ -83,6 +83,22 @@
                     "path": "characterProperties"
                 },
                 {
+                    "name": "Portraits",
+                    "path": "portraitGraphics"
+                },
+                {
+                    "name": "Portrait Palettes",
+                    "path": "portraitPalettes"
+                },
+                {
+                    "name": "Dialogue Portrait Pointers",
+                    "path": "dialoguePortraitPointers"
+                },
+                {
+                    "name": "Battle Portrait Pointers",
+                    "path": "battlePortraitPointers"
+                },
+                {
                     "name": "Character Graphics",
                     "path": "characterGraphics"
                 },
@@ -6281,25 +6297,25 @@
                 "length": 20,
                 "default": "Character %i",
                 "string": {
-                    "0": "D. Knight",
-                    "1": "Dragoon",
-                    "2": "W. Mage",
-                    "3": "Summoner",
-                    "4": "Engineer",
-                    "5": "Sage",
-                    "6": "Prince",
-                    "7": "Monk",
-                    "8": "B. Mage",
-                    "9": "W. Mage",
-                    "10": "Ninja",
-                    "11": "Lunarian",
-                    "12": "Paladin",
-                    "13": "Summoner",
-                    "14": "None",
-                    "15": "Character 15",
-                    "16": "Character 16",
-                    "17": "Character 17",
-                    "18": "Character 18",
+                    "0": "Character 0: D. Knight",
+                    "1": "Character 1: Dragoon",
+                    "2": "Character 2: W. Mage",
+                    "3": "Character 3: Summoner",
+                    "4": "Character 4: Engineer",
+                    "5": "Character 5: Sage",
+                    "6": "Character 6: Prince",
+                    "7": "Character 7: Monk",
+                    "8": "Character 8: B. Mage",
+                    "9": "Character 9: W. Mage",
+                    "10": "Character 10: Ninja",
+                    "11": "Character 11: Lunarian",
+                    "12": "Character 12: Paladin",
+                    "13": "Character 13: Summoner",
+                    "14": "Character 14: Small",
+                    "15": "Character 15: Frog",
+                    "16": "Character 16: Pig",
+                    "17": "Character 17: Golbez",
+                    "18": "Character 18: Anna",
                     "19": "Character 19"
                 }
             }
@@ -6613,237 +6629,2239 @@
                 "0x1E7980-0x1E7A4C",
                 "0x1E7A4C-0x1E7B1C"
             ],
+            "itemSizes": [
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    3,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    3,
+                    2
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ],
+                [
+                    2,
+                    3
+                ]
+            ],
+            "itemPalettes": [
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                {
+                    "path": "characterPalettes[0]",
+                    "name": "Character 0: D. Knight"
+                },
+                [
+                    {
+                        "path": "characterPalettes[0]",
+                        "name": "Character 0: D. Knight"
+                    },
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[2]",
+                        "name": "Character 2: W. Mage"
+                    },
+                    {
+                        "path": "characterPalettes[3]",
+                        "name": "Character 3: Summoner"
+                    },
+                    {
+                        "path": "characterPalettes[4]",
+                        "name": "Character 4: Engineer"
+                    },
+                    {
+                        "path": "characterPalettes[5]",
+                        "name": "Character 5: Sage"
+                    },
+                    {
+                        "path": "characterPalettes[6]",
+                        "name": "Character 6: Prince"
+                    },
+                    {
+                        "path": "characterPalettes[7]",
+                        "name": "Character 7: Monk"
+                    },
+                    {
+                        "path": "characterPalettes[8]",
+                        "name": "Character 8: B. Mage"
+                    },
+                    {
+                        "path": "characterPalettes[9]",
+                        "name": "Character 9: W. Mage"
+                    },
+                    {
+                        "path": "characterPalettes[10]",
+                        "name": "Character 10: Ninja"
+                    },
+                    {
+                        "path": "characterPalettes[11]",
+                        "name": "Character 11: Lunarian"
+                    },
+                    {
+                        "path": "characterPalettes[12]",
+                        "name": "Character 12: Paladin"
+                    },
+                    {
+                        "path": "characterPalettes[13]",
+                        "name": "Character 13: Summoner"
+                    },
+                    {
+                        "path": "characterPalettes[14]",
+                        "name": "Character 14: Small"
+                    },
+                    {
+                        "path": "characterPalettes[16]",
+                        "name": "Character 16: Pig"
+                    },
+                    {
+                        "path": "characterPalettes[18]",
+                        "name": "Character 18: Anna"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                [
+                    {
+                        "path": "characterPalettes[1]",
+                        "name": "Character 1: Dragoon"
+                    },
+                    {
+                        "path": "characterPalettes[19]",
+                        "name": "Character 19"
+                    },
+                    {
+                        "path": "characterPalettes"
+                    }
+                ],
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[2]",
+                    "name": "Character 2: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[3]",
+                    "name": "Character 3: Summoner"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[4]",
+                    "name": "Character 4: Engineer"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[5]",
+                    "name": "Character 5: Sage"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[6]",
+                    "name": "Character 6: Prince"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[7]",
+                    "name": "Character 7: Monk"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[8]",
+                    "name": "Character 8: B. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[9]",
+                    "name": "Character 9: W. Mage"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[10]",
+                    "name": "Character 10: Ninja"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[11]",
+                    "name": "Character 11: Lunarian"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[12]",
+                    "name": "Character 12: Paladin"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[13]",
+                    "name": "Character 13: Summoner"
+                },
+                {
+                    "path": "characterPalettes[14]",
+                    "name": "Character 14: Small"
+                },
+                {
+                    "path": "characterPalettes[14]",
+                    "name": "Character 14: Small"
+                },
+                {
+                    "path": "characterPalettes[14]",
+                    "name": "Character 14: Small"
+                },
+                {
+                    "path": "characterPalettes[14]",
+                    "name": "Character 14: Small"
+                },
+                {
+                    "path": "characterPalettes[14]",
+                    "name": "Character 14: Small"
+                },
+                {
+                    "path": "characterPalettes[14]",
+                    "name": "Character 14: Small"
+                },
+                {
+                    "path": "characterPalettes[14]",
+                    "name": "Character 14: Small"
+                },
+                {
+                    "path": "characterPalettes[14]",
+                    "name": "Character 14: Small"
+                },
+                {
+                    "path": "characterPalettes[14]",
+                    "name": "Character 14: Small"
+                },
+                {
+                    "path": "characterPalettes[14]",
+                    "name": "Character 14: Small"
+                },
+                {
+                    "path": "characterPalettes[14]",
+                    "name": "Character 14: Small"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[15]",
+                    "name": "Character 15: Frog"
+                },
+                {
+                    "path": "characterPalettes[16]",
+                    "name": "Character 16: Pig"
+                },
+                {
+                    "path": "characterPalettes[16]",
+                    "name": "Character 16: Pig"
+                },
+                {
+                    "path": "characterPalettes[16]",
+                    "name": "Character 16: Pig"
+                },
+                {
+                    "path": "characterPalettes[16]",
+                    "name": "Character 16: Pig"
+                },
+                {
+                    "path": "characterPalettes[16]",
+                    "name": "Character 16: Pig"
+                },
+                {
+                    "path": "characterPalettes[16]",
+                    "name": "Character 16: Pig"
+                },
+                {
+                    "path": "characterPalettes[16]",
+                    "name": "Character 16: Pig"
+                },
+                {
+                    "path": "characterPalettes[16]",
+                    "name": "Character 16: Pig"
+                },
+                {
+                    "path": "characterPalettes[16]",
+                    "name": "Character 16: Pig"
+                },
+                {
+                    "path": "characterPalettes[16]",
+                    "name": "Character 16: Pig"
+                },
+                {
+                    "path": "characterPalettes[16]",
+                    "name": "Character 16: Pig"
+                },
+                {
+                    "path": "characterPalettes[17]",
+                    "name": "Character 17: Golbez"
+                },
+                {
+                    "path": "characterPalettes[17]",
+                    "name": "Character 17: Golbez"
+                },
+                {
+                    "path": "characterPalettes[17]",
+                    "name": "Character 17: Golbez"
+                },
+                {
+                    "path": "characterPalettes[17]",
+                    "name": "Character 17: Golbez"
+                },
+                {
+                    "path": "characterPalettes[17]",
+                    "name": "Character 17: Golbez"
+                },
+                {
+                    "path": "characterPalettes[17]",
+                    "name": "Character 17: Golbez"
+                },
+                {
+                    "path": "characterPalettes[18]",
+                    "name": "Character 18: Anna"
+                },
+                {
+                    "path": "characterPalettes[18]",
+                    "name": "Character 18: Anna"
+                }
+            ],
             "stringTable": {
                 "name": "Character Graphics",
                 "length": 226,
                 "default": "Character Graphics %i",
                 "string": {
-                    "0": "Character 0 (D. Knight) - used by Goblin, frame 1/15",
-                    "1": "Character 0 (D. Knight) - used by Goblin, frame 2/15",
-                    "2": "Character 0 (D. Knight) - used by Goblin, frame 3/15",
-                    "3": "Character 0 (D. Knight) - used by Goblin, frame 4/15",
-                    "4": "Character 0 (D. Knight) - used by Goblin, frame 5/15",
-                    "5": "Character 0 (D. Knight) - used by Goblin, frame 6/15",
-                    "6": "Character 0 (D. Knight) - used by Goblin, frame 7/15",
-                    "7": "Character 0 (D. Knight) - used by Goblin, frame 8/15",
-                    "8": "Character 0 (D. Knight) - used by Goblin, frame 9/15",
-                    "9": "Character 0 (D. Knight) - used by Goblin, frame 10/15",
-                    "10": "Character 0 (D. Knight) - used by Goblin, frame 11/15",
-                    "11": "Character 0 (D. Knight) - used by Goblin, frame 12/15",
-                    "12": "Character 0 (D. Knight) - used by Goblin, frame 13/15",
-                    "13": "Character 19 - used by Red Mousse, frame 15/15",
-                    "14": "Character 19 - used by Red Mousse, frame 1/15",
-                    "15": "Character 19 - used by Red Mousse, frame 2/15",
-                    "16": "Character 19 - used by Red Mousse, frame 3/15",
-                    "17": "Character 19 - used by Red Mousse, frame 4/15",
-                    "18": "Character 19 - used by Red Mousse, frame 5/15",
-                    "19": "Character 19 - used by Red Mousse, frame 6/15",
-                    "20": "Character 19 - used by Red Mousse, frame 7/15",
-                    "21": "Character 19 - used by Red Mousse, frame 8/15",
-                    "22": "Character 19 - used by Red Mousse, frame 9/15",
-                    "23": "Character 19 - used by Red Mousse, frame 10/15",
-                    "24": "Character 19 - used by Red Mousse, frame 11/15",
-                    "25": "Character 19 - used by Red Mousse, frame 12/15",
-                    "26": "Character 19 - used by Red Mousse, frame 13/15",
-                    "27": "Character 2 (W. Mage) - used by Helldiver, frame 1/15",
-                    "28": "Character 2 (W. Mage) - used by Helldiver, frame 2/15",
-                    "29": "Character 2 (W. Mage) - used by Helldiver, frame 3/15",
-                    "30": "Character 2 (W. Mage) - used by Helldiver, frame 4/15",
-                    "31": "Character 2 (W. Mage) - used by Helldiver, frame 5/15",
-                    "32": "Character 2 (W. Mage) - used by Helldiver, frame 6/15",
-                    "33": "Character 2 (W. Mage) - used by Helldiver, frame 7/15",
-                    "34": "Character 2 (W. Mage) - used by Helldiver, frame 8/15",
-                    "35": "Character 2 (W. Mage) - used by Helldiver, frame 9/15",
-                    "36": "Character 2 (W. Mage) - used by Helldiver, frame 10/15",
-                    "37": "Character 2 (W. Mage) - used by Helldiver, frame 11/15",
-                    "38": "Character 2 (W. Mage) - used by Helldiver, frame 12/15",
-                    "39": "Character 2 (W. Mage) - used by Helldiver, frame 13/15",
-                    "40": "Character 3 (Summoner) - used by Floating Eyeball, frame 1/15",
-                    "41": "Character 3 (Summoner) - used by Floating Eyeball, frame 2/15",
-                    "42": "Character 3 (Summoner) - used by Floating Eyeball, frame 3/15",
-                    "43": "Character 3 (Summoner) - used by Floating Eyeball, frame 4/15",
-                    "44": "Character 3 (Summoner) - used by Floating Eyeball, frame 5/15",
-                    "45": "Character 3 (Summoner) - used by Floating Eyeball, frame 6/15",
-                    "46": "Character 3 (Summoner) - used by Floating Eyeball, frame 7/15",
-                    "47": "Character 3 (Summoner) - used by Floating Eyeball, frame 8/15",
-                    "48": "Character 3 (Summoner) - used by Floating Eyeball, frame 9/15",
-                    "49": "Character 3 (Summoner) - used by Floating Eyeball, frame 10/15",
-                    "50": "Character 3 (Summoner) - used by Floating Eyeball, frame 11/15",
-                    "51": "Character 3 (Summoner) - used by Floating Eyeball, frame 12/15",
-                    "52": "Character 3 (Summoner) - used by Floating Eyeball, frame 13/15",
-                    "53": "Character 4 (Engineer) - used by Insectus, frame 1/15",
-                    "54": "Character 4 (Engineer) - used by Insectus, frame 2/15",
-                    "55": "Character 4 (Engineer) - used by Insectus, frame 3/15",
-                    "56": "Character 4 (Engineer) - used by Insectus, frame 4/15",
-                    "57": "Character 4 (Engineer) - used by Insectus, frame 5/15",
-                    "58": "Character 4 (Engineer) - used by Insectus, frame 6/15",
-                    "59": "Character 4 (Engineer) - used by Insectus, frame 7/15",
-                    "60": "Character 4 (Engineer) - used by Insectus, frame 8/15",
-                    "61": "Character 4 (Engineer) - used by Insectus, frame 9/15",
-                    "62": "Character 4 (Engineer) - used by Insectus, frame 10/15",
-                    "63": "Character 4 (Engineer) - used by Insectus, frame 11/15",
-                    "64": "Character 4 (Engineer) - used by Insectus, frame 12/15",
-                    "65": "Character 4 (Engineer) - used by Insectus, frame 13/15",
-                    "66": "Character 5 (Sage) - used by Cave Bat, frame 1/15",
-                    "67": "Character 5 (Sage) - used by Cave Bat, frame 2/15",
-                    "68": "Character 5 (Sage) - used by Cave Bat, frame 3/15",
-                    "69": "Character 5 (Sage) - used by Cave Bat, frame 4/15",
-                    "70": "Character 5 (Sage) - used by Cave Bat, frame 5/15",
-                    "71": "Character 5 (Sage) - used by Cave Bat, frame 6/15",
-                    "72": "Character 5 (Sage) - used by Cave Bat, frame 7/15",
-                    "73": "Character 5 (Sage) - used by Cave Bat, frame 8/15",
-                    "74": "Character 5 (Sage) - used by Cave Bat, frame 9/15",
-                    "75": "Character 5 (Sage) - used by Cave Bat, frame 10/15",
-                    "76": "Character 5 (Sage) - used by Cave Bat, frame 11/15",
-                    "77": "Character 5 (Sage) - used by Cave Bat, frame 12/15",
-                    "78": "Character 5 (Sage) - used by Cave Bat, frame 13/15",
-                    "79": "Character 6 (Prince) - used by Treant, frame 1/15",
-                    "80": "Character 6 (Prince) - used by Treant, frame 2/15",
-                    "81": "Character 6 (Prince) - used by Treant, frame 3/15",
-                    "82": "Character 6 (Prince) - used by Treant, frame 4/15",
-                    "83": "Character 6 (Prince) - used by Treant, frame 5/15",
-                    "84": "Character 6 (Prince) - used by Treant, frame 6/15",
-                    "85": "Character 6 (Prince) - used by Treant, frame 7/15",
-                    "86": "Character 6 (Prince) - used by Treant, frame 8/15",
-                    "87": "Character 6 (Prince) - used by Treant, frame 9/15",
-                    "88": "Character 6 (Prince) - used by Treant, frame 10/15",
-                    "89": "Character 6 (Prince) - used by Treant, frame 11/15",
-                    "90": "Character 6 (Prince) - used by Treant, frame 12/15",
-                    "91": "Character 6 (Prince) - used by Treant, frame 13/15",
-                    "92": "Character 7 (Monk) - used by Sword Rat, frame 1/15",
-                    "93": "Character 7 (Monk) - used by Sword Rat, frame 2/15",
-                    "94": "Character 7 (Monk) - used by Sword Rat, frame 3/15",
-                    "95": "Character 7 (Monk) - used by Sword Rat, frame 4/15",
-                    "96": "Character 7 (Monk) - used by Sword Rat, frame 5/15",
-                    "97": "Character 7 (Monk) - used by Sword Rat, frame 6/15",
-                    "98": "Character 7 (Monk) - used by Sword Rat, frame 7/15",
-                    "99": "Character 7 (Monk) - used by Sword Rat, frame 8/15",
-                    "100": "Character 7 (Monk) - used by Sword Rat, frame 9/15",
-                    "101": "Character 7 (Monk) - used by Sword Rat, frame 10/15",
-                    "102": "Character 7 (Monk) - used by Sword Rat, frame 11/15",
-                    "103": "Character 7 (Monk) - used by Sword Rat, frame 12/15",
-                    "104": "Character 7 (Monk) - used by Sword Rat, frame 13/15",
-                    "105": "Character 8 (B. Mage) - used by Tiny Mage, frame 1/15",
-                    "106": "Character 8 (B. Mage) - used by Tiny Mage, frame 2/15",
-                    "107": "Character 8 (B. Mage) - used by Tiny Mage, frame 3/15",
-                    "108": "Character 8 (B. Mage) - used by Tiny Mage, frame 4/15",
-                    "109": "Character 8 (B. Mage) - used by Tiny Mage, frame 5/15",
-                    "110": "Character 8 (B. Mage) - used by Tiny Mage, frame 6/15",
-                    "111": "Character 8 (B. Mage) - used by Tiny Mage, frame 7/15",
-                    "112": "Character 8 (B. Mage) - used by Tiny Mage, frame 8/15",
-                    "113": "Character 8 (B. Mage) - used by Tiny Mage, frame 9/15",
-                    "114": "Character 8 (B. Mage) - used by Tiny Mage, frame 10/15",
-                    "115": "Character 8 (B. Mage) - used by Tiny Mage, frame 11/15",
-                    "116": "Character 8 (B. Mage) - used by Tiny Mage, frame 12/15",
-                    "117": "Character 8 (B. Mage) - used by Tiny Mage, frame 13/15",
-                    "118": "Character 9 (W. Mage) - used by Desert Sahagin, frame 1/15",
-                    "119": "Character 9 (W. Mage) - used by Desert Sahagin, frame 2/15",
-                    "120": "Character 9 (W. Mage) - used by Desert Sahagin, frame 3/15",
-                    "121": "Character 9 (W. Mage) - used by Desert Sahagin, frame 4/15",
-                    "122": "Character 9 (W. Mage) - used by Desert Sahagin, frame 5/15",
-                    "123": "Character 9 (W. Mage) - used by Desert Sahagin, frame 6/15",
-                    "124": "Character 9 (W. Mage) - used by Desert Sahagin, frame 7/15",
-                    "125": "Character 9 (W. Mage) - used by Desert Sahagin, frame 8/15",
-                    "126": "Character 9 (W. Mage) - used by Desert Sahagin, frame 9/15",
-                    "127": "Character 9 (W. Mage) - used by Desert Sahagin, frame 10/15",
-                    "128": "Character 9 (W. Mage) - used by Desert Sahagin, frame 11/15",
-                    "129": "Character 9 (W. Mage) - used by Desert Sahagin, frame 12/15",
-                    "130": "Character 9 (W. Mage) - used by Desert Sahagin, frame 13/15",
-                    "131": "Character 10 (Ninja) - used by Flying Eyes, frame 1/15",
-                    "132": "Character 10 (Ninja) - used by Flying Eyes, frame 2/15",
-                    "133": "Character 10 (Ninja) - used by Flying Eyes, frame 3/15",
-                    "134": "Character 10 (Ninja) - used by Flying Eyes, frame 4/15",
-                    "135": "Character 10 (Ninja) - used by Flying Eyes, frame 5/15",
-                    "136": "Character 10 (Ninja) - used by Flying Eyes, frame 6/15",
-                    "137": "Character 10 (Ninja) - used by Flying Eyes, frame 7/15",
-                    "138": "Character 10 (Ninja) - used by Flying Eyes, frame 8/15",
-                    "139": "Character 10 (Ninja) - used by Flying Eyes, frame 9/15",
-                    "140": "Character 10 (Ninja) - used by Flying Eyes, frame 10/15",
-                    "141": "Character 10 (Ninja) - used by Flying Eyes, frame 11/15",
-                    "142": "Character 10 (Ninja) - used by Flying Eyes, frame 12/15",
-                    "143": "Character 10 (Ninja) - used by Flying Eyes, frame 13/15",
-                    "144": "Character 11 (Lunarian) - used by Hundlegs, frame 1/15",
-                    "145": "Character 11 (Lunarian) - used by Hundlegs, frame 2/15",
-                    "146": "Character 11 (Lunarian) - used by Hundlegs, frame 3/15",
-                    "147": "Character 11 (Lunarian) - used by Hundlegs, frame 4/15",
-                    "148": "Character 11 (Lunarian) - used by Hundlegs, frame 5/15",
-                    "149": "Character 11 (Lunarian) - used by Hundlegs, frame 6/15",
-                    "150": "Character 11 (Lunarian) - used by Hundlegs, frame 7/15",
-                    "151": "Character 11 (Lunarian) - used by Hundlegs, frame 8/15",
-                    "152": "Character 11 (Lunarian) - used by Hundlegs, frame 9/15",
-                    "153": "Character 11 (Lunarian) - used by Hundlegs, frame 10/15",
-                    "154": "Character 11 (Lunarian) - used by Hundlegs, frame 11/15",
-                    "155": "Character 11 (Lunarian) - used by Hundlegs, frame 12/15",
-                    "156": "Character 11 (Lunarian) - used by Hundlegs, frame 13/15",
-                    "157": "Character 12 (Paladin) - used by Sand Worm, frame 1/15",
-                    "158": "Character 12 (Paladin) - used by Sand Worm, frame 2/15",
-                    "159": "Character 12 (Paladin) - used by Sand Worm, frame 3/15",
-                    "160": "Character 12 (Paladin) - used by Sand Worm, frame 4/15",
-                    "161": "Character 12 (Paladin) - used by Sand Worm, frame 5/15",
-                    "162": "Character 12 (Paladin) - used by Sand Worm, frame 6/15",
-                    "163": "Character 12 (Paladin) - used by Sand Worm, frame 7/15",
-                    "164": "Character 12 (Paladin) - used by Sand Worm, frame 8/15",
-                    "165": "Character 12 (Paladin) - used by Sand Worm, frame 9/15",
-                    "166": "Character 12 (Paladin) - used by Sand Worm, frame 10/15",
-                    "167": "Character 12 (Paladin) - used by Sand Worm, frame 11/15",
-                    "168": "Character 12 (Paladin) - used by Sand Worm, frame 12/15",
-                    "169": "Character 12 (Paladin) - used by Sand Worm, frame 13/15",
-                    "170": "Character 13 (Summoner) - used by Gigantoad, frame 1/15",
-                    "171": "Character 13 (Summoner) - used by Gigantoad, frame 2/15",
-                    "172": "Character 13 (Summoner) - used by Gigantoad, frame 3/15",
-                    "173": "Character 13 (Summoner) - used by Gigantoad, frame 4/15",
-                    "174": "Character 13 (Summoner) - used by Gigantoad, frame 5/15",
-                    "175": "Character 13 (Summoner) - used by Gigantoad, frame 6/15",
-                    "176": "Character 13 (Summoner) - used by Gigantoad, frame 7/15",
-                    "177": "Character 13 (Summoner) - used by Gigantoad, frame 8/15",
-                    "178": "Character 13 (Summoner) - used by Gigantoad, frame 9/15",
-                    "179": "Character 13 (Summoner) - used by Gigantoad, frame 10/15",
-                    "180": "Character 13 (Summoner) - used by Gigantoad, frame 11/15",
-                    "181": "Character 13 (Summoner) - used by Gigantoad, frame 12/15",
-                    "182": "Character 13 (Summoner) - used by Gigantoad, frame 13/15",
-                    "183": "Character 14 (None) - used by Vile Shell, frame 1/15",
-                    "184": "Character 14 (None) - used by Vile Shell, frame 13/15",
-                    "185": "Character 14 (None) - used by Vile Shell, frame 3/15",
-                    "186": "Character 14 (None) - used by Vile Shell, frame 4/15",
-                    "187": "Character 14 (None) - used by Vile Shell, frame 5/15",
-                    "188": "Character 14 (None) - used by Vile Shell, frame 6/15",
-                    "189": "Character 14 (None) - used by Vile Shell, frame 7/15",
-                    "190": "Character 14 (None) - used by Vile Shell, frame 8/15",
-                    "191": "Character 14 (None) - used by Vile Shell, frame 9/15",
-                    "192": "Character 14 (None) - used by Vile Shell, frame 10/15",
-                    "193": "Character 14 (None) - used by Vile Shell, frame 11/15",
-                    "194": "Character 15 - used by Zombie, frame 1/15",
-                    "195": "Character 15 - used by Zombie, frame 13/15",
-                    "196": "Character 15 - used by Zombie, frame 3/15",
-                    "197": "Character 15 - used by Zombie, frame 4/15",
-                    "198": "Character 15 - used by Zombie, frame 5/15",
-                    "199": "Character 15 - used by Zombie, frame 6/15",
-                    "200": "Character 15 - used by Zombie, frame 7/15",
-                    "201": "Character 15 - used by Zombie, frame 8/15",
-                    "202": "Character 15 - used by Zombie, frame 9/15",
-                    "203": "Character 15 - used by Zombie, frame 10/15",
-                    "204": "Character 15 - used by Zombie, frame 11/15",
-                    "205": "Character 15 - used by Zombie, frame 14/15",
-                    "206": "Character 15 - used by Zombie, frame 15/15",
-                    "207": "Character 16 - used by Killer Fish, frame 1/15",
-                    "208": "Character 16 - used by Killer Fish, frame 13/15",
-                    "209": "Character 16 - used by Killer Fish, frame 3/15",
-                    "210": "Character 16 - used by Killer Fish, frame 4/15",
-                    "211": "Character 16 - used by Killer Fish, frame 5/15",
-                    "212": "Character 16 - used by Killer Fish, frame 6/15",
-                    "213": "Character 16 - used by Killer Fish, frame 7/15",
-                    "214": "Character 16 - used by Killer Fish, frame 8/15",
-                    "215": "Character 16 - used by Killer Fish, frame 9/15",
-                    "216": "Character 16 - used by Killer Fish, frame 10/15",
-                    "217": "Character 16 - used by Killer Fish, frame 11/15",
-                    "218": "Character 17 - used by Blood Flower, frame 15/15",
-                    "219": "Character 17 - used by Blood Flower, frame 3/15",
-                    "220": "Character 17 - used by Blood Flower, frame 9/15",
-                    "221": "Character 17 - used by Blood Flower, frame 10/15",
-                    "222": "Character 17 - used by Blood Flower, frame 12/15",
-                    "223": "Character 17 - used by Blood Flower, frame 13/15",
-                    "224": "Character 18 - used by Toadgre, frame 1/15",
-                    "225": "Character 18 - used by Toadgre, frame 2/15"
+                    "0": "Character 0: D. Knight, frame 1/15",
+                    "1": "Character 0: D. Knight, frame 2/15",
+                    "2": "Character 0: D. Knight, frame 3/15",
+                    "3": "Character 0: D. Knight, frame 4/15",
+                    "4": "Character 0: D. Knight, frame 5/15",
+                    "5": "Character 0: D. Knight, frame 6/15",
+                    "6": "Character 0: D. Knight, frame 7/15",
+                    "7": "Character 0: D. Knight, frame 8/15",
+                    "8": "Character 0: D. Knight, frame 9/15",
+                    "9": "Character 0: D. Knight, frame 10/15",
+                    "10": "Character 0: D. Knight, frame 11/15",
+                    "11": "Character 0: D. Knight, frame 12/15",
+                    "12": "Character 0: D. Knight, frame 13/15",
+                    "13": "Character 0: D. Knight, frames 14,15/15; Character 1: Dragoon, frames 14,15/15 (and 16 other character groups)",
+                    "14": "Character 1: Dragoon, frame 1/15; Character 19, frame 1/15",
+                    "15": "Character 1: Dragoon, frame 2/15; Character 19, frame 2/15",
+                    "16": "Character 1: Dragoon, frame 3/15; Character 19, frame 3/15",
+                    "17": "Character 1: Dragoon, frame 4/15; Character 19, frame 4/15",
+                    "18": "Character 1: Dragoon, frame 5/15; Character 19, frame 5/15",
+                    "19": "Character 1: Dragoon, frame 6/15; Character 19, frame 6/15",
+                    "20": "Character 1: Dragoon, frame 7/15; Character 19, frame 7/15",
+                    "21": "Character 1: Dragoon, frame 8/15; Character 19, frame 8/15",
+                    "22": "Character 1: Dragoon, frame 9/15; Character 19, frame 9/15",
+                    "23": "Character 1: Dragoon, frame 10/15; Character 19, frame 10/15",
+                    "24": "Character 1: Dragoon, frame 11/15; Character 19, frame 11/15",
+                    "25": "Character 1: Dragoon, frame 12/15; Character 19, frame 12/15",
+                    "26": "Character 1: Dragoon, frame 13/15; Character 19, frame 13/15",
+                    "27": "Character 2: W. Mage, frame 1/15",
+                    "28": "Character 2: W. Mage, frame 2/15",
+                    "29": "Character 2: W. Mage, frame 3/15",
+                    "30": "Character 2: W. Mage, frame 4/15",
+                    "31": "Character 2: W. Mage, frame 5/15",
+                    "32": "Character 2: W. Mage, frame 6/15",
+                    "33": "Character 2: W. Mage, frame 7/15",
+                    "34": "Character 2: W. Mage, frame 8/15",
+                    "35": "Character 2: W. Mage, frame 9/15",
+                    "36": "Character 2: W. Mage, frame 10/15",
+                    "37": "Character 2: W. Mage, frame 11/15",
+                    "38": "Character 2: W. Mage, frame 12/15",
+                    "39": "Character 2: W. Mage, frame 13/15",
+                    "40": "Character 3: Summoner, frame 1/15",
+                    "41": "Character 3: Summoner, frame 2/15",
+                    "42": "Character 3: Summoner, frame 3/15",
+                    "43": "Character 3: Summoner, frame 4/15",
+                    "44": "Character 3: Summoner, frame 5/15",
+                    "45": "Character 3: Summoner, frame 6/15",
+                    "46": "Character 3: Summoner, frame 7/15",
+                    "47": "Character 3: Summoner, frame 8/15",
+                    "48": "Character 3: Summoner, frame 9/15",
+                    "49": "Character 3: Summoner, frame 10/15",
+                    "50": "Character 3: Summoner, frame 11/15",
+                    "51": "Character 3: Summoner, frame 12/15",
+                    "52": "Character 3: Summoner, frame 13/15",
+                    "53": "Character 4: Engineer, frame 1/15",
+                    "54": "Character 4: Engineer, frame 2/15",
+                    "55": "Character 4: Engineer, frame 3/15",
+                    "56": "Character 4: Engineer, frame 4/15",
+                    "57": "Character 4: Engineer, frame 5/15",
+                    "58": "Character 4: Engineer, frame 6/15",
+                    "59": "Character 4: Engineer, frame 7/15",
+                    "60": "Character 4: Engineer, frame 8/15",
+                    "61": "Character 4: Engineer, frame 9/15",
+                    "62": "Character 4: Engineer, frame 10/15",
+                    "63": "Character 4: Engineer, frame 11/15",
+                    "64": "Character 4: Engineer, frame 12/15",
+                    "65": "Character 4: Engineer, frame 13/15",
+                    "66": "Character 5: Sage, frame 1/15",
+                    "67": "Character 5: Sage, frame 2/15",
+                    "68": "Character 5: Sage, frame 3/15",
+                    "69": "Character 5: Sage, frame 4/15",
+                    "70": "Character 5: Sage, frame 5/15",
+                    "71": "Character 5: Sage, frame 6/15",
+                    "72": "Character 5: Sage, frame 7/15",
+                    "73": "Character 5: Sage, frame 8/15",
+                    "74": "Character 5: Sage, frame 9/15",
+                    "75": "Character 5: Sage, frame 10/15",
+                    "76": "Character 5: Sage, frame 11/15",
+                    "77": "Character 5: Sage, frame 12/15",
+                    "78": "Character 5: Sage, frame 13/15",
+                    "79": "Character 6: Prince, frame 1/15",
+                    "80": "Character 6: Prince, frame 2/15",
+                    "81": "Character 6: Prince, frame 3/15",
+                    "82": "Character 6: Prince, frame 4/15",
+                    "83": "Character 6: Prince, frame 5/15",
+                    "84": "Character 6: Prince, frame 6/15",
+                    "85": "Character 6: Prince, frame 7/15",
+                    "86": "Character 6: Prince, frame 8/15",
+                    "87": "Character 6: Prince, frame 9/15",
+                    "88": "Character 6: Prince, frame 10/15",
+                    "89": "Character 6: Prince, frame 11/15",
+                    "90": "Character 6: Prince, frame 12/15",
+                    "91": "Character 6: Prince, frame 13/15",
+                    "92": "Character 7: Monk, frame 1/15",
+                    "93": "Character 7: Monk, frame 2/15",
+                    "94": "Character 7: Monk, frame 3/15",
+                    "95": "Character 7: Monk, frame 4/15",
+                    "96": "Character 7: Monk, frame 5/15",
+                    "97": "Character 7: Monk, frame 6/15",
+                    "98": "Character 7: Monk, frame 7/15",
+                    "99": "Character 7: Monk, frame 8/15",
+                    "100": "Character 7: Monk, frame 9/15",
+                    "101": "Character 7: Monk, frame 10/15",
+                    "102": "Character 7: Monk, frame 11/15",
+                    "103": "Character 7: Monk, frame 12/15",
+                    "104": "Character 7: Monk, frame 13/15",
+                    "105": "Character 8: B. Mage, frame 1/15",
+                    "106": "Character 8: B. Mage, frame 2/15",
+                    "107": "Character 8: B. Mage, frame 3/15",
+                    "108": "Character 8: B. Mage, frame 4/15",
+                    "109": "Character 8: B. Mage, frame 5/15",
+                    "110": "Character 8: B. Mage, frame 6/15",
+                    "111": "Character 8: B. Mage, frame 7/15",
+                    "112": "Character 8: B. Mage, frame 8/15",
+                    "113": "Character 8: B. Mage, frame 9/15",
+                    "114": "Character 8: B. Mage, frame 10/15",
+                    "115": "Character 8: B. Mage, frame 11/15",
+                    "116": "Character 8: B. Mage, frame 12/15",
+                    "117": "Character 8: B. Mage, frame 13/15",
+                    "118": "Character 9: W. Mage, frame 1/15",
+                    "119": "Character 9: W. Mage, frame 2/15",
+                    "120": "Character 9: W. Mage, frame 3/15",
+                    "121": "Character 9: W. Mage, frame 4/15",
+                    "122": "Character 9: W. Mage, frame 5/15",
+                    "123": "Character 9: W. Mage, frame 6/15",
+                    "124": "Character 9: W. Mage, frame 7/15",
+                    "125": "Character 9: W. Mage, frame 8/15",
+                    "126": "Character 9: W. Mage, frame 9/15",
+                    "127": "Character 9: W. Mage, frame 10/15",
+                    "128": "Character 9: W. Mage, frame 11/15",
+                    "129": "Character 9: W. Mage, frame 12/15",
+                    "130": "Character 9: W. Mage, frame 13/15",
+                    "131": "Character 10: Ninja, frame 1/15",
+                    "132": "Character 10: Ninja, frame 2/15",
+                    "133": "Character 10: Ninja, frame 3/15",
+                    "134": "Character 10: Ninja, frame 4/15",
+                    "135": "Character 10: Ninja, frame 5/15",
+                    "136": "Character 10: Ninja, frame 6/15",
+                    "137": "Character 10: Ninja, frame 7/15",
+                    "138": "Character 10: Ninja, frame 8/15",
+                    "139": "Character 10: Ninja, frame 9/15",
+                    "140": "Character 10: Ninja, frame 10/15",
+                    "141": "Character 10: Ninja, frame 11/15",
+                    "142": "Character 10: Ninja, frame 12/15",
+                    "143": "Character 10: Ninja, frame 13/15",
+                    "144": "Character 11: Lunarian, frame 1/15",
+                    "145": "Character 11: Lunarian, frame 2/15",
+                    "146": "Character 11: Lunarian, frame 3/15",
+                    "147": "Character 11: Lunarian, frame 4/15",
+                    "148": "Character 11: Lunarian, frame 5/15",
+                    "149": "Character 11: Lunarian, frame 6/15",
+                    "150": "Character 11: Lunarian, frame 7/15",
+                    "151": "Character 11: Lunarian, frame 8/15",
+                    "152": "Character 11: Lunarian, frame 9/15",
+                    "153": "Character 11: Lunarian, frame 10/15",
+                    "154": "Character 11: Lunarian, frame 11/15",
+                    "155": "Character 11: Lunarian, frame 12/15",
+                    "156": "Character 11: Lunarian, frame 13/15",
+                    "157": "Character 12: Paladin, frame 1/15",
+                    "158": "Character 12: Paladin, frame 2/15",
+                    "159": "Character 12: Paladin, frame 3/15",
+                    "160": "Character 12: Paladin, frame 4/15",
+                    "161": "Character 12: Paladin, frame 5/15",
+                    "162": "Character 12: Paladin, frame 6/15",
+                    "163": "Character 12: Paladin, frame 7/15",
+                    "164": "Character 12: Paladin, frame 8/15",
+                    "165": "Character 12: Paladin, frame 9/15",
+                    "166": "Character 12: Paladin, frame 10/15",
+                    "167": "Character 12: Paladin, frame 11/15",
+                    "168": "Character 12: Paladin, frame 12/15",
+                    "169": "Character 12: Paladin, frame 13/15",
+                    "170": "Character 13: Summoner, frame 1/15",
+                    "171": "Character 13: Summoner, frame 2/15",
+                    "172": "Character 13: Summoner, frame 3/15",
+                    "173": "Character 13: Summoner, frame 4/15",
+                    "174": "Character 13: Summoner, frame 5/15",
+                    "175": "Character 13: Summoner, frame 6/15",
+                    "176": "Character 13: Summoner, frame 7/15",
+                    "177": "Character 13: Summoner, frame 8/15",
+                    "178": "Character 13: Summoner, frame 9/15",
+                    "179": "Character 13: Summoner, frame 10/15",
+                    "180": "Character 13: Summoner, frame 11/15",
+                    "181": "Character 13: Summoner, frame 12/15",
+                    "182": "Character 13: Summoner, frame 13/15",
+                    "183": "Character 14: Small, frame 1/15",
+                    "184": "Character 14: Small, frames 2,12,13/15",
+                    "185": "Character 14: Small, frame 3/15",
+                    "186": "Character 14: Small, frame 4/15",
+                    "187": "Character 14: Small, frame 5/15",
+                    "188": "Character 14: Small, frame 6/15",
+                    "189": "Character 14: Small, frame 7/15",
+                    "190": "Character 14: Small, frame 8/15",
+                    "191": "Character 14: Small, frame 9/15",
+                    "192": "Character 14: Small, frame 10/15",
+                    "193": "Character 14: Small, frame 11/15",
+                    "194": "Character 15: Frog, frame 1/15",
+                    "195": "Character 15: Frog, frames 2,12,13/15",
+                    "196": "Character 15: Frog, frame 3/15",
+                    "197": "Character 15: Frog, frame 4/15",
+                    "198": "Character 15: Frog, frame 5/15",
+                    "199": "Character 15: Frog, frame 6/15",
+                    "200": "Character 15: Frog, frame 7/15",
+                    "201": "Character 15: Frog, frame 8/15",
+                    "202": "Character 15: Frog, frame 9/15",
+                    "203": "Character 15: Frog, frame 10/15",
+                    "204": "Character 15: Frog, frame 11/15",
+                    "205": "Character 15: Frog, frame 14/15",
+                    "206": "Character 15: Frog, frame 15/15",
+                    "207": "Character 16: Pig, frame 1/15",
+                    "208": "Character 16: Pig, frames 2,12,13/15",
+                    "209": "Character 16: Pig, frame 3/15",
+                    "210": "Character 16: Pig, frame 4/15",
+                    "211": "Character 16: Pig, frame 5/15",
+                    "212": "Character 16: Pig, frame 6/15",
+                    "213": "Character 16: Pig, frame 7/15",
+                    "214": "Character 16: Pig, frame 8/15",
+                    "215": "Character 16: Pig, frame 9/15",
+                    "216": "Character 16: Pig, frame 10/15",
+                    "217": "Character 16: Pig, frame 11/15",
+                    "218": "Character 17: Golbez, frames 1,2,4,5,6,7,8,11,14,15/15",
+                    "219": "Character 17: Golbez, frame 3/15",
+                    "220": "Character 17: Golbez, frame 9/15",
+                    "221": "Character 17: Golbez, frame 10/15",
+                    "222": "Character 17: Golbez, frame 12/15",
+                    "223": "Character 17: Golbez, frame 13/15",
+                    "224": "Character 18: Anna, frame 1/15",
+                    "225": "Character 18: Anna, frame 2/15"
                 }
             }
         },
@@ -6893,26 +8911,715 @@
                 "length": 20,
                 "default": "Character Palette %i",
                 "string": {
-                    "0": "Character 0 (D. Knight) - used by Goblin",
-                    "1": "Character 1 (Dragoon) - used by Basilisk",
-                    "2": "Character 2 (W. Mage) - used by Helldiver",
-                    "3": "Character 3 (Summoner) - used by Floating Eyeball",
-                    "4": "Character 4 (Engineer) - used by Insectus",
-                    "5": "Character 5 (Sage) - used by Cave Bat",
-                    "6": "Character 6 (Prince) - used by Treant",
-                    "7": "Character 7 (Monk) - used by Sword Rat",
-                    "8": "Character 8 (B. Mage) - used by Tiny Mage",
-                    "9": "Character 9 (W. Mage) - used by Desert Sahagin",
-                    "10": "Character 10 (Ninja) - used by Flying Eyes",
-                    "11": "Character 11 (Lunarian) - used by Hundlegs",
-                    "12": "Character 12 (Paladin) - used by Sand Worm",
-                    "13": "Character 13 (Summoner) - used by Gigantoad",
-                    "14": "Character 14 (None) - used by Vile Shell",
-                    "15": "Character 15 - used by Zombie",
-                    "16": "Character 16 - used by Killer Fish",
-                    "17": "Character 17 - used by Blood Flower",
-                    "18": "Character 18 - used by Toadgre",
-                    "19": "Character 19 - used by Red Mousse"
+                    "0": "Character 0: D. Knight",
+                    "1": "Character 0: D. Knight",
+                    "2": "Character 0: D. Knight",
+                    "3": "Character 0: D. Knight",
+                    "4": "Character 0: D. Knight",
+                    "5": "Character 0: D. Knight",
+                    "6": "Character 0: D. Knight",
+                    "7": "Character 0: D. Knight",
+                    "8": "Character 0: D. Knight",
+                    "9": "Character 0: D. Knight",
+                    "10": "Character 0: D. Knight",
+                    "11": "Character 0: D. Knight",
+                    "12": "Character 0: D. Knight",
+                    "13": "18 character groups (blank/stock frame)",
+                    "14": "Character 19; Character 1: Dragoon",
+                    "15": "Character 19; Character 1: Dragoon",
+                    "16": "Character 19; Character 1: Dragoon",
+                    "17": "Character 19; Character 1: Dragoon",
+                    "18": "Character 19; Character 1: Dragoon",
+                    "19": "Character 19; Character 1: Dragoon",
+                    "20": "Character 19; Character 1: Dragoon",
+                    "21": "Character 19; Character 1: Dragoon",
+                    "22": "Character 19; Character 1: Dragoon",
+                    "23": "Character 19; Character 1: Dragoon",
+                    "24": "Character 19; Character 1: Dragoon",
+                    "25": "Character 19; Character 1: Dragoon",
+                    "26": "Character 19; Character 1: Dragoon",
+                    "27": "Character 2: W. Mage",
+                    "28": "Character 2: W. Mage",
+                    "29": "Character 2: W. Mage",
+                    "30": "Character 2: W. Mage",
+                    "31": "Character 2: W. Mage",
+                    "32": "Character 2: W. Mage",
+                    "33": "Character 2: W. Mage",
+                    "34": "Character 2: W. Mage",
+                    "35": "Character 2: W. Mage",
+                    "36": "Character 2: W. Mage",
+                    "37": "Character 2: W. Mage",
+                    "38": "Character 2: W. Mage",
+                    "39": "Character 2: W. Mage",
+                    "40": "Character 3: Summoner",
+                    "41": "Character 3: Summoner",
+                    "42": "Character 3: Summoner",
+                    "43": "Character 3: Summoner",
+                    "44": "Character 3: Summoner",
+                    "45": "Character 3: Summoner",
+                    "46": "Character 3: Summoner",
+                    "47": "Character 3: Summoner",
+                    "48": "Character 3: Summoner",
+                    "49": "Character 3: Summoner",
+                    "50": "Character 3: Summoner",
+                    "51": "Character 3: Summoner",
+                    "52": "Character 3: Summoner",
+                    "53": "Character 4: Engineer",
+                    "54": "Character 4: Engineer",
+                    "55": "Character 4: Engineer",
+                    "56": "Character 4: Engineer",
+                    "57": "Character 4: Engineer",
+                    "58": "Character 4: Engineer",
+                    "59": "Character 4: Engineer",
+                    "60": "Character 4: Engineer",
+                    "61": "Character 4: Engineer",
+                    "62": "Character 4: Engineer",
+                    "63": "Character 4: Engineer",
+                    "64": "Character 4: Engineer",
+                    "65": "Character 4: Engineer",
+                    "66": "Character 5: Sage",
+                    "67": "Character 5: Sage",
+                    "68": "Character 5: Sage",
+                    "69": "Character 5: Sage",
+                    "70": "Character 5: Sage",
+                    "71": "Character 5: Sage",
+                    "72": "Character 5: Sage",
+                    "73": "Character 5: Sage",
+                    "74": "Character 5: Sage",
+                    "75": "Character 5: Sage",
+                    "76": "Character 5: Sage",
+                    "77": "Character 5: Sage",
+                    "78": "Character 5: Sage",
+                    "79": "Character 6: Prince",
+                    "80": "Character 6: Prince",
+                    "81": "Character 6: Prince",
+                    "82": "Character 6: Prince",
+                    "83": "Character 6: Prince",
+                    "84": "Character 6: Prince",
+                    "85": "Character 6: Prince",
+                    "86": "Character 6: Prince",
+                    "87": "Character 6: Prince",
+                    "88": "Character 6: Prince",
+                    "89": "Character 6: Prince",
+                    "90": "Character 6: Prince",
+                    "91": "Character 6: Prince",
+                    "92": "Character 7: Monk",
+                    "93": "Character 7: Monk",
+                    "94": "Character 7: Monk",
+                    "95": "Character 7: Monk",
+                    "96": "Character 7: Monk",
+                    "97": "Character 7: Monk",
+                    "98": "Character 7: Monk",
+                    "99": "Character 7: Monk",
+                    "100": "Character 7: Monk",
+                    "101": "Character 7: Monk",
+                    "102": "Character 7: Monk",
+                    "103": "Character 7: Monk",
+                    "104": "Character 7: Monk",
+                    "105": "Character 8: B. Mage",
+                    "106": "Character 8: B. Mage",
+                    "107": "Character 8: B. Mage",
+                    "108": "Character 8: B. Mage",
+                    "109": "Character 8: B. Mage",
+                    "110": "Character 8: B. Mage",
+                    "111": "Character 8: B. Mage",
+                    "112": "Character 8: B. Mage",
+                    "113": "Character 8: B. Mage",
+                    "114": "Character 8: B. Mage",
+                    "115": "Character 8: B. Mage",
+                    "116": "Character 8: B. Mage",
+                    "117": "Character 8: B. Mage",
+                    "118": "Character 9: W. Mage",
+                    "119": "Character 9: W. Mage",
+                    "120": "Character 9: W. Mage",
+                    "121": "Character 9: W. Mage",
+                    "122": "Character 9: W. Mage",
+                    "123": "Character 9: W. Mage",
+                    "124": "Character 9: W. Mage",
+                    "125": "Character 9: W. Mage",
+                    "126": "Character 9: W. Mage",
+                    "127": "Character 9: W. Mage",
+                    "128": "Character 9: W. Mage",
+                    "129": "Character 9: W. Mage",
+                    "130": "Character 9: W. Mage",
+                    "131": "Character 10: Ninja",
+                    "132": "Character 10: Ninja",
+                    "133": "Character 10: Ninja",
+                    "134": "Character 10: Ninja",
+                    "135": "Character 10: Ninja",
+                    "136": "Character 10: Ninja",
+                    "137": "Character 10: Ninja",
+                    "138": "Character 10: Ninja",
+                    "139": "Character 10: Ninja",
+                    "140": "Character 10: Ninja",
+                    "141": "Character 10: Ninja",
+                    "142": "Character 10: Ninja",
+                    "143": "Character 10: Ninja",
+                    "144": "Character 11: Lunarian",
+                    "145": "Character 11: Lunarian",
+                    "146": "Character 11: Lunarian",
+                    "147": "Character 11: Lunarian",
+                    "148": "Character 11: Lunarian",
+                    "149": "Character 11: Lunarian",
+                    "150": "Character 11: Lunarian",
+                    "151": "Character 11: Lunarian",
+                    "152": "Character 11: Lunarian",
+                    "153": "Character 11: Lunarian",
+                    "154": "Character 11: Lunarian",
+                    "155": "Character 11: Lunarian",
+                    "156": "Character 11: Lunarian",
+                    "157": "Character 12: Paladin",
+                    "158": "Character 12: Paladin",
+                    "159": "Character 12: Paladin",
+                    "160": "Character 12: Paladin",
+                    "161": "Character 12: Paladin",
+                    "162": "Character 12: Paladin",
+                    "163": "Character 12: Paladin",
+                    "164": "Character 12: Paladin",
+                    "165": "Character 12: Paladin",
+                    "166": "Character 12: Paladin",
+                    "167": "Character 12: Paladin",
+                    "168": "Character 12: Paladin",
+                    "169": "Character 12: Paladin",
+                    "170": "Character 13: Summoner",
+                    "171": "Character 13: Summoner",
+                    "172": "Character 13: Summoner",
+                    "173": "Character 13: Summoner",
+                    "174": "Character 13: Summoner",
+                    "175": "Character 13: Summoner",
+                    "176": "Character 13: Summoner",
+                    "177": "Character 13: Summoner",
+                    "178": "Character 13: Summoner",
+                    "179": "Character 13: Summoner",
+                    "180": "Character 13: Summoner",
+                    "181": "Character 13: Summoner",
+                    "182": "Character 13: Summoner",
+                    "183": "Character 14: Small",
+                    "184": "Character 14: Small",
+                    "185": "Character 14: Small",
+                    "186": "Character 14: Small",
+                    "187": "Character 14: Small",
+                    "188": "Character 14: Small",
+                    "189": "Character 14: Small",
+                    "190": "Character 14: Small",
+                    "191": "Character 14: Small",
+                    "192": "Character 14: Small",
+                    "193": "Character 14: Small",
+                    "194": "Character 15: Frog",
+                    "195": "Character 15: Frog",
+                    "196": "Character 15: Frog",
+                    "197": "Character 15: Frog",
+                    "198": "Character 15: Frog",
+                    "199": "Character 15: Frog",
+                    "200": "Character 15: Frog",
+                    "201": "Character 15: Frog",
+                    "202": "Character 15: Frog",
+                    "203": "Character 15: Frog",
+                    "204": "Character 15: Frog",
+                    "205": "Character 15: Frog",
+                    "206": "Character 15: Frog",
+                    "207": "Character 16: Pig",
+                    "208": "Character 16: Pig",
+                    "209": "Character 16: Pig",
+                    "210": "Character 16: Pig",
+                    "211": "Character 16: Pig",
+                    "212": "Character 16: Pig",
+                    "213": "Character 16: Pig",
+                    "214": "Character 16: Pig",
+                    "215": "Character 16: Pig",
+                    "216": "Character 16: Pig",
+                    "217": "Character 16: Pig",
+                    "218": "1 character groups (blank/stock frame)",
+                    "219": "Character 17: Golbez",
+                    "220": "Character 17: Golbez",
+                    "221": "Character 17: Golbez",
+                    "222": "Character 17: Golbez",
+                    "223": "Character 17: Golbez",
+                    "224": "Character 18: Anna",
+                    "225": "Character 18: Anna"
+                }
+            }
+        },
+        "dialoguePortraitPointers": {
+            "type": "array",
+            "name": "Dialogue Portrait Pointers",
+            "range": "0x80F2D48-0x80F30CC",
+            "arrayLength": 225,
+            "assembly": {
+                "type": "data",
+                "length": 4,
+                "assembly": {
+                    "pointer": {
+                        "type": "property",
+                        "name": "Pointer",
+                        "begin": 0,
+                        "mask": "0x7FFFFFFF"
+                    }
+                }
+            }
+        },
+        "battlePortraitPointers": {
+            "type": "array",
+            "name": "Battle Portrait Pointers",
+            "range": "0x80F3100-0x80F324C",
+            "arrayLength": 83,
+            "assembly": {
+                "type": "data",
+                "length": 4,
+                "assembly": {
+                    "pointer": {
+                        "type": "property",
+                        "name": "Pointer",
+                        "begin": 0,
+                        "mask": "0x7FFFFFFF"
+                    }
+                }
+            }
+        },
+        "portraitGraphics": {
+            "type": "array",
+            "name": "Portraits",
+            "isFragmented": true,
+            "canRelocate": true,
+            "arrayLength": 82,
+            "assembly": {
+                "type": "graphics",
+                "name": "Portrait",
+                "format": [
+                    "linear4bpp",
+                    "tose-graphics",
+                    "gba-lzss"
+                ],
+                "align": 4,
+                "width": 4,
+                "height": 4,
+                "backColor": true,
+                "palette": "portraitPalettes"
+            },
+            "itemRanges": [
+                "0x264044-0x264240",
+                "0x264240-0x26443C",
+                "0x26443C-0x264638",
+                "0x264638-0x2647BC",
+                "0x2647BC-0x264928",
+                "0x264928-0x26499C",
+                "0x264B4C-0x264D6C",
+                "0x264D6C-0x264F8C",
+                "0x264F8C-0x2651AC",
+                "0x2651AC-0x265330",
+                "0x265330-0x26549C",
+                "0x26549C-0x265510",
+                "0x2656C0-0x2658E4",
+                "0x2658E4-0x265B08",
+                "0x265B08-0x265D24",
+                "0x265D24-0x265E6C",
+                "0x265E6C-0x265FD8",
+                "0x265FD8-0x26604C",
+                "0x2661FC-0x2663F8",
+                "0x2663F8-0x2665F4",
+                "0x2665F4-0x2667EC",
+                "0x2667EC-0x2668F4",
+                "0x2668F4-0x266A0C",
+                "0x266A0C-0x266A80",
+                "0x266C30-0x266E3C",
+                "0x266E3C-0x267048",
+                "0x267048-0x267250",
+                "0x267250-0x2673D4",
+                "0x2673D4-0x267540",
+                "0x267540-0x2675B4",
+                "0x267764-0x267980",
+                "0x267980-0x267B9C",
+                "0x267B9C-0x267DB4",
+                "0x267DB4-0x267F38",
+                "0x267F38-0x2680A4",
+                "0x2680A4-0x268118",
+                "0x2682C8-0x2684E0",
+                "0x2684E0-0x2686F8",
+                "0x2686F8-0x268910",
+                "0x268910-0x268A94",
+                "0x268A94-0x268C00",
+                "0x268C00-0x268C74",
+                "0x268E24-0x269038",
+                "0x269038-0x269248",
+                "0x269248-0x269458",
+                "0x269458-0x2695DC",
+                "0x2695DC-0x269748",
+                "0x269748-0x2697BC",
+                "0x26996C-0x269B30",
+                "0x269B30-0x269CF4",
+                "0x269CF4-0x269EB4",
+                "0x269EB4-0x269FBC",
+                "0x269FBC-0x26A0D4",
+                "0x26A0D4-0x26A148",
+                "0x26A2F8-0x26A4B8",
+                "0x26A4B8-0x26A674",
+                "0x26A674-0x26A82C",
+                "0x26A82C-0x26A934",
+                "0x26A934-0x26ABB4",
+                "0x26ABB4-0x26ADC0",
+                "0x26ADC0-0x26AFC8",
+                "0x26AFC8-0x26B1D0",
+                "0x26B1D0-0x26B354",
+                "0x26B354-0x26B4C0",
+                "0x26B4C0-0x26B534",
+                "0x26B6E4-0x26B8E0",
+                "0x26B8E0-0x26BADC",
+                "0x26BADC-0x26BCD8",
+                "0x26BCD8-0x26BE5C",
+                "0x26BE5C-0x26BFC8",
+                "0x26BFC8-0x26C03C",
+                "0x26C1EC-0x26C3F4",
+                "0x26C3F4-0x26C5FC",
+                "0x26C5FC-0x26C804",
+                "0x26C804-0x26C988",
+                "0x26C988-0x26CAF4",
+                "0x26CAF4-0x26CB68",
+                "0x26CD18-0x26CF24",
+                "0x26CF24-0x26D130",
+                "0x26D130-0x26D338",
+                "0x26D338-0x26D480",
+                "0x26D480-0x26D688"
+            ],
+            "itemPalettes": [
+                "portraitPalettes[0]",
+                "portraitPalettes[1]",
+                "portraitPalettes[2]",
+                "portraitPalettes[3]",
+                "portraitPalettes[4]",
+                "portraitPalettes[5]",
+                "portraitPalettes[6]",
+                "portraitPalettes[7]",
+                "portraitPalettes[8]",
+                "portraitPalettes[9]",
+                "portraitPalettes[10]",
+                "portraitPalettes[11]",
+                "portraitPalettes[12]",
+                "portraitPalettes[13]",
+                "portraitPalettes[14]",
+                "portraitPalettes[15]",
+                "portraitPalettes[16]",
+                "portraitPalettes[17]",
+                "portraitPalettes[18]",
+                "portraitPalettes[19]",
+                "portraitPalettes[20]",
+                "portraitPalettes[21]",
+                "portraitPalettes[22]",
+                "portraitPalettes[23]",
+                "portraitPalettes[24]",
+                "portraitPalettes[25]",
+                "portraitPalettes[26]",
+                "portraitPalettes[27]",
+                "portraitPalettes[28]",
+                "portraitPalettes[29]",
+                "portraitPalettes[30]",
+                "portraitPalettes[31]",
+                "portraitPalettes[32]",
+                "portraitPalettes[33]",
+                "portraitPalettes[34]",
+                "portraitPalettes[35]",
+                "portraitPalettes[36]",
+                "portraitPalettes[37]",
+                "portraitPalettes[38]",
+                "portraitPalettes[39]",
+                "portraitPalettes[40]",
+                "portraitPalettes[41]",
+                "portraitPalettes[42]",
+                "portraitPalettes[43]",
+                "portraitPalettes[44]",
+                "portraitPalettes[45]",
+                "portraitPalettes[46]",
+                "portraitPalettes[47]",
+                "portraitPalettes[48]",
+                "portraitPalettes[49]",
+                "portraitPalettes[50]",
+                "portraitPalettes[51]",
+                "portraitPalettes[52]",
+                "portraitPalettes[53]",
+                null,
+                null,
+                null,
+                null,
+                null,
+                "portraitPalettes[54]",
+                "portraitPalettes[55]",
+                "portraitPalettes[56]",
+                "portraitPalettes[57]",
+                "portraitPalettes[58]",
+                "portraitPalettes[59]",
+                "portraitPalettes[60]",
+                "portraitPalettes[61]",
+                "portraitPalettes[62]",
+                "portraitPalettes[63]",
+                "portraitPalettes[64]",
+                "portraitPalettes[65]",
+                "portraitPalettes[66]",
+                "portraitPalettes[67]",
+                "portraitPalettes[68]",
+                "portraitPalettes[69]",
+                "portraitPalettes[70]",
+                "portraitPalettes[71]",
+                null,
+                null,
+                null,
+                null,
+                null
+            ],
+            "stringTable": {
+                "name": "Portraits",
+                "length": 82,
+                "default": "Portrait %i",
+                "string": {
+                    "0": "Dialogue portrait set 1, expression 1/12",
+                    "1": "Dialogue portrait set 1, expression 2/12",
+                    "2": "Dialogue portrait set 1, expression 3/12",
+                    "3": "Dialogue portrait set 1, expression 4/12",
+                    "4": "Dialogue portrait set 1, expression 7/12",
+                    "5": "Dialogue portrait set 1, expression 10/12",
+                    "6": "Dialogue portrait set 2, expression 1/12",
+                    "7": "Dialogue portrait set 2, expression 2/12",
+                    "8": "Dialogue portrait set 2, expression 3/12",
+                    "9": "Dialogue portrait set 2, expression 4/12",
+                    "10": "Dialogue portrait set 2, expression 7/12",
+                    "11": "Dialogue portrait set 2, expression 10/12",
+                    "12": "Dialogue portrait set 3, expression 1/12",
+                    "13": "Dialogue portrait set 3, expression 2/12",
+                    "14": "Dialogue portrait set 3, expression 3/12",
+                    "15": "Dialogue portrait set 3, expression 4/12",
+                    "16": "Dialogue portrait set 3, expression 7/12",
+                    "17": "Dialogue portrait set 3, expression 10/12",
+                    "18": "Dialogue portrait set 4, expression 1/12",
+                    "19": "Dialogue portrait set 4, expression 2/12",
+                    "20": "Dialogue portrait set 4, expression 3/12",
+                    "21": "Dialogue portrait set 4, expression 4/12",
+                    "22": "Dialogue portrait set 4, expression 7/12",
+                    "23": "Dialogue portrait set 4, expression 10/12",
+                    "24": "Dialogue portrait set 5, expression 1/12",
+                    "25": "Dialogue portrait set 5, expression 2/12",
+                    "26": "Dialogue portrait set 5, expression 3/12",
+                    "27": "Dialogue portrait set 5, expression 4/12",
+                    "28": "Dialogue portrait set 5, expression 7/12",
+                    "29": "Dialogue portrait set 5, expression 10/12",
+                    "30": "Dialogue portrait set 6, expression 1/12",
+                    "31": "Dialogue portrait set 6, expression 2/12",
+                    "32": "Dialogue portrait set 6, expression 3/12",
+                    "33": "Dialogue portrait set 6, expression 4/12",
+                    "34": "Dialogue portrait set 6, expression 7/12",
+                    "35": "Dialogue portrait set 6, expression 10/12",
+                    "36": "Dialogue portrait set 7, expression 1/12",
+                    "37": "Dialogue portrait set 7, expression 2/12",
+                    "38": "Dialogue portrait set 7, expression 3/12",
+                    "39": "Dialogue portrait set 7, expression 4/12",
+                    "40": "Dialogue portrait set 7, expression 7/12",
+                    "41": "Dialogue portrait set 7, expression 10/12",
+                    "42": "Dialogue portrait set 8, expression 1/12",
+                    "43": "Dialogue portrait set 8, expression 2/12",
+                    "44": "Dialogue portrait set 8, expression 3/12",
+                    "45": "Dialogue portrait set 8, expression 4/12",
+                    "46": "Dialogue portrait set 8, expression 7/12",
+                    "47": "Dialogue portrait set 8, expression 10/12",
+                    "48": "Dialogue portrait set 9, expression 1/12",
+                    "49": "Dialogue portrait set 9, expression 2/12",
+                    "50": "Dialogue portrait set 9, expression 3/12",
+                    "51": "Dialogue portrait set 9, expression 4/12",
+                    "52": "Dialogue portrait set 9, expression 7/12",
+                    "53": "Dialogue portrait set 9, expression 10/12",
+                    "54": "Dialogue portrait set 10, expression 1/9",
+                    "55": "Dialogue portrait set 10, expression 2/9",
+                    "56": "Dialogue portrait set 10, expression 3/9",
+                    "57": "Dialogue portrait set 10, expression 4/9",
+                    "58": "Dialogue portrait set 10, expression 7/9",
+                    "59": "Battle portrait set 1, expression 1/12",
+                    "60": "Battle portrait set 1, expression 2/12",
+                    "61": "Battle portrait set 1, expression 3/12",
+                    "62": "Battle portrait set 1, expression 4/12",
+                    "63": "Battle portrait set 1, expression 7/12",
+                    "64": "Battle portrait set 1, expression 10/12",
+                    "65": "Battle portrait set 2, expression 1/12",
+                    "66": "Battle portrait set 2, expression 2/12",
+                    "67": "Battle portrait set 2, expression 3/12",
+                    "68": "Battle portrait set 2, expression 4/12",
+                    "69": "Battle portrait set 2, expression 7/12",
+                    "70": "Battle portrait set 2, expression 10/12",
+                    "71": "Battle portrait set 3, expression 1/12",
+                    "72": "Battle portrait set 3, expression 2/12",
+                    "73": "Battle portrait set 3, expression 3/12",
+                    "74": "Battle portrait set 3, expression 4/12",
+                    "75": "Battle portrait set 3, expression 7/12",
+                    "76": "Battle portrait set 3, expression 10/12",
+                    "77": "Battle portrait set 4, expression 1/9",
+                    "78": "Battle portrait set 4, expression 2/9",
+                    "79": "Battle portrait set 4, expression 3/9",
+                    "80": "Battle portrait set 4, expression 4/9",
+                    "81": "Battle portrait set 4, expression 7/9"
+                }
+            }
+        },
+        "portraitPalettes": {
+            "type": "array",
+            "name": "Portrait Palette",
+            "isFragmented": true,
+            "canRelocate": true,
+            "arrayLength": 72,
+            "assembly": {
+                "type": "assembly",
+                "name": "Portrait Palette",
+                "format": [
+                    "bgr555",
+                    "tose-palette"
+                ],
+                "align": 4
+            },
+            "itemRanges": [
+                "0x26499C-0x2649E4",
+                "0x2649E4-0x264A2C",
+                "0x264A2C-0x264A74",
+                "0x264A74-0x264ABC",
+                "0x264ABC-0x264B04",
+                "0x264B04-0x264B4C",
+                "0x265510-0x265558",
+                "0x265558-0x2655A0",
+                "0x2655A0-0x2655E8",
+                "0x2655E8-0x265630",
+                "0x265630-0x265678",
+                "0x265678-0x2656C0",
+                "0x26604C-0x266094",
+                "0x266094-0x2660DC",
+                "0x2660DC-0x266124",
+                "0x266124-0x26616C",
+                "0x26616C-0x2661B4",
+                "0x2661B4-0x2661FC",
+                "0x266A80-0x266AC8",
+                "0x266AC8-0x266B10",
+                "0x266B10-0x266B58",
+                "0x266B58-0x266BA0",
+                "0x266BA0-0x266BE8",
+                "0x266BE8-0x266C30",
+                "0x2675B4-0x2675FC",
+                "0x2675FC-0x267644",
+                "0x267644-0x26768C",
+                "0x26768C-0x2676D4",
+                "0x2676D4-0x26771C",
+                "0x26771C-0x267764",
+                "0x268118-0x268160",
+                "0x268160-0x2681A8",
+                "0x2681A8-0x2681F0",
+                "0x2681F0-0x268238",
+                "0x268238-0x268280",
+                "0x268280-0x2682C8",
+                "0x268C74-0x268CBC",
+                "0x268CBC-0x268D04",
+                "0x268D04-0x268D4C",
+                "0x268D4C-0x268D94",
+                "0x268D94-0x268DDC",
+                "0x268DDC-0x268E24",
+                "0x2697BC-0x269804",
+                "0x269804-0x26984C",
+                "0x26984C-0x269894",
+                "0x269894-0x2698DC",
+                "0x2698DC-0x269924",
+                "0x269924-0x26996C",
+                "0x26A148-0x26A190",
+                "0x26A190-0x26A1D8",
+                "0x26A1D8-0x26A220",
+                "0x26A220-0x26A268",
+                "0x26A268-0x26A2B0",
+                "0x26A2B0-0x26A2F8",
+                "0x26B534-0x26B57C",
+                "0x26B57C-0x26B5C4",
+                "0x26B5C4-0x26B60C",
+                "0x26B60C-0x26B654",
+                "0x26B654-0x26B69C",
+                "0x26B69C-0x26B6E4",
+                "0x26C03C-0x26C084",
+                "0x26C084-0x26C0CC",
+                "0x26C0CC-0x26C114",
+                "0x26C114-0x26C15C",
+                "0x26C15C-0x26C1A4",
+                "0x26C1A4-0x26C1EC",
+                "0x26CB68-0x26CBB0",
+                "0x26CBB0-0x26CBF8",
+                "0x26CBF8-0x26CC40",
+                "0x26CC40-0x26CC88",
+                "0x26CC88-0x26CCD0",
+                "0x26CCD0-0x26CD18"
+            ],
+            "stringTable": {
+                "name": "Portrait Palette",
+                "length": 72,
+                "default": "Portrait Palette %i",
+                "string": {
+                    "0": "Portrait palette 1",
+                    "1": "Portrait palette 2",
+                    "2": "Portrait palette 3",
+                    "3": "Portrait palette 4",
+                    "4": "Portrait palette 5",
+                    "5": "Portrait palette 6",
+                    "6": "Portrait palette 7",
+                    "7": "Portrait palette 8",
+                    "8": "Portrait palette 9",
+                    "9": "Portrait palette 10",
+                    "10": "Portrait palette 11",
+                    "11": "Portrait palette 12",
+                    "12": "Portrait palette 13",
+                    "13": "Portrait palette 14",
+                    "14": "Portrait palette 15",
+                    "15": "Portrait palette 16",
+                    "16": "Portrait palette 17",
+                    "17": "Portrait palette 18",
+                    "18": "Portrait palette 19",
+                    "19": "Portrait palette 20",
+                    "20": "Portrait palette 21",
+                    "21": "Portrait palette 22",
+                    "22": "Portrait palette 23",
+                    "23": "Portrait palette 24",
+                    "24": "Portrait palette 25",
+                    "25": "Portrait palette 26",
+                    "26": "Portrait palette 27",
+                    "27": "Portrait palette 28",
+                    "28": "Portrait palette 29",
+                    "29": "Portrait palette 30",
+                    "30": "Portrait palette 31",
+                    "31": "Portrait palette 32",
+                    "32": "Portrait palette 33",
+                    "33": "Portrait palette 34",
+                    "34": "Portrait palette 35",
+                    "35": "Portrait palette 36",
+                    "36": "Portrait palette 37",
+                    "37": "Portrait palette 38",
+                    "38": "Portrait palette 39",
+                    "39": "Portrait palette 40",
+                    "40": "Portrait palette 41",
+                    "41": "Portrait palette 42",
+                    "42": "Portrait palette 43",
+                    "43": "Portrait palette 44",
+                    "44": "Portrait palette 45",
+                    "45": "Portrait palette 46",
+                    "46": "Portrait palette 47",
+                    "47": "Portrait palette 48",
+                    "48": "Portrait palette 49",
+                    "49": "Portrait palette 50",
+                    "50": "Portrait palette 51",
+                    "51": "Portrait palette 52",
+                    "52": "Portrait palette 53",
+                    "53": "Portrait palette 54",
+                    "54": "Portrait palette 55",
+                    "55": "Portrait palette 56",
+                    "56": "Portrait palette 57",
+                    "57": "Portrait palette 58",
+                    "58": "Portrait palette 59",
+                    "59": "Portrait palette 60",
+                    "60": "Portrait palette 61",
+                    "61": "Portrait palette 62",
+                    "62": "Portrait palette 63",
+                    "63": "Portrait palette 64",
+                    "64": "Portrait palette 65",
+                    "65": "Portrait palette 66",
+                    "66": "Portrait palette 67",
+                    "67": "Portrait palette 68",
+                    "68": "Portrait palette 69",
+                    "69": "Portrait palette 70",
+                    "70": "Portrait palette 71",
+                    "71": "Portrait palette 72"
                 }
             }
         }
