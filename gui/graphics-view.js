@@ -1140,11 +1140,18 @@ const self = this;
     }
 
     paletteBitsForTile(t) {
+        const obj = this.object || this.cellsObject;
+        // per-tile palette bank straight out of a tile map (FF4 Advance's
+        // biggest monsters: 48-colour palette, bank chosen per tile)
+        if (obj && obj.tilePaletteCells && obj.tilePaletteBank) {
+            const perPalette = this.paletteView.colorsPerPalette || 16;
+            const bank = obj.tilePaletteBank(t);
+            if (bank) return bank * perPalette;
+        }
         const cells = this.attributeCellBits();
         if (!cells || !cells.length) return 0;
         const perPalette = this.paletteView.colorsPerPalette || 4;
         if (this.paletteView.palette.length < perPalette * 2) return 0;
-        const obj = this.object || this.cellsObject;
         const col = t % this.width, row = Math.floor(t / this.width);
         const cols = Math.ceil(this.width * this.tileWidth / (2 * this.tileWidth));
         const cell = Math.floor(row / 2) * cols + Math.floor(col / 2) +
@@ -1168,6 +1175,10 @@ const self = this;
         // looks like a bug. The row only says what painting will write.
         let p = (this.paletteView.p * this.paletteView.colorsPerPalette) << 16;
         if (this.attributeCellBits()) p = 0;
+        // same rule for a per-tile bank table: the table decides the row, so
+        // the panel's selected row must not shift it again
+        const cellsObj = this.object || this.cellsObject;
+        if (cellsObj && cellsObj.tilePaletteCells) p = 0;
         let tileCount;
         if (this.toolboxMode) {
 

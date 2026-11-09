@@ -256,9 +256,21 @@ Palettes**, each labelled with the monsters that use it, each displayed at the
 width and height from the monster size table, and each opening with its own
 palette in the Palette panel. Graphics are LZSS-compressed TOSE blocks of
 4bpp tiles, so painting re-compresses them and undo restores the original
-compressed bytes. The 22 biggest monsters (Zeromus EG, the Lunar espers) are
-drawn from a tile pool with a per-tile palette bank out of a 48-colour
-palette; they currently display using the first bank for every tile.
+compressed bytes.
+
+Big monsters are animated: the size table also says which frame comes next,
+so **Demon Wall's 11 frames** appear as *Demon Wall (frame 1/11) … (frame
+11/11)*, and Dark Bahamut, Rubicante, Leviathan, Asura, Elemental Lord and
+Lunar Ramuh have their extra frames named too. The 22 largest monsters
+(Zeromus EG, the nine Lunar espers and the esper slots) are built from a tile
+pool whose tile map picks a **palette bank per tile** out of a 48-colour
+palette; the layouts are under **Monster Tilemaps** and the app reads the bank
+straight from them, so Zeromus EG and the Lunar espers get their real colours
+and editing a layout recolours the sprite.
+
+Under **Character**, the 20 playable/enemy classes (Dark Knight, Dragoon,
+W. Mage, Summoner, …) each have 15 battle animation frames and their own
+palette, all editable.
 
 In the navigator, `Up`/`Down` move the selection between entries instead of
 scrolling; running off the end of a section expands the next one and steps into

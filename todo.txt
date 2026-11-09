@@ -4,6 +4,43 @@
 
 recently added
 --------------
+ * ff4 advance (u, gba): monsterSize bytes 0-1 are the NEXT FRAME of the same
+   sprite (slot = value - 32; below 32 it is a character group). Following the
+   links gives the real animations: Demon Wall cycles 191->327->...->336->191
+   (11 frames), Dark Bahamut runs 361->152->286, and Rubicante, Leviathan,
+   Asura, Elemental Lord and Lunar Ramuh each have a second frame in the
+   283-361 range. Most "Slot N" objects are frames of a named boss, and the
+   generator now labels them "Demon Wall (frame 4/11)"
+ * ff4 advance (u, gba): a shared block takes one size only, and the ROM
+   disagrees - slots 152 and 361 point at the same 48-tile block but call it
+   10x8 and 6x8, so 10x8 read past the end and looked jumbled. New ROMArray
+   key itemSizes ([[w,h] per item], applied before sizeFrom) fixes it
+ * ff4 advance (u, gba): the 22 biggest monsters (Zeromus EG, the nine Lunar
+   espers, esper slots 339-350) are tile pools placed by a TOSE layout whose
+   entries carry the palette BANK in bits 12-13 (NOT 10-11, which are always
+   clear) - that is why 22 palettes hold 48 colours. Without the banks Zeromus
+   EG was off-colour, Lunar Ramuh had yellow patches and Lunar Dragon's
+   neck/wing were wrong
+ * ff4 advance (u, gba): those layouts are monsterTilemaps, and the new
+   ROMArray key itemTilePalettes gives each pooled graphic tilePaletteCells
+   {path,index,at:12,stride:2,shift:12,mask:3}; ROMGraphics.tilePaletteBank
+   reads it live so editing a layout repaints the sprite
+ * ff4 advance (u, gba): character sprites were missing. 0x080F7B18-0x080F8018
+   is a second 320-pointer table: 20 groups of 16 = 15 animation frames (2x3
+   tiles) + the group's palette. The enemy "monsters" Dragoon, Bard, Monk,
+   Dark Knight, Girl and Dark Kain are exactly the records whose next frame is
+   below 32 (groups 1, 6, 7, 0, 3, 19). Now characterSpriteProperties /
+   characterGraphics (226 objects) / characterPalettes (20)
+ * ff4 advance (u, gba): slot 324 is the Mom Bomb boss form (confirmed against
+   ff4-gba-bosses.png); monster 164's own block is the smaller bomb frame
+ * ff4 advance (u, gba): OPEN - 61 orphan slots still read "slot N"; matching
+   rendered colours+size against the labelled components of
+   ff4-gba-summons.png / ff4-gba-bosses.png names them
+ * ff4 advance (u, gba): OPEN - the Demon Wall frames hold the right tiles in
+   an order that is not raster (only 66 of the sheet's 224 tiles match a block
+   tile exactly; the rip is a composite of the 11 frames)
+ * ff4 advance (u, gba): OPEN - the 15 frames per character group are not
+   composed into poses yet; the pose table has not been found
  * ff4 advance (u, gba): the 724-entry monsterGraphics pointerTable is really
    362 records of {palettePointer@0, graphicsPointer@4} - palette FIRST, the
    opposite order from FF5 Advance. Now modelled that way, with the graphics

@@ -827,6 +827,15 @@ function ROMGraphics(rom, definition, parent) {
     this.attributeCellsInvert = definition.attributeCellsInvert;
     applyAttributeRef(this, definition.attributeRef);
 
+    // per-TILE palette selection read live out of another assembly:
+    //   {"path": "monsterTilemaps", "index": 4, "stride": 2, "shift": 10, "mask": 3}
+    // FF4 Advance composes its biggest monsters out of a tile pool whose
+    // tile-map entries carry a palette BANK (bits 10-11) into a 48-colour
+    // palette, so which colours a tile shows is a property of the ROM's
+    // tile map, not of the graphics block. Reading it here (rather than
+    // baking the numbers) keeps the sprite in step when the map is edited.
+    this.tilePaletteCells = definition.tilePaletteCells;
+
     // A *window* shows (and edits) a slice of another assembly's bytes without
     // owning them. FF3 NES bosses and summons are assembled from a shared tile
     // pool, and exactly one assembly may own a byte (two assemblies over the
@@ -870,8 +879,36 @@ ROMGraphics.prototype.sourceAssembly = function() {
     return src || null;
 }
 
-ROMGraphics.prototype.windowLength = function() {
-    var tiles = this.window.tiles ||
+// Which palette bank tile `t` of this object uses, or null when the object
+// has no per-tile palette selection. Read live from the referenced assembly
+// so editing that table repaints the sprite (same contract as the FF3 NES
+// palette-cell table).
+ROMGraphics.prototype.tilePaletteBank = function(t) {
+    var ref = this.tilePaletteCells;
+    if (!ref || !ref.path || t < 0) return null;
+    var rom = this.rom || (this.parent && this.parent.rom);
+    if (!rom) return null;
+    if (!this._tpcFor || this._tpcFor !== ref.path + ':' + (ref.index || 0)) {
+        var src = rom.parsePath(ref.path, rom);
+        if (src && src.item) src = src.item(ref.index || 0);
+        if (!src || !src.data) return null;
+        // a TOSE layout puts its 16-bit entries after a 12-byte header
+        var at = isNumber(ref.at) ? ref.at : ((src.data.length % 2 === 0 && src.format) ? 0 : 0);
+        this._tpc = src;
+        this._tpcAt = isNumber(ref.at) ? ref.at : 0;
+        this._tpcFor = ref.path + ':' + (ref.index || 0);
+    }
+    var src = this._tpc;
+    var stride = ref.stride || 2;
+    var p = this._tpcAt + t * stride;
+    if (p + stride > src.data.length) return null;
+    var v = 0;
+    for (var i = stride - 1; i >= 0; i--) v = (v << 8) | src.data[p + i];  // little endian
+    var bank = (v >> (ref.shift || 0)) & (ref.mask || 1);
+    return bank;
+}
+
+ROMGraphics.prototype.windowLength = function() {    var tiles = this.window.tiles ||
                 Math.floor((this.window.length || 0) / 16);
     return tiles * 64;                    // decoded bytes (nes2bpp: 16 raw -> 64)
 }
@@ -1010,6 +1047,7 @@ Object.defineProperty(ROMGraphics.prototype, "definition", { get: function() {
     if (this.attributeRef) definition.attributeRef = this.attributeRef;
     if (isNumber(this.attributeCellsOffset)) definition.attributeCellsOffset = this.attributeCellsOffset;
     if (this.attributeCellsInvert) definition.attributeCellsInvert = true;
+    if (this.tilePaletteCells) definition.tilePaletteCells = this.tilePaletteCells;
 
     return definition;
 }});
@@ -1072,6 +1110,7 @@ Object.defineProperty(ROMTilemap.prototype, "definition", { get: function() {
     if (this.attributeRef) definition.attributeRef = this.attributeRef;
     if (isNumber(this.attributeCellsOffset)) definition.attributeCellsOffset = this.attributeCellsOffset;
     if (this.attributeCellsInvert) definition.attributeCellsInvert = true;
+    if (this.tilePaletteCells) definition.tilePaletteCells = this.tilePaletteCells;
     if (this.mirrorX) definition.mirrorX = true;
 
     return definition;
@@ -4068,6 +4107,17 @@ function ROMArray(rom, definition, parent) {
     // slot), and `invert` flips the bits (2F/A8BF: monster ids $80-$FF always
     // show the two palettes swapped).
     this.itemAttributes = definition.itemAttributes;
+
+    // per-item per-TILE palette selection, indexed by array item (FF4 Advance:
+    // the biggest monsters are composed from a tile pool whose tile map picks
+    // a palette bank per tile; see ROMGraphics.tilePaletteCells)
+    this.itemTilePalettes = definition.itemTilePalettes;
+
+    // per-item display size [width, height] in tiles, indexed by array item.
+    // Needed when one shared block is pointed at by records that disagree
+    // about the size (FF4 Advance: a 48-tile block is referenced both as 6x8
+    // and as 10x8, and 10x8 would read past the end of it).
+    this.itemSizes = definition.itemSizes;
 }
 
 /*
@@ -4170,6 +4220,8 @@ Object.defineProperty(ROMArray.prototype, "definition", { get: function() {
     if (this.sizeFrom) definition.sizeFrom = this.sizeFrom;
     if (this.itemPalettes) definition.itemPalettes = this.itemPalettes;
     if (this.itemAttributes) definition.itemAttributes = this.itemAttributes;
+    if (this.itemTilePalettes) definition.itemTilePalettes = this.itemTilePalettes;
+    if (this.itemSizes) definition.itemSizes = this.itemSizes;
 
     return definition;
 }});
@@ -4504,6 +4556,27 @@ ROMArray.prototype.disassemble = function(data) {
             } else {
                 applyAttributeRef(this.array[i], attr);
             }
+        }
+    }
+
+    // per-item display size, applied before sizeFrom so it wins: a block that
+    // several records share can only carry one size, and the definition has
+    // already worked out which one actually fits the data
+    if (this.itemSizes) {
+        for (var i = 0; i < this.array.length; i++) {
+            var sz = this.itemSizes[i];
+            if (!isArray(sz) || sz.length !== 2) continue;
+            this.array[i].width = Number(sz[0]) || this.array[i].width;
+            this.array[i].height = Number(sz[1]) || this.array[i].height;
+        }
+    }
+
+    // per-item per-tile palette banks (see itemTilePalettes in the constructor)
+    if (this.itemTilePalettes) {
+        for (var i = 0; i < this.array.length; i++) {
+            var tpc = this.itemTilePalettes[i];
+            if (tpc === undefined || tpc === null) continue;
+            this.array[i].tilePaletteCells = tpc;
         }
     }
 

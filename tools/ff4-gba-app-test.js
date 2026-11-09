@@ -154,6 +154,62 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
   })()`);
   check(tree.gfx&&tree.pal&&tree.props,'Battle section lists Monster Graphics, Monster Palettes and their properties');
 
+  // character sprites: 20 groups of 15 frames (2x3) with one palette each
+  const chars=await ev(c,sessionId,`(()=>{
+      const cg=rom.characterGraphics, cp=rom.characterPalettes, csp=rom.characterSpriteProperties;
+      const obj=cg.item(0);
+      romNavigator.selectObject(obj); propertyList.select(obj);
+      const view=propertyList.activeEditor;
+      const orig=Uint8Array.from(rom.data);
+      view.paintStart=view.graphics.slice(); view.color=4;
+      view.paintPixel(2,2); view.commitPaint();
+      const landed=obj.data[2*8+2];
+      while(rom.undoStack.length) rom.undo();
+      rom.assemble();
+      let diffs=0; for(let i=0;i<orig.length;i++) if(rom.data[i]!==orig[i]) diffs++;
+      return {frames:cg.arrayLength, pals:cp.arrayLength, groups:csp.arrayLength,
+              w:obj.width,h:obj.height, view:view&&view.constructor.name,
+              pal:view.paletteView.palette.length, landed, diffs,
+              label:rom.stringTable['characterGraphics'].string[obj.i].value};
+  })()`);
+  console.log('  characters:',JSON.stringify(chars));
+  check(chars.groups===20&&chars.pals===20,'20 character sprite groups, one palette each');
+  check(chars.frames>200&&chars.w===2&&chars.h===3,chars.frames+' character frames, 2x3 tiles each');
+  check(chars.view==='ROMGraphicsView'&&chars.pal===16,'a character frame opens in the graphics view with its group palette');
+  check(/Character 0/.test(chars.label),'character frames are labelled: '+chars.label);
+  check(chars.landed===4&&chars.diffs===0,'character frames paint and undo byte-exactly');
+
+  // the 22 tile-mapped monsters must read their palette bank per tile
+  const banks=await ev(c,sessionId,`(()=>{
+      const g=rom.monsterGraphicsProperties.item(268).graphicsPointer.target;   // Lunar Ramuh
+      const tm=g.tilePaletteCells && rom.parsePath(g.tilePaletteCells.path).item(g.tilePaletteCells.index);
+      romNavigator.selectObject(g); propertyList.select(g);
+      const view=propertyList.activeEditor;
+      const banks=[];
+      for(let t=0;t<g.width*g.height;t++) banks.push(g.tilePaletteBank(t));
+      const rows=new Set(banks).size;
+      return {has:!!tm, tiles:banks.length, distinct:rows,
+              pal:view.paletteView.palette.length,
+              want:Array.from({length:banks.length},(_,t)=>(tm.data[12+t*2]|(tm.data[12+t*2+1]<<8))>>10&3)};
+  })()`);
+  check(banks.has&&banks.tiles>0&&
+        JSON.stringify(Array.from({length:banks.tiles},(_,t)=>banks.want[t]))===JSON.stringify(banks.want),
+        'Lunar Ramuh reads its palette banks from the ROM tile map');
+  check(banks.distinct>1&&banks.pal===48,
+        'its 48-colour palette is used through '+banks.distinct+' banks, not just the first');
+
+  // animation chains must be named, not left as "Slot N"
+  const chains=await ev(c,sessionId,`(()=>{
+      const st=rom.stringTable['monsterGraphicsProperties'];
+      const dw=[191,327,336].map(m=>st.string[m].fString());
+      return {dw, bomb:st.string[324].fString(),
+              unnamed:Object.keys(st.string).filter(k=>st.string[k].fString().startsWith('slot ')).length};
+  })()`);
+  console.log('  chains:',JSON.stringify(chains));
+  check(/Demon Wall \(frame 1\/11\)/.test(chains.dw[0])&&/Demon Wall \(frame 11\/11\)/.test(chains.dw[2]),
+        'Demon Wall\'s 11-frame cycle is named by frame: '+chains.dw.join(' | '));
+  check(/Mom Bomb/.test(chains.bomb),'slot 324 is named Mom Bomb: '+chains.bomb);
+
   console.log(fails?`${fails} FAILURES`:'all FF4 GBA browser checks passed');
   process.exitCode=fails?1:0;
  } finally { ch.kill(); srv.kill(); }

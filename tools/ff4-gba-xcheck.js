@@ -25,7 +25,7 @@ const romPath=process.argv[3]||process.env.FF4G_ROM||'/storage/romhacking/ff-rom
 const def=JSON.parse(fs.readFileSync(defPath,'utf8'));
 const data=new Uint8Array(fs.readFileSync(romPath));
 const B=0x08000000;
-const PT=0x080F6FC8, SLOTS=362, SZ=0x080F8018, SZL=12;
+const PT=0x080F6FC8, SLOTS=362, SZ=0x080F8018, SZL=12, CHAR_TBL=0x080F7B18;
 const REGION=[0x0818857C,0x081DA7F8];
 
 let fails=0;
@@ -70,6 +70,41 @@ const check=(arr,tag)=>{
   }
 };
 check(mg,'gfx'); check(mp,'pal');
+const tm=rom.parsePath('monsterTilemaps');
+const cg=rom.parsePath('characterGraphics');
+const cp=rom.parsePath('characterPalettes');
+console.log(`extra arrays: ${tm.arrayLength} tilemaps, ${cg.arrayLength} character frames, ${cp.arrayLength} character palettes`);
+// the character/region arrays must not overlap each other either
+{
+    const own2=new Map();
+    const dup=[];
+    for(const [arr,tag] of [[cg,'chgfx'],[cp,'chpal'],[tm,'tmap']]){
+        for(let i=0;i<arr.arrayLength;i++){
+            const r=arr.item(i).range;
+            for(let p=r.begin;p<r.end;p++){
+                if(own2.has(p)) dup.push([tag,i,own2.get(p)]);
+                own2.set(p,tag+i);
+            }
+        }
+    }
+    dup.length?bad(`character/tilemap arrays overlap in ${dup.length} bytes: ${JSON.stringify(dup.slice(0,3))}`)
+              :ok(`character frames, character palettes and tilemaps also own their bytes once (${own2.size} bytes)`);
+    // every character pointer in the ROM table must resolve to an object
+    const csp=rom.parsePath('characterSpriteProperties');
+    let unres=0;
+    for(let g=0;g<csp.arrayLength;g++){
+        const it=csp.item(g);
+        for(let f=0;f<15;f++) if(!it['graphicsPointer'+f].target) unres++;
+        if(!it.palettePointer.target) unres++;
+    }
+    unres?bad(`${unres} character pointers do not resolve`):ok('all 320 character pointers resolve to an object');
+    // the frames a group uses must be the 15 art blocks that group points at
+    const g0=csp.item(0);
+    const want=[0,1,2].map(f=>buf.readUInt32LE(CHAR_TBL-B+0*64+f*4));
+    const got=[0,1,2].map(f=>g0['graphicsPointer'+f].target.range.begin+0x08000000);
+    JSON.stringify(want)===JSON.stringify(got)?ok('character group 0 frames map to the ROM table (2x3 tiles each)')
+        :bad(`character group 0 frames wrong: want ${want} got ${got}`);
+}
 const holes=[]; for(let p=0;p<owner.length;p++) if(owner[p]<0) holes.push(p+REGION[0]);
 if(overlaps.length) bad(`ownership: ${overlaps.length} overlapping bytes, e.g. ${JSON.stringify(overlaps.slice(0,3))}`);
 else ok(`no overlap: ${mg.arrayLength} graphics + ${mp.arrayLength} palette objects own ${owner.length} bytes`);
@@ -130,6 +165,27 @@ for(let m=0;m<SLOTS;m++){
 }
 mism.length?bad(`decode parity: ${mism.length} of ${cmp} slots differ, e.g. ${JSON.stringify(mism.slice(0,3))}`)
            :ok(`decode parity for all ${cmp} slots (pixels and palette colours)`);
+
+// ---- 4b. per-tile palette banks for the pooled (tile-mapped) monsters ----
+let bankErr=0, bankChecked=0, bankMismatch=[];
+for(let m=0;m<SLOTS;m++){
+  const tp=data[SZ-B+m*SZL+8]|(data[SZ-B+m*SZL+9]<<8)|(data[SZ-B+m*SZL+10]<<16)|(data[SZ-B+m*SZL+11]<<24);
+  if(!tp) continue;
+  const rec=props.item(m);
+  const g=rec.graphicsPointer.target;
+  if(!g.tilePaletteCells){ bankErr++; bankMismatch.push({m,why:'no tilePaletteCells'}); continue; }
+  const src=rom.parsePath(g.tilePaletteCells.path);
+  const tm=src.item(g.tilePaletteCells.index);
+  const w=data[SZ-B+m*SZL+3], h=data[SZ-B+m*SZL+4];
+  for(let t=0;t<w*h;t++){
+    const want=(tm.data[12+t*2]|(tm.data[12+t*2+1]<<8))>>12&3;
+    const got=g.tilePaletteBank(t);
+    bankChecked++;
+    if(want!==got){ bankErr++; if(bankMismatch.length<3) bankMismatch.push({m,t,want,got}); }
+  }
+}
+bankErr?bad(`tile palette banks: ${bankErr} of ${bankChecked} wrong ${JSON.stringify(bankMismatch)}`)
+       :ok(`per-tile palette banks match the ROM tile maps (${bankChecked} tiles)`);
 
 // ---- 4/5. sizes and palette pins -----------------------------------------
 let sizeErr=0, pinErr=0, sized=0, pinned=0;

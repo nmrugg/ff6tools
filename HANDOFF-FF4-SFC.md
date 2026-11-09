@@ -422,6 +422,58 @@ Screenshot trap: fragmented objects only exist once the array has been
 touched, so list `'monsterGraphics'` before `'monsterGraphics_15'` in
 `tools/app-shots.js`.
 
+**Animation chains live in `monsterSize` too.** Bytes 0-1 are a sprite id, and
+`id - 32` is **the next frame of the same sprite** (325 of 362 records simply
+point at themselves). Follow the links and the real animations fall out:
+Demon Wall cycles through 11 frames `191 -> 327 -> 328 -> ... -> 336 -> 191`,
+Dark Bahamut runs `361 -> 152 -> 286`, and Rubicante / Leviathan / Asura /
+Elemental Lord / Lunar Ramuh each have a second frame in the 283-361 range.
+That is what most of the "Slot N" objects are: **frames of a named boss**, not
+unnamed monsters. The generator walks the chains, roots each one at its first
+named member and labels every frame `Demon Wall (frame 4/11)`; `nextFrame` is
+an editable property on `monsterSize`. Values below 32 are *character* sprite
+groups (see below). 61 slots are still single-frame orphans - they are the
+summon/attack animation art (seven 18x12 frames, ten 16x14, the 48-colour
+esper set 339-350...); the reference sheets identify them but the names have
+not been baked in yet.
+
+**A shared block can only have one size, and the ROM disagrees.** Slots 152
+and 361 point at the same 48-tile block but call it 10x8 and 6x8; the 10x8
+record reads past the end and renders jumbled (the user's "Dark Bahamut, slot
+361 is jumbled"). New generic `ROMArray` key **`itemSizes`**: `[[w,h], ...]`
+per array item, applied before `sizeFrom` so it wins; the generator emits it
+only where the first-claiming record's size does not fit the data.
+
+**The 22 biggest monsters are tile pools with a per-TILE palette bank.**
+`monsterSize` bytes 8-11 point at a TOSE *layout* (mode 2: 12-byte header,
+then `w*h` u16 GBA tile entries) for exactly 22 records - Zeromus EG, the nine
+Lunar espers (260-269) and the esper slots 339-350. The tile indices in those
+maps are sequential, so the block really is a raster-ordered sheet; what the
+map adds is the **palette bank in bits 12-13** (0/1/2 - *not* bits 10-11,
+which are always clear). That is why 22 palettes hold 48 colours, and why
+without the banks Zeromus EG looked off-colour, Lunar Ramuh had yellow
+patches and Lunar Dragon's neck/wing were wrong. Those layouts are now
+`monsterTilemaps` (fragmented, `pointerObject` on `monsterSize.tilemapPointer`,
+itemRanges - they tile `0x081DA7F8-0x081DB654` exactly), and the new generic
+`ROMArray` key **`itemTilePalettes`** gives each pooled graphic a
+`tilePaletteCells` reference `{path, index, at: 12, stride: 2, shift: 12,
+mask: 3}`. `ROMGraphics.tilePaletteBank(t)` reads it live from the ROM, so
+editing a layout repaints the sprite, and `ROMGraphicsView.paletteBitsForTile`
+applies the bank while `updateTilemap` suppresses the palette panel's own row
+shift (same contract as the FF3 NES palette-cell table).
+
+**Character sprites were missing entirely.** `0x080F7B18-0x080F8018` is a
+second 320-pointer table: **20 groups of 16 pointers = 15 animation frames
+(2x3 tiles, 16x24 px) + the group's palette last**. These are the party/enemy
+-class sprites - the enemy "monsters" Dragoon, Bard, Monk, Dark Knight, Girl
+and Dark Kain (slots 202-206, 280) are exactly the records whose `nextFrame`
+is below 32, i.e. character groups 1, 6, 7, 0, 3 and 19. Modelled as
+`characterSpriteProperties` (20 records of 64 bytes: `graphicsPointer0..14` +
+`palettePointer`), `characterGraphics` (226 objects after de-duplication,
+2x3, `pointerObject` as a *list* of the 15 frame pointers) and
+`characterPalettes` (20), all under the Character section, labelled with the
+`characterTitle` strings (D. Knight, Dragoon, W. Mage, Summoner, ...).
+
 ---
 
 ## 8. Remaining work / ideas, in priority order
@@ -440,23 +492,29 @@ touched, so list `'monsterGraphics'` before `'monsterGraphics_15'` in
    blob model — same generator treatment needs a JP ROM (ask the user).
    Note the JP MomBomb arrangement (bossProps 13, 10×9) is probably the JP
    ROM's real map — verify with a JP ROM instead of the baked layout.
-2. **FF4 Advance GBA follow-ups** (`ff4/ff4u-gba.json`) — the flat model is
-   done (§7): 362 pointer records, 275 graphics + 271 palette objects, one
-   owner per byte, sizes and palette pins from the ROM, names from the ROM,
-   paintable and byte-exact-undoable. Still open, in order of value:
-   * **the 22 tilemap monsters** (ids 260-269, 339-350) draw from a pool with
-     a per-tile **palette bank** (bits 12-13 of the TOSE layout entry) out of
-     a 48-colour palette; the app currently shows them with bank 0 for every
-     tile, so Zeromus EG and the Lunar espers look monochrome. They want
-     assembled windows like `bossGraphics_*` (a `layout` from the layout
-     block, which is raster-order, plus per-tile palette offsets — the
-     FF3-NES `itemAttributes` machinery is the closest precedent) and
-     `ff4-battle.js drawMonsterGBA` needs the same bank per tile.
-   * **names for slots 283-361.** They are real art (seven 18×12 frames
-     sharing a palette, ten 16×14 sharing another, placeholders that reuse a
-     monster's block) but nothing in `monsterProperties`/`monsterName` covers
-     them, so they are labelled `Slot N (WxH)`. Find the table the summon /
-     attack-effect code uses to index them and name them properly.
+2. **FF4 Advance GBA follow-ups** (`ff4/ff4u-gba.json`) — round 2 done:
+   animation chains named by frame, per-tile palette banks for the 22 pooled
+   monsters, shared-block sizes, and the character sprite tables. Verified by
+   `ff4-gba-xcheck.js` (now also banks vs the ROM layouts, character
+   ownership/resolution) and `ff4-gba-app-test.js` (now also character
+   paint/undo, banks, chain labels). Still open, in order of value:
+   * **61 orphan slots still read `slot N`.** They are single-frame entries in
+     the 283-361 range — the summon/attack animation art (seven 18x12, ten
+     16x14, the 48-colour esper set 339-350, the small 5x6/6x6 esper frames).
+     Matching each slot's rendered colours and size against the labelled
+     components of the user's `ff4-gba-summons.png` / `ff4-gba-bosses.png`
+     sheets names every one (that is how slot 324 was confirmed to be the Mom
+     Bomb boss form, now in `ALIAS` in `tools/ff4-gba-names.py`). Bake the
+     rest in.
+   * **the Demon Wall frames look scattered.** Its 224-tile block holds the
+     right tiles (wall texture + face) but not in raster order, and only 66 of
+     the sheet's 224 tiles match a block tile exactly — the ripped sheet is a
+     composite of the 11 frames, so the per-frame arrangement is the game's
+     own and still undecoded. No other slot in 283-361 is known to be wrong.
+   * **character frames are not composed into poses.** Each group is 15
+     separate 2x3 blocks; the game assembles them (idle/walk/attack/cast/hit/
+     dead) with a pose table that has not been found. A `spriteSheet` per
+     group would make them read like the FF4 SNES `characterGraphics` items.
    * `monsterProperties` looks one record short (battle id 282 "Specter"
      exists; the array holds 282 records).
    * `ff4e-gba.json` (FF IV Advance Europe) has the same layout — run
