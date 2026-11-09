@@ -38,7 +38,7 @@ recently added
  * ff4 advance (u, gba): Golbez and Anna look thin because the ROM reuses
    blocks: Anna's frames 3-15 all point at the same block, Golbez's
    1,2,4,5,6,7,8,11,14,15 do too. Their names are not in characterTitle, so
-   CLASS_NAMES bakes 14 Small, 15 Frog, 16 Pig, 17 Golbez, 18 Anna
+   CLASS_NAMES bakes 14 Small, 15 Toad, 16 Pig, 17 Golbez, 18 Anna
  * ff4 advance (u, gba): PORTRAITS are ONE contiguous 321-pointer table at
    0x080F2D48 - what looked like two tables (225 + 83) is where a pointer-run
    scan stopped, and the 13 pointers between them belong to the same table.
@@ -55,7 +55,7 @@ recently added
    palette run of its own: it is ADULT RYDIA and reuses young Rydia's palettes
  * ff4 advance (u, gba): character sprite groups are named by the CHARACTER,
    not the job - "Cecil (D. Knight)" not "D. Knight" - using characterNames in
-   the same order as characterTitle, plus Small/Frog/Pig/Golbez/Anna/Dark Kain
+   the same order as characterTitle, plus Small/Toad/Pig/Golbez/Anna/Dark Kain
  * ff4 advance (u, gba): 60 of the 79 unnamed monster slots now named from
    ROM-internal signals alone: same size + same palette pointer as a named
    monster, or (for the tile-mapped Esper set) pairing orphan tile-mapped slots
@@ -64,12 +64,14 @@ recently added
    338 have no clue at all
  * ff4 advance (u, gba): naming follows the FF4 SNES def (ff2u-sfc.json) so
    both games read the same - Cecil (Dark Knight), Cecil (Paladin), Rydia
-   (Child), Rydia (Adult), Toad not Frog; palette dropdown entries use the
+   (Child), Rydia (Adult), Toad (the status form is Toad in both games; the
+   SNES def reserves Frog for the Troia story sprite); palette dropdown
+   entries use the
    SNES "N: Name" form. Group 12 is Cecil (Paladin), NOT Golbez - Golbez is
    its own class slot, group 17
  * ff4 advance (u, gba): slot identifications from the user, baked in ALIAS -
    288 Mist Dragon (mist), 299 Demon Wall (another form), 305/306 Chocobo
-   summon frames, 313/337/338 Sylph, 321 Pig, 322 Frog, 323 Tiny Mage, 325
+   summon frames, 313/337/338 Sylph, 321 Pig, 322 Toad, 323 Tiny Mage, 325
    Mist Dragon, 326 skeleton monster, 302 still unknown (part of a snake)
  * ff4 advance (u, gba): the ROM's "Elemental Lord" (193/194) is another form
    of Cagnazzo, so FORM_OF labels them "Elemental Lord (Cagnazzo form)" and

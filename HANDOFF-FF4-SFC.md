@@ -492,7 +492,7 @@ SNES Pig/Small/Toad choices - and single-class frames stay pinned.
 all point at one block too. Their distinct art is two frames each; the rest is
 the game reusing a stock block. Their class names are not in `characterTitle`
 (which stops at 15 entries and calls 14 "None"), so they are baked in
-`CLASS_NAMES`: 14 Small, 15 Frog, 16 Pig, 17 Golbez, 18 Anna.
+`CLASS_NAMES`: 14 Small, 15 Toad, 16 Pig, 17 Golbez, 18 Anna, 19 Dark Kain.
 
 **Portraits.** There is ONE contiguous pointer table at `0x080F2D48` with
 **321** entries — what looked like two tables (`0x080F2D48`/225 and
@@ -543,11 +543,17 @@ in parentheses. Palette dropdown entries use the SNES `N: Name` convention.
 
 **Slot identifications from the user, baked in `ALIAS`** (the derived rules
 could not settle these): 288 Mist Dragon (mist), 299 Demon Wall (another
-form), 305/306 Chocobo (summon frames), 313/337/338 Sylph, 321 Pig, 322 Frog,
+form), 305/306 Chocobo (summon frames), 313/337/338 Sylph, 321 Pig, 322 Toad,
 323 Tiny Mage, 325 Mist Dragon, 326 skeleton monster, and 302 is still a
-mystery ("part of a snake"). The ROM calls 193/194 **Elemental Lord**, which
-is another form of **Cagnazzo**, so `FORM_OF` labels them
-`Elemental Lord (Cagnazzo form)` and their extra frames (289/290) read
+mystery ("part of a snake"). **Toad, not Frog.** The status form is called **Toad** in both games, so slot
+322 and character group 15 use the same word. That matches the SNES def,
+which reserves *Frog* for the story sprite in Troia (`mapSpriteGraphics`
+"Frog", `mapExit` "Troia Castle (Frog 1..3)") and uses **Toad** for the
+status everywhere (`attackElementStatus` "Toad" / "Remove Toad",
+`monsterAction` "Toad", `TinyToad`, `CaveToad`, `ToadLady`). Keep that split:
+*Toad* = the status, *Frog* = the Troia NPC. The ROM calls 193/194
+**Elemental Lord**, which is another form of **Cagnazzo**, so `FORM_OF` labels
+them `Elemental Lord (Cagnazzo form)` and their extra frames (289/290) read
 `Cagnazzo (extra frame)`.
 
 ---

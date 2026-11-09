@@ -82,7 +82,9 @@ ALIAS = {
     306: 'Chocobo (summon frame)',
     313: 'Sylph',
     321: 'Pig',
-    322: 'Frog',
+    # the FF4 SNES definition calls this status form "Toad", so use that word
+    # here too - it is the same form as character group 15
+    322: 'Toad',
     323: 'Tiny Mage',
     325: 'Mist Dragon',
     326: 'skeleton monster',
