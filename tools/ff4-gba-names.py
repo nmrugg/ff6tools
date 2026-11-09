@@ -68,13 +68,31 @@ NAME_N    = 283             # monsterName table length in the definition
 TITLE_BASE = 0x0C9B         # characterTitle: text[%i+0x0C9B]
 TITLE_N   = 15
 
-# Slots the ROM tables leave unnamed but that can be identified.  324 is the
-# big Mom Bomb flower from the boss sheet (the game reaches it as a separate
-# animation slot; monster 164's own block is the smaller bomb frame), which
-# the user confirmed against ff4-gba-bosses.png.
+# Slots the ROM tables leave unnamed but that are identified - either by
+# matching size and palette pointer against a named monster (see
+# name_extra_frames) or by the user reading them against the reference art.
+# 324 is the big Mom Bomb flower from ff4-gba-bosses.png (the game reaches it
+# as a separate animation slot; monster 164's own block is the smaller bomb
+# frame).
 ALIAS = {
+    288: 'Mist Dragon (mist)',
+    299: 'Demon Wall (another form)',
+    302: 'slot 302 (part of a snake?)',
+    305: 'Chocobo (summon frame)',
+    306: 'Chocobo (summon frame)',
+    313: 'Sylph',
+    321: 'Pig',
+    322: 'Frog',
+    323: 'Tiny Mage',
+    325: 'Mist Dragon',
+    326: 'skeleton monster',
     324: 'Mom Bomb (boss form)',
+    337: 'Sylph',
+    338: 'Sylph',
 }
+# The ROM calls 193/194 "Elemental Lord"; that sprite is another form of
+# Cagnazzo, so say so rather than leaving the two names unrelated.
+FORM_OF = {193: 'Cagnazzo', 194: 'Cagnazzo'}
 
 
 def lzss(rom, p):
@@ -285,7 +303,12 @@ def main():
 
     def slot_label(m):
         o = owner.get(m, m)
-        base = name_at(o) or ALIAS.get(m) or EXTRA.get(m) or EXTRA.get(o) or 'slot %d' % o
+        # a hand-identified slot wins over the derived guess, and a ROM name
+        # that is really an alternate form of another monster says so
+        base = (ALIAS.get(m) or ALIAS.get(o)
+                or (('%s (%s form)' % (name_at(o), FORM_OF[o]))
+                    if o in FORM_OF and name_at(o) else None)
+                or name_at(o) or EXTRA.get(m) or EXTRA.get(o) or 'slot %d' % o)
         if chain_len.get(m, 1) > 1:
             return '%s (frame %d/%d)' % (base, frame[m], chain_len[m])
         return base
@@ -434,21 +457,34 @@ def main():
     # they exist and from the game otherwise (14-18 are the transformed forms
     # and the two non-party sprites that appear in battle)
     # The sprite groups are indexed by class, but a job name is much less
-    # useful in the tree than the character who uses it: characterTitle gives
-    # the job (D. Knight, Dragoon, W. Mage ...) and characterNames the party
-    # in the same order, so show "Cecil (D. Knight)". 13-19 are the forms and
+    # useful in the tree than the character who uses it. characterTitle gives
+    # the job (D. Knight, Dragoon, W. Mage ...) and characterNames the party in
+    # the same order. Names follow the FF4 SNES definition (ff2u-sfc.json) so
+    # the two games read the same: "Cecil (Dark Knight)", "Cecil (Paladin)",
+    # "Rydia (Child)", "Rydia (Adult)". 14-19 are the status forms and the
     # non-party sprites that characterTitle does not name.
-    CLASS_NAMES = {13: 'Rydia (older)', 14: 'Small', 15: 'Frog', 16: 'Pig',
-                   17: 'Golbez', 18: 'Anna', 19: 'Dark Kain'}
+    CLASS_NAMES = {
+        0: 'Cecil (Dark Knight)', 1: 'Kain', 2: 'Rosa', 3: 'Rydia (Child)',
+        4: 'Cid', 5: 'Tellah', 6: 'Edward', 7: 'Yang', 8: 'Palom', 9: 'Porom',
+        10: 'Edge', 11: 'FuSoYa', 12: 'Cecil (Paladin)', 13: 'Rydia (Adult)',
+        14: 'Small', 15: 'Toad', 16: 'Pig', 17: 'Golbez', 18: 'Anna',
+        19: 'Dark Kain',
+    }
     charnames = [decode_text(text_at(rom, 0x00F4 + i), tab) for i in range(13)]
-    class_label = {}
+    class_name, class_label = {}, {}
     for g in range(CHAR_GROUPS):
         job = titles[g] if g < len(titles) and titles[g] and titles[g] != 'None' else None
         who = CLASS_NAMES.get(g) or (charnames[g] if g < len(charnames) else None)
-        if who and job and job.split()[0].rstrip('.') not in who:
-            label = 'Character %d: %s (%s)' % (g, who, job)
-        else:
-            label = 'Character %d: %s' % (g, who or job or 'class %d' % g)
+        who = who or job or 'class %d' % g
+        class_name[g] = who
+        # only spell out the job when the name does not already carry it
+        # ("Cecil (Dark Knight)" needs no "[D. Knight]")
+        label = 'Character %d: %s' % (g, who)
+        # spell out the job only when the name does not already carry a form
+        # in parentheses ("Cecil (Dark Knight)" needs no "[D. Knight]")
+        if job and '(' not in who and \
+                job.replace('.', '').lower() not in who.replace('.', '').lower():
+            label += ' [%s]' % job
         extra = ', '.join(dict.fromkeys(users.get(g, [])))
         if extra:
             label += ' - also used by %s' % extra
@@ -515,8 +551,9 @@ def main():
     # choices) and default to the first.
     for i, uses in frames_of.items():
         groups = sorted({g for g, _ in uses})
+        # dropdown labels follow the FF4 SNES convention: "N: Name"
         pin = lambda g: {'path': 'characterPalettes[%d]' % cp_index[cpal[g]],
-                         'name': class_label[g]}
+                         'name': '%d: %s' % (g, class_name[g])}
         char_pins[i] = pin(groups[0]) if len(groups) == 1 else \
             [pin(g) for g in groups] + [{'path': 'characterPalettes'}]
 
@@ -552,12 +589,15 @@ def main():
     # game reuses young Rydia's palettes
     PORT_REUSE = {14: 4}
     port_gfx, port_pal, port_label = [], [], []
+    port_pal_at = {}          # palette pointer -> (set, expression)
     i = 0
     while i < len(runs):
         k, run = runs[i]
         if k != 'gfx':
             i += 1; continue
         pals = runs[i + 1][1] if i + 1 < len(runs) and runs[i + 1][0] == 'pal' else []
+        for j, p in enumerate(pals):
+            port_pal_at.setdefault(p, (set_of_run[i], j + 1))
         if not pals and set_of_run[i] in PORT_REUSE:
             j = next((x for x in runs and range(len(runs))
                       if runs[x][0] == 'gfx' and set_of_run.get(x) == PORT_REUSE[set_of_run[i]]), None)
@@ -582,10 +622,12 @@ def main():
     port_p_ranges = ['0x%X-0x%X' % (a - GBA, pends[a] - GBA) for a in pall]
     port_pins = [None] * len(pg_index)
     # The sets follow the ROM's own character order (set 10 is Porom, which is
-    # characterNames[9]); the trailing 9-graphic set is adult Rydia.
-    PORT_SET_NAMES = {(k + 1): charnames[k]
-                      for k in range(min(13, len(charnames))) if charnames[k]}
-    PORT_SET_NAMES[14] = 'Rydia (older)'
+    # characterNames[9]); the trailing 9-graphic set is adult Rydia.  Names
+    # match the FF4 SNES definition: "Rydia (Child)" / "Rydia (Adult)".
+    PORT_SET_NAMES = {1: 'Cecil (Dark Knight)', 2: 'Kain', 3: 'Rosa',
+                      4: 'Rydia (Child)', 5: 'Cid', 6: 'Tellah', 7: 'Edward',
+                      8: 'Yang', 9: 'Palom', 10: 'Porom', 11: 'Edge',
+                      12: 'FuSoYa', 13: 'Golbez', 14: 'Rydia (Adult)'}
     port_labels, port_plabels = {}, {}
     for n, (a, pa) in enumerate(zip(port_gfx, port_pal)):
         if pa is not None:
@@ -597,7 +639,14 @@ def main():
         if pg_index[a] not in port_labels:
             port_labels[pg_index[a]] = lab
     for i, a in enumerate(pall):
-        port_plabels[pp_index[a]] = 'Portrait palette %d' % (i + 1)
+        where = port_pal_at.get(a)
+        if where:
+            setno_, expr = where
+            who = PORT_SET_NAMES.get(setno_)
+            port_plabels[pp_index[a]] = '%d: %s, expression %d' % (
+                i + 1, who or 'set %d' % setno_, expr)
+        else:
+            port_plabels[pp_index[a]] = 'Portrait palette %d' % (i + 1)
 
     # ---- the assemblies ----------------------------------------------------
     asm = defj['assembly']

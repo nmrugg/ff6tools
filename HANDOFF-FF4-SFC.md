@@ -529,6 +529,27 @@ overlap instead of inventing a name: `slot 325 (same size as Bahamut, Dark
 Bahamut, Lunar Bahamut)`. Only 4 remain with no clue at all (299, 313, 337,
 338).
 
+**Naming follows the FF4 SNES definition** (`ff4/ff2u-sfc.json`) wherever the
+two games describe the same thing, so the tree reads consistently:
+`Cecil (Dark Knight)`, `Cecil (Paladin)`, `Rydia (Child)`, `Rydia (Adult)`,
+`Kain`, `Rosa`, `Cid`, `Tellah`, `Edward`, `Yang`, `Palom`, `Porom`, `Edge`,
+`FuSoYa`, `Golbez`, `Anna`, `Small`, `Toad`, `Pig`. Group 12 is **Cecil
+(Paladin)**, not Golbez — Golbez is group 17 (its own class slot), which is
+what the user confirmed. The ROM's `characterTitle` gives the job (D. Knight,
+Dragoon, W. Mage, Summoner, Engineer, Sage, Prince, Monk, B. Mage, Ninja,
+Lunarian, Paladin) and `characterNames` the party in the same order, so the
+job is appended in brackets only when the name does not already carry a form
+in parentheses. Palette dropdown entries use the SNES `N: Name` convention.
+
+**Slot identifications from the user, baked in `ALIAS`** (the derived rules
+could not settle these): 288 Mist Dragon (mist), 299 Demon Wall (another
+form), 305/306 Chocobo (summon frames), 313/337/338 Sylph, 321 Pig, 322 Frog,
+323 Tiny Mage, 325 Mist Dragon, 326 skeleton monster, and 302 is still a
+mystery ("part of a snake"). The ROM calls 193/194 **Elemental Lord**, which
+is another form of **Cagnazzo**, so `FORM_OF` labels them
+`Elemental Lord (Cagnazzo form)` and their extra frames (289/290) read
+`Cagnazzo (extra frame)`.
+
 ---
 
 ## 8. Remaining work / ideas, in priority order
@@ -553,9 +574,9 @@ Bahamut, Lunar Bahamut)`. Only 4 remain with no clue at all (299, 313, 337,
    `ff4-gba-xcheck.js` (now also banks vs the ROM layouts, character
    ownership/resolution) and `ff4-gba-app-test.js` (now also character
    paint/undo, banks, chain labels). Still open, in order of value:
-   * **4 monster slots are still unnamed** (299 16x15, 313/337/338 2x6) and a
-     dozen more only say which monsters they overlap in size/palette. The
-     reference sheets can settle the rest.
+   * **only 4 monster slots are still unnamed**: 283/284/285 (they share the
+     Goblin/Imp/Melt Bomb block, so they are placeholders) and 302, which the
+     user could not place either ("part of a snake").
    * **portrait art the ROM does not reference from these tables**: the user
      expects a single Golbez portrait, Namingway, and fat chocobo. The 321-entry
      table has no such entries, so they live somewhere else (namingway is a

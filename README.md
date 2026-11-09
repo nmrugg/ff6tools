@@ -268,12 +268,13 @@ palette; the layouts are under **Monster Tilemaps** and the app reads the bank
 straight from them, so Zeromus EG and the Lunar espers get their real colours
 and editing a layout recolours the sprite.
 
-Under **Character**, the 20 playable/enemy classes (D. Knight, Dragoon,
-W. Mage, Summoner, Engineer, Sage, Prince, Monk, B. Mage, Ninja, Lunarian,
-Paladin, Small, Frog, Pig, Golbez, Anna, …) each have 15 battle animation
-frames and their own palette, all editable. Frames are not all the same
-shape: standing poses are 2×3 tiles, the death pose (frame 10) lies down at
-3×2, and the wider poses (frames 11, 14, 15) are 3×3. A frame shared by
+Under **Character**, the playable and enemy classes are named the same way as
+in the SNES version — Cecil (Dark Knight), Kain, Rosa, Rydia (Child), Cid,
+Tellah, Edward, Yang, Palom, Porom, Edge, FuSoYa, Cecil (Paladin),
+Rydia (Adult), Small, Toad, Pig, Golbez, Anna, Dark Kain — each with 15 battle
+animation frames and their own palette, all editable. Frames are not all the
+same shape: standing poses are 2×3 tiles, the death pose (frame 10) lies down
+at 3×2, and the wider poses (frames 11, 14, 15) are 3×3. A frame shared by
 several classes lists each class's palette in the Palette dropdown.
 
 **Portraits** are also editable: one table of 12 expressions per party member
