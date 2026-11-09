@@ -39,12 +39,33 @@ recently added
    blocks: Anna's frames 3-15 all point at the same block, Golbez's
    1,2,4,5,6,7,8,11,14,15 do too. Their names are not in characterTitle, so
    CLASS_NAMES bakes 14 Small, 15 Frog, 16 Pig, 17 Golbez, 18 Anna
- * ff4 advance (u, gba): portraits found - two more pointer tables
-   (0x080F2D48, 225 entries; 0x080F3100, 83). The pattern is 12 graphics then
-   12 palettes = one set of expressions per character. Each block is 16 tiles
-   (4x4, 32x32 px) with a 32-colour palette, and colour 0 is OPAQUE (it is the
-   backdrop of the face). Now portraitGraphics (82) / portraitPalettes (72)
-   plus the two pointer tables
+ * ff4 advance (u, gba): PORTRAITS are ONE contiguous 321-pointer table at
+   0x080F2D48 - what looked like two tables (225 + 83) is where a pointer-run
+   scan stopped, and the 13 pointers between them belong to the same table.
+   Pairing each half on its own left the 10th set (Porom) with no palette run,
+   so it fell back to the first palette - that was the bad-palette report
+ * ff4 advance (u, gba): portrait pattern is 12 graphics then 12 palettes per
+   character (13 complete sets + a trailing 9-graphic set). Blocks are 16 tiles
+   (4x4, 32x32) with a 32-COLOUR palette, and colour 0 is the flat backdrop
+   behind the face so it is TRANSPARENT (blue/red/black depending on the set)
+ * ff4 advance (u, gba): portrait sets follow the ROM's own character order -
+   set 10 is Porom = characterNames[9] - so they are named Cecil, Kain, Rosa,
+   Rydia, Cid, Tellah, Edward, Yang, Palom, Porom, Edge, FuSoYa, Golbez. Each
+   set has 12 expressions but only 6 distinct blocks. The trailing set has no
+   palette run of its own: it is ADULT RYDIA and reuses young Rydia's palettes
+ * ff4 advance (u, gba): character sprite groups are named by the CHARACTER,
+   not the job - "Cecil (D. Knight)" not "D. Knight" - using characterNames in
+   the same order as characterTitle, plus Small/Frog/Pig/Golbez/Anna/Dark Kain
+ * ff4 advance (u, gba): 60 of the 79 unnamed monster slots now named from
+   ROM-internal signals alone: same size + same palette pointer as a named
+   monster, or (for the tile-mapped Esper set) pairing orphan tile-mapped slots
+   with named tile-mapped slots by size in table order - confirmed by the
+   animation chain already linking slot 348 to Lunar Ramuh. Only 299, 313, 337,
+   338 have no clue at all
+ * ff4 advance (u, gba): worldPalette bug - worldGraphics carried the whole
+   array as its palette, so selecting a world graphic always opened palette 0.
+   Each object is now pinned to the palette of the worldProperties record that
+   points at it
  * ff4 advance (u, gba): character sprites were missing. 0x080F7B18-0x080F8018
    is a second 320-pointer table: 20 groups of 16 = 15 animation frames (2x3
    tiles) + the group's palette. The enemy "monsters" Dragoon, Bard, Monk,

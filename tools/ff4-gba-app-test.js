@@ -265,15 +265,56 @@ const check=(cond,msg)=>{console.log((cond?'  ok  ':'  FAIL')+' '+msg);if(!cond)
               back:obj.backColor, palCount:v.paletteView.palette.length,
               pin:obj.palette, landed, diffs,
               label:rom.stringTable['portraitGraphics'].string[obj.i].value,
-              d1:rom.dialoguePortraitPointers.arrayLength, d2:rom.battlePortraitPointers.arrayLength};
+              ptrs:rom.portraitPointers.arrayLength};
   })()`);
   console.log('  portraits:',JSON.stringify(port));
-  check(port.n>60&&port.pals>50&&port.d1===225&&port.d2===83,
+  check(port.n>60&&port.pals>50&&port.ptrs===321,
         port.n+' portraits / '+port.pals+' portrait palettes, both pointer tables owned');
   check(port.w===4&&port.h===4&&port.palCount===32,'portraits display 4x4 tiles with a 32-colour palette');
-  check(port.back===true,'portraits keep colour 0 opaque (it is the backdrop of the face)');
-  check(/portrait set/.test(port.label),'portraits are labelled: '+port.label);
+  check(port.back===false,'portrait colour 0 is transparent (it is the flat backdrop, not a colour)');
+  check(/portrait, expression/.test(port.label)||/portrait set/.test(port.label),
+        'portraits are labelled: '+port.label);
   check(port.landed===3&&port.diffs===0,'portraits paint and undo byte-exactly');
+
+  // every portrait set must be pinned to a palette of its own set
+  const portPins=await ev(c,sessionId,`(()=>{
+      const pg=rom.portraitGraphics;
+      const bad=[], pinned=[];
+      for(let i=0;i<pg.arrayLength;i++){
+          const o=pg.item(i);
+          if(!o.palettePinned) bad.push(o.key);
+          else pinned.push(typeof o.palette==='string'?o.palette:o.palette[0].path);
+      }
+      const porom=rom.stringTable['portraitGraphics'];
+      const labels=[];
+      for(let i=0;i<pg.arrayLength;i++){
+          const s=porom.string[pg.item(i).i];
+          if(s&&/Porom/.test(s.fString())) labels.push({k:pg.item(i).key,lab:s.fString(),
+              pal:pg.item(i).palette, first:Array.from(pg.item(i).palette?rom.parsePath(
+                  typeof pg.item(i).palette==='string'?pg.item(i).palette:pg.item(i).palette[0].path).data.slice(0,2):[]).map(x=>x.toString(16))});
+      }
+      return {unpinned:bad, n:pinned.length, porom:labels.slice(0,3)};
+  })()`);
+  console.log('  portrait pins:',JSON.stringify(portPins).slice(0,400));
+  check(portPins.unpinned.length===0,
+        'every portrait is pinned to a palette ('+portPins.unpinned.length+' unpinned)');
+  check(portPins.porom.length>0,'the Porom set is named and pinned: '+
+        (portPins.porom[0]?portPins.porom[0].lab+' -> '+portPins.porom[0].pal:'none'));
+
+  // world graphics must open with their own palette, not always palette 0
+  const world=await ev(c,sessionId,`(()=>{
+      const wg=rom.worldGraphics, out=[];
+      for(let i=0;i<wg.arrayLength;i++){
+          const o=wg.item(i);
+          romNavigator.selectObject(o); propertyList.select(o);
+          const v=propertyList.activeEditor;
+          out.push({i, pin:o.palette, first:Array.from(v.paletteView.palette.slice(0,2)).map(x=>x.toString(16)).join()});
+      }
+      return out;
+  })()`);
+  console.log('  world palettes:',JSON.stringify(world).slice(0,300));
+  check(world.length>0&&world.every(w=>w.pin),'world graphics each carry their own palette pin');
+  check(new Set(world.map(w=>w.first)).size>1,'world graphics open on different palettes, not always the first');
 
   console.log(fails?`${fails} FAILURES`:'all FF4 GBA browser checks passed');
   process.exitCode=fails?1:0;

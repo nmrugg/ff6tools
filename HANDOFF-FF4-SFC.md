@@ -494,16 +494,40 @@ the game reusing a stock block. Their class names are not in `characterTitle`
 (which stops at 15 entries and calls 14 "None"), so they are baked in
 `CLASS_NAMES`: 14 Small, 15 Frog, 16 Pig, 17 Golbez, 18 Anna.
 
-**Portraits.** Two more pointer tables, `0x080F2D48` (225 entries) and
-`0x080F3100` (83). Walking them shows the pattern **12 graphics then 12
-palettes** - one set of expressions per character. Each block is 16 tiles
-(4x4 = 32x32 px) with a **32-colour** palette, and **colour 0 is opaque** (it
-is the backdrop of the face, so `backColor: true`). Modelled as
-`portraitGraphics` (82 objects), `portraitPalettes` (72) and the two pointer
-tables as plain arrays; the pairing is positional, so the objects are placed
-by static `itemRanges` and pinned with `itemPalettes` rather than resolved
-through `pointerObject`. They render correctly against
-`ff4-portraits.png` (Cecil's helmeted face is the first one).
+**Portraits.** There is ONE contiguous pointer table at `0x080F2D48` with
+**321** entries — what looked like two tables (`0x080F2D48`/225 and
+`0x080F3100`/83) is just where a pointer-run scan stopped, and the 13 pointers
+in between are part of the same table. Getting that wrong is what caused the
+bad palettes: pairing each table on its own left the 10th set (Porom) with no
+palette run at all, so it fell back to the array's first palette. Walking the
+whole table gives the pattern **12 graphics then 12 palettes**, repeated —
+13 complete sets and one trailing 9-graphic set — one set of expressions per
+character. Each block is 16 tiles (4x4 = 32x32 px) with a **32-colour**
+palette, and **colour 0 is the flat backdrop behind the face, so it is
+transparent** (`backColor: false`); it is blue, red or black depending on the
+set, which is what made it look like a missing colour.
+
+The sets are in the ROM's own character order — set 10 is Porom, which is
+`characterNames[9]` — so they are named from that table (Cecil, Kain, Rosa,
+Rydia, Cid, Tellah, Edward, Yang, Palom, Porom, Edge, FuSoYa, Golbez). Each
+set has 12 expressions but only 6 distinct blocks (expressions 1,2,3,4,7,10),
+which is why the de-duplicated count is 82. The trailing 9-graphic set has no
+palette run of its own: it is **adult Rydia** and the game reuses young Rydia's
+palettes (`PORT_REUSE`). Modelled as `portraitGraphics` / `portraitPalettes` /
+`portraitPointers` under Character.
+
+**Unnamed monster slots are mostly named now.** The 283-361 range is extra
+animation frames, and two ROM-internal signals identify 60 of the 79 without
+any external data: (a) a named monster of the *same size* sharing the slot's
+*palette pointer*, and (b) for the tile-mapped Esper set, pairing orphan
+tile-mapped slots with named tile-mapped slots by size in table order. Rule
+(b) is independently confirmed by the animation chain, which already links
+slot 348 to Lunar Ramuh. So 314-320 are `Octomammoth (extra frame)`, 327-336
+`Demon Wall (frame n/11)` from the chain, 339-350 the Lunar espers' extra
+frames, 355-360 the monk/drillmaster pair. Ambiguous ones say what they
+overlap instead of inventing a name: `slot 325 (same size as Bahamut, Dark
+Bahamut, Lunar Bahamut)`. Only 4 remain with no clue at all (299, 313, 337,
+338).
 
 ---
 
@@ -529,30 +553,24 @@ through `pointerObject`. They render correctly against
    `ff4-gba-xcheck.js` (now also banks vs the ROM layouts, character
    ownership/resolution) and `ff4-gba-app-test.js` (now also character
    paint/undo, banks, chain labels). Still open, in order of value:
-   * **61 orphan slots still read `slot N`.** They are single-frame entries in
-     the 283-361 range — the summon/attack animation art (seven 18x12, ten
-     16x14, the 48-colour esper set 339-350, the small 5x6/6x6 esper frames).
-     Matching each slot's rendered colours and size against the labelled
-     components of the user's `ff4-gba-summons.png` / `ff4-gba-bosses.png`
-     sheets names every one (that is how slot 324 was confirmed to be the Mom
-     Bomb boss form, now in `ALIAS` in `tools/ff4-gba-names.py`). Bake the
-     rest in.
-   * **the Demon Wall frames look scattered.** Its 224-tile block holds the
-     right tiles (wall texture + face) but not in raster order, and only 66 of
-     the sheet's 224 tiles match a block tile exactly — the ripped sheet is a
-     composite of the 11 frames, so the per-frame arrangement is the game's
-     own and still undecoded. No other slot in 283-361 is known to be wrong.
+   * **4 monster slots are still unnamed** (299 16x15, 313/337/338 2x6) and a
+     dozen more only say which monsters they overlap in size/palette. The
+     reference sheets can settle the rest.
+   * **portrait art the ROM does not reference from these tables**: the user
+     expects a single Golbez portrait, Namingway, and fat chocobo. The 321-entry
+     table has no such entries, so they live somewhere else (namingway is a
+     gag NPC, fat chocobo is an event sprite) — not found yet.
    * **character frames are not composed into poses.** Each group is 15
      separate blocks and the sizes are baked (2x3 / 3x2 death / 3x3 poses);
      the game assembles them with a pose/OBJ descriptor that has not been
      found, so a `spriteSheet` per group is still possible but needs that
      table. Frame 10's 3x2 and frames 11/14/15's 3x3 were confirmed by eye,
      not derived.
-   * **portrait expression sets are numbered, not named.** The 12-block sets
-     map to characters in table order but nothing in the tables says which
-     character; `characterNames`/`characterTitle` cover 13/15 of them. The
-     reference sheet `ff4-portraits.png` is 12 columns x 6 rows of faces plus
-     a row of pigs, so the mapping is readable off it — bake it in.
+   * **the Demon Wall frames look scattered.** Its 224-tile block holds the
+     right tiles (wall texture + face) but not in raster order, and only 66 of
+     the sheet's 224 tiles match a block tile exactly — the ripped sheet is a
+     composite of the 11 frames, so the per-frame arrangement is the game's
+     own and still undecoded. No other slot in 283-361 is known to be wrong.
    * `monsterProperties` looks one record short (battle id 282 "Specter"
      exists; the array holds 282 records).
    * `ff4e-gba.json` (FF IV Advance Europe) has the same layout — run

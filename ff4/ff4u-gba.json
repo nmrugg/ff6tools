@@ -83,20 +83,16 @@
                     "path": "characterProperties"
                 },
                 {
+                    "name": "Portrait Pointers",
+                    "path": "portraitPointers"
+                },
+                {
                     "name": "Portraits",
                     "path": "portraitGraphics"
                 },
                 {
                     "name": "Portrait Palettes",
                     "path": "portraitPalettes"
-                },
-                {
-                    "name": "Dialogue Portrait Pointers",
-                    "path": "dialoguePortraitPointers"
-                },
-                {
-                    "name": "Battle Portrait Pointers",
-                    "path": "battlePortraitPointers"
                 },
                 {
                     "name": "Character Graphics",
@@ -3925,7 +3921,7 @@
                     "0": "Baigan",
                     "1": "Right Arm",
                     "2": "Left Arm",
-                    "3": "Goblin, Imp, Dark Elf (frame 1/2), Golbez (frame 1/2), Doctor (frame 1/2), Elemental Lord (frame 1/2), Dragoon, Bard, Monk, Dark Knight, Girl, Monster 214, Zeromus (frame 1/2), Goblin Prince, Melt Bomb (frame 1/2), Goblin (frame 1/2), Palace Guard (frame 1/2), Dark Kain, slot 283, slot 284, slot 285",
+                    "3": "Goblin, Imp, Dark Elf (frame 1/2), Golbez (frame 1/2), Doctor (frame 1/2), Elemental Lord (frame 1/2), Dragoon, Bard, Monk, Dark Knight, Girl, Monster 214, Zeromus (frame 1/2), Goblin Prince, Melt Bomb (frame 1/2), Goblin (frame 1/2), Palace Guard (frame 1/2), Dark Kain, slot 283 (same size and palette as Goblin, Imp, Melt Bomb), slot 284 (same size and palette as Goblin, Imp, Melt Bomb), slot 285 (same size and palette as Goblin, Imp, Melt Bomb)",
                     "4": "Basilisk, Black Lizard, Ice Lizard, Catoblepas",
                     "5": "Helldiver",
                     "6": "Floating Eyeball",
@@ -4123,50 +4119,50 @@
                     "198": "Lunar Ifrit",
                     "199": "Lunar Ramuh (frame 1/2)",
                     "200": "Lunar Shiva",
-                    "201": "Ifrit, slot 309",
-                    "202": "Shiva, slot 307",
-                    "203": "Ramuh, slot 311",
+                    "201": "Ifrit, Ifrit (extra frame)",
+                    "202": "Shiva, Shiva (extra frame)",
+                    "203": "Ramuh, Ramuh (extra frame)",
                     "204": "Soldier Monk",
                     "205": "Super Monk",
                     "206": "Drillmaster",
                     "207": "Dark Bahamut (frame 3/3)",
-                    "208": "slot 287",
-                    "209": "slot 288",
-                    "210": "slot 289",
+                    "208": "Ogopogo (extra frame)",
+                    "209": "slot 288 (same size as Lunar Dragon, Mist Dragon)",
+                    "210": "Cagnazzo (extra frame)",
                     "211": "Elemental Lord (frame 2/2)",
-                    "212": "slot 291",
-                    "213": "slot 292",
-                    "214": "slot 293",
+                    "212": "Barbariccia (extra frame)",
+                    "213": "King of Eblan (extra frame?)",
+                    "214": "Queen of Eblan (extra frame?)",
                     "215": "Rubicante (frame 2/2)",
-                    "216": "slot 295",
-                    "217": "slot 296",
+                    "216": "Odin (extra frame)",
+                    "217": "Odin (extra frame)",
                     "218": "Leviathan (frame 2/2)",
-                    "219": "slot 298",
+                    "219": "Bahamut (extra frame)",
                     "220": "slot 299",
                     "221": "Asura (frame 2/2)",
-                    "222": "slot 301",
-                    "223": "slot 302",
-                    "224": "slot 303, slot 353",
-                    "225": "slot 304",
-                    "226": "slot 305",
-                    "227": "slot 306",
-                    "228": "slot 308, slot 352",
-                    "229": "slot 310, slot 351",
-                    "230": "slot 312, slot 354",
+                    "222": "Asura (extra frame)",
+                    "223": "slot 302 (same size as Bard, Dark Kain, Dark Knight, Dragoon)",
+                    "224": "Titan (extra frame)",
+                    "225": "Mystery Egg (extra frame)",
+                    "226": "slot 305 (same size as Balloon, Black Flan, Bomb, Brina)",
+                    "227": "slot 306 (same size as Balloon, Black Flan, Bomb, Brina)",
+                    "228": "Shiva (extra frame)",
+                    "229": "Ifrit (extra frame)",
+                    "230": "Ramuh (extra frame)",
                     "231": "slot 313",
-                    "232": "slot 314",
-                    "233": "slot 315",
-                    "234": "slot 316",
-                    "235": "slot 317",
-                    "236": "slot 318",
-                    "237": "slot 319",
-                    "238": "slot 320",
-                    "239": "slot 321",
-                    "240": "slot 322",
-                    "241": "slot 323",
+                    "232": "Octomammoth (extra frame)",
+                    "233": "Octomammoth (extra frame)",
+                    "234": "Octomammoth (extra frame)",
+                    "235": "Octomammoth (extra frame)",
+                    "236": "Octomammoth (extra frame)",
+                    "237": "Octomammoth (extra frame)",
+                    "238": "Octomammoth (extra frame)",
+                    "239": "slot 321 (same size as Balloon, Black Flan, Bomb, Brina)",
+                    "240": "slot 322 (same size as Akihiko Matsui, Golden Toad, Platinum Toad, Tiny Mage)",
+                    "241": "slot 323 (same size as Akihiko Matsui, Golden Toad, Platinum Toad, Tiny Mage)",
                     "242": "Mom Bomb (boss form)",
-                    "243": "slot 325",
-                    "244": "slot 326",
+                    "243": "slot 325 (same size as Bahamut, Dark Bahamut, Lunar Bahamut)",
+                    "244": "slot 326 (same size as Bandit, Baron Soldier, Baron Warrior, Bloodbones)",
                     "245": "Demon Wall (frame 2/11)",
                     "246": "Demon Wall (frame 3/11)",
                     "247": "Demon Wall (frame 4/11)",
@@ -4179,24 +4175,24 @@
                     "254": "Demon Wall (frame 11/11)",
                     "255": "slot 337",
                     "256": "slot 338",
-                    "257": "slot 339",
-                    "258": "slot 340",
-                    "259": "slot 341",
-                    "260": "slot 342",
-                    "261": "slot 343",
-                    "262": "slot 344",
-                    "263": "slot 345",
-                    "264": "slot 346",
-                    "265": "slot 347",
+                    "257": "Lunar Bahamut (extra frame)",
+                    "258": "Lunar Leviathan (extra frame)",
+                    "259": "Lunar Odin (extra frame)",
+                    "260": "Lunar Odin (extra frame)",
+                    "261": "Lunar Asura (extra frame)",
+                    "262": "Lunar Asura (extra frame)",
+                    "263": "Lunar Titan (extra frame)",
+                    "264": "Lunar Dragon (extra frame)",
+                    "265": "Lunar Ifrit (extra frame)",
                     "266": "Lunar Ramuh (frame 2/2)",
-                    "267": "slot 349",
-                    "268": "slot 350",
-                    "269": "slot 355",
-                    "270": "slot 356",
-                    "271": "slot 357",
-                    "272": "slot 358",
-                    "273": "slot 359",
-                    "274": "slot 360"
+                    "267": "Lunar Shiva (extra frame)",
+                    "268": "Lunar Ramuh (extra frame)",
+                    "269": "Soldier Monk (extra frame)",
+                    "270": "Soldier Monk (extra frame)",
+                    "271": "Super Monk (extra frame)",
+                    "272": "Super Monk (extra frame)",
+                    "273": "Drillmaster (extra frame)",
+                    "274": "Drillmaster (extra frame)"
                 }
             }
         },
@@ -4774,7 +4770,15 @@
                     "4": "Overworld - Layer 1 (Cid's Trial)",
                     "5": "Overworld - Layer 2 (Cid's Trial)"
                 }
-            }
+            },
+            "itemPalettes": [
+                "worldPalette[0]",
+                "worldPalette[0]",
+                "worldPalette[1]",
+                "worldPalette[2]",
+                "worldPalette[3]",
+                "worldPalette[3]"
+            ]
         },
         "worldLayout": {
             "type": "array",
@@ -5449,50 +5453,50 @@
                     "280": "Dark Kain",
                     "281": "Bandit (frame 1/2)",
                     "282": "Specter",
-                    "283": "slot 283",
-                    "284": "slot 284",
-                    "285": "slot 285",
+                    "283": "slot 283 (same size and palette as Goblin, Imp, Melt Bomb)",
+                    "284": "slot 284 (same size and palette as Goblin, Imp, Melt Bomb)",
+                    "285": "slot 285 (same size and palette as Goblin, Imp, Melt Bomb)",
                     "286": "Dark Bahamut (frame 3/3)",
-                    "287": "slot 287",
-                    "288": "slot 288",
-                    "289": "slot 289",
+                    "287": "Ogopogo (extra frame)",
+                    "288": "slot 288 (same size as Lunar Dragon, Mist Dragon)",
+                    "289": "Cagnazzo (extra frame)",
                     "290": "Elemental Lord (frame 2/2)",
-                    "291": "slot 291",
-                    "292": "slot 292",
-                    "293": "slot 293",
+                    "291": "Barbariccia (extra frame)",
+                    "292": "King of Eblan (extra frame?)",
+                    "293": "Queen of Eblan (extra frame?)",
                     "294": "Rubicante (frame 2/2)",
-                    "295": "slot 295",
-                    "296": "slot 296",
+                    "295": "Odin (extra frame)",
+                    "296": "Odin (extra frame)",
                     "297": "Leviathan (frame 2/2)",
-                    "298": "slot 298",
+                    "298": "Bahamut (extra frame)",
                     "299": "slot 299",
                     "300": "Asura (frame 2/2)",
-                    "301": "slot 301",
-                    "302": "slot 302",
-                    "303": "slot 303",
-                    "304": "slot 304",
-                    "305": "slot 305",
-                    "306": "slot 306",
-                    "307": "slot 307",
-                    "308": "slot 308",
-                    "309": "slot 309",
-                    "310": "slot 310",
-                    "311": "slot 311",
-                    "312": "slot 312",
+                    "301": "Asura (extra frame)",
+                    "302": "slot 302 (same size as Bard, Dark Kain, Dark Knight, Dragoon)",
+                    "303": "Titan (extra frame)",
+                    "304": "Mystery Egg (extra frame)",
+                    "305": "slot 305 (same size as Balloon, Black Flan, Bomb, Brina)",
+                    "306": "slot 306 (same size as Balloon, Black Flan, Bomb, Brina)",
+                    "307": "Shiva (extra frame)",
+                    "308": "Shiva (extra frame)",
+                    "309": "Ifrit (extra frame)",
+                    "310": "Ifrit (extra frame)",
+                    "311": "Ramuh (extra frame)",
+                    "312": "Ramuh (extra frame)",
                     "313": "slot 313",
-                    "314": "slot 314",
-                    "315": "slot 315",
-                    "316": "slot 316",
-                    "317": "slot 317",
-                    "318": "slot 318",
-                    "319": "slot 319",
-                    "320": "slot 320",
-                    "321": "slot 321",
-                    "322": "slot 322",
-                    "323": "slot 323",
+                    "314": "Octomammoth (extra frame)",
+                    "315": "Octomammoth (extra frame)",
+                    "316": "Octomammoth (extra frame)",
+                    "317": "Octomammoth (extra frame)",
+                    "318": "Octomammoth (extra frame)",
+                    "319": "Octomammoth (extra frame)",
+                    "320": "Octomammoth (extra frame)",
+                    "321": "slot 321 (same size as Balloon, Black Flan, Bomb, Brina)",
+                    "322": "slot 322 (same size as Akihiko Matsui, Golden Toad, Platinum Toad, Tiny Mage)",
+                    "323": "slot 323 (same size as Akihiko Matsui, Golden Toad, Platinum Toad, Tiny Mage)",
                     "324": "Mom Bomb (boss form)",
-                    "325": "slot 325",
-                    "326": "slot 326",
+                    "325": "slot 325 (same size as Bahamut, Dark Bahamut, Lunar Bahamut)",
+                    "326": "slot 326 (same size as Bandit, Baron Soldier, Baron Warrior, Bloodbones)",
                     "327": "Demon Wall (frame 2/11)",
                     "328": "Demon Wall (frame 3/11)",
                     "329": "Demon Wall (frame 4/11)",
@@ -5505,28 +5509,28 @@
                     "336": "Demon Wall (frame 11/11)",
                     "337": "slot 337",
                     "338": "slot 338",
-                    "339": "slot 339",
-                    "340": "slot 340",
-                    "341": "slot 341",
-                    "342": "slot 342",
-                    "343": "slot 343",
-                    "344": "slot 344",
-                    "345": "slot 345",
-                    "346": "slot 346",
-                    "347": "slot 347",
+                    "339": "Lunar Bahamut (extra frame)",
+                    "340": "Lunar Leviathan (extra frame)",
+                    "341": "Lunar Odin (extra frame)",
+                    "342": "Lunar Odin (extra frame)",
+                    "343": "Lunar Asura (extra frame)",
+                    "344": "Lunar Asura (extra frame)",
+                    "345": "Lunar Titan (extra frame)",
+                    "346": "Lunar Dragon (extra frame)",
+                    "347": "Lunar Ifrit (extra frame)",
                     "348": "Lunar Ramuh (frame 2/2)",
-                    "349": "slot 349",
-                    "350": "slot 350",
-                    "351": "slot 351",
-                    "352": "slot 352",
-                    "353": "slot 353",
-                    "354": "slot 354",
-                    "355": "slot 355",
-                    "356": "slot 356",
-                    "357": "slot 357",
-                    "358": "slot 358",
-                    "359": "slot 359",
-                    "360": "slot 360",
+                    "349": "Lunar Shiva (extra frame)",
+                    "350": "Lunar Ramuh (extra frame)",
+                    "351": "Ifrit (extra frame)",
+                    "352": "Shiva (extra frame)",
+                    "353": "Titan (extra frame)",
+                    "354": "Ramuh (extra frame)",
+                    "355": "Soldier Monk (extra frame)",
+                    "356": "Soldier Monk (extra frame)",
+                    "357": "Super Monk (extra frame)",
+                    "358": "Super Monk (extra frame)",
+                    "359": "Drillmaster (extra frame)",
+                    "360": "Drillmaster (extra frame)",
                     "361": "Dark Bahamut (frame 1/3)"
                 }
             }
@@ -5831,7 +5835,7 @@
                     "0": "Baigan",
                     "1": "Right Arm",
                     "2": "Left Arm",
-                    "3": "Goblin, Imp, Dark Elf (frame 1/2), Golbez (frame 1/2), Doctor (frame 1/2), Elemental Lord (frame 1/2), Dragoon, Bard, Monk, Dark Knight, Girl, Monster 214, Zeromus (frame 1/2), Melt Bomb (frame 1/2), Goblin (frame 1/2), Palace Guard (frame 1/2), Dark Kain, slot 283, slot 284, slot 285",
+                    "3": "Goblin, Imp, Dark Elf (frame 1/2), Golbez (frame 1/2), Doctor (frame 1/2), Elemental Lord (frame 1/2), Dragoon, Bard, Monk, Dark Knight, Girl, Monster 214, Zeromus (frame 1/2), Melt Bomb (frame 1/2), Goblin (frame 1/2), Palace Guard (frame 1/2), Dark Kain, slot 283 (same size and palette as Goblin, Imp, Melt Bomb), slot 284 (same size and palette as Goblin, Imp, Melt Bomb), slot 285 (same size and palette as Goblin, Imp, Melt Bomb)",
                     "4": "Basilisk",
                     "5": "Helldiver",
                     "6": "Floating Eyeball",
@@ -5984,26 +5988,26 @@
                     "153": "Dark Sage",
                     "154": "Dark Bahamut (frame 2/3), Dark Bahamut (frame 3/3), Dark Bahamut (frame 1/3)",
                     "155": "Prokaryote",
-                    "156": "Ogopogo, slot 287",
+                    "156": "Ogopogo, Ogopogo (extra frame)",
                     "157": "Blue Dragon",
                     "158": "Gold Dragon",
                     "159": "Thunder Dragon",
                     "160": "White Dragon",
                     "161": "Red Dragon",
                     "162": "Behemoth",
-                    "163": "Mist Dragon, slot 325",
-                    "164": "Octomammoth, slot 314, slot 315, slot 316, slot 317, slot 318, slot 319, slot 320",
+                    "163": "Mist Dragon, slot 325 (same size as Bahamut, Dark Bahamut, Lunar Bahamut)",
+                    "164": "Octomammoth, Octomammoth (extra frame)",
                     "165": "Antlion",
                     "166": "Mom Bomb",
                     "167": "Scarmiglione",
                     "168": "Elemental Lord (frame 2/2)",
-                    "169": "Cagnazzo, slot 289, Elemental Lord (frame 2/2)",
+                    "169": "Cagnazzo, Cagnazzo (extra frame), Elemental Lord (frame 2/2)",
                     "170": "Dark Elf (frame 2/2)",
                     "171": "Sandy",
                     "172": "Cindy",
                     "173": "Mindy",
                     "174": "Golbez (frame 2/2)",
-                    "175": "Barbariccia, slot 291",
+                    "175": "Barbariccia, Barbariccia (extra frame)",
                     "176": "Calco",
                     "177": "Calcobrena",
                     "178": "Shadow Dragon",
@@ -6012,22 +6016,22 @@
                     "181": "King of Eblan",
                     "182": "Queen of Eblan",
                     "183": "Rubicante (frame 1/2), Rubicante (frame 2/2)",
-                    "184": "Odin, slot 295, slot 296",
+                    "184": "Odin, Odin (extra frame)",
                     "185": "Leviathan (frame 1/2), Leviathan (frame 2/2)",
-                    "186": "Bahamut, slot 298",
+                    "186": "Bahamut, Bahamut (extra frame)",
                     "187": "Demon Wall (frame 1/11), slot 299, Demon Wall (frame 2/11), Demon Wall (frame 3/11), Demon Wall (frame 4/11), Demon Wall (frame 5/11), Demon Wall (frame 6/11), Demon Wall (frame 7/11), Demon Wall (frame 8/11), Demon Wall (frame 9/11), Demon Wall (frame 10/11), Demon Wall (frame 11/11)",
-                    "188": "Asura (frame 1/2), Asura (frame 2/2), slot 301",
+                    "188": "Asura (frame 1/2), Asura (frame 2/2), Asura (extra frame)",
                     "189": "Dark Dragon",
                     "190": "CPU",
                     "191": "Defense Node, Attack Node",
                     "192": "Zemus",
                     "193": "Zeromus (frame 2/2)",
-                    "194": "Zeromus, slot 302",
-                    "195": "Titan, slot 303, slot 353",
+                    "194": "Zeromus, slot 302 (same size as Bard, Dark Kain, Dark Knight, Dragoon)",
+                    "195": "Titan, Titan (extra frame)",
                     "196": "Brina",
                     "197": "Barnabas-Z",
                     "198": "Kiyoshi Yoshii",
-                    "199": "Mystery Egg, slot 304",
+                    "199": "Mystery Egg, Mystery Egg (extra frame)",
                     "200": "Storm Dragon",
                     "201": "Gigas Worm",
                     "202": "Master Flan",
@@ -6064,20 +6068,20 @@
                     "233": "Goblin Prince",
                     "234": "Stratoavis",
                     "235": "Proto Phase",
-                    "236": "Ifrit, slot 309, slot 310, slot 351",
-                    "237": "Shiva, slot 307, slot 308, slot 352",
-                    "238": "Ramuh, slot 311, slot 312, slot 354",
-                    "239": "Soldier Monk, slot 355, slot 356",
-                    "240": "Super Monk, slot 357, slot 358",
-                    "241": "Drillmaster, slot 359, slot 360",
-                    "242": "slot 288",
-                    "243": "slot 292",
-                    "244": "slot 293",
-                    "245": "slot 305, slot 306",
+                    "236": "Ifrit, Ifrit (extra frame)",
+                    "237": "Shiva, Shiva (extra frame)",
+                    "238": "Ramuh, Ramuh (extra frame)",
+                    "239": "Soldier Monk, Soldier Monk (extra frame)",
+                    "240": "Super Monk, Super Monk (extra frame)",
+                    "241": "Drillmaster, Drillmaster (extra frame)",
+                    "242": "slot 288 (same size as Lunar Dragon, Mist Dragon)",
+                    "243": "King of Eblan (extra frame?)",
+                    "244": "Queen of Eblan (extra frame?)",
+                    "245": "slot 305 (same size as Balloon, Black Flan, Bomb, Brina), slot 306 (same size as Balloon, Black Flan, Bomb, Brina)",
                     "246": "slot 313, slot 337, slot 338",
-                    "247": "slot 321, slot 322, slot 323",
+                    "247": "slot 321 (same size as Balloon, Black Flan, Bomb, Brina), slot 322 (same size as Akihiko Matsui, Golden Toad, Platinum Toad, Tiny Mage), slot 323 (same size as Akihiko Matsui, Golden Toad, Platinum Toad, Tiny Mage)",
                     "248": "Mom Bomb (boss form)",
-                    "249": "slot 326",
+                    "249": "slot 326 (same size as Bandit, Baron Soldier, Baron Warrior, Bloodbones)",
                     "250": "Zeromus EG",
                     "251": "Lunar Bahamut",
                     "252": "Lunar Leviathan",
@@ -6088,17 +6092,17 @@
                     "257": "Lunar Ifrit",
                     "258": "Lunar Ramuh (frame 1/2), Lunar Ramuh (frame 2/2)",
                     "259": "Lunar Shiva",
-                    "260": "slot 339",
-                    "261": "slot 340",
-                    "262": "slot 341",
-                    "263": "slot 342",
-                    "264": "slot 343",
-                    "265": "slot 344",
-                    "266": "slot 345",
-                    "267": "slot 346",
-                    "268": "slot 347",
-                    "269": "slot 349",
-                    "270": "slot 350"
+                    "260": "Lunar Bahamut (extra frame)",
+                    "261": "Lunar Leviathan (extra frame)",
+                    "262": "Lunar Odin (extra frame)",
+                    "263": "Lunar Odin (extra frame)",
+                    "264": "Lunar Asura (extra frame)",
+                    "265": "Lunar Asura (extra frame)",
+                    "266": "Lunar Titan (extra frame)",
+                    "267": "Lunar Dragon (extra frame)",
+                    "268": "Lunar Ifrit (extra frame)",
+                    "269": "Lunar Shiva (extra frame)",
+                    "270": "Lunar Ramuh (extra frame)"
                 }
             }
         },
@@ -6155,17 +6159,17 @@
                     "7": "frames of Lunar Ifrit",
                     "8": "frames of Lunar Ramuh (frame 2/2)",
                     "9": "frames of Lunar Shiva",
-                    "10": "frames of slot 339",
-                    "11": "frames of slot 340",
-                    "12": "frames of slot 341",
-                    "13": "frames of slot 342",
-                    "14": "frames of slot 343",
-                    "15": "frames of slot 344",
-                    "16": "frames of slot 345",
-                    "17": "frames of slot 346",
-                    "18": "frames of slot 347",
-                    "19": "frames of slot 349",
-                    "20": "frames of slot 350"
+                    "10": "frames of Lunar Bahamut (extra frame)",
+                    "11": "frames of Lunar Leviathan (extra frame)",
+                    "12": "frames of Lunar Odin (extra frame)",
+                    "13": "frames of Lunar Odin (extra frame)",
+                    "14": "frames of Lunar Asura (extra frame)",
+                    "15": "frames of Lunar Asura (extra frame)",
+                    "16": "frames of Lunar Titan (extra frame)",
+                    "17": "frames of Lunar Dragon (extra frame)",
+                    "18": "frames of Lunar Ifrit (extra frame)",
+                    "19": "frames of Lunar Shiva (extra frame)",
+                    "20": "frames of Lunar Ramuh (extra frame)"
                 }
             }
         },
@@ -6297,26 +6301,26 @@
                 "length": 20,
                 "default": "Character %i",
                 "string": {
-                    "0": "Character 0: D. Knight",
-                    "1": "Character 1: Dragoon",
-                    "2": "Character 2: W. Mage",
-                    "3": "Character 3: Summoner",
-                    "4": "Character 4: Engineer",
-                    "5": "Character 5: Sage",
-                    "6": "Character 6: Prince",
-                    "7": "Character 7: Monk",
-                    "8": "Character 8: B. Mage",
-                    "9": "Character 9: W. Mage",
-                    "10": "Character 10: Ninja",
-                    "11": "Character 11: Lunarian",
-                    "12": "Character 12: Paladin",
-                    "13": "Character 13: Summoner",
+                    "0": "Character 0: Cecil (D. Knight)",
+                    "1": "Character 1: Kain (Dragoon)",
+                    "2": "Character 2: Rosa (W. Mage)",
+                    "3": "Character 3: Rydia (Summoner)",
+                    "4": "Character 4: Cid (Engineer)",
+                    "5": "Character 5: Tellah (Sage)",
+                    "6": "Character 6: Edward (Prince)",
+                    "7": "Character 7: Yang (Monk)",
+                    "8": "Character 8: Palom (B. Mage)",
+                    "9": "Character 9: Porom (W. Mage)",
+                    "10": "Character 10: Edge (Ninja)",
+                    "11": "Character 11: FuSoYa (Lunarian)",
+                    "12": "Character 12: Golbez (Paladin)",
+                    "13": "Character 13: Rydia (older) (Summoner)",
                     "14": "Character 14: Small",
                     "15": "Character 15: Frog",
                     "16": "Character 16: Pig",
                     "17": "Character 17: Golbez",
                     "18": "Character 18: Anna",
-                    "19": "Character 19"
+                    "19": "Character 19: Dark Kain"
                 }
             }
         },
@@ -7538,112 +7542,112 @@
             "itemPalettes": [
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 {
                     "path": "characterPalettes[0]",
-                    "name": "Character 0: D. Knight"
+                    "name": "Character 0: Cecil (D. Knight)"
                 },
                 [
                     {
                         "path": "characterPalettes[0]",
-                        "name": "Character 0: D. Knight"
+                        "name": "Character 0: Cecil (D. Knight)"
                     },
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[2]",
-                        "name": "Character 2: W. Mage"
+                        "name": "Character 2: Rosa (W. Mage)"
                     },
                     {
                         "path": "characterPalettes[3]",
-                        "name": "Character 3: Summoner"
+                        "name": "Character 3: Rydia (Summoner)"
                     },
                     {
                         "path": "characterPalettes[4]",
-                        "name": "Character 4: Engineer"
+                        "name": "Character 4: Cid (Engineer)"
                     },
                     {
                         "path": "characterPalettes[5]",
-                        "name": "Character 5: Sage"
+                        "name": "Character 5: Tellah (Sage)"
                     },
                     {
                         "path": "characterPalettes[6]",
-                        "name": "Character 6: Prince"
+                        "name": "Character 6: Edward (Prince)"
                     },
                     {
                         "path": "characterPalettes[7]",
-                        "name": "Character 7: Monk"
+                        "name": "Character 7: Yang (Monk)"
                     },
                     {
                         "path": "characterPalettes[8]",
-                        "name": "Character 8: B. Mage"
+                        "name": "Character 8: Palom (B. Mage)"
                     },
                     {
                         "path": "characterPalettes[9]",
-                        "name": "Character 9: W. Mage"
+                        "name": "Character 9: Porom (W. Mage)"
                     },
                     {
                         "path": "characterPalettes[10]",
-                        "name": "Character 10: Ninja"
+                        "name": "Character 10: Edge (Ninja)"
                     },
                     {
                         "path": "characterPalettes[11]",
-                        "name": "Character 11: Lunarian"
+                        "name": "Character 11: FuSoYa (Lunarian)"
                     },
                     {
                         "path": "characterPalettes[12]",
-                        "name": "Character 12: Paladin"
+                        "name": "Character 12: Golbez (Paladin)"
                     },
                     {
                         "path": "characterPalettes[13]",
-                        "name": "Character 13: Summoner"
+                        "name": "Character 13: Rydia (older) (Summoner)"
                     },
                     {
                         "path": "characterPalettes[14]",
@@ -7659,7 +7663,7 @@
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7668,11 +7672,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7681,11 +7685,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7694,11 +7698,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7707,11 +7711,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7720,11 +7724,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7733,11 +7737,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7746,11 +7750,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7759,11 +7763,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7772,11 +7776,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7785,11 +7789,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7798,11 +7802,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7811,11 +7815,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7824,11 +7828,11 @@
                 [
                     {
                         "path": "characterPalettes[1]",
-                        "name": "Character 1: Dragoon"
+                        "name": "Character 1: Kain (Dragoon)"
                     },
                     {
                         "path": "characterPalettes[19]",
-                        "name": "Character 19"
+                        "name": "Character 19: Dark Kain"
                     },
                     {
                         "path": "characterPalettes"
@@ -7836,627 +7840,627 @@
                 ],
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[2]",
-                    "name": "Character 2: W. Mage"
+                    "name": "Character 2: Rosa (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[3]",
-                    "name": "Character 3: Summoner"
+                    "name": "Character 3: Rydia (Summoner)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[4]",
-                    "name": "Character 4: Engineer"
+                    "name": "Character 4: Cid (Engineer)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[5]",
-                    "name": "Character 5: Sage"
+                    "name": "Character 5: Tellah (Sage)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[6]",
-                    "name": "Character 6: Prince"
+                    "name": "Character 6: Edward (Prince)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[7]",
-                    "name": "Character 7: Monk"
+                    "name": "Character 7: Yang (Monk)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[8]",
-                    "name": "Character 8: B. Mage"
+                    "name": "Character 8: Palom (B. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[9]",
-                    "name": "Character 9: W. Mage"
+                    "name": "Character 9: Porom (W. Mage)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[10]",
-                    "name": "Character 10: Ninja"
+                    "name": "Character 10: Edge (Ninja)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[11]",
-                    "name": "Character 11: Lunarian"
+                    "name": "Character 11: FuSoYa (Lunarian)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[12]",
-                    "name": "Character 12: Paladin"
+                    "name": "Character 12: Golbez (Paladin)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[13]",
-                    "name": "Character 13: Summoner"
+                    "name": "Character 13: Rydia (older) (Summoner)"
                 },
                 {
                     "path": "characterPalettes[14]",
@@ -8636,189 +8640,189 @@
                 "length": 226,
                 "default": "Character Graphics %i",
                 "string": {
-                    "0": "Character 0: D. Knight, frame 1/15",
-                    "1": "Character 0: D. Knight, frame 2/15",
-                    "2": "Character 0: D. Knight, frame 3/15",
-                    "3": "Character 0: D. Knight, frame 4/15",
-                    "4": "Character 0: D. Knight, frame 5/15",
-                    "5": "Character 0: D. Knight, frame 6/15",
-                    "6": "Character 0: D. Knight, frame 7/15",
-                    "7": "Character 0: D. Knight, frame 8/15",
-                    "8": "Character 0: D. Knight, frame 9/15",
-                    "9": "Character 0: D. Knight, frame 10/15",
-                    "10": "Character 0: D. Knight, frame 11/15",
-                    "11": "Character 0: D. Knight, frame 12/15",
-                    "12": "Character 0: D. Knight, frame 13/15",
-                    "13": "Character 0: D. Knight, frames 14,15/15; Character 1: Dragoon, frames 14,15/15 (and 16 other character groups)",
-                    "14": "Character 1: Dragoon, frame 1/15; Character 19, frame 1/15",
-                    "15": "Character 1: Dragoon, frame 2/15; Character 19, frame 2/15",
-                    "16": "Character 1: Dragoon, frame 3/15; Character 19, frame 3/15",
-                    "17": "Character 1: Dragoon, frame 4/15; Character 19, frame 4/15",
-                    "18": "Character 1: Dragoon, frame 5/15; Character 19, frame 5/15",
-                    "19": "Character 1: Dragoon, frame 6/15; Character 19, frame 6/15",
-                    "20": "Character 1: Dragoon, frame 7/15; Character 19, frame 7/15",
-                    "21": "Character 1: Dragoon, frame 8/15; Character 19, frame 8/15",
-                    "22": "Character 1: Dragoon, frame 9/15; Character 19, frame 9/15",
-                    "23": "Character 1: Dragoon, frame 10/15; Character 19, frame 10/15",
-                    "24": "Character 1: Dragoon, frame 11/15; Character 19, frame 11/15",
-                    "25": "Character 1: Dragoon, frame 12/15; Character 19, frame 12/15",
-                    "26": "Character 1: Dragoon, frame 13/15; Character 19, frame 13/15",
-                    "27": "Character 2: W. Mage, frame 1/15",
-                    "28": "Character 2: W. Mage, frame 2/15",
-                    "29": "Character 2: W. Mage, frame 3/15",
-                    "30": "Character 2: W. Mage, frame 4/15",
-                    "31": "Character 2: W. Mage, frame 5/15",
-                    "32": "Character 2: W. Mage, frame 6/15",
-                    "33": "Character 2: W. Mage, frame 7/15",
-                    "34": "Character 2: W. Mage, frame 8/15",
-                    "35": "Character 2: W. Mage, frame 9/15",
-                    "36": "Character 2: W. Mage, frame 10/15",
-                    "37": "Character 2: W. Mage, frame 11/15",
-                    "38": "Character 2: W. Mage, frame 12/15",
-                    "39": "Character 2: W. Mage, frame 13/15",
-                    "40": "Character 3: Summoner, frame 1/15",
-                    "41": "Character 3: Summoner, frame 2/15",
-                    "42": "Character 3: Summoner, frame 3/15",
-                    "43": "Character 3: Summoner, frame 4/15",
-                    "44": "Character 3: Summoner, frame 5/15",
-                    "45": "Character 3: Summoner, frame 6/15",
-                    "46": "Character 3: Summoner, frame 7/15",
-                    "47": "Character 3: Summoner, frame 8/15",
-                    "48": "Character 3: Summoner, frame 9/15",
-                    "49": "Character 3: Summoner, frame 10/15",
-                    "50": "Character 3: Summoner, frame 11/15",
-                    "51": "Character 3: Summoner, frame 12/15",
-                    "52": "Character 3: Summoner, frame 13/15",
-                    "53": "Character 4: Engineer, frame 1/15",
-                    "54": "Character 4: Engineer, frame 2/15",
-                    "55": "Character 4: Engineer, frame 3/15",
-                    "56": "Character 4: Engineer, frame 4/15",
-                    "57": "Character 4: Engineer, frame 5/15",
-                    "58": "Character 4: Engineer, frame 6/15",
-                    "59": "Character 4: Engineer, frame 7/15",
-                    "60": "Character 4: Engineer, frame 8/15",
-                    "61": "Character 4: Engineer, frame 9/15",
-                    "62": "Character 4: Engineer, frame 10/15",
-                    "63": "Character 4: Engineer, frame 11/15",
-                    "64": "Character 4: Engineer, frame 12/15",
-                    "65": "Character 4: Engineer, frame 13/15",
-                    "66": "Character 5: Sage, frame 1/15",
-                    "67": "Character 5: Sage, frame 2/15",
-                    "68": "Character 5: Sage, frame 3/15",
-                    "69": "Character 5: Sage, frame 4/15",
-                    "70": "Character 5: Sage, frame 5/15",
-                    "71": "Character 5: Sage, frame 6/15",
-                    "72": "Character 5: Sage, frame 7/15",
-                    "73": "Character 5: Sage, frame 8/15",
-                    "74": "Character 5: Sage, frame 9/15",
-                    "75": "Character 5: Sage, frame 10/15",
-                    "76": "Character 5: Sage, frame 11/15",
-                    "77": "Character 5: Sage, frame 12/15",
-                    "78": "Character 5: Sage, frame 13/15",
-                    "79": "Character 6: Prince, frame 1/15",
-                    "80": "Character 6: Prince, frame 2/15",
-                    "81": "Character 6: Prince, frame 3/15",
-                    "82": "Character 6: Prince, frame 4/15",
-                    "83": "Character 6: Prince, frame 5/15",
-                    "84": "Character 6: Prince, frame 6/15",
-                    "85": "Character 6: Prince, frame 7/15",
-                    "86": "Character 6: Prince, frame 8/15",
-                    "87": "Character 6: Prince, frame 9/15",
-                    "88": "Character 6: Prince, frame 10/15",
-                    "89": "Character 6: Prince, frame 11/15",
-                    "90": "Character 6: Prince, frame 12/15",
-                    "91": "Character 6: Prince, frame 13/15",
-                    "92": "Character 7: Monk, frame 1/15",
-                    "93": "Character 7: Monk, frame 2/15",
-                    "94": "Character 7: Monk, frame 3/15",
-                    "95": "Character 7: Monk, frame 4/15",
-                    "96": "Character 7: Monk, frame 5/15",
-                    "97": "Character 7: Monk, frame 6/15",
-                    "98": "Character 7: Monk, frame 7/15",
-                    "99": "Character 7: Monk, frame 8/15",
-                    "100": "Character 7: Monk, frame 9/15",
-                    "101": "Character 7: Monk, frame 10/15",
-                    "102": "Character 7: Monk, frame 11/15",
-                    "103": "Character 7: Monk, frame 12/15",
-                    "104": "Character 7: Monk, frame 13/15",
-                    "105": "Character 8: B. Mage, frame 1/15",
-                    "106": "Character 8: B. Mage, frame 2/15",
-                    "107": "Character 8: B. Mage, frame 3/15",
-                    "108": "Character 8: B. Mage, frame 4/15",
-                    "109": "Character 8: B. Mage, frame 5/15",
-                    "110": "Character 8: B. Mage, frame 6/15",
-                    "111": "Character 8: B. Mage, frame 7/15",
-                    "112": "Character 8: B. Mage, frame 8/15",
-                    "113": "Character 8: B. Mage, frame 9/15",
-                    "114": "Character 8: B. Mage, frame 10/15",
-                    "115": "Character 8: B. Mage, frame 11/15",
-                    "116": "Character 8: B. Mage, frame 12/15",
-                    "117": "Character 8: B. Mage, frame 13/15",
-                    "118": "Character 9: W. Mage, frame 1/15",
-                    "119": "Character 9: W. Mage, frame 2/15",
-                    "120": "Character 9: W. Mage, frame 3/15",
-                    "121": "Character 9: W. Mage, frame 4/15",
-                    "122": "Character 9: W. Mage, frame 5/15",
-                    "123": "Character 9: W. Mage, frame 6/15",
-                    "124": "Character 9: W. Mage, frame 7/15",
-                    "125": "Character 9: W. Mage, frame 8/15",
-                    "126": "Character 9: W. Mage, frame 9/15",
-                    "127": "Character 9: W. Mage, frame 10/15",
-                    "128": "Character 9: W. Mage, frame 11/15",
-                    "129": "Character 9: W. Mage, frame 12/15",
-                    "130": "Character 9: W. Mage, frame 13/15",
-                    "131": "Character 10: Ninja, frame 1/15",
-                    "132": "Character 10: Ninja, frame 2/15",
-                    "133": "Character 10: Ninja, frame 3/15",
-                    "134": "Character 10: Ninja, frame 4/15",
-                    "135": "Character 10: Ninja, frame 5/15",
-                    "136": "Character 10: Ninja, frame 6/15",
-                    "137": "Character 10: Ninja, frame 7/15",
-                    "138": "Character 10: Ninja, frame 8/15",
-                    "139": "Character 10: Ninja, frame 9/15",
-                    "140": "Character 10: Ninja, frame 10/15",
-                    "141": "Character 10: Ninja, frame 11/15",
-                    "142": "Character 10: Ninja, frame 12/15",
-                    "143": "Character 10: Ninja, frame 13/15",
-                    "144": "Character 11: Lunarian, frame 1/15",
-                    "145": "Character 11: Lunarian, frame 2/15",
-                    "146": "Character 11: Lunarian, frame 3/15",
-                    "147": "Character 11: Lunarian, frame 4/15",
-                    "148": "Character 11: Lunarian, frame 5/15",
-                    "149": "Character 11: Lunarian, frame 6/15",
-                    "150": "Character 11: Lunarian, frame 7/15",
-                    "151": "Character 11: Lunarian, frame 8/15",
-                    "152": "Character 11: Lunarian, frame 9/15",
-                    "153": "Character 11: Lunarian, frame 10/15",
-                    "154": "Character 11: Lunarian, frame 11/15",
-                    "155": "Character 11: Lunarian, frame 12/15",
-                    "156": "Character 11: Lunarian, frame 13/15",
-                    "157": "Character 12: Paladin, frame 1/15",
-                    "158": "Character 12: Paladin, frame 2/15",
-                    "159": "Character 12: Paladin, frame 3/15",
-                    "160": "Character 12: Paladin, frame 4/15",
-                    "161": "Character 12: Paladin, frame 5/15",
-                    "162": "Character 12: Paladin, frame 6/15",
-                    "163": "Character 12: Paladin, frame 7/15",
-                    "164": "Character 12: Paladin, frame 8/15",
-                    "165": "Character 12: Paladin, frame 9/15",
-                    "166": "Character 12: Paladin, frame 10/15",
-                    "167": "Character 12: Paladin, frame 11/15",
-                    "168": "Character 12: Paladin, frame 12/15",
-                    "169": "Character 12: Paladin, frame 13/15",
-                    "170": "Character 13: Summoner, frame 1/15",
-                    "171": "Character 13: Summoner, frame 2/15",
-                    "172": "Character 13: Summoner, frame 3/15",
-                    "173": "Character 13: Summoner, frame 4/15",
-                    "174": "Character 13: Summoner, frame 5/15",
-                    "175": "Character 13: Summoner, frame 6/15",
-                    "176": "Character 13: Summoner, frame 7/15",
-                    "177": "Character 13: Summoner, frame 8/15",
-                    "178": "Character 13: Summoner, frame 9/15",
-                    "179": "Character 13: Summoner, frame 10/15",
-                    "180": "Character 13: Summoner, frame 11/15",
-                    "181": "Character 13: Summoner, frame 12/15",
-                    "182": "Character 13: Summoner, frame 13/15",
+                    "0": "Character 0: Cecil (D. Knight), frame 1/15",
+                    "1": "Character 0: Cecil (D. Knight), frame 2/15",
+                    "2": "Character 0: Cecil (D. Knight), frame 3/15",
+                    "3": "Character 0: Cecil (D. Knight), frame 4/15",
+                    "4": "Character 0: Cecil (D. Knight), frame 5/15",
+                    "5": "Character 0: Cecil (D. Knight), frame 6/15",
+                    "6": "Character 0: Cecil (D. Knight), frame 7/15",
+                    "7": "Character 0: Cecil (D. Knight), frame 8/15",
+                    "8": "Character 0: Cecil (D. Knight), frame 9/15",
+                    "9": "Character 0: Cecil (D. Knight), frame 10/15",
+                    "10": "Character 0: Cecil (D. Knight), frame 11/15",
+                    "11": "Character 0: Cecil (D. Knight), frame 12/15",
+                    "12": "Character 0: Cecil (D. Knight), frame 13/15",
+                    "13": "Character 0: Cecil (D. Knight), frames 14,15/15; Character 1: Kain (Dragoon), frames 14,15/15 (and 16 other character groups)",
+                    "14": "Character 1: Kain (Dragoon), frame 1/15; Character 19: Dark Kain, frame 1/15",
+                    "15": "Character 1: Kain (Dragoon), frame 2/15; Character 19: Dark Kain, frame 2/15",
+                    "16": "Character 1: Kain (Dragoon), frame 3/15; Character 19: Dark Kain, frame 3/15",
+                    "17": "Character 1: Kain (Dragoon), frame 4/15; Character 19: Dark Kain, frame 4/15",
+                    "18": "Character 1: Kain (Dragoon), frame 5/15; Character 19: Dark Kain, frame 5/15",
+                    "19": "Character 1: Kain (Dragoon), frame 6/15; Character 19: Dark Kain, frame 6/15",
+                    "20": "Character 1: Kain (Dragoon), frame 7/15; Character 19: Dark Kain, frame 7/15",
+                    "21": "Character 1: Kain (Dragoon), frame 8/15; Character 19: Dark Kain, frame 8/15",
+                    "22": "Character 1: Kain (Dragoon), frame 9/15; Character 19: Dark Kain, frame 9/15",
+                    "23": "Character 1: Kain (Dragoon), frame 10/15; Character 19: Dark Kain, frame 10/15",
+                    "24": "Character 1: Kain (Dragoon), frame 11/15; Character 19: Dark Kain, frame 11/15",
+                    "25": "Character 1: Kain (Dragoon), frame 12/15; Character 19: Dark Kain, frame 12/15",
+                    "26": "Character 1: Kain (Dragoon), frame 13/15; Character 19: Dark Kain, frame 13/15",
+                    "27": "Character 2: Rosa (W. Mage), frame 1/15",
+                    "28": "Character 2: Rosa (W. Mage), frame 2/15",
+                    "29": "Character 2: Rosa (W. Mage), frame 3/15",
+                    "30": "Character 2: Rosa (W. Mage), frame 4/15",
+                    "31": "Character 2: Rosa (W. Mage), frame 5/15",
+                    "32": "Character 2: Rosa (W. Mage), frame 6/15",
+                    "33": "Character 2: Rosa (W. Mage), frame 7/15",
+                    "34": "Character 2: Rosa (W. Mage), frame 8/15",
+                    "35": "Character 2: Rosa (W. Mage), frame 9/15",
+                    "36": "Character 2: Rosa (W. Mage), frame 10/15",
+                    "37": "Character 2: Rosa (W. Mage), frame 11/15",
+                    "38": "Character 2: Rosa (W. Mage), frame 12/15",
+                    "39": "Character 2: Rosa (W. Mage), frame 13/15",
+                    "40": "Character 3: Rydia (Summoner), frame 1/15",
+                    "41": "Character 3: Rydia (Summoner), frame 2/15",
+                    "42": "Character 3: Rydia (Summoner), frame 3/15",
+                    "43": "Character 3: Rydia (Summoner), frame 4/15",
+                    "44": "Character 3: Rydia (Summoner), frame 5/15",
+                    "45": "Character 3: Rydia (Summoner), frame 6/15",
+                    "46": "Character 3: Rydia (Summoner), frame 7/15",
+                    "47": "Character 3: Rydia (Summoner), frame 8/15",
+                    "48": "Character 3: Rydia (Summoner), frame 9/15",
+                    "49": "Character 3: Rydia (Summoner), frame 10/15",
+                    "50": "Character 3: Rydia (Summoner), frame 11/15",
+                    "51": "Character 3: Rydia (Summoner), frame 12/15",
+                    "52": "Character 3: Rydia (Summoner), frame 13/15",
+                    "53": "Character 4: Cid (Engineer), frame 1/15",
+                    "54": "Character 4: Cid (Engineer), frame 2/15",
+                    "55": "Character 4: Cid (Engineer), frame 3/15",
+                    "56": "Character 4: Cid (Engineer), frame 4/15",
+                    "57": "Character 4: Cid (Engineer), frame 5/15",
+                    "58": "Character 4: Cid (Engineer), frame 6/15",
+                    "59": "Character 4: Cid (Engineer), frame 7/15",
+                    "60": "Character 4: Cid (Engineer), frame 8/15",
+                    "61": "Character 4: Cid (Engineer), frame 9/15",
+                    "62": "Character 4: Cid (Engineer), frame 10/15",
+                    "63": "Character 4: Cid (Engineer), frame 11/15",
+                    "64": "Character 4: Cid (Engineer), frame 12/15",
+                    "65": "Character 4: Cid (Engineer), frame 13/15",
+                    "66": "Character 5: Tellah (Sage), frame 1/15",
+                    "67": "Character 5: Tellah (Sage), frame 2/15",
+                    "68": "Character 5: Tellah (Sage), frame 3/15",
+                    "69": "Character 5: Tellah (Sage), frame 4/15",
+                    "70": "Character 5: Tellah (Sage), frame 5/15",
+                    "71": "Character 5: Tellah (Sage), frame 6/15",
+                    "72": "Character 5: Tellah (Sage), frame 7/15",
+                    "73": "Character 5: Tellah (Sage), frame 8/15",
+                    "74": "Character 5: Tellah (Sage), frame 9/15",
+                    "75": "Character 5: Tellah (Sage), frame 10/15",
+                    "76": "Character 5: Tellah (Sage), frame 11/15",
+                    "77": "Character 5: Tellah (Sage), frame 12/15",
+                    "78": "Character 5: Tellah (Sage), frame 13/15",
+                    "79": "Character 6: Edward (Prince), frame 1/15",
+                    "80": "Character 6: Edward (Prince), frame 2/15",
+                    "81": "Character 6: Edward (Prince), frame 3/15",
+                    "82": "Character 6: Edward (Prince), frame 4/15",
+                    "83": "Character 6: Edward (Prince), frame 5/15",
+                    "84": "Character 6: Edward (Prince), frame 6/15",
+                    "85": "Character 6: Edward (Prince), frame 7/15",
+                    "86": "Character 6: Edward (Prince), frame 8/15",
+                    "87": "Character 6: Edward (Prince), frame 9/15",
+                    "88": "Character 6: Edward (Prince), frame 10/15",
+                    "89": "Character 6: Edward (Prince), frame 11/15",
+                    "90": "Character 6: Edward (Prince), frame 12/15",
+                    "91": "Character 6: Edward (Prince), frame 13/15",
+                    "92": "Character 7: Yang (Monk), frame 1/15",
+                    "93": "Character 7: Yang (Monk), frame 2/15",
+                    "94": "Character 7: Yang (Monk), frame 3/15",
+                    "95": "Character 7: Yang (Monk), frame 4/15",
+                    "96": "Character 7: Yang (Monk), frame 5/15",
+                    "97": "Character 7: Yang (Monk), frame 6/15",
+                    "98": "Character 7: Yang (Monk), frame 7/15",
+                    "99": "Character 7: Yang (Monk), frame 8/15",
+                    "100": "Character 7: Yang (Monk), frame 9/15",
+                    "101": "Character 7: Yang (Monk), frame 10/15",
+                    "102": "Character 7: Yang (Monk), frame 11/15",
+                    "103": "Character 7: Yang (Monk), frame 12/15",
+                    "104": "Character 7: Yang (Monk), frame 13/15",
+                    "105": "Character 8: Palom (B. Mage), frame 1/15",
+                    "106": "Character 8: Palom (B. Mage), frame 2/15",
+                    "107": "Character 8: Palom (B. Mage), frame 3/15",
+                    "108": "Character 8: Palom (B. Mage), frame 4/15",
+                    "109": "Character 8: Palom (B. Mage), frame 5/15",
+                    "110": "Character 8: Palom (B. Mage), frame 6/15",
+                    "111": "Character 8: Palom (B. Mage), frame 7/15",
+                    "112": "Character 8: Palom (B. Mage), frame 8/15",
+                    "113": "Character 8: Palom (B. Mage), frame 9/15",
+                    "114": "Character 8: Palom (B. Mage), frame 10/15",
+                    "115": "Character 8: Palom (B. Mage), frame 11/15",
+                    "116": "Character 8: Palom (B. Mage), frame 12/15",
+                    "117": "Character 8: Palom (B. Mage), frame 13/15",
+                    "118": "Character 9: Porom (W. Mage), frame 1/15",
+                    "119": "Character 9: Porom (W. Mage), frame 2/15",
+                    "120": "Character 9: Porom (W. Mage), frame 3/15",
+                    "121": "Character 9: Porom (W. Mage), frame 4/15",
+                    "122": "Character 9: Porom (W. Mage), frame 5/15",
+                    "123": "Character 9: Porom (W. Mage), frame 6/15",
+                    "124": "Character 9: Porom (W. Mage), frame 7/15",
+                    "125": "Character 9: Porom (W. Mage), frame 8/15",
+                    "126": "Character 9: Porom (W. Mage), frame 9/15",
+                    "127": "Character 9: Porom (W. Mage), frame 10/15",
+                    "128": "Character 9: Porom (W. Mage), frame 11/15",
+                    "129": "Character 9: Porom (W. Mage), frame 12/15",
+                    "130": "Character 9: Porom (W. Mage), frame 13/15",
+                    "131": "Character 10: Edge (Ninja), frame 1/15",
+                    "132": "Character 10: Edge (Ninja), frame 2/15",
+                    "133": "Character 10: Edge (Ninja), frame 3/15",
+                    "134": "Character 10: Edge (Ninja), frame 4/15",
+                    "135": "Character 10: Edge (Ninja), frame 5/15",
+                    "136": "Character 10: Edge (Ninja), frame 6/15",
+                    "137": "Character 10: Edge (Ninja), frame 7/15",
+                    "138": "Character 10: Edge (Ninja), frame 8/15",
+                    "139": "Character 10: Edge (Ninja), frame 9/15",
+                    "140": "Character 10: Edge (Ninja), frame 10/15",
+                    "141": "Character 10: Edge (Ninja), frame 11/15",
+                    "142": "Character 10: Edge (Ninja), frame 12/15",
+                    "143": "Character 10: Edge (Ninja), frame 13/15",
+                    "144": "Character 11: FuSoYa (Lunarian), frame 1/15",
+                    "145": "Character 11: FuSoYa (Lunarian), frame 2/15",
+                    "146": "Character 11: FuSoYa (Lunarian), frame 3/15",
+                    "147": "Character 11: FuSoYa (Lunarian), frame 4/15",
+                    "148": "Character 11: FuSoYa (Lunarian), frame 5/15",
+                    "149": "Character 11: FuSoYa (Lunarian), frame 6/15",
+                    "150": "Character 11: FuSoYa (Lunarian), frame 7/15",
+                    "151": "Character 11: FuSoYa (Lunarian), frame 8/15",
+                    "152": "Character 11: FuSoYa (Lunarian), frame 9/15",
+                    "153": "Character 11: FuSoYa (Lunarian), frame 10/15",
+                    "154": "Character 11: FuSoYa (Lunarian), frame 11/15",
+                    "155": "Character 11: FuSoYa (Lunarian), frame 12/15",
+                    "156": "Character 11: FuSoYa (Lunarian), frame 13/15",
+                    "157": "Character 12: Golbez (Paladin), frame 1/15",
+                    "158": "Character 12: Golbez (Paladin), frame 2/15",
+                    "159": "Character 12: Golbez (Paladin), frame 3/15",
+                    "160": "Character 12: Golbez (Paladin), frame 4/15",
+                    "161": "Character 12: Golbez (Paladin), frame 5/15",
+                    "162": "Character 12: Golbez (Paladin), frame 6/15",
+                    "163": "Character 12: Golbez (Paladin), frame 7/15",
+                    "164": "Character 12: Golbez (Paladin), frame 8/15",
+                    "165": "Character 12: Golbez (Paladin), frame 9/15",
+                    "166": "Character 12: Golbez (Paladin), frame 10/15",
+                    "167": "Character 12: Golbez (Paladin), frame 11/15",
+                    "168": "Character 12: Golbez (Paladin), frame 12/15",
+                    "169": "Character 12: Golbez (Paladin), frame 13/15",
+                    "170": "Character 13: Rydia (older) (Summoner), frame 1/15",
+                    "171": "Character 13: Rydia (older) (Summoner), frame 2/15",
+                    "172": "Character 13: Rydia (older) (Summoner), frame 3/15",
+                    "173": "Character 13: Rydia (older) (Summoner), frame 4/15",
+                    "174": "Character 13: Rydia (older) (Summoner), frame 5/15",
+                    "175": "Character 13: Rydia (older) (Summoner), frame 6/15",
+                    "176": "Character 13: Rydia (older) (Summoner), frame 7/15",
+                    "177": "Character 13: Rydia (older) (Summoner), frame 8/15",
+                    "178": "Character 13: Rydia (older) (Summoner), frame 9/15",
+                    "179": "Character 13: Rydia (older) (Summoner), frame 10/15",
+                    "180": "Character 13: Rydia (older) (Summoner), frame 11/15",
+                    "181": "Character 13: Rydia (older) (Summoner), frame 12/15",
+                    "182": "Character 13: Rydia (older) (Summoner), frame 13/15",
                     "183": "Character 14: Small, frame 1/15",
                     "184": "Character 14: Small, frames 2,12,13/15",
                     "185": "Character 14: Small, frame 3/15",
@@ -8911,189 +8915,189 @@
                 "length": 20,
                 "default": "Character Palette %i",
                 "string": {
-                    "0": "Character 0: D. Knight",
-                    "1": "Character 0: D. Knight",
-                    "2": "Character 0: D. Knight",
-                    "3": "Character 0: D. Knight",
-                    "4": "Character 0: D. Knight",
-                    "5": "Character 0: D. Knight",
-                    "6": "Character 0: D. Knight",
-                    "7": "Character 0: D. Knight",
-                    "8": "Character 0: D. Knight",
-                    "9": "Character 0: D. Knight",
-                    "10": "Character 0: D. Knight",
-                    "11": "Character 0: D. Knight",
-                    "12": "Character 0: D. Knight",
+                    "0": "Character 0: Cecil (D. Knight)",
+                    "1": "Character 0: Cecil (D. Knight)",
+                    "2": "Character 0: Cecil (D. Knight)",
+                    "3": "Character 0: Cecil (D. Knight)",
+                    "4": "Character 0: Cecil (D. Knight)",
+                    "5": "Character 0: Cecil (D. Knight)",
+                    "6": "Character 0: Cecil (D. Knight)",
+                    "7": "Character 0: Cecil (D. Knight)",
+                    "8": "Character 0: Cecil (D. Knight)",
+                    "9": "Character 0: Cecil (D. Knight)",
+                    "10": "Character 0: Cecil (D. Knight)",
+                    "11": "Character 0: Cecil (D. Knight)",
+                    "12": "Character 0: Cecil (D. Knight)",
                     "13": "18 character groups (blank/stock frame)",
-                    "14": "Character 19; Character 1: Dragoon",
-                    "15": "Character 19; Character 1: Dragoon",
-                    "16": "Character 19; Character 1: Dragoon",
-                    "17": "Character 19; Character 1: Dragoon",
-                    "18": "Character 19; Character 1: Dragoon",
-                    "19": "Character 19; Character 1: Dragoon",
-                    "20": "Character 19; Character 1: Dragoon",
-                    "21": "Character 19; Character 1: Dragoon",
-                    "22": "Character 19; Character 1: Dragoon",
-                    "23": "Character 19; Character 1: Dragoon",
-                    "24": "Character 19; Character 1: Dragoon",
-                    "25": "Character 19; Character 1: Dragoon",
-                    "26": "Character 19; Character 1: Dragoon",
-                    "27": "Character 2: W. Mage",
-                    "28": "Character 2: W. Mage",
-                    "29": "Character 2: W. Mage",
-                    "30": "Character 2: W. Mage",
-                    "31": "Character 2: W. Mage",
-                    "32": "Character 2: W. Mage",
-                    "33": "Character 2: W. Mage",
-                    "34": "Character 2: W. Mage",
-                    "35": "Character 2: W. Mage",
-                    "36": "Character 2: W. Mage",
-                    "37": "Character 2: W. Mage",
-                    "38": "Character 2: W. Mage",
-                    "39": "Character 2: W. Mage",
-                    "40": "Character 3: Summoner",
-                    "41": "Character 3: Summoner",
-                    "42": "Character 3: Summoner",
-                    "43": "Character 3: Summoner",
-                    "44": "Character 3: Summoner",
-                    "45": "Character 3: Summoner",
-                    "46": "Character 3: Summoner",
-                    "47": "Character 3: Summoner",
-                    "48": "Character 3: Summoner",
-                    "49": "Character 3: Summoner",
-                    "50": "Character 3: Summoner",
-                    "51": "Character 3: Summoner",
-                    "52": "Character 3: Summoner",
-                    "53": "Character 4: Engineer",
-                    "54": "Character 4: Engineer",
-                    "55": "Character 4: Engineer",
-                    "56": "Character 4: Engineer",
-                    "57": "Character 4: Engineer",
-                    "58": "Character 4: Engineer",
-                    "59": "Character 4: Engineer",
-                    "60": "Character 4: Engineer",
-                    "61": "Character 4: Engineer",
-                    "62": "Character 4: Engineer",
-                    "63": "Character 4: Engineer",
-                    "64": "Character 4: Engineer",
-                    "65": "Character 4: Engineer",
-                    "66": "Character 5: Sage",
-                    "67": "Character 5: Sage",
-                    "68": "Character 5: Sage",
-                    "69": "Character 5: Sage",
-                    "70": "Character 5: Sage",
-                    "71": "Character 5: Sage",
-                    "72": "Character 5: Sage",
-                    "73": "Character 5: Sage",
-                    "74": "Character 5: Sage",
-                    "75": "Character 5: Sage",
-                    "76": "Character 5: Sage",
-                    "77": "Character 5: Sage",
-                    "78": "Character 5: Sage",
-                    "79": "Character 6: Prince",
-                    "80": "Character 6: Prince",
-                    "81": "Character 6: Prince",
-                    "82": "Character 6: Prince",
-                    "83": "Character 6: Prince",
-                    "84": "Character 6: Prince",
-                    "85": "Character 6: Prince",
-                    "86": "Character 6: Prince",
-                    "87": "Character 6: Prince",
-                    "88": "Character 6: Prince",
-                    "89": "Character 6: Prince",
-                    "90": "Character 6: Prince",
-                    "91": "Character 6: Prince",
-                    "92": "Character 7: Monk",
-                    "93": "Character 7: Monk",
-                    "94": "Character 7: Monk",
-                    "95": "Character 7: Monk",
-                    "96": "Character 7: Monk",
-                    "97": "Character 7: Monk",
-                    "98": "Character 7: Monk",
-                    "99": "Character 7: Monk",
-                    "100": "Character 7: Monk",
-                    "101": "Character 7: Monk",
-                    "102": "Character 7: Monk",
-                    "103": "Character 7: Monk",
-                    "104": "Character 7: Monk",
-                    "105": "Character 8: B. Mage",
-                    "106": "Character 8: B. Mage",
-                    "107": "Character 8: B. Mage",
-                    "108": "Character 8: B. Mage",
-                    "109": "Character 8: B. Mage",
-                    "110": "Character 8: B. Mage",
-                    "111": "Character 8: B. Mage",
-                    "112": "Character 8: B. Mage",
-                    "113": "Character 8: B. Mage",
-                    "114": "Character 8: B. Mage",
-                    "115": "Character 8: B. Mage",
-                    "116": "Character 8: B. Mage",
-                    "117": "Character 8: B. Mage",
-                    "118": "Character 9: W. Mage",
-                    "119": "Character 9: W. Mage",
-                    "120": "Character 9: W. Mage",
-                    "121": "Character 9: W. Mage",
-                    "122": "Character 9: W. Mage",
-                    "123": "Character 9: W. Mage",
-                    "124": "Character 9: W. Mage",
-                    "125": "Character 9: W. Mage",
-                    "126": "Character 9: W. Mage",
-                    "127": "Character 9: W. Mage",
-                    "128": "Character 9: W. Mage",
-                    "129": "Character 9: W. Mage",
-                    "130": "Character 9: W. Mage",
-                    "131": "Character 10: Ninja",
-                    "132": "Character 10: Ninja",
-                    "133": "Character 10: Ninja",
-                    "134": "Character 10: Ninja",
-                    "135": "Character 10: Ninja",
-                    "136": "Character 10: Ninja",
-                    "137": "Character 10: Ninja",
-                    "138": "Character 10: Ninja",
-                    "139": "Character 10: Ninja",
-                    "140": "Character 10: Ninja",
-                    "141": "Character 10: Ninja",
-                    "142": "Character 10: Ninja",
-                    "143": "Character 10: Ninja",
-                    "144": "Character 11: Lunarian",
-                    "145": "Character 11: Lunarian",
-                    "146": "Character 11: Lunarian",
-                    "147": "Character 11: Lunarian",
-                    "148": "Character 11: Lunarian",
-                    "149": "Character 11: Lunarian",
-                    "150": "Character 11: Lunarian",
-                    "151": "Character 11: Lunarian",
-                    "152": "Character 11: Lunarian",
-                    "153": "Character 11: Lunarian",
-                    "154": "Character 11: Lunarian",
-                    "155": "Character 11: Lunarian",
-                    "156": "Character 11: Lunarian",
-                    "157": "Character 12: Paladin",
-                    "158": "Character 12: Paladin",
-                    "159": "Character 12: Paladin",
-                    "160": "Character 12: Paladin",
-                    "161": "Character 12: Paladin",
-                    "162": "Character 12: Paladin",
-                    "163": "Character 12: Paladin",
-                    "164": "Character 12: Paladin",
-                    "165": "Character 12: Paladin",
-                    "166": "Character 12: Paladin",
-                    "167": "Character 12: Paladin",
-                    "168": "Character 12: Paladin",
-                    "169": "Character 12: Paladin",
-                    "170": "Character 13: Summoner",
-                    "171": "Character 13: Summoner",
-                    "172": "Character 13: Summoner",
-                    "173": "Character 13: Summoner",
-                    "174": "Character 13: Summoner",
-                    "175": "Character 13: Summoner",
-                    "176": "Character 13: Summoner",
-                    "177": "Character 13: Summoner",
-                    "178": "Character 13: Summoner",
-                    "179": "Character 13: Summoner",
-                    "180": "Character 13: Summoner",
-                    "181": "Character 13: Summoner",
-                    "182": "Character 13: Summoner",
+                    "14": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "15": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "16": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "17": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "18": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "19": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "20": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "21": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "22": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "23": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "24": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "25": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "26": "Character 19: Dark Kain; Character 1: Kain (Dragoon)",
+                    "27": "Character 2: Rosa (W. Mage)",
+                    "28": "Character 2: Rosa (W. Mage)",
+                    "29": "Character 2: Rosa (W. Mage)",
+                    "30": "Character 2: Rosa (W. Mage)",
+                    "31": "Character 2: Rosa (W. Mage)",
+                    "32": "Character 2: Rosa (W. Mage)",
+                    "33": "Character 2: Rosa (W. Mage)",
+                    "34": "Character 2: Rosa (W. Mage)",
+                    "35": "Character 2: Rosa (W. Mage)",
+                    "36": "Character 2: Rosa (W. Mage)",
+                    "37": "Character 2: Rosa (W. Mage)",
+                    "38": "Character 2: Rosa (W. Mage)",
+                    "39": "Character 2: Rosa (W. Mage)",
+                    "40": "Character 3: Rydia (Summoner)",
+                    "41": "Character 3: Rydia (Summoner)",
+                    "42": "Character 3: Rydia (Summoner)",
+                    "43": "Character 3: Rydia (Summoner)",
+                    "44": "Character 3: Rydia (Summoner)",
+                    "45": "Character 3: Rydia (Summoner)",
+                    "46": "Character 3: Rydia (Summoner)",
+                    "47": "Character 3: Rydia (Summoner)",
+                    "48": "Character 3: Rydia (Summoner)",
+                    "49": "Character 3: Rydia (Summoner)",
+                    "50": "Character 3: Rydia (Summoner)",
+                    "51": "Character 3: Rydia (Summoner)",
+                    "52": "Character 3: Rydia (Summoner)",
+                    "53": "Character 4: Cid (Engineer)",
+                    "54": "Character 4: Cid (Engineer)",
+                    "55": "Character 4: Cid (Engineer)",
+                    "56": "Character 4: Cid (Engineer)",
+                    "57": "Character 4: Cid (Engineer)",
+                    "58": "Character 4: Cid (Engineer)",
+                    "59": "Character 4: Cid (Engineer)",
+                    "60": "Character 4: Cid (Engineer)",
+                    "61": "Character 4: Cid (Engineer)",
+                    "62": "Character 4: Cid (Engineer)",
+                    "63": "Character 4: Cid (Engineer)",
+                    "64": "Character 4: Cid (Engineer)",
+                    "65": "Character 4: Cid (Engineer)",
+                    "66": "Character 5: Tellah (Sage)",
+                    "67": "Character 5: Tellah (Sage)",
+                    "68": "Character 5: Tellah (Sage)",
+                    "69": "Character 5: Tellah (Sage)",
+                    "70": "Character 5: Tellah (Sage)",
+                    "71": "Character 5: Tellah (Sage)",
+                    "72": "Character 5: Tellah (Sage)",
+                    "73": "Character 5: Tellah (Sage)",
+                    "74": "Character 5: Tellah (Sage)",
+                    "75": "Character 5: Tellah (Sage)",
+                    "76": "Character 5: Tellah (Sage)",
+                    "77": "Character 5: Tellah (Sage)",
+                    "78": "Character 5: Tellah (Sage)",
+                    "79": "Character 6: Edward (Prince)",
+                    "80": "Character 6: Edward (Prince)",
+                    "81": "Character 6: Edward (Prince)",
+                    "82": "Character 6: Edward (Prince)",
+                    "83": "Character 6: Edward (Prince)",
+                    "84": "Character 6: Edward (Prince)",
+                    "85": "Character 6: Edward (Prince)",
+                    "86": "Character 6: Edward (Prince)",
+                    "87": "Character 6: Edward (Prince)",
+                    "88": "Character 6: Edward (Prince)",
+                    "89": "Character 6: Edward (Prince)",
+                    "90": "Character 6: Edward (Prince)",
+                    "91": "Character 6: Edward (Prince)",
+                    "92": "Character 7: Yang (Monk)",
+                    "93": "Character 7: Yang (Monk)",
+                    "94": "Character 7: Yang (Monk)",
+                    "95": "Character 7: Yang (Monk)",
+                    "96": "Character 7: Yang (Monk)",
+                    "97": "Character 7: Yang (Monk)",
+                    "98": "Character 7: Yang (Monk)",
+                    "99": "Character 7: Yang (Monk)",
+                    "100": "Character 7: Yang (Monk)",
+                    "101": "Character 7: Yang (Monk)",
+                    "102": "Character 7: Yang (Monk)",
+                    "103": "Character 7: Yang (Monk)",
+                    "104": "Character 7: Yang (Monk)",
+                    "105": "Character 8: Palom (B. Mage)",
+                    "106": "Character 8: Palom (B. Mage)",
+                    "107": "Character 8: Palom (B. Mage)",
+                    "108": "Character 8: Palom (B. Mage)",
+                    "109": "Character 8: Palom (B. Mage)",
+                    "110": "Character 8: Palom (B. Mage)",
+                    "111": "Character 8: Palom (B. Mage)",
+                    "112": "Character 8: Palom (B. Mage)",
+                    "113": "Character 8: Palom (B. Mage)",
+                    "114": "Character 8: Palom (B. Mage)",
+                    "115": "Character 8: Palom (B. Mage)",
+                    "116": "Character 8: Palom (B. Mage)",
+                    "117": "Character 8: Palom (B. Mage)",
+                    "118": "Character 9: Porom (W. Mage)",
+                    "119": "Character 9: Porom (W. Mage)",
+                    "120": "Character 9: Porom (W. Mage)",
+                    "121": "Character 9: Porom (W. Mage)",
+                    "122": "Character 9: Porom (W. Mage)",
+                    "123": "Character 9: Porom (W. Mage)",
+                    "124": "Character 9: Porom (W. Mage)",
+                    "125": "Character 9: Porom (W. Mage)",
+                    "126": "Character 9: Porom (W. Mage)",
+                    "127": "Character 9: Porom (W. Mage)",
+                    "128": "Character 9: Porom (W. Mage)",
+                    "129": "Character 9: Porom (W. Mage)",
+                    "130": "Character 9: Porom (W. Mage)",
+                    "131": "Character 10: Edge (Ninja)",
+                    "132": "Character 10: Edge (Ninja)",
+                    "133": "Character 10: Edge (Ninja)",
+                    "134": "Character 10: Edge (Ninja)",
+                    "135": "Character 10: Edge (Ninja)",
+                    "136": "Character 10: Edge (Ninja)",
+                    "137": "Character 10: Edge (Ninja)",
+                    "138": "Character 10: Edge (Ninja)",
+                    "139": "Character 10: Edge (Ninja)",
+                    "140": "Character 10: Edge (Ninja)",
+                    "141": "Character 10: Edge (Ninja)",
+                    "142": "Character 10: Edge (Ninja)",
+                    "143": "Character 10: Edge (Ninja)",
+                    "144": "Character 11: FuSoYa (Lunarian)",
+                    "145": "Character 11: FuSoYa (Lunarian)",
+                    "146": "Character 11: FuSoYa (Lunarian)",
+                    "147": "Character 11: FuSoYa (Lunarian)",
+                    "148": "Character 11: FuSoYa (Lunarian)",
+                    "149": "Character 11: FuSoYa (Lunarian)",
+                    "150": "Character 11: FuSoYa (Lunarian)",
+                    "151": "Character 11: FuSoYa (Lunarian)",
+                    "152": "Character 11: FuSoYa (Lunarian)",
+                    "153": "Character 11: FuSoYa (Lunarian)",
+                    "154": "Character 11: FuSoYa (Lunarian)",
+                    "155": "Character 11: FuSoYa (Lunarian)",
+                    "156": "Character 11: FuSoYa (Lunarian)",
+                    "157": "Character 12: Golbez (Paladin)",
+                    "158": "Character 12: Golbez (Paladin)",
+                    "159": "Character 12: Golbez (Paladin)",
+                    "160": "Character 12: Golbez (Paladin)",
+                    "161": "Character 12: Golbez (Paladin)",
+                    "162": "Character 12: Golbez (Paladin)",
+                    "163": "Character 12: Golbez (Paladin)",
+                    "164": "Character 12: Golbez (Paladin)",
+                    "165": "Character 12: Golbez (Paladin)",
+                    "166": "Character 12: Golbez (Paladin)",
+                    "167": "Character 12: Golbez (Paladin)",
+                    "168": "Character 12: Golbez (Paladin)",
+                    "169": "Character 12: Golbez (Paladin)",
+                    "170": "Character 13: Rydia (older) (Summoner)",
+                    "171": "Character 13: Rydia (older) (Summoner)",
+                    "172": "Character 13: Rydia (older) (Summoner)",
+                    "173": "Character 13: Rydia (older) (Summoner)",
+                    "174": "Character 13: Rydia (older) (Summoner)",
+                    "175": "Character 13: Rydia (older) (Summoner)",
+                    "176": "Character 13: Rydia (older) (Summoner)",
+                    "177": "Character 13: Rydia (older) (Summoner)",
+                    "178": "Character 13: Rydia (older) (Summoner)",
+                    "179": "Character 13: Rydia (older) (Summoner)",
+                    "180": "Character 13: Rydia (older) (Summoner)",
+                    "181": "Character 13: Rydia (older) (Summoner)",
+                    "182": "Character 13: Rydia (older) (Summoner)",
                     "183": "Character 14: Small",
                     "184": "Character 14: Small",
                     "185": "Character 14: Small",
@@ -9140,42 +9144,6 @@
                 }
             }
         },
-        "dialoguePortraitPointers": {
-            "type": "array",
-            "name": "Dialogue Portrait Pointers",
-            "range": "0x80F2D48-0x80F30CC",
-            "arrayLength": 225,
-            "assembly": {
-                "type": "data",
-                "length": 4,
-                "assembly": {
-                    "pointer": {
-                        "type": "property",
-                        "name": "Pointer",
-                        "begin": 0,
-                        "mask": "0x7FFFFFFF"
-                    }
-                }
-            }
-        },
-        "battlePortraitPointers": {
-            "type": "array",
-            "name": "Battle Portrait Pointers",
-            "range": "0x80F3100-0x80F324C",
-            "arrayLength": 83,
-            "assembly": {
-                "type": "data",
-                "length": 4,
-                "assembly": {
-                    "pointer": {
-                        "type": "property",
-                        "name": "Pointer",
-                        "begin": 0,
-                        "mask": "0x7FFFFFFF"
-                    }
-                }
-            }
-        },
         "portraitGraphics": {
             "type": "array",
             "name": "Portraits",
@@ -9193,7 +9161,7 @@
                 "align": 4,
                 "width": 4,
                 "height": 4,
-                "backColor": true,
+                "backColor": false,
                 "palette": "portraitPalettes"
             },
             "itemRanges": [
@@ -9255,7 +9223,7 @@
                 "0x26A4B8-0x26A674",
                 "0x26A674-0x26A82C",
                 "0x26A82C-0x26A934",
-                "0x26A934-0x26ABB4",
+                "0x26A934-0x26AA4C",
                 "0x26ABB4-0x26ADC0",
                 "0x26ADC0-0x26AFC8",
                 "0x26AFC8-0x26B1D0",
@@ -9335,11 +9303,6 @@
                 "portraitPalettes[51]",
                 "portraitPalettes[52]",
                 "portraitPalettes[53]",
-                null,
-                null,
-                null,
-                null,
-                null,
                 "portraitPalettes[54]",
                 "portraitPalettes[55]",
                 "portraitPalettes[56]",
@@ -9358,99 +9321,104 @@
                 "portraitPalettes[69]",
                 "portraitPalettes[70]",
                 "portraitPalettes[71]",
-                null,
-                null,
-                null,
-                null,
-                null
+                "portraitPalettes[72]",
+                "portraitPalettes[73]",
+                "portraitPalettes[74]",
+                "portraitPalettes[75]",
+                "portraitPalettes[76]",
+                "portraitPalettes[18]",
+                "portraitPalettes[19]",
+                "portraitPalettes[20]",
+                "portraitPalettes[21]",
+                "portraitPalettes[22]"
             ],
             "stringTable": {
                 "name": "Portraits",
                 "length": 82,
                 "default": "Portrait %i",
                 "string": {
-                    "0": "Dialogue portrait set 1, expression 1/12",
-                    "1": "Dialogue portrait set 1, expression 2/12",
-                    "2": "Dialogue portrait set 1, expression 3/12",
-                    "3": "Dialogue portrait set 1, expression 4/12",
-                    "4": "Dialogue portrait set 1, expression 7/12",
-                    "5": "Dialogue portrait set 1, expression 10/12",
-                    "6": "Dialogue portrait set 2, expression 1/12",
-                    "7": "Dialogue portrait set 2, expression 2/12",
-                    "8": "Dialogue portrait set 2, expression 3/12",
-                    "9": "Dialogue portrait set 2, expression 4/12",
-                    "10": "Dialogue portrait set 2, expression 7/12",
-                    "11": "Dialogue portrait set 2, expression 10/12",
-                    "12": "Dialogue portrait set 3, expression 1/12",
-                    "13": "Dialogue portrait set 3, expression 2/12",
-                    "14": "Dialogue portrait set 3, expression 3/12",
-                    "15": "Dialogue portrait set 3, expression 4/12",
-                    "16": "Dialogue portrait set 3, expression 7/12",
-                    "17": "Dialogue portrait set 3, expression 10/12",
-                    "18": "Dialogue portrait set 4, expression 1/12",
-                    "19": "Dialogue portrait set 4, expression 2/12",
-                    "20": "Dialogue portrait set 4, expression 3/12",
-                    "21": "Dialogue portrait set 4, expression 4/12",
-                    "22": "Dialogue portrait set 4, expression 7/12",
-                    "23": "Dialogue portrait set 4, expression 10/12",
-                    "24": "Dialogue portrait set 5, expression 1/12",
-                    "25": "Dialogue portrait set 5, expression 2/12",
-                    "26": "Dialogue portrait set 5, expression 3/12",
-                    "27": "Dialogue portrait set 5, expression 4/12",
-                    "28": "Dialogue portrait set 5, expression 7/12",
-                    "29": "Dialogue portrait set 5, expression 10/12",
-                    "30": "Dialogue portrait set 6, expression 1/12",
-                    "31": "Dialogue portrait set 6, expression 2/12",
-                    "32": "Dialogue portrait set 6, expression 3/12",
-                    "33": "Dialogue portrait set 6, expression 4/12",
-                    "34": "Dialogue portrait set 6, expression 7/12",
-                    "35": "Dialogue portrait set 6, expression 10/12",
-                    "36": "Dialogue portrait set 7, expression 1/12",
-                    "37": "Dialogue portrait set 7, expression 2/12",
-                    "38": "Dialogue portrait set 7, expression 3/12",
-                    "39": "Dialogue portrait set 7, expression 4/12",
-                    "40": "Dialogue portrait set 7, expression 7/12",
-                    "41": "Dialogue portrait set 7, expression 10/12",
-                    "42": "Dialogue portrait set 8, expression 1/12",
-                    "43": "Dialogue portrait set 8, expression 2/12",
-                    "44": "Dialogue portrait set 8, expression 3/12",
-                    "45": "Dialogue portrait set 8, expression 4/12",
-                    "46": "Dialogue portrait set 8, expression 7/12",
-                    "47": "Dialogue portrait set 8, expression 10/12",
-                    "48": "Dialogue portrait set 9, expression 1/12",
-                    "49": "Dialogue portrait set 9, expression 2/12",
-                    "50": "Dialogue portrait set 9, expression 3/12",
-                    "51": "Dialogue portrait set 9, expression 4/12",
-                    "52": "Dialogue portrait set 9, expression 7/12",
-                    "53": "Dialogue portrait set 9, expression 10/12",
-                    "54": "Dialogue portrait set 10, expression 1/9",
-                    "55": "Dialogue portrait set 10, expression 2/9",
-                    "56": "Dialogue portrait set 10, expression 3/9",
-                    "57": "Dialogue portrait set 10, expression 4/9",
-                    "58": "Dialogue portrait set 10, expression 7/9",
-                    "59": "Battle portrait set 1, expression 1/12",
-                    "60": "Battle portrait set 1, expression 2/12",
-                    "61": "Battle portrait set 1, expression 3/12",
-                    "62": "Battle portrait set 1, expression 4/12",
-                    "63": "Battle portrait set 1, expression 7/12",
-                    "64": "Battle portrait set 1, expression 10/12",
-                    "65": "Battle portrait set 2, expression 1/12",
-                    "66": "Battle portrait set 2, expression 2/12",
-                    "67": "Battle portrait set 2, expression 3/12",
-                    "68": "Battle portrait set 2, expression 4/12",
-                    "69": "Battle portrait set 2, expression 7/12",
-                    "70": "Battle portrait set 2, expression 10/12",
-                    "71": "Battle portrait set 3, expression 1/12",
-                    "72": "Battle portrait set 3, expression 2/12",
-                    "73": "Battle portrait set 3, expression 3/12",
-                    "74": "Battle portrait set 3, expression 4/12",
-                    "75": "Battle portrait set 3, expression 7/12",
-                    "76": "Battle portrait set 3, expression 10/12",
-                    "77": "Battle portrait set 4, expression 1/9",
-                    "78": "Battle portrait set 4, expression 2/9",
-                    "79": "Battle portrait set 4, expression 3/9",
-                    "80": "Battle portrait set 4, expression 4/9",
-                    "81": "Battle portrait set 4, expression 7/9"
+                    "0": "Cecil portrait, expression 1/12",
+                    "1": "Cecil portrait, expression 2/12",
+                    "2": "Cecil portrait, expression 3/12",
+                    "3": "Cecil portrait, expression 4/12",
+                    "4": "Cecil portrait, expression 7/12",
+                    "5": "Cecil portrait, expression 10/12",
+                    "6": "Kain portrait, expression 1/12",
+                    "7": "Kain portrait, expression 2/12",
+                    "8": "Kain portrait, expression 3/12",
+                    "9": "Kain portrait, expression 4/12",
+                    "10": "Kain portrait, expression 7/12",
+                    "11": "Kain portrait, expression 10/12",
+                    "12": "Rosa portrait, expression 1/12",
+                    "13": "Rosa portrait, expression 2/12",
+                    "14": "Rosa portrait, expression 3/12",
+                    "15": "Rosa portrait, expression 4/12",
+                    "16": "Rosa portrait, expression 7/12",
+                    "17": "Rosa portrait, expression 10/12",
+                    "18": "Rydia portrait, expression 1/12",
+                    "19": "Rydia portrait, expression 2/12",
+                    "20": "Rydia portrait, expression 3/12",
+                    "21": "Rydia portrait, expression 4/12",
+                    "22": "Rydia portrait, expression 7/12",
+                    "23": "Rydia portrait, expression 10/12",
+                    "24": "Cid portrait, expression 1/12",
+                    "25": "Cid portrait, expression 2/12",
+                    "26": "Cid portrait, expression 3/12",
+                    "27": "Cid portrait, expression 4/12",
+                    "28": "Cid portrait, expression 7/12",
+                    "29": "Cid portrait, expression 10/12",
+                    "30": "Tellah portrait, expression 1/12",
+                    "31": "Tellah portrait, expression 2/12",
+                    "32": "Tellah portrait, expression 3/12",
+                    "33": "Tellah portrait, expression 4/12",
+                    "34": "Tellah portrait, expression 7/12",
+                    "35": "Tellah portrait, expression 10/12",
+                    "36": "Edward portrait, expression 1/12",
+                    "37": "Edward portrait, expression 2/12",
+                    "38": "Edward portrait, expression 3/12",
+                    "39": "Edward portrait, expression 4/12",
+                    "40": "Edward portrait, expression 7/12",
+                    "41": "Edward portrait, expression 10/12",
+                    "42": "Yang portrait, expression 1/12",
+                    "43": "Yang portrait, expression 2/12",
+                    "44": "Yang portrait, expression 3/12",
+                    "45": "Yang portrait, expression 4/12",
+                    "46": "Yang portrait, expression 7/12",
+                    "47": "Yang portrait, expression 10/12",
+                    "48": "Palom portrait, expression 1/12",
+                    "49": "Palom portrait, expression 2/12",
+                    "50": "Palom portrait, expression 3/12",
+                    "51": "Palom portrait, expression 4/12",
+                    "52": "Palom portrait, expression 7/12",
+                    "53": "Palom portrait, expression 10/12",
+                    "54": "Porom portrait, expression 1/12",
+                    "55": "Porom portrait, expression 2/12",
+                    "56": "Porom portrait, expression 3/12",
+                    "57": "Porom portrait, expression 4/12",
+                    "58": "Porom portrait, expression 7/12",
+                    "59": "Edge portrait, expression 1/12",
+                    "60": "Edge portrait, expression 2/12",
+                    "61": "Edge portrait, expression 3/12",
+                    "62": "Edge portrait, expression 4/12",
+                    "63": "Edge portrait, expression 7/12",
+                    "64": "Edge portrait, expression 10/12",
+                    "65": "FuSoYa portrait, expression 1/12",
+                    "66": "FuSoYa portrait, expression 2/12",
+                    "67": "FuSoYa portrait, expression 3/12",
+                    "68": "FuSoYa portrait, expression 4/12",
+                    "69": "FuSoYa portrait, expression 7/12",
+                    "70": "FuSoYa portrait, expression 10/12",
+                    "71": "Golbez portrait, expression 1/12",
+                    "72": "Golbez portrait, expression 2/12",
+                    "73": "Golbez portrait, expression 3/12",
+                    "74": "Golbez portrait, expression 4/12",
+                    "75": "Golbez portrait, expression 7/12",
+                    "76": "Golbez portrait, expression 10/12",
+                    "77": "Rydia (older) portrait, expression 1/12",
+                    "78": "Rydia (older) portrait, expression 2/12",
+                    "79": "Rydia (older) portrait, expression 3/12",
+                    "80": "Rydia (older) portrait, expression 4/12",
+                    "81": "Rydia (older) portrait, expression 7/12"
                 }
             }
         },
@@ -9459,7 +9427,7 @@
             "name": "Portrait Palette",
             "isFragmented": true,
             "canRelocate": true,
-            "arrayLength": 72,
+            "arrayLength": 77,
             "assembly": {
                 "type": "assembly",
                 "name": "Portrait Palette",
@@ -9524,6 +9492,11 @@
                 "0x26A220-0x26A268",
                 "0x26A268-0x26A2B0",
                 "0x26A2B0-0x26A2F8",
+                "0x26AA4C-0x26AA94",
+                "0x26AA94-0x26AADC",
+                "0x26AADC-0x26AB24",
+                "0x26AB24-0x26AB6C",
+                "0x26AB6C-0x26ABB4",
                 "0x26B534-0x26B57C",
                 "0x26B57C-0x26B5C4",
                 "0x26B5C4-0x26B60C",
@@ -9545,7 +9518,7 @@
             ],
             "stringTable": {
                 "name": "Portrait Palette",
-                "length": 72,
+                "length": 77,
                 "default": "Portrait Palette %i",
                 "string": {
                     "0": "Portrait palette 1",
@@ -9619,7 +9592,30 @@
                     "68": "Portrait palette 69",
                     "69": "Portrait palette 70",
                     "70": "Portrait palette 71",
-                    "71": "Portrait palette 72"
+                    "71": "Portrait palette 72",
+                    "72": "Portrait palette 73",
+                    "73": "Portrait palette 74",
+                    "74": "Portrait palette 75",
+                    "75": "Portrait palette 76",
+                    "76": "Portrait palette 77"
+                }
+            }
+        },
+        "portraitPointers": {
+            "type": "array",
+            "name": "Portrait Pointers",
+            "range": "0x80F2D48-0x80F324C",
+            "arrayLength": 321,
+            "assembly": {
+                "type": "data",
+                "length": 4,
+                "assembly": {
+                    "pointer": {
+                        "type": "property",
+                        "name": "Pointer",
+                        "begin": 0,
+                        "mask": "0x7FFFFFFF"
+                    }
                 }
             }
         }

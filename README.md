@@ -276,9 +276,11 @@ shape: standing poses are 2×3 tiles, the death pose (frame 10) lies down at
 3×2, and the wider poses (frames 11, 14, 15) are 3×3. A frame shared by
 several classes lists each class's palette in the Palette dropdown.
 
-**Portraits** are also editable: 4×4 tiles (32×32 px) with a 32-colour
-palette, grouped as sets of 12 expressions. Colour 0 is opaque there — it is
-the backdrop of the face, not transparency.
+**Portraits** are also editable: one table of 12 expressions per party member
+(Cecil, Kain, Rosa, Rydia, Cid, Tellah, Edward, Yang, Palom, Porom, Edge,
+FuSoYa, Golbez, and adult Rydia), each 4×4 tiles (32×32 px) with its own
+32-colour palette. Colour 0 is the flat backdrop behind the face, so it is
+transparent.
 
 In the navigator, `Up`/`Down` move the selection between entries instead of
 scrolling; running off the end of a section expands the next one and steps into
